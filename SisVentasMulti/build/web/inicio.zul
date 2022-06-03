@@ -1,0 +1,53 @@
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>   
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>  
+<?page title="Facturacion electrónica" contentType="text/html;charset=UTF-8"?>
+
+<zk contentStyle="overflow:auto" >
+
+    <style>
+        body{
+        background-image: url('./fondo/fondocrm.jpg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+  
+        }
+        
+    </style>
+    <div class="container col-12 col-sm-6 col-md-5 col-lg-4 form-control" id="loginWin" style="margin:1% auto;"   
+                 apply="com.ec.controlador.LoginController" >
+ 
+    
+
+            <div class="row " align="lefth">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group"  align="center">
+                    <image  src="/imagenes/iniciofactura.png" class="imgRedondaLogoLogin" width="75%" ></image>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group">
+                    <textbox id="account" type="text" class="form-control" 
+                             onCreate="self.focus()"
+                             placeholder="Ingrese el usuario"   />
+          
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group">
+                  
+                    <textbox id="password" type="password" 
+                             class="form-control" 
+                             placeholder="Ingrese la constraseña" />      
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                    <button id="buttonEntrar" 
+                            class="btn btn-lg btn-primary btn-block" label="Ingresar">
+                    </button>   
+<!--                    <button id="buttonConsultar"  
+                            class="btn btn-lg btn-success btn-block" label="Consultas">
+                    </button>   -->
+                </div>
+        </div>
+    
+    </div>
+  
+    
+</zk>
