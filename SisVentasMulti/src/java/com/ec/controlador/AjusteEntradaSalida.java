@@ -10,6 +10,7 @@ import com.ec.entidad.DetalleKardex;
 import com.ec.entidad.Factura;
 import com.ec.entidad.Kardex;
 import com.ec.entidad.Producto;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Tipocomprobante;
 import com.ec.entidad.Tipokardex;
 import com.ec.seguridad.EnumSesion;
@@ -18,6 +19,7 @@ import com.ec.servicio.ServicioDetalleFactura;
 import com.ec.servicio.ServicioDetalleKardex;
 import com.ec.servicio.ServicioKardex;
 import com.ec.servicio.ServicioProducto;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoKardex;
 import com.ec.untilitario.ParamFactura;
 import com.ec.untilitario.TotalKardex;
@@ -119,6 +121,10 @@ public class AjusteEntradaSalida {
     private String motivoAjuste = "";
     private List<Kardex> listaKardexProducto = new ArrayList<Kardex>();
 
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") ParamFactura valor, @ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -133,9 +139,10 @@ public class AjusteEntradaSalida {
 
     public AjusteEntradaSalida() {
         Session sess = Sessions.getCurrent();
-        sess.setMaxInactiveInterval(10000);
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        credential = cre;
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         getDetallefactura();
 
     }
@@ -355,10 +362,10 @@ public class AjusteEntradaSalida {
         try {
             if (motivoAjuste == null) {
                 Clients.showNotification("Verifique el motivo del ajuste", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 2000, true);
-               return;
+                return;
             }
-            
-             if (motivoAjuste.equals("")) {
+
+            if (motivoAjuste.equals("")) {
                 Clients.showNotification("Verifique el motivo del ajuste", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 2000, true);
                 return;
             }
@@ -439,11 +446,11 @@ public class AjusteEntradaSalida {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
     }
 
 //    public void reporteGeneral() throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {

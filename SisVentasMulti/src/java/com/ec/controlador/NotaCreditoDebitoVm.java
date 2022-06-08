@@ -89,7 +89,7 @@ public class NotaCreditoDebitoVm {
     //buscar cliente
     ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
     ServicioFormaPago servicioFormaPago = new ServicioFormaPago();
-    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     ServicioCliente servicioCliente = new ServicioCliente();
     ServicioEstadoFactura servicioEstadoFactura = new ServicioEstadoFactura();
     ServicioFactura servicioFactura = new ServicioFactura();
@@ -133,7 +133,7 @@ public class NotaCreditoDebitoVm {
     private Date fechafacturacion = new Date();
     private static BigDecimal DESCUENTOGENERAL = BigDecimal.valueOf(5.0);
     //usuario que factura
-    UserCredential credential = new UserCredential();
+
     private Parametrizar parametrizar = null;
 //reporte
     AMedia fileContent = null;
@@ -158,9 +158,9 @@ public class NotaCreditoDebitoVm {
     /*RUTAS PARA LOS ARCHIVPOS XML SRI*/
     private static String PATH_BASE = "";
     //tabla para los parametros del SRI
+    UserCredential credential = new UserCredential();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
     private Tipoambiente amb = new Tipoambiente();
-
-//    UserCredential credential = new UserCredential();
     private String amRuc = "";
 
     @AfterCompose
@@ -322,15 +322,15 @@ public class NotaCreditoDebitoVm {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
     }
 
     public Cliente getClienteBuscado() {
@@ -859,7 +859,7 @@ public class NotaCreditoDebitoVm {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
     }
 
     public void reporteGeneral() throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {

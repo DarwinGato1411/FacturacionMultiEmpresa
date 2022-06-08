@@ -662,7 +662,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 //                                CabeceraCompra_.cabEstado
         for (ec.gob.sri.comprobantes.modelo.factura.Factura.Detalles.Detalle detalle : adto.getDetalles().getDetalle()) {
             // detalleCom = new DetalleCompra();
-            Producto buscado = servicioProducto.findByProdCodigo(detalle.getCodigoPrincipal());
+            Producto buscado = servicioProducto.findByProdCodigo(detalle.getCodigoPrincipal(),amb);
             Producto nuevoProd = new Producto();
             detalleCom = new DetalleCompraSri();
             if (buscado == null && prov != null) {
@@ -1943,7 +1943,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 //                                CabeceraCompra_.cabEstado
         for (Detalle detalle : adto.getComprobante().getFactura().getDetalles().getDetalle()) {
             // detalleCom = new DetalleCompra();
-            Producto buscado = servicioProducto.findByProdCodigo(detalle.getCodigoPrincipal());
+            Producto buscado = servicioProducto.findByProdCodigo(detalle.getCodigoPrincipal(),amb);
             Producto nuevoProd = new Producto();
             detalleCom = new DetalleCompraSri();
             if (buscado == null && prov != null) {

@@ -3,10 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/banner.zul</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/BuscarProductoInicio.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/NuevoProducto.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/Producto.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/DiariaSinFacturar.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/web/css/style.css</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/servicio/ServicioProducto.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/ListaComprasSri.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/NotaCreditoDebitoVm.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/AdmProducto.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/FacturarEditar.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/GuiaRemision.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/ModificarCompra.java</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/Facturar.java</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/web/venta/facturar.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/Cliente.java</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/servicio/ServicioCliente.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/AdmKardex.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/Compras.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/FacturacionMultiEmpresa/SisVentasMulti/web/inicio.zul</file>
         </group>
     </open-files>
 </project-private>

@@ -309,7 +309,7 @@ public class Facturar extends SelectorComposer<Component> {
         } else if (valor.getBusqueda().equals("producto") || valor.getBusqueda().equals("cliente")) {
 
         } else if (valor.getBusqueda().equals("cambio")) {
-            PRODUCTOCAMBIO = servicioProducto.findByProdCodigo(valor.getCodigo());
+            PRODUCTOCAMBIO = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
         } else if (valor.getBusqueda().equals("nte")) {
             cargaNotaEntrega();
         } else {
@@ -333,9 +333,9 @@ public class Facturar extends SelectorComposer<Component> {
 
         agregarRegistroVacio();
         buscarCliente = clienteBuscado.getCliCedula();
-        llegada = clienteBuscado.getCliDireccion();
-        listaTransportistas = servicioTransportista.findTransportista("");
-        listaReferencia = servicioReferencia.findAll();
+//        llegada = clienteBuscado.getCliDireccion();
+//        listaTransportistas = servicioTransportista.findTransportista("");
+//        listaReferencia = servicioReferencia.findAll();
     }
 //<editor-fold defaultstate="collapsed" desc="Facturar">
 
@@ -730,7 +730,7 @@ public class Facturar extends SelectorComposer<Component> {
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/venta/buscarproducto.zul", null, map);
             window.doModal();
-            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
+            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
             if (productoBuscado == null) {
                 return;
             }
@@ -944,7 +944,7 @@ public class Facturar extends SelectorComposer<Component> {
         }
 
 //        BigDecimal factorIva = (parametrizar.getParIva().divide(BigDecimal.valueOf(100.0)));
-        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
+        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
 
         if (buscadoPorCodigo == null) {
             valor.setCodigo("");
@@ -1293,15 +1293,15 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
     }
 
     public Cliente getClienteBuscado() {
@@ -2429,11 +2429,11 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd,amb);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd,amb);
     }
 
     @Command
@@ -2442,18 +2442,18 @@ public class Facturar extends SelectorComposer<Component> {
         System.out.println("valor codigo " + valor.getCodigo());
 //        findProductoLikeCodigo();
         if (codigo.length() >= 3) {
-            listaProductoCmb = servicioProducto.findLikeProdNombre(codigo.toUpperCase());
+            listaProductoCmb = servicioProducto.findLikeProdNombre(codigo.toUpperCase(),amb);
         }
 
 //        valor.setListaProductoCmb(listaProductoCmb);
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
     }
 
     @Command

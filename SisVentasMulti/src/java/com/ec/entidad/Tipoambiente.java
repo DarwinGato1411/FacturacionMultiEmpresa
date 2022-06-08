@@ -166,6 +166,12 @@ public class Tipoambiente implements Serializable {
     @Column(name = "am_ripme")
     private Boolean amRimpe;
 
+    @OneToMany(mappedBy = "codTipoambiente")
+    private Collection<Producto> productoCollection;
+
+    @OneToMany(mappedBy = "codTipoambiente")
+    private Collection<Cliente> clienteCollection;
+
     public Tipoambiente() {
     }
 
@@ -540,6 +546,22 @@ public class Tipoambiente implements Serializable {
 
     public void setAmRimpe(Boolean amRimpe) {
         this.amRimpe = amRimpe;
+    }
+
+    public Collection<Producto> getProductoCollection() {
+        return productoCollection;
+    }
+
+    public void setProductoCollection(Collection<Producto> productoCollection) {
+        this.productoCollection = productoCollection;
+    }
+
+    public Collection<Cliente> getClienteCollection() {
+        return clienteCollection;
+    }
+
+    public void setClienteCollection(Collection<Cliente> clienteCollection) {
+        this.clienteCollection = clienteCollection;
     }
 
     @Override

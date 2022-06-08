@@ -93,12 +93,12 @@ public class AdmProducto {
     private Integer cantidadCodBar = 1;
     UserCredential credential = new UserCredential();
     private String amRuc = "";
-
+    private Tipoambiente amb = null;
     public AdmProducto() {
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
         amRuc = credential.getUsuarioSistema().getUsuRuc();
-        Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
 //         = servicioTipoAmbiente.FindALlTipoambiente();
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
@@ -124,11 +124,11 @@ public class AdmProducto {
     }
 
     private void findLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombre);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombre,amb);
     }
 
     private void findLikeProdCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigo);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigo,amb);
     }
 
     public List<Producto> getListaProducto() {

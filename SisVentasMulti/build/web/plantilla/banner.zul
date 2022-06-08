@@ -13,15 +13,15 @@
             <div class="col-12 col-sm-12 col-md-7 col-lg-7  " align="start" style="float: right; " >
                 <div apply="org.zkoss.bind.BindComposer" 
                      viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')">
-                    <toolbar id="tb" height="30px"  style="background-color:#02c0cc;" align="end" >
+                    <toolbar id="tb" height="30px"  style="background:transparent;" align="end" >
                         <!--<toolbarbutton image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />-->
                         <toolbarbutton image="/iconos/page.png" label="Producto" if="${sessionScope.usuario.usuarioSistema.usuNivel == 1}" onClick="@command('nuevoProducto')" />
                         <toolbarbutton image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />
          
                         <label value="Usuario: " if="${not sessionScope.userCredential.anonymous}" class="labelNuevo" />
                         <label value="${sessionScope.usuario.nombreUsuario}" class="labelNuevo" if="${not sessionScope.userCredential.anonymous}" />
-                       <label value="( RUC: ${sessionScope.usuario.tipoambiente.amRuc} / " class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" /> 
-                       <label value=" RAZÓN SOCIAL: ${sessionScope.usuario.tipoambiente.amRazonSocial} )" class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" />
+                       <!--<label value="( / " class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" />--> 
+                       <!--<label value="  )" class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" />-->
                         <!--<div  align="end" style="float: right; " >-->
                             <a sclass="logout labelLogout" style="color:red" id="logout" if="${not sessionScope.userCredential.anonymous}" class="form-group" >  
                                 <!--<label  value="Salir " if="${not sessionScope.userCredential.anonymous}" sclass=" labelLogout"/>--> 
@@ -35,18 +35,20 @@
                
             </div>
         </div>
-        <div class="rows">
+        <div class="row">
             <div  viewModel="@id('vm')" id="gridMenu" 
                   apply="com.ec.controlador.MenuOpciones" 
-            class="col-12 col-sm-12 col-md-12 col-lg-12" >
-         
+            class="row col-12 col-sm-12 col-md-12 col-lg-12" >
+                
+         <div class="col-6 col-sm-6 col-md-11 col-lg-11  " align="start" >
+        
                     <menubar id="menubar" orient="horizontal"  autodrop="true">
                         <menu label="Ventas" >
                             <menupopup> 
                                 <menuitem label="Emitir Facturas" id="btnFacturar"  />
                                 <!--<menuitem label="Orden de trabajo" id="btnOrdenTrab"  />-->
                                  <menuitem label="Facturas por cobrar" id="btnfactCobra"  />
-                                <menuitem label="Cierre de caja" id="btnCierreCajaUsu"  />
+                                <!--<menuitem label="Cierre de caja" id="btnCierreCajaUsu"  />-->
                             </menupopup>
                         </menu>
                         <menu label="Gestion de ventas"  id="menuVentas">
@@ -101,105 +103,32 @@
                         </menu>
                         
                         <menuitem label="Catalogos" id="btnAdministarVenta"  />
+                          
 <!--                        <menuitem image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />
                         <menuitem image="/iconos/page.png" label="Producto" onClick="@command('nuevoProducto')" />
                         <menuitem image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />-->
                       
+                    </menubar>
+                    
+                     </div>
+                     <div apply="org.zkoss.bind.BindComposer" 
+                     viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')"
+                          class="col-6 col-sm-6 col-md-1 col-lg-1 hidden-sm-down " align="start" >
+                      <menubar id="menubarEmpresa" orient="horizontal"  autodrop="true">   
+                         <menu label="Empresa" id="menuInformacion" image="/iconos/info.png" >
+                            <menupopup >                                                                         
+                                <menuitem label="RUC: ${sessionScope.usuario.tipoambiente.amRuc} "  image="/iconos/infor.png"  />                              
+                                <menuitem label="RAZÓN SOCIAL: ${sessionScope.usuario.tipoambiente.amRazonSocial}" image="/iconos/infor.png" />
+                                <menuitem label="Modificar usuario" image="/iconos/Boss.png" onClick="@command('modificarUsuario')" />
+                                <menuitem label="Salir"  image="/iconos/logout-24.png"  id="logoutMenu" />
+                               
+                            </menupopup>
+                        </menu>
                     </menubar>    
-                                    
+                       </div>              
                 </div>
                 
         </div>
         
     </div>
 </zk>
-<!--<div hflex="1" vflex="1" sclass="banner">
-    <hbox hflex="1" vflex="1" align="center" >
-        <div width="100%">
-            <label value="Sistema de cotizacion" sclass="banner-head" />
-        </div>
-        <hbox apply="imp.controladoresviewesview.LogoutController" width="100%"
-                  hflex="1" vflex="1" pack="end" align="end" >
-           
-        </hbox>       
-    </hbox>
-</div>-->
-<!--
-<div hflex="1" vflex="1" class="table" sclass="banner" apply="imp.controladoresviewesview.LogoutController" >
-    
-    <nav sclass="navbar navbar-default">
-    <menubar  width="100%" apply="imp.controladoresviewesview.MenuOpcionesViewModel" autodrop="true" >
-        <menuitem id="btnPrincipal" label="INICIO"   />
-        <menuitem id="btnAdministrar" label="CATALOGOS"  />
-      
-        <menu label="ORDEN CON COTIZACION" visible="true"    >
-            <menupopup>
-                <menu  label="COTIZACIONES" >
-                    <menupopup>
-                        <menuitem id="btnCotizar" label="GENERAL" />
-                        <menuitem  id="btnCompaginado" label="COMPAGINADO" />
-                        <menuitem  id="btnGiganto" label="GIGANTOGRAFIA" />
-                        <menuitem  id="btnDigital" label="DIGITAL" />
-                    </menupopup>
-                </menu>
-                <menu  label="LISTA DE COTIZACIONES" >
-                    <menupopup>
-                        <menuitem  id="btnListaUsuarios" label="GENERADAS" />
-                        <menuitem  id="btnCotizacionCerrada" label="CERRADA" />
-                        <menuitem id="btnCotizacionFacturadas" label="FACTURADAS" />
-                        <menuitem image="/imagenes/group.png" id="btnDigital" label="DIGITAL" />
-                    </menupopup>
-                </menu>
-                <menu  label="ORDEN DE PRODUCCION" >
-                    <menupopup>
-                        <menuitem  id="btnOrdenFinalizada" label="CERRADA" />
-                    </menupopup>
-                </menu>
-
-            </menupopup>
-        </menu>
-        <menu label="ORDEN SIN COTIZACION" visible="true"    >
-            <menupopup>
-             
-                <menuitem  id="btnOrdenSinCotizar" label="GENERAR ORDEN" >
-                </menuitem>
-                <menu  label="LISTA DE ORDEN DE PRODUCCION" >
-                    <menupopup>
-                        <menuitem  id="btnOrdenSinCotizar" label="ORDEN SIN COTIZACION" />
-                        <menuitem  id="btnListaOrdenSinCotizar" label="GENERADAS" />
-                        <menuitem  id="btnListaOrdenSinCotizarCerradas" label="CERRADAS" />
-                        <menuitem  id="btnListaOrdenSinCotizarFacturadas" label="FACTURADAS" />
-                    </menupopup>
-                </menu>
-
-            </menupopup>
-        </menu>
-        <menu label="ADMINISTRACION" visible="true"    >
-            <menupopup>
-             
-                <menuitem  id="btnMaterialSolicitado" label="SOLICITAR MATERIAL" >
-                </menuitem>
-                
-              
-                <menuitem  id="btnMailMasivo" label="PUBLICIDAD MASIVA" >
-                </menuitem>
-                <menuitem  id="btnManual" label="MANUAL USUARIO" >
-                </menuitem>
-                  <menuitem  id="btnUsuarios" label="USUARIOS" >
-                </menuitem>
-               
-                
-
-            </menupopup>
-        </menu>
-         <menuitem  id="btnCalculadora" label="CALCULADORA" >
-                </menuitem>
-       <menuitem  label="Usuario: ${sessionScope.usuario.nombreUsuario}" 
-                       style=" float:rigth;position:absolute;right:10%;" 
-                       if="${not sessionScope.userCredential.anonymous}" sclass="info"  />
-        <menuitem id="logout" label="Salir"  style=" float:rigth;position:absolute;right:1%;" 
-                      image="/imagenes/cancel.png" />
-                  
-    </menubar>    
-    </nav>
-</div>-->

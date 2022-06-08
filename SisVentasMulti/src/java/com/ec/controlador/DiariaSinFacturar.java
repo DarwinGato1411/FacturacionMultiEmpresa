@@ -10,6 +10,7 @@ import com.ec.entidad.Cliente;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.Factura;
 import com.ec.entidad.Producto;
+import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioCliente;
@@ -17,6 +18,7 @@ import com.ec.servicio.ServicioDetalleFactura;
 import com.ec.servicio.ServicioEstadoFactura;
 import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioProducto;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ConexionReportes;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -122,6 +124,10 @@ public class DiariaSinFacturar {
     private BigDecimal valorUltimaVenta = BigDecimal.ZERO;
     private String clietipo = "0";
 
+    private Tipoambiente amb = new Tipoambiente();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    private String amRuc = "";
+
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -162,10 +168,6 @@ public class DiariaSinFacturar {
         if (lstPrincipal.size() > 9) {
             p10 = lstPrincipal.get(9);
         }
-
-
-
-
 
     }
 
@@ -217,7 +219,6 @@ public class DiariaSinFacturar {
                 ((ListModelList<DetalleFacturaDAO>) listaDetalleFacturaDAOMOdel).add(nuevoRegistro);
             }
 
-
             System.out.println("id de factura para la venta diaria " + idFactura);
 
             //FindClienteLikeNombre();
@@ -256,7 +257,7 @@ public class DiariaSinFacturar {
             nuevoRegistro.setCantidad(detalleFactura.getDetCantidad());
             nuevoRegistro.setSubTotal(detalleFactura.getDetSubtotal());
             nuevoRegistro.setSubTotalPorCantidad(detalleFactura.getDetTotal());
-            
+
 //            nuevoRegistro.setTotal(detalleFactura.getDetTotal());
             nuevoRegistro.setDetIva(detalleFactura.getDetIva());
             nuevoRegistro.setDetTotalconiva(detalleFactura.getDetTotalconiva());
@@ -267,13 +268,13 @@ public class DiariaSinFacturar {
             ((ListModelList<DetalleFacturaDAO>) listaDetalleFacturaDAOMOdel).add(nuevoRegistro);
         }
 
-
     }
 
     public DiariaSinFacturar() {
         Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         getDetallefactura();
         Factura recuperada = servicioFactura.FindUltimaFactura();
 //        if (recuperada != null) {
@@ -281,7 +282,6 @@ public class DiariaSinFacturar {
 //        } else {
 //            numeroFactura = 1;
 //        }
-
 
     }
 
@@ -320,15 +320,15 @@ public class DiariaSinFacturar {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
     }
 
     public Cliente getClienteBuscado() {
@@ -585,7 +585,7 @@ public class DiariaSinFacturar {
         final HashMap<String, String> map = new HashMap<String, String>();
         map.put("valor", "cliente");
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/buscarclienteEdit.zul", null, map);
+                    "/venta/buscarclienteEdit.zul", null, map);
         window.doModal();
         clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
     }
@@ -627,7 +627,6 @@ public class DiariaSinFacturar {
         if (registrosSeleccionados.size() > 0) {
             ((ListModelList<DetalleFacturaDAO>) listaDetalleFacturaDAOMOdel).removeAll(registrosSeleccionados);
 
-
         } else {
             Messagebox.show("Seleccione al menos un registro para eliminar", "Atención", Messagebox.OK, Messagebox.ERROR);
         }
@@ -637,7 +636,6 @@ public class DiariaSinFacturar {
     @Command
     @NotifyChange({"listaDetalleFacturaDAOMOdel"})
     public void agregarRegistroVacio() {
-
 
         DetalleFacturaDAO nuevoRegistro = new DetalleFacturaDAO();
         nuevoRegistro.setProducto(productoBuscado);
@@ -684,9 +682,9 @@ public class DiariaSinFacturar {
 //        final HashMap<String, String> map = new HashMap<String, String>();
 //        map.put("valor", "producto");
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/buscarproductodiaria.zul", null, null);
+                    "/venta/buscarproductodiaria.zul", null, null);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
         if (productoBuscado != null) {
             DetalleFacturaDAO nuevoRegistro = new DetalleFacturaDAO();
             nuevoRegistro.setProducto(productoBuscado);
@@ -719,9 +717,9 @@ public class DiariaSinFacturar {
         final HashMap<String, String> map = new HashMap<String, String>();
         map.put("valor", "producto");
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/buscarproductodiaria.zul", null, null);
+                    "/venta/buscarproductodiaria.zul", null, null);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
 
         if (productoBuscado != null) {
 
@@ -812,12 +810,10 @@ public class DiariaSinFacturar {
 
                 servicioFactura.guardarFactura(detalleFactura, factura);
 
-
             }
             //ejecutamos el mensaje 
 //            Clients.showNotification("Factura registrada con éxito", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 5000, true);
             // Aquí se pone en marcha el timer cada segundo. 
-
 
             //luego de los 5 segundos ejecutamos el redireccionamiento de la ventana
 //            Messagebox.show("Factura registrada correctamente", "Atención", Messagebox.OK, Messagebox.INFORMATION);
@@ -839,7 +835,6 @@ public class DiariaSinFacturar {
             guardarFactura();
         }
 
-
     }
 
     @Command
@@ -857,11 +852,11 @@ public class DiariaSinFacturar {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
     }
 
     @Command
@@ -892,10 +887,8 @@ public class DiariaSinFacturar {
             }
         }
 
-
-
         codigoBusqueda = bandera;
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
         if (productoBuscado != null) {
             DetalleFacturaDAO nuevoRegistro = new DetalleFacturaDAO();
             nuevoRegistro.setProducto(productoBuscado);
@@ -932,7 +925,7 @@ public class DiariaSinFacturar {
                 calcularValoresTotales();
                 //clietipo = valor.getTipoVenta();
                 //nuevo registro
-                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
+                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
                 if (buscadoPorCodigo != null) {
                     valor.setDescripcion(buscadoPorCodigo.getProdNombre());
                     //  valor.setSubTotal(buscadoPorCodigo.getPordCostoVentaFinal());
@@ -983,7 +976,6 @@ public class DiariaSinFacturar {
                         ((ListModelList<DetalleFacturaDAO>) listaDetalleFacturaDAOMOdel).add(nuevoRegistro);
                     }
 
-
                 }
             }
             calcularValoresTotales();
@@ -996,7 +988,7 @@ public class DiariaSinFacturar {
     @NotifyChange("listaDetalleFacturaDAOMOdel")
     public void buscarPorCodigo(@BindingParam("valor") DetalleFacturaDAO valor) {
 //        valorSystem.out.println("producto seleccionado " + valor.getProdCodigo());
-        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
+        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
         if (buscadoPorCodigo != null) {
             valor.setDescripcion(buscadoPorCodigo.getProdNombre());
             //valor.setSubTotal(buscadoPorCodigo.getPordCostoVentaFinal());
@@ -1047,19 +1039,16 @@ public class DiariaSinFacturar {
                 ((ListModelList<DetalleFacturaDAO>) listaDetalleFacturaDAOMOdel).add(nuevoRegistro);
             }
 
-
         }
     }
 
     public void reporteGeneral() throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
 
-
         con = ConexionReportes.Conexion.conexion();
         //con = conexionReportes.conexion();
 
-
         String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                .getRealPath("/reportes");
+                    .getRealPath("/reportes");
         String reportPath = "";
         reportPath = reportFile + "/notaventa.jasper";
 
@@ -1068,13 +1057,11 @@ public class DiariaSinFacturar {
         //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
         parametros.put("numfactura", numeroFactura);
 
-
         if (con != null) {
             System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         }
         FileInputStream is = null;
         is = new FileInputStream(reportPath);
-
 
         byte[] buf = JasperRunManager.runReportToPdf(is, parametros, con);
         InputStream mediais = new ByteArrayInputStream(buf);
@@ -1084,7 +1071,7 @@ public class DiariaSinFacturar {
 //para pasar al visor
         map.put("pdf", fileContent);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/contenedorReporte.zul", null, map);
+                    "/venta/contenedorReporte.zul", null, map);
         window.doModal();
         con.close();
 

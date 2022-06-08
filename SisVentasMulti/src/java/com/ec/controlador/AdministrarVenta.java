@@ -6,9 +6,13 @@ package com.ec.controlador;
 
 import com.ec.entidad.Cliente;
 import com.ec.entidad.MailMasivo;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioMailMasivo;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioUsuario;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +39,8 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -55,22 +61,31 @@ public class AdministrarVenta {
     private List<MailMasivo> listaContactoMail = new ArrayList<MailMasivo>();
     private String buscarEmail = "";
 
+    UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     public AdministrarVenta() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         FindClienteLikeNombre();
         consultarMail();
         cosultarUsuarios("");
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
     }
 
     //get y set de las variables de la vista
@@ -148,7 +163,7 @@ public class AdministrarVenta {
     public void nuevoCliente() {
         buscarCedula = "";
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/cliente.zul", null, null);
+                    "/nuevo/cliente.zul", null, null);
         window.doModal();
         FindClienteLikeCedula();
     }
@@ -160,7 +175,7 @@ public class AdministrarVenta {
         final HashMap<String, Cliente> map = new HashMap<String, Cliente>();
         map.put("valor", valor);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/cliente.zul", null, map);
+                    "/nuevo/cliente.zul", null, map);
         window.doModal();
         FindClienteLikeCedula();
     }
@@ -183,7 +198,7 @@ public class AdministrarVenta {
 //        final HashMap<String, Cliente> map = new HashMap<String, Cliente>();
 //        map.put("cliente", null);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/nuevoMailing.zul", null, null);
+                    "/nuevo/nuevoMailing.zul", null, null);
         window.doModal();
         consultarMail();
     }
@@ -195,7 +210,7 @@ public class AdministrarVenta {
         final HashMap<String, MailMasivo> map = new HashMap<String, MailMasivo>();
         map.put("valor", valor);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/nuevoMailing.zul", null, map);
+                    "/nuevo/nuevoMailing.zul", null, map);
         window.doModal();
         consultarMail();
     }
@@ -228,7 +243,7 @@ public class AdministrarVenta {
     @NotifyChange("listaUsuarios")
     public void agregarUsario() {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/usuario.zul", null, null);
+                    "/nuevo/usuario.zul", null, null);
         window.doModal();
         cosultarUsuarios("");
     }
@@ -239,7 +254,7 @@ public class AdministrarVenta {
         final HashMap<String, Usuario> map = new HashMap<String, Usuario>();
         map.put("usuario", usuario);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/usuario.zul", null, map);
+                    "/nuevo/usuario.zul", null, map);
         window.doModal();
         cosultarUsuarios("");
     }

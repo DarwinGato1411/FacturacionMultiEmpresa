@@ -6,6 +6,7 @@ package com.ec.servicio;
 
 import com.ec.entidad.Producto;
 import com.ec.entidad.Producto;
+import com.ec.entidad.Tipoambiente;
 import com.ec.untilitario.ProductoProveedorCosto;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,15 +101,16 @@ public class ServicioProducto {
         return listaProductos;
     }
 
-    public List<Producto> findLikeProdNombre(String buscar) {
+    public List<Producto> findLikeProdNombre(String buscar, Tipoambiente codTipoambiente) {
 
         List<Producto> listaProductos = new ArrayList<Producto>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.prodNombre like :prodNombre ORDER BY p.prodNombre ASC");
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.prodNombre like :prodNombre AND p.codTipoambiente=:codTipoambiente ORDER BY p.prodNombre ASC");
             query.setParameter("prodNombre", "%" + buscar + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(500);
             listaProductos = (List<Producto>) query.getResultList();
             em.getTransaction().commit();
@@ -121,15 +123,17 @@ public class ServicioProducto {
         return listaProductos;
     }
 
-    public Producto findByProdCodigo(String buscar) {
+    public Producto findByProdCodigo(String buscar, Tipoambiente codTipoambiente) {
 
         Producto producto = null;
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Producto.findByProdCodigo", Producto.class);
+//            
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.prodCodigo = :prodCodigo AND p.codTipoambiente=:codTipoambiente  ORDER BY p.prodNombre ASC");
             query.setParameter("prodCodigo", buscar);
+            query.setParameter("codTipoambiente", codTipoambiente);
             if (query.getResultList().size() > 0) {
                 producto = (Producto) query.getSingleResult();
             }
@@ -144,16 +148,17 @@ public class ServicioProducto {
         return producto;
     }
 
-    public List<Producto> findLikeProdCodigo(String buscar) {
+    public List<Producto> findLikeProdCodigo(String buscar, Tipoambiente codTipoambiente) {
 
         List<Producto> listaProducto = new ArrayList<Producto>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Producto.findLikeProdCodigo", Producto.class);
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.prodCodigo like :prodCodigo AND p.codTipoambiente=:codTipoambiente  ORDER BY p.prodNombre ASC");
             query.setMaxResults(200);
             query.setParameter("prodCodigo", buscar);
+            query.setParameter("codTipoambiente", codTipoambiente);
 
             listaProducto = (List<Producto>) query.getResultList();
 

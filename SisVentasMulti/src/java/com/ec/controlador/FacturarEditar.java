@@ -10,6 +10,7 @@ import com.ec.entidad.Cliente;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.Factura;
 import com.ec.entidad.Producto;
+import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioCliente;
@@ -17,6 +18,7 @@ import com.ec.servicio.ServicioDetalleFactura;
 import com.ec.servicio.ServicioEstadoFactura;
 import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioProducto;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ConexionReportes;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -109,6 +111,10 @@ public class FacturarEditar {
     private BigDecimal cobro = BigDecimal.ZERO;
     private BigDecimal cambio = BigDecimal.ZERO;
     private String facturaDescripcion = "";
+    
+    private Tipoambiente amb = new Tipoambiente();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") String valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -170,9 +176,10 @@ public class FacturarEditar {
     }
 
     public FacturarEditar() {
-        Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
+       Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         getDetallefactura();
         Factura recuperada = servicioFactura.FindUltimaFactura();
         if (recuperada != null) {
@@ -211,15 +218,15 @@ public class FacturarEditar {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
     }
 
     public Cliente getClienteBuscado() {
@@ -533,7 +540,7 @@ public class FacturarEditar {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                 "/venta/buscarproductoEdit.zul", null, map);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
         if (productoBuscado != null) {
             DetalleFacturaDAO nuevoRegistro = new DetalleFacturaDAO();
             nuevoRegistro.setProducto(productoBuscado);
@@ -564,7 +571,7 @@ public class FacturarEditar {
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/venta/buscarproductoEdit.zul", null, map);
             window.doModal();
-            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
+            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
             if (productoBuscado != null) {
                 valor.setProducto(productoBuscado);
                 valor.setCodigo(productoBuscado.getProdCodigo());
@@ -696,11 +703,11 @@ public class FacturarEditar {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
     }
 
     @Command
@@ -727,7 +734,7 @@ public class FacturarEditar {
                 valor.setTotal(valor.getCantidad().multiply(valor.getSubTotal()));
                 calcularValoresTotales();
                 //nuevo registro
-                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
+                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
                 if (buscadoPorCodigo != null) {
                     valor.setDescripcion(buscadoPorCodigo.getProdNombre());
                    // valor.setSubTotal(buscadoPorCodigo.getPordCostoVentaFinal());
@@ -778,7 +785,7 @@ public class FacturarEditar {
     @NotifyChange("listaDetalleFacturaDAOMOdel")
     public void buscarPorCodigo(@BindingParam("valor") DetalleFacturaDAO valor) {
 //        valorSystem.out.println("producto seleccionado " + valor.getProdCodigo());
-        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
+        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
         if (buscadoPorCodigo != null) {
             valor.setDescripcion(buscadoPorCodigo.getProdNombre());
             //valor.setSubTotal(buscadoPorCodigo.getPordCostoVentaFinal());

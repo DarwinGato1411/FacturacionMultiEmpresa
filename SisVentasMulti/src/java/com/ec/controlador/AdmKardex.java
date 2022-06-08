@@ -8,12 +8,14 @@ package com.ec.controlador;
 import com.ec.entidad.DetalleKardex;
 import com.ec.entidad.Kardex;
 import com.ec.entidad.Producto;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Tipokardex;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioDetalleKardex;
 import com.ec.servicio.ServicioKardex;
 import com.ec.servicio.ServicioProducto;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoKardex;
 import com.ec.untilitario.TotalKardex;
 import java.math.BigDecimal;
@@ -52,6 +54,10 @@ public class AdmKardex {
     private String buscarProducto = "";
     private String buscarProductoCodigo = "";
     private Date fechaIngreso = new Date();
+//     UserCredential credential = new UserCredential();
+    private String amRuc = "";
+    private Tipoambiente amb = null;
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") String valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -60,14 +66,15 @@ public class AdmKardex {
     }
 
     private void getProductos() {
-        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto);
+        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto, amb);
     }
 
     public AdmKardex() {
 
         Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
 
     }
 
@@ -105,7 +112,7 @@ public class AdmKardex {
         if (kardex.getIdKardex() != null) {
             if (detalleKardex.getDetkCantidad() == null) {
                 Clients.showNotification("Verifique la cantidad ingresada",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                 return;
             }
 
@@ -126,19 +133,19 @@ public class AdmKardex {
             listaDetalleKardex = servicioDetalleKardex.findByIdKardex(kardex);
             detalleKardex = new DetalleKardex();
             Clients.showNotification("Registrado correctamente",
-                    Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
         } else {
             Clients.showNotification("Debe seleccionar un producto",
-                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
         }
     }
 
     private void findProductoLikeNombre() {
-        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto);
+        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto, amb);
     }
 
     private void findProductoLikeCodigo() {
-        listaProductos = servicioProducto.findLikeProdCodigo(buscarProductoCodigo);
+        listaProductos = servicioProducto.findLikeProdCodigo(buscarProductoCodigo, amb);
     }
 
     public Kardex getKardex() {

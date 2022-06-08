@@ -8,6 +8,7 @@ package com.ec.controlador;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.Factura;
 import com.ec.entidad.OrdenTrabajo;
+import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
@@ -122,6 +123,11 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
     //orden de trabajo
     private OrdenTrabajo ordenTrabajo;
     ServicioOrdenTrabajo servicioOrdenTrabajo = new ServicioOrdenTrabajo();
+    
+      private Tipoambiente amb = new Tipoambiente();
+
+//    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") ParamFactura valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -146,10 +152,10 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
     }
 
     public OrdenTrabajoVm() {
-        Session sess = Sessions.getCurrent();
-        //sess.setMaxInactiveInterval(10000);
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
+       Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
     }
 
     private void numeroFacturaTexto() {
@@ -174,15 +180,15 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
     }
 
     public Cliente getClienteBuscado() {

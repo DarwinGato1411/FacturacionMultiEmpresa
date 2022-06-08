@@ -30,8 +30,8 @@ element.style {
     overflow: hidden;
 }
 .banner {
-    background-color:#02c0cc;
-    color: white;
+    background-color:#bfdbff;
+    color: black;
     padding: 10px 5px 5px 10px;
 }
 .banner-head{
@@ -51,12 +51,12 @@ element.style {
 
 .footer {
     background-color:#00a3e9;
-    color: white;
+    color: black;
     padding-top: 5px;
 }
 
 .footer a,.footer a:VISITED {
-    color: white;	
+    color: black;	
 }
 
 .sidebar a,.sidebar a:VISITED {
@@ -131,7 +131,7 @@ element.style {
 }
 .buttonBusqueda{
     background-color: firebrick;
-    color:white;
+    color:black;
     font-weight: bold;
     font-size: 12px;  
 }
@@ -398,7 +398,7 @@ element.style {
 }
 .labelNuevo{
     font-size: 1em;
-    color: #ffffff;
+    color: #07317d;
     text-align: center;
     height: auto;
     font-weight: bold;
@@ -598,7 +598,7 @@ div.z-listbox-header th.z-listheader, div.z-listbox-header th.z-auxheader {
     border-color: #cfcfcf #cfcfcf #cfcfcf white;
     border-top: 0;
     padding: 0;
-    background: #02c0cc;
+    background: #a1ce30;
     font-weight: bold;
 }
 
@@ -641,7 +641,7 @@ div.z-auxheader-cnt {
     padding-bottom: 2px;
     padding-right: 1px;
     text-decoration: none;
-    color: white;
+    color: black;
 }
 div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
     border: 0;
@@ -656,7 +656,7 @@ div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
 }
 
 .z-window-embedded-tr, .z-window-modal-tr, .z-window-highlighted-tr, .z-window-overlapped-tr, .z-window-popup-tr {
-    background: #02c0cc;
+    background: #bfdbff;
     position: relative;
     height: 5px;
     margin-right: -5px;
@@ -673,23 +673,23 @@ div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
     font-size: 12px;
     font-weight: normal;
     cursor: default;
-    background: #02c0cc;
+    background: #bfdbff;
 }
 
 .z-window-embedded-hr, .z-window-modal-hr, .z-window-highlighted-hr, .z-window-overlapped-hr, .z-window-popup-hr {
-    background: #02c0cc no-repeat right 0;
+    background: #bfdbff no-repeat right 0;
     padding-right: 6px;
     zoom: 1;
 }
 
 .z-window-embedded-hl, .z-window-modal-hl, .z-window-highlighted-hl, .z-window-overlapped-hl, .z-window-popup-hl {
-    background: #02c0cc no-repeat right 0;    
+    background: #bfdbff no-repeat right 0;    
     padding-left: 6px;
     zoom: 1;
 }
 
 .z-menupopup-cnt .z-menu a.z-menu-cnt, .z-menupopup-cnt .z-menuitem a.z-menuitem-cnt {
-    color: white;
+    color: black;
     display: block;
     line-height: 17px;
     outline-color: -moz-use-text-color;
@@ -697,12 +697,12 @@ div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
     outline-width: 0;
     padding: 2px 21px 2px 3px;
     white-space: nowrap;
-    background: #02c0cc;
+    background: #bfdbff;
     background-image: none;
 }
 
 .z-menupopup .z-menupopup-cnt{
-    background:#02c0cc none repeat 0 0;
+    background:#bfdbff none repeat 0 0;
     background-image:none;
     border:0 none;
     padding:0;
@@ -764,4 +764,12 @@ input, button, select, textarea {
     height: auto;
     font-weight: bold;
 
+}
+
+.imgRedondaMenu{
+    width:100%;
+    height:100%;
+    border-radius:100px;
+    border:0.5px solid #ffffff;
+     
 }

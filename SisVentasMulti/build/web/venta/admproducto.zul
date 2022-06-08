@@ -69,7 +69,7 @@
               multiple="true" 
               onSelect="@command('seleccionarRegistros')"
               nonselectableTags="*">
-        <custom-attributes org.zkoss.zul.listbox.rod="true"/>
+         <custom-attributes org.zkoss.zul.listbox.rod="true"/>
 <!--        <auxhead>
             <auxheader colspan="8" >  
                

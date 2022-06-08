@@ -316,15 +316,15 @@ public class GuiaRemision {
     }
 
     private void findClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,tipoambiente);
     }
 
     private void findClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,tipoambiente);
     }
 
     private void findClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,tipoambiente);
     }
 
     private void getDetalle() {
@@ -338,7 +338,7 @@ public class GuiaRemision {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,tipoambiente);
     }
 
     public ListModelList<DetalleGuiaDao> getListaGuiaModel() {

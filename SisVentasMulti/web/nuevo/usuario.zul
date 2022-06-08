@@ -45,7 +45,7 @@
            
            
             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*) " style="color:red;font-weight:bold"/>Usuario del sistema:
+                <label value="(*) " style="color:red;font-weight:bold"/>Usuario:
                 
                 <textbox  maxlength="100"
                           value="@bind(vm.usuarioSistema.usuLogin)"                           
@@ -53,7 +53,7 @@
             </div>
             
             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*)" style="color:transparent;font-weight:bold"/>Contraseña del usuario:
+                <label value="(*)" style="color:transparent;font-weight:bold"/>Contraseña :
               
                 <textbox  maxlength="10"  
                           value="@bind(vm.usuarioSistema.usuPassword)"

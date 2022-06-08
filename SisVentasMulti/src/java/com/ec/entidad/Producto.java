@@ -144,7 +144,6 @@ public class Producto implements Serializable {
     private String prodUnidadConversion;
     @Column(name = "prod_factor_conversion")
     private BigDecimal prodFactorConversion;
-    
 
     @OneToMany(mappedBy = "idProducto")
     private Collection<DetalleCompraSri> detalleCompraSriCollection;
@@ -153,6 +152,10 @@ public class Producto implements Serializable {
     @Column(name = "prod_fecha_registro")
     @Temporal(TemporalType.DATE)
     private Date prodFechaRegistro;
+
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
 
     public Producto() {
     }
@@ -434,8 +437,6 @@ public class Producto implements Serializable {
     public void setProdFactorConversion(BigDecimal prodFactorConversion) {
         this.prodFactorConversion = prodFactorConversion;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -515,9 +516,14 @@ public class Producto implements Serializable {
     public void setProdUnidadMedida(String prodUnidadMedida) {
         this.prodUnidadMedida = prodUnidadMedida;
     }
-    
-    
-    
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
 
     @Override
     public boolean equals(Object object) {

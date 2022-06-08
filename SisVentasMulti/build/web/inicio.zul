@@ -12,39 +12,130 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+        <!--background-color:#f0f2f5;-->
+        position:absolute ; 
+        background:radial-gradient(#ffffff,#1158b6);
+        height:100%;
+        width:100%;
   
         }
+      
+
+        .leaf{
+        position:absolute ;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+        }
+        .leaf div{
+        position:absolute ;
+        display:block ;
+        }
+        .leaf div:nth-child(1){
+        left:75%; 
+        animation:fall 15s linear infinite ;
+        animation-delay:-10s;
+
+        }
+        .leaf div:nth-child(2){
+        left:5%; 
+        animation:fall 15s linear infinite ;
+        animation-delay:-4s;
+        }
         
+
+        @keyframes fall{
+        0%{
+        opacity:1;
+        top:-10%;
+        transform:translateX (20px) rotate(0deg);
+        }
+        20%{
+        opacity:0.8;
+        transform:translateX (-20px) rotate(45deg);
+        }
+        40%{
+
+        transform:translateX (-20px) rotate(90deg);
+        }
+        60%{
+        
+        transform:translateX (-20px) rotate(135deg); 
+        }
+        80%{
+    
+        transform:translateX (-20px) rotate(180deg);
+        }
+        100%{
+        
+        top:110%;
+        transform:translateX (-20px) rotate(225deg);
+        }
+        }
+        .leaf1{
+        transform: rotateX(180deg);
+        }
+        h2{
+        position:absolute ;
+        top:40%;
+        width:100%;
+        font-family: 'Courgette', cursive;
+        font-size:4em;
+        text-align:center;
+        transform:translate ;
+        color:#fff;
+        transform:translateY (-50%);
+        }
     </style>
-    <div class="container col-12 col-sm-6 col-md-5 col-lg-4 form-control" id="loginWin" style="margin:1% auto;"   
-                 apply="com.ec.controlador.LoginController" >
+    
+    <div class="leaf">
+        <div>  
+            <image src="/imagenes/emitdoc.png" class=" hidden-sm-down " style="border-radius:50px;border:0.5px solid #ffffff;" 
+                   height="50%" width="75%">
+            </image>
+        </div>
+        <div>
+            <image src="/imagenes/contdecl.png" class=" hidden-sm-down "  style="border-radius:50px;border:0.5px solid #ffffff;" 
+                   height="50%" width="38%">
+            </image>
+        </div>
+      
+            
+    </div>
+    <div class="container col-12 col-sm-6 col-md-5 col-lg-4 form-control" id="loginWin" style="margin:2% auto;background: transparent;   border: 5px;
+    border-color: white;"   
+         apply="com.ec.controlador.LoginController" >
  
     
 
-            <div class="row " align="lefth">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group"  align="center">
-                    <image  src="/imagenes/multifact.png" class="imgRedondaLogoLogin" width="100%" ></image>
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group">
-                    <textbox id="account" type="text" class="form-control" 
-                             onCreate="self.focus()"
-                             placeholder="Ingrese el usuario"   />
+        <div class="row " align="lefth" >
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group"  align="center">
+                <image  src="/imagenes/multifact.png" class="imgRedondaLogoLogin" width="100%" ></image>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group">
+                <textbox id="account" type="text" class="form-control" 
+                         onCreate="self.focus()"
+                         placeholder="Ingrese el usuario"   />
           
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group">
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group">
                   
-                    <textbox id="password" type="password" 
-                             class="form-control" 
-                             placeholder="Ingrese la constraseña" />      
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12" align="center">
-                    <button id="buttonEntrar" 
-                            class="btn btn-lg btn-primary btn-block" label="Ingresar">
-                    </button>   
-<!--                    <button id="buttonConsultar"  
-                            class="btn btn-lg btn-success btn-block" label="Consultas">
-                    </button>   -->
-                </div>
+                <textbox id="password" type="password" 
+                         class="form-control" 
+                         placeholder="Ingrese la constraseña" />      
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                <button id="buttonEntrar" 
+                        class="btn btn-lg btn-primary btn-block" label="Ingresar">
+                </button>   
+                <!--                    <button id="buttonConsultar"  
+                        class="btn btn-lg btn-success btn-block" label="Consultas">
+                </button>   -->
+            </div>
         </div>
     
     </div>

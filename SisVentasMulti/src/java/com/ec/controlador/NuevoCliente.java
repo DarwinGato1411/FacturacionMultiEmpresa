@@ -7,8 +7,12 @@ package com.ec.controlador;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Tipoadentificacion;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioParametrizar;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoIdentificacion;
 import com.ec.untilitario.AduanaJson;
 import com.ec.untilitario.ArchivoUtils;
@@ -23,6 +27,8 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
@@ -48,6 +54,11 @@ public class NuevoCliente {
     @Wire
     Window windowCliente;
 
+    UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") Cliente cliente, @ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -70,7 +81,16 @@ public class NuevoCliente {
         }
 
     }
-@Command
+
+    public NuevoCliente() {
+
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+    }
+
+    @Command
     @NotifyChange({"cliente"})
     public void buscarAduana() {
         if (cliente.getCliCedula() != null) {
@@ -126,30 +146,31 @@ public class NuevoCliente {
     public void guardar() {
         /*getCliNombre es el nombre comercial*/
         if (cliente.getCliCedula() != null
-                && cliente.getCliNombres() != null
-                && cliente.getCliApellidos() != null
-                && cliente.getCliNombre() != null
-                && cliente.getCliDireccion() != null
-                && cliente.getCliTelefono() != null
-                && cliente.getCliMovil() != null
-                && cliente.getCiudad() != null
-                && cliente.getCliCorreo() != null
-                && tipoadentificacion != null) {
+                    && cliente.getCliNombres() != null
+                    && cliente.getCliApellidos() != null
+                    && cliente.getCliNombre() != null
+                    && cliente.getCliDireccion() != null
+                    && cliente.getCliTelefono() != null
+                    && cliente.getCliMovil() != null
+                    && cliente.getCiudad() != null
+                    && cliente.getCliCorreo() != null
+                    && tipoadentificacion != null) {
 
             if (tipoadentificacion.getTidCodigo().equals("04")) {
                 if (cliente.getCliCedula().length() != 13) {
                     Clients.showNotification("Verifique el RUC ingresada debe tener 13 caracteres ",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                     return;
                 }
             } else if (tipoadentificacion.getTidCodigo().equals("05")) {
                 if (cliente.getCliCedula().length() != 10) {
                     Clients.showNotification("Verifique la CEDULA ingresada debe tener 10 caracteres ",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                     return;
                 }
             }
             cliente.setCliRazonSocial(cliente.getCliNombre());
+            cliente.setCodTipoambiente(amb);
             if (accion.equals("create")) {
 
                 if (servicioCliente.FindClienteForCedula(cliente.getCliCedula()) == null) {
@@ -163,7 +184,7 @@ public class NuevoCliente {
                 } else {
 
                     Clients.showNotification("El número de documento (CI / RUC) ya se encuentra registrado ",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                 }
 
             } else {
@@ -181,7 +202,7 @@ public class NuevoCliente {
         } else {
 
             Clients.showNotification("Verifique la informacion requerida",
-                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
         }
     }
 

@@ -113,8 +113,10 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "idCliente")
     private Collection<Guiaremision> guiaremisionCollection;
     @OneToMany(mappedBy = "idCliente")
-    private Collection<OrdenTrabajo> ordenTrabajoCollection;    
-
+    private Collection<OrdenTrabajo> ordenTrabajoCollection;
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
     @Transient
     private String nombresCompletso;
 
@@ -264,6 +266,14 @@ public class Cliente implements Serializable {
 
     public void setNombresCompletso(String nombresCompletso) {
         this.nombresCompletso = nombresCompletso;
+    }
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
 
     @XmlTransient

@@ -5,6 +5,7 @@
 package com.ec.servicio;
 
 import com.ec.entidad.Cliente;
+import com.ec.entidad.Tipoambiente;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -117,16 +118,17 @@ public class ServicioCliente {
         return cliente;
     }
 
-    public List<Cliente> FindClienteLikeNombre(String buscar) {
+    public List<Cliente> FindClienteLikeNombre(String buscar, Tipoambiente codTipoambiente) {
 
         List<Cliente> listaClientes = new ArrayList<Cliente>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT c FROM Cliente c WHERE c.cliNombre like :cliNombre");
+            Query query = em.createQuery("SELECT c FROM Cliente c WHERE (c.cliNombre like :cliNombre AND c.codTipoambiente=:codTipoambiente) OR c.cliNombres LIKE '%CONSUMIDOR%'");
             query.setParameter("cliNombre", "%" + buscar + "%");
-             query.setMaxResults(200);
+            query.setParameter("codTipoambiente", codTipoambiente);
+            query.setMaxResults(200);
             listaClientes = (List<Cliente>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -138,17 +140,18 @@ public class ServicioCliente {
         return listaClientes;
     }
 
-    public List<Cliente> FindClienteLikeRazonSocial(String buscar) {
+    public List<Cliente> FindClienteLikeRazonSocial(String buscar, Tipoambiente codTipoambiente) {
 
         List<Cliente> listaClientes = new ArrayList<Cliente>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-           Query query = em.createQuery("SELECT c FROM Cliente c WHERE c.cliNombres like :cliRazonSocial OR c.cliApellidos LIKE :cliApellidos ");
+            Query query = em.createQuery("SELECT c FROM Cliente c WHERE (c.cliNombres like :cliRazonSocial OR c.cliApellidos LIKE :cliApellidos AND c.codTipoambiente=:codTipoambiente) OR c.cliNombres LIKE '%CONSUMIDOR%'");
             query.setParameter("cliRazonSocial", "%" + buscar + "%");
             query.setParameter("cliApellidos", "%" + buscar + "%");
-             query.setMaxResults(200);
+            query.setParameter("codTipoambiente", codTipoambiente);
+            query.setMaxResults(200);
             listaClientes = (List<Cliente>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -160,16 +163,24 @@ public class ServicioCliente {
         return listaClientes;
     }
 
-    public List<Cliente> FindClienteLikeCedula(String buscar) {
+    public List<Cliente> FindClienteLikeCedula(String buscar, Tipoambiente codTipoambiente) {
 
         List<Cliente> listaClientes = new ArrayList<Cliente>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Cliente.findLikeCliCedula", Cliente.class);
+            String SELECT = "SELECT c FROM Cliente c WHERE c.cliCedula like :cliCedula ";
+            String WHERE = " ";
+            if (!buscar.contains("9999999999999")) {
+                WHERE = "AND c.codTipoambiente=:codTipoambiente";
+            }
+            Query query = em.createQuery(SELECT + WHERE);
             query.setParameter("cliCedula", "%" + buscar + "%");
-             query.setMaxResults(200);
+            if (!buscar.contains("9999999999999")) {
+                query.setParameter("codTipoambiente", codTipoambiente);
+            }
+            query.setMaxResults(200);
             listaClientes = (List<Cliente>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

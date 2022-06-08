@@ -5,148 +5,139 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
 <zk  contentStyle="overflow:auto" with="100%" class="container" 
- >
+>
     
-     <style>
-     .z-listbox-autopaging .z-listcell-cnt {
-    height: 15px;
-    overflow: hidden;
-}
+    <style>
+        .z-listbox-autopaging .z-listcell-cnt {
+        height: 15px;
+        overflow: hidden;
+        }
         
     </style>
-              
+               <!--onCreate="@command('aperturaCaja')"-->
     <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          onCreate="@command('aperturaCaja')"         
+                  
           viewModel="@id('vm') @init('com.ec.controlador.Facturar')" width="100%">
         
         
         <timer id="timer" delay="300000" repeats="true" onTimer="@command('refrescarPagina')" />
         <tabbox  width="100%"  tabscroll="true" >
             <tabs >
-                <tab label="SISTEMA DE FACTURACION" sclass="menutabs"/>
+                <tab label="Emitir factura" sclass="menutabs"/>
             </tabs>
             <tabpanels >
                 
                 <tabpanel  height="100%" width="98%"  >
                     
                     <div class="container-fluid " >
-                        
-                        <div class="row" style="margin-top:5px">
-                            <div class="row  col-12 col-sm-12 col-md-12 col-lg-12">
-                            
-                                <!--<div class="col-12 col-sm-12 col-md-3 col-lg-3 " align="center">-->
-                                <div class="input-group  mb-12 col-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="input-group  col-sm-12">
                                     
                                     <textbox   class="form-control form-control-sm"
-                                                   style="font-size:10px;background-color:trasnsparent;
+                                               style="font-size:10px;background-color:trasnsparent;
                                                            font-weight:bold;height:25px"
-                                                   ctrlKeys="^A" onCtrlKey="@command('buscarClienteEnLista')" 
-                                                   placeholder="Cedula"
-                                                   value="@bind(vm.clienteBuscado.cliCedula)" 
-                                                   onDoubleClick="@command('buscarClienteEnLista')"
-                                                   onOK="@command('buscarClienteDni',valor=self.getValue())"                                                  
-                                                   maxlength="13"  />
+                                               ctrlKeys="^A" onCtrlKey="@command('buscarClienteEnLista')" 
+                                               placeholder="Cedula"
+                                               value="@bind(vm.clienteBuscado.cliCedula)" 
+                                               onDoubleClick="@command('buscarClienteEnLista')"
+                                               onOK="@command('buscarClienteDni',valor=self.getValue())"                                                  
+                                               maxlength="13"  />
                         
                                     <div class="input-group-append" >
                                         <button   image="/imagenes/buscar1.png" 
-                                                                 style="font-size:10px;background-color:trasnsparent;font-weight:bold"
-                                                                 onClick="@command('buscarClienteEnLista')"  
-                                                                 tooltiptext="Buscar cliente"
-                                                                 class="btn  btn-primary btn-sm "/>
+                                                  style="font-size:10px;background-color:trasnsparent;font-weight:bold"
+                                                  onClick="@command('buscarClienteEnLista')"  
+                                                  tooltiptext="Buscar cliente"
+                                                  class="btn  btn-primary btn-sm "/>
                                
                                
                                     </div>
                                 </div>
-                                <!--</div>-->
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 "   >
-                                  
-
-                                        <textbox zclass = "mycss-listcell" 
-                                                 class="font-weight:bold form-control form-control-sm"
-                                        style="font-size:10px;background-color:#d6eefd;font-weight:bold"
-                                        readonly="true"
-                                                value="@bind(vm.clienteBuscado.cliNombre)"  />
-<!--                                        <textbox zclass = "mycss-listcell" 
-                                                 class="font-weight:bold form-control form-control-sm"
-                                        style="font-size:10px;background-color:#d6eefd;font-weight:bold"
-                                        readonly="true"
-                                                value="@bind(vm.clienteBuscado.cliCorreo)"  />-->
-                         
-                                 
-                                </div>
-                                
-                                 <div class="col-12 col-sm-12 col-md-12 col-lg-6 hidden-sm-down" align="start">
-                                 <label  style="font-weight:bold" 
-                                                value="Estado:"  />
-                                        <radiogroup  selectedItem="@bind(vm.estdoFactura)"   >
-                                            <space bar="true"  /> 
-                                            <radio label="Pagado" value="PA" />  
-                                            <space bar="true"  />                                                                        
-                                            <radio  label="Pendiente" value="PE"/>     
+                            </div>
+                            <div class="col-sm-2">
+                                <label zclass = "mycss-listcell" 
+                                       class="font-weight:bold form-control form-control-sm"
+                                       style="font-size:10px;background-color:#d6eefd;font-weight:bold"
+                                                 
+                                       value="@bind(vm.clienteBuscado.cliNombre)"  />
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="col-sm-12  hidden-sm-down" align="start">
+                                    <label  style="font-weight:bold" 
+                                            value="Estado:"  />
+                                    <radiogroup  selectedItem="@bind(vm.estdoFactura)"   >
+                                        <space bar="true"  /> 
+                                        <radio label="Pagado" value="PA" />  
+                                        <space bar="true"  />                                                                        
+                                        <radio  label="Pendiente" value="PE"/>     
                                                                                   
-                                        </radiogroup>
+                                    </radiogroup>
 
-                                 <label  style="font-weight:bold;padding-left: 10px" 
-                                                value="Documento:"  />
-                                    <radiogroup Id="idTipoOrdenSinCotizacion"   
-                                                selectedItem="@bind(vm.tipoVenta)" 
-                                                onCheck="@command('verificarNumeracion')" >
+                                             
+                                
+                              
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="col-sm-12  hidden-sm-down" align="start">
+                                    
+
+                                    <label  style="font-weight:bold;padding-left: 10px" 
+                                            value="Documento:"  />
+                                    <radiogroup    
+                                        selectedItem="@bind(vm.tipoVenta)" 
+                                        onCheck="@command('verificarNumeracion')" >
                                         <space bar="true"  />
-                                        <radio label="Factura" value="FACT"/>
-                                          <space bar="true"  /> 
-                                        <radio label="Nota venta" value="NTV"/>                             
+                                        <radio label="FACT" value="FACT"/>
+                                        <space bar="true"  /> 
+                                        <radio label="NTV" value="NTV"/>                             
                                    
                                         <space bar="true"  /> 
                                         
-                                        <radio label="Proforma" value="PROF"/>                             
+                                        <radio label="PROF" value="PROF"/>                             
                                         <space bar="true"  /> 
-                                        <radio label="Nota entrega" value="NTE"/>                             
+                                        <radio label="NTE" value="NTE"/>                             
                                     
                            
                                     </radiogroup>          
                                 
                               
                                 </div>
-
-                                <div class="col-4 col-sm-4 col-md-2 col-lg-2 hidden-sm-down"   >
-                                 
-                                    Emisión:<datebox compact="true"  value="@bind(vm.fechafacturacion)" 
-                                             readonly="true" style="font-weight:bold;" 
-                                             buttonVisible="true" 
-                                             lenient="true" format="dd/MM/yyyy" 
-                                             constraint="no empty: Ingrese la fecha "/>
-
-                                </div>
-                                <div class="col-4 col-sm-4 col-md-2 col-lg-2 hidden-sm-down"   >
-                                 
-                                    Cobro:<datebox compact="true" value="@bind(vm.facFechaCobro)" 
-                                             readonly="true" style="font-weight:bold;" 
-                                             buttonVisible="true" 
-                                             lenient="true" format="dd/MM/yyyy" 
-                                             constraint="no empty: Ingrese la fecha "/>
-
-                                </div>
-    <!--                                <div class="col-4 col-sm-4 col-md-2 col-lg-2 d-none d-sm-block ">
-                                        <div class="input-group mb-3">
-                                            <label  style="font-weight:bold;color:red" 
-                                                    value="@bind(vm.saldoFacturas ne null ? 'Saldo: '.concat(vm.saldoFacturas) : '')"/>
-                                        </div>
-                                    </div>-->
-                              
-                                <div class="col-4 col-sm-4 col-md-2 col-lg-2 form-group hidden-sm-down">
-                                    <label  style="color:red;font-weight:bold" value=""  ></label>Pag
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                Emisión:<datebox compact="true"  value="@bind(vm.fechafacturacion)" 
+                                                 readonly="true" style="font-weight:bold;" 
+                                                 buttonVisible="true" 
+                                                 lenient="true" format="dd/MM/yyyy" 
+                                                 constraint="no empty: Ingrese la fecha "/>
+                            </div>
+                            <div class="col-sm-3">
+                                Cobro:<datebox compact="true" value="@bind(vm.facFechaCobro)" 
+                                               readonly="true" style="font-weight:bold;" 
+                                               buttonVisible="true" 
+                                               lenient="true" format="dd/MM/yyyy" 
+                                               constraint="no empty: Ingrese la fecha "/>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="col-sm-12 ">
+                                    <label  style="color:black;font-weight:bold" value="Forma Pago"  ></label>
                                         
                                     <combobox  model="@load(vm.listaFormaPago)"  
                                                selectedItem="@bind(vm.formaPagoSelected)" 
-                                               style="width:150px"  
+                                                
                                                readonly="true" >
                                         <template name="model">
                                             <comboitem  label="@bind(each.forNombre)"/>
                                         </template>                                      
                                     </combobox>
                                 </div>
-                                <div class="col-4 col-sm-4 col-md-3 col-lg-3  form-group hidden-sm-down"  >
-                                    <label value="" style="color:red;font-weight:bold"/>Plazo:
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="col-sm-12 "  >
+                                    <label value="Plazo:" style="color:black;font-weight:bold"/>
                 
                                     <combobox onSelect="@command('actualizarCostoVenta')"  
                                               readonly="true"    
@@ -159,13 +150,15 @@
                                         <comboitem label="90 DIAS" value="90" />
                                         <comboitem label="120 DIAS" value="120" />
                                     </combobox>
-                                </div>
-                                  <div class="col-4 col-sm-4 col-md-3 col-lg-3 form-group hidden-sm-down ">
-                                    <label  style="color:blue;font-weight:bold;font-size:15px" 
-                                            value="@bind(vm.totalItems)"  >
-                                    </label>
-                                </div>
-                             
+                                </div>   
+                            </div>
+                        </div>
+                        
+                        <div class="row" style="margin-top:5px">
+                            <div class="row  col-12 col-sm-12 col-md-12 col-lg-12">
+                            
+
+
                                 <!--hidden-sm-down-->
                                 <div class="col-12 col-sm-12 col-md-5 col-lg-5 " >
                                     <listbox model="@load(vm.listaKardexProducto)" 
@@ -193,10 +186,10 @@
                                                          onOK="@command('buscarLikeKardexNombreProd')"                                                     
                                                          onChange="self.setValue(self.getValue().toUpperCase());" />
                                             </listheader>                         
-                                            <listheader width="10%" class="hidden-sm-down"  label="KARDEX" align="center" /> 
-                                            <listheader width="15%" class="hidden-sm-down" label="PV X MAYOR" align="center" /> 
-                                            <listheader width="15%"  label="PVP" align="center" /> 
-                                            <listheader width="10%" class="hidden-sm-down" label="" align="center"/>
+                                            <listheader width="10%"   label="KARDEX" align="center" /> 
+                                            <listheader width="13%"  label="PV X MAYOR" align="center" /> 
+                                            <listheader width="13%"  label="PVP" align="center" /> 
+                                            <listheader width="8%"  label="" align="center"/>
                            
                                         </listhead>  
                     
@@ -206,49 +199,52 @@
                                                            onDoubleClick="@command('agregarItemLista',valor=each.idProducto)">
                                                     <textbox value="@bind(each.idProducto.prodCodigo)"     onCreate="self.focus()"
                                                              class="form-control form-control-sm"
-                                                             style="font-size:10px;background-color:#d6eefd"
+                                                             style="font-size:11px;background-color:#d6eefd"
                                                              readonly="true"
                                                              onDoubleClick="@command('agregarItemLista',valor=each.idProducto)"/>
                                                 
                                                 </listcell>
                                                 <listcell  style="font-size:10px;background-color:#d6eefd" zclass = "mycss-listcell" 
                                                            onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >
-                                                    <textbox  value="@bind(each.idProducto.prodNombre)"  style="font-size:11px;background-color:#d6eefd"
+                                                    <textbox  value="@bind(each.idProducto.prodNombre)" 
+                                                              style="font-size:11px;background-color:#d6eefd"
                                                               readonly="true"
                                                               class="form-control form-control-sm"
                                                               onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" />
                                                 </listcell>
-                                                <listcell zclass = "mycss-listcell" class="hidden-sm-down"
+                                                <listcell zclass = "mycss-listcell" 
                                                           if="${each.verificaStock}" 
                                                           style="font-size:11px;background-color:#C7FEC1"
                                                           onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >                                                    
                                                     <label onOK="@command('agregarItemLista',valor=each.idProducto)" 
                                                            class="form-control form-control-sm"
-                                                           style="font-size:12px;background-color:#C7FEC1"
+                                                           style="font-size:10px;background-color:#C7FEC1"
                                                            value="@bind(each.karTotal)" 
                                                            width="96%" />
                                                 </listcell>
-                                                <listcell zclass = "mycss-listcell" class="hidden-sm-down"
+                                                <listcell zclass = "mycss-listcell" 
                                                           if="${!each.verificaStock}" 
-                                                          style="font-size:11px;background-color:#F1876A"
+                                                          style="font-size:11px;background-color:#FBC3C3"
                                                           onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >                                                    
                                                     <label onOK="@command('agregarItemLista',valor=each.idProducto)" 
                                                            class="form-control form-control-sm"
-                                                           style="font-size:12px;background-color:#F1876A"
+                                                           style="font-size:10px;background-color:#FBC3C3"
                                                            value="@bind(each.karTotal)" 
                                                            width="96%" />
                                                 </listcell>
-                                                <listcell zclass = "mycss-listcell" class="hidden-sm-down"
+                                                <listcell zclass = "mycss-listcell" 
                                                           onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >                                                    
                                                     <label onOK="@command('agregarItemLista',valor=each.idProducto)" 
                                                            class="form-control form-control-sm"
-                                                           value="@bind(each.idProducto.prodCostoPreferencial)" 
+                                                           value="@bind(each.idProducto.prodCostoPreferencial)"
+                                                           style="font-size:11px; font-weight: bold" 
                                                            width="96%" />
                                                 </listcell>
-                                                <listcell zclass = "mycss-listcell" class="hidden-sm-down"
+                                                <listcell zclass = "mycss-listcell" 
                                                           onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >                                                    
                                                     <label onOK="@command('agregarItemLista',valor=each.idProducto)" 
                                                            class="form-control form-control-sm"
+                                                           style="font-size:11px; font-weight: bold" 
                                                            value="@bind(each.idProducto.pordCostoVentaFinal)" 
                                                            width="96%" />
                                                 </listcell>
