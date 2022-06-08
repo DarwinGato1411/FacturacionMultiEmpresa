@@ -194,7 +194,7 @@ public class MailerClass {
 
         @Override
         public PasswordAuthentication getPasswordAuthentication() {
-            amb = servicioTipoAmbiente.FindALlTipoambiente();
+//            amb = servicioTipoAmbiente.FindALlTipoambiente();
             String username = amb.getAmUsuarioSmpt().trim();
             String password = amb.getAmPassword().trim();
 
@@ -209,14 +209,14 @@ public class MailerClass {
 //                    InternetAddress.parse(address));
     public boolean sendMailSimple(String address,
                 String[] attachFiles, String asuntoInf, String acceso,
-                String numeroDocumento, BigDecimal valorTotal, String cliente)
+                String numeroDocumento, BigDecimal valorTotal, String cliente, Tipoambiente ambiente)
                 throws java.rmi.RemoteException {
 
         try {
 //                        String usuarioSmpt = "deckxelec@gmail.com";
 //            String password = "metalicas366";
 
-            amb = servicioTipoAmbiente.FindALlTipoambiente();
+            amb = ambiente;
 
 //            String asunto = asuntoInf;
 //            String host = "smtp.gmail.com";

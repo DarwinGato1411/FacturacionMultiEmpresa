@@ -7,6 +7,33 @@
     /> 
     <div  class="container" >
         <div  class="row" >         
+             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "    >
+                <label    value="(*) " style="color:red;font-weight:bold"  ></label>Tipo de usaurio:
+                <combobox class="badge badge-default   btn-secondary  textoFechaDateBox" 
+                readonly="@bind(vm.readOnly)"
+                 buttonVisible="@bind(!vm.readOnly)" 
+                          selectedItem="@bind(vm.tipoUSuario)">
+                    <comboitem label="ADMINISTRADOR" value="1" />
+                    <comboitem label="VENTAS" value="2" />
+                </combobox>    
+
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group " >
+                <label value="(*) " style="color:red;font-weight:bold"/>RUC de la empresa :
+                
+                <textbox  maxlength="20"      
+                readonly="@bind(vm.readOnly)"                    
+                          value="@bind(vm.usuarioSistema.usuRuc)" 
+                          class="form-control" />
+            </div>
+            
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
+                <label value="(*) " style="color:red;font-weight:bold"/>Correo :
+                
+                <textbox  maxlength="100"                          
+                          value="@bind(vm.usuarioSistema.usuCorreo)" 
+                          class="form-control" />
+            </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
                 <label value="(*) " style="color:red;font-weight:bold"/>Nombre del responsable de la cuenta:
                 
@@ -15,18 +42,10 @@
                           value="@bind(vm.usuarioSistema.usuNombre)" 
                           class="form-control" />
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label    value="(*) "  >Tipo de usaurio:</label>
-                <combobox class="badge badge-default   btn-secondary  textoFechaDateBox" 
-                          selectedItem="@bind(vm.tipoUSuario)">
-                    <comboitem label="ADMINISTRADOR" value="1" />
-                    <comboitem label="VENTAS" value="2" />
-                </combobox>    
-
-            </div>
+           
            
             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*) " style="color:red;font-weight:bold"/>Nombre de usuario:
+                <label value="(*) " style="color:red;font-weight:bold"/>Usuario del sistema:
                 
                 <textbox  maxlength="100"
                           value="@bind(vm.usuarioSistema.usuLogin)"                           

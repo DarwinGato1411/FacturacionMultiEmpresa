@@ -7,9 +7,7 @@ package com.ec.controlador;
 import com.ec.dao.xml.Impuesto;
 import com.ec.dao.xml.RetencionXML;
 import com.ec.dao.xml.factura.Detalle;
-import com.ec.dao.xml.factura.Detalles;
 import com.ec.dao.xml.factura.FacturaCompraXML;
-import com.ec.dao.xml.factura.TotalConImpuestos;
 import com.ec.dao.xml.factura.TotalImpuesto;
 import com.ec.entidad.CabeceraCompra;
 import com.ec.entidad.ComprasSri;
@@ -132,7 +130,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
     private Date fin = new Date();
     ServicioProveedor servicioProveedor = new ServicioProveedor();
     ServicioEstadoFactura servicioEstadoFactura = new ServicioEstadoFactura();
-    UserCredential credential = new UserCredential();
+
     Parametrizar parametrizar = new Parametrizar();
 
     ServicioTipoIdentificacionCompra servicioTipoIdentificacionCompra = new ServicioTipoIdentificacionCompra();
@@ -161,6 +159,9 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 
     private static String SRIFACCOMPRAS = "SRIFACCOMPRAS";
     private static String SRIRETENCION = "SRIRETENCION";
+//    UserCredential credential = new UserCredential();
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -175,14 +176,16 @@ public class ListaComprasSri extends SelectorComposer<Component> {
         inicio = calendar.getTime();
 
         Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+
         parametrizar = servicioParametrizar.FindALlParametrizar();
         findByBetweenFecha();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
 
         String folderComprasSri = PATH_BASE + File.separator + SRIFACCOMPRAS + File.separator;
         File folderGen = new File(folderComprasSri);
@@ -268,7 +271,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 
             map.put("valor", valor);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/compra/modificarcompra.zul", null, map);
+                        "/compra/modificarcompra.zul", null, map);
             window.doModal();
 //            }
 //            window.detach();
@@ -463,7 +466,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
     @Command
     @NotifyChange({"listaCabeceraCompras", "listaCabeceraCompraSris", "inicio", "fin"})
     public void cargarComprasSRI()
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
         try {
@@ -473,8 +476,8 @@ public class ListaComprasSri extends SelectorComposer<Component> {
         }
         try {
             String folderDescargados = PATH_BASE + File.separator + "COMPRASDESCARGADAS"
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
             String pathArchivoXML = "";
 
             File folderGen = new File(folderDescargados);
@@ -488,7 +491,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
             for (ComprasSri noVerific : listaComprasSris) {
                 // if (servicioCompra.findByAutorizacion(noVerific.getCsriAutorizacion()) == null) {
 
-                RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(noVerific.getCsriAutorizacion());
+                RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(noVerific.getCsriAutorizacion(),amb);
                 for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                     FileOutputStream nuevo = null;
                     pathArchivoXML = folderDescargados + File.separator + autorizacion.getNumeroAutorizacion() + ".xml";
@@ -508,13 +511,13 @@ public class ListaComprasSri extends SelectorComposer<Component> {
                     if (noVerific.getCsriComprobante().trim().contains("Factura")) {
                         System.out.println("COMPRAS ");
                         ec.gob.sri.comprobantes.modelo.factura.Factura adto
-                                = ec.gob.sri.comprobantes.util.xml.XML2Java.unmarshalFactura(pathArchivoXML);
+                                    = ec.gob.sri.comprobantes.util.xml.XML2Java.unmarshalFactura(pathArchivoXML);
                         procesaFactura(adto, autorizacion.getComprobante());
                     } else if (noVerific.getCsriComprobante().contains("Comprobante de Retenci")) {
                         System.out.println("RENETENCION " + autorizacion.getComprobante());
                         //para el caso que sea retencion
                         ec.gob.sri.comprobantes.modelo.rentencion.ComprobanteRetencion comRetencion
-                                = ec.gob.sri.comprobantes.util.xml.XML2Java.unmarshalComprobanteRetencion(pathArchivoXML);
+                                    = ec.gob.sri.comprobantes.util.xml.XML2Java.unmarshalComprobanteRetencion(pathArchivoXML);
                         comRetencion.getImpuestos().getImpuesto();
                         procesaRetenciones(comRetencion, autorizacion.getComprobante());
                     }
@@ -610,7 +613,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
             if (totalImpuesto.getCodigoPorcentaje().equals("0")) {
                 baseCero = baseCero.add(totalImpuesto.getBaseImponible());
             } else if (totalImpuesto.getCodigoPorcentaje().equals("2")) {
-                 baseGrabada = baseGrabada.add(totalImpuesto.getBaseImponible());
+                baseGrabada = baseGrabada.add(totalImpuesto.getBaseImponible());
                 iva = iva.add(totalImpuesto.getValor());
             }
         }
@@ -700,10 +703,10 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 
             servicioDetalleComprasSri.crear(detalleCom);
             System.out.println("DETALLE " + detalle.getCantidad()
-                    + " " + detalle.getCodigoPrincipal()
-                    + " " + detalle.getDescripcion()
-                    + " " + detalle.getPrecioUnitario()
-                    + " " + detalle.getPrecioTotalSinImpuesto());
+                        + " " + detalle.getCodigoPrincipal()
+                        + " " + detalle.getDescripcion()
+                        + " " + detalle.getPrecioUnitario()
+                        + " " + detalle.getPrecioTotalSinImpuesto());
         }
 
         findCabeceraComprasSriByBetweenFecha();
@@ -714,7 +717,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
     public void actualizar(@BindingParam("valor") CabeceraCompraSri valor) {
         servicioCabeceraComprasri.modificar(valor);
         Clients.showNotification("Registro actualizado",
-                Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 1000, true);
+                    Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 1000, true);
     }
 
     @Listen("onUpload = #upload")
@@ -725,7 +728,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
             for (Media archivo : archivos) {
                 System.out.println("media " + archivo.getName());
                 Files.copy(new File(PATH_BASE + File.separator + SRIRETENCION + File.separator + archivo.getName()),
-                        new ByteArrayInputStream(archivo.getStringData().getBytes()));
+                            new ByteArrayInputStream(archivo.getStringData().getBytes()));
             } //T
         } catch (Exception e) {
             e.printStackTrace();
@@ -741,7 +744,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
             for (Media archivo : archivos) {
                 System.out.println("media " + archivo.getName());
                 Files.copy(new File(PATH_BASE + File.separator + SRIFACCOMPRAS + File.separator + archivo.getName()),
-                        new ByteArrayInputStream(archivo.getStringData().getBytes()));
+                            new ByteArrayInputStream(archivo.getStringData().getBytes()));
             } //T
         } catch (Exception e) {
             e.printStackTrace();
@@ -757,8 +760,8 @@ public class ListaComprasSri extends SelectorComposer<Component> {
             System.out.println("");
 
             String folderDescargados = PATH_BASE + File.separator + "COMPRASDESCARGADASTXT"
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
 
             /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
             File folderGen = new File(folderDescargados);
@@ -812,18 +815,18 @@ public class ListaComprasSri extends SelectorComposer<Component> {
                     for (int i = 11; i <= campos3.length - (cantidadBlancos + 11); i++) {
 
                         comprasSri = new ComprasSri(
-                                campos3[i],
-                                campos3[++i],
-                                campos3[++i],
-                                AutorizarDocumentos.removeCaracteres(campos3[++i]),
-                                sm.parse(campos3[++i].trim().replace("/", "-")),
-                                sm.parse(campos3[++i].trim().replace("/", "-")),
-                                campos3[++i],
-                                campos3[++i],
-                                campos3[++i],
-                                campos3[++i],
-                                campos3[++i],
-                                "N");
+                                    campos3[i],
+                                    campos3[++i],
+                                    campos3[++i],
+                                    AutorizarDocumentos.removeCaracteres(campos3[++i]),
+                                    sm.parse(campos3[++i].trim().replace("/", "-")),
+                                    sm.parse(campos3[++i].trim().replace("/", "-")),
+                                    campos3[++i],
+                                    campos3[++i],
+                                    campos3[++i],
+                                    campos3[++i],
+                                    campos3[++i],
+                                    "N");
                         System.out.println("iiiii " + i);
                         System.out.println("ComprasSri " + comprasSri.toString());
                         if (servicioComprasSri.findByAutorizacion(comprasSri.getCsriAutorizacion()) == null) {
@@ -904,10 +907,10 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 
             emf.getTransaction().begin();
             con
-                    = emf.unwrap(Connection.class
-                    );
+                        = emf.unwrap(Connection.class
+                        );
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = "";
 
             Map<String, Object> parametros = new HashMap<String, Object>();
@@ -935,7 +938,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/contenedorReporte.zul", null, map);
+                        "/venta/contenedorReporte.zul", null, map);
             window.doModal();
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException " + e.getMessage());
@@ -1415,10 +1418,10 @@ public class ListaComprasSri extends SelectorComposer<Component> {
                         if (plistImpuesto.length > 1) {
                             xml = xml + plistImpuesto[0];
                             xml = xml
-                                    + "</impuestos> \n"
-                                    + "</comprobanteRetencion> \n"
-                                    + "</comprobante> \n"
-                                    + "</autorizacion> \n";
+                                        + "</impuestos> \n"
+                                        + "</comprobanteRetencion> \n"
+                                        + "</comprobante> \n"
+                                        + "</autorizacion> \n";
                             br.close();
                             Escribir(fNuevo, xml);
                             xml = xml + "\n";
@@ -1461,10 +1464,10 @@ public class ListaComprasSri extends SelectorComposer<Component> {
                             eliminaInicio = eliminaInicio.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
                             xml = xml + eliminaInicio;
                             xml = xml
-                                    + "</impuestos> \n"
-                                    + "</comprobanteRetencion> \n"
-                                    + "</comprobante> \n"
-                                    + "</autorizacion> \n";
+                                        + "</impuestos> \n"
+                                        + "</comprobanteRetencion> \n"
+                                        + "</comprobante> \n"
+                                        + "</autorizacion> \n";
                         }
 
                         br.close();
@@ -1723,10 +1726,10 @@ public class ListaComprasSri extends SelectorComposer<Component> {
                         if (plistImpuesto.length > 1) {
                             xml = xml + plistImpuesto[0].replace("<infoAdicional>", "");
                             xml = xml
-                                    + "</detalles> \n"
-                                    + "</factura> \n"
-                                    + "</comprobante> \n"
-                                    + "</autorizacion> \n";
+                                        + "</detalles> \n"
+                                        + "</factura> \n"
+                                        + "</comprobante> \n"
+                                        + "</autorizacion> \n";
                             br.close();
                             Escribir(fNuevo, xml);
                             xml = xml + "\n";
@@ -1778,16 +1781,16 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 
                             xml = xml + eliminaInicio.replace("<infoAdicional>", "");;
                             xml = xml
-                                    + "</detalles> \n"
-                                    + "</factura> \n"
-                                    + "</comprobante> \n"
-                                    + "</autorizacion> \n";
+                                        + "</detalles> \n"
+                                        + "</factura> \n"
+                                        + "</comprobante> \n"
+                                        + "</autorizacion> \n";
                         } else {
                             xml = xml
-                                    + "</detalles> \n"
-                                    + "</factura> \n"
-                                    + "</comprobante> \n"
-                                    + "</autorizacion> \n";
+                                        + "</detalles> \n"
+                                        + "</factura> \n"
+                                        + "</comprobante> \n"
+                                        + "</autorizacion> \n";
                         }
 
                         br.close();
@@ -1858,7 +1861,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
         }
         return xml;
     }
-    
+
     private void procesaFacturaXML(FacturaCompraXML adto, String xml) {
         SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyy");
         /*PARA UN PROVEEDOR EN ESPECIFICO*/
@@ -1981,17 +1984,16 @@ public class ListaComprasSri extends SelectorComposer<Component> {
 
             servicioDetalleComprasSri.crear(detalleCom);
             System.out.println("DETALLE " + detalle.getCantidad()
-                    + " " + detalle.getCodigoPrincipal()
-                    + " " + detalle.getDescripcion()
-                    + " " + detalle.getPrecioUnitario()
-                    + " " + detalle.getPrecioTotalSinImpuesto());
+                        + " " + detalle.getCodigoPrincipal()
+                        + " " + detalle.getDescripcion()
+                        + " " + detalle.getPrecioUnitario()
+                        + " " + detalle.getPrecioTotalSinImpuesto());
         }
 
         findCabeceraComprasSriByBetweenFecha();
     }
 
-    
-     @Command
+    @Command
     public void exportListboxToExcelCabe() throws Exception {
         try {
             File dosfile = new File(exportarExcelCabeceras());
@@ -2003,8 +2005,8 @@ public class ListaComprasSri extends SelectorComposer<Component> {
             System.out.println("ERROR AL DESCARGAR EL ARCHIVO" + e.getMessage());
         }
     }
-    
-     private String exportarExcelCabeceras() throws FileNotFoundException, IOException, ParseException {
+
+    private String exportarExcelCabeceras() throws FileNotFoundException, IOException, ParseException {
 //        List<DetalleCompraSri> descargar = servicioDetalleComprasSri.findByBetweenFechaSRI(inicioComp, finComp);
         String directorioReportes = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/reportes");
 
@@ -2100,10 +2102,10 @@ public class ListaComprasSri extends SelectorComposer<Component> {
                 c3.setCellValue(new HSSFRichTextString(sm.format(item.getCabFechaEmision())));
 
                 HSSFCell c4 = r.createCell(i++);
-                c4.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCabSubTotalCero(),2).toString()));
+                c4.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCabSubTotalCero(), 2).toString()));
 
                 HSSFCell c5 = r.createCell(i++);
-                c5.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCabSubTotal(),2).toString()));
+                c5.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCabSubTotal(), 2).toString()));
 
                 HSSFCell c6 = r.createCell(i++);
                 c6.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCabIva(), 2).toString()));

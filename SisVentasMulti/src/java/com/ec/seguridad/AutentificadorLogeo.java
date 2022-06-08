@@ -44,7 +44,7 @@ public class AutentificadorLogeo implements AutentificadorService, Serializable 
         if (!dato.getUsuLogin().equals(nombreUsuario) || !dato.getUsuPassword().equals(claveUsuario)) {
             return false;
         }
-        Tipoambiente recup=servicioTipoAmbiente.findByUsuario(dato);
+        Tipoambiente recup=servicioTipoAmbiente.findALlTipoambientePorUsuario(dato.getUsuRuc());
         Session sess = Sessions.getCurrent();
         UserCredential cre = new UserCredential(dato, dato.getUsuLogin(), dato.getUsuPassword(), dato.getUsuNivel(), dato.getUsuNombre());
         // System.out.println("VALOR DE LA CREDENCIAL ASIGNADA A LA SESSION"+EnumSesion.userCredential.getNombre());

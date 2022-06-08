@@ -7,6 +7,8 @@ package com.ec.controlador;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.Guiaremision;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioGuia;
@@ -46,6 +48,8 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -70,13 +74,18 @@ public class ListaGuia {
     private Tipoambiente amb = new Tipoambiente();
     private Date fechainicio = new Date();
     private Date fechafin = new Date();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
 
     public ListaGuia() {
         consultarFactura();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
     }
 
     private void consultarFactura() {
@@ -129,7 +138,7 @@ public class ListaGuia {
             con = emf.unwrap(Connection.class);
 
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = "";
             if (tipo.equals("COMP")) {
                 reportPath = reportFile + File.separator + "puntoventa.jasper";
@@ -158,7 +167,7 @@ public class ListaGuia {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/contenedorReporte.zul", null, map);
+                        "/venta/contenedorReporte.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             System.out.println("ERROR EL PRESENTAR EL REPORTE " + e.getMessage());
@@ -278,25 +287,25 @@ public class ListaGuia {
     @Command
     @NotifyChange({"lstGuiaRemision"})
     public void autorizarSRI(@BindingParam("valor") Guiaremision valor)
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
         File folderGen = new File(folderGenerados);
@@ -325,9 +334,9 @@ public class ListaGuia {
 
  /*PARA CREAR EL ARCHIVO XML FIRMADO*/
         String nombreArchivoXML = File.separator + "GUIA-"
-                + valor.getCodestablecimiento()
-                + valor.getPuntoemision()
-                + valor.getFacNumeroText() + ".xml";
+                    + valor.getCodestablecimiento()
+                    + valor.getPuntoemision()
+                    + valor.getFacNumeroText() + ".xml";
 
 
         /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
@@ -348,7 +357,7 @@ public class ListaGuia {
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
         XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
 
         f = new File(pathArchivoFirmado);
 
@@ -358,7 +367,7 @@ public class ListaGuia {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -370,7 +379,7 @@ public class ListaGuia {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -426,12 +435,12 @@ public class ListaGuia {
                             }
                             if (valor.getIdCliente().getCliCorreo() != null) {
                                 mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                                        attachFiles,
-                                        "GUIA DE REMISION ELECTRONICA",
-                                        valor.getFacClaveAcceso(),
-                                        valor.getFacNumeroText(),
-                                        valor.getFacTotal(),
-                                        valor.getIdCliente().getCliNombre());
+                                            attachFiles,
+                                            "GUIA DE REMISION ELECTRONICA",
+                                            valor.getFacClaveAcceso(),
+                                            valor.getFacNumeroText(),
+                                            valor.getFacTotal(),
+                                            valor.getIdCliente().getCliNombre(),amb);
                             }
                         }
 
@@ -458,25 +467,25 @@ public class ListaGuia {
     @Command
     @NotifyChange({"lstGuiaRemision"})
     public void reenviarSRI(@BindingParam("valor") Guiaremision valor)
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
         File folderGen = new File(folderGenerados);
@@ -505,9 +514,9 @@ public class ListaGuia {
 
  /*PARA CREAR EL ARCHIVO XML FIRMADO*/
         String nombreArchivoXML = File.separator + "GUIA-"
-                + valor.getCodestablecimiento()
-                + valor.getPuntoemision()
-                + valor.getFacNumeroText() + ".xml";
+                    + valor.getCodestablecimiento()
+                    + valor.getPuntoemision()
+                    + valor.getFacNumeroText() + ".xml";
 
 
         /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
@@ -528,7 +537,7 @@ public class ListaGuia {
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
         XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
 
         f = new File(pathArchivoFirmado);
 
@@ -550,7 +559,7 @@ public class ListaGuia {
         }
         try {
 
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 
@@ -577,9 +586,9 @@ public class ListaGuia {
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLGuiaRemision(valor, amb, foldervoAutorizado, nombreArchivoXML);
                     XAdESBESSignature.firmar(archivoEnvioCliente,
-                            nombreArchivoXML,
-                            amb.getAmClaveAccesoSri(),
-                            amb, foldervoAutorizado);
+                                nombreArchivoXML,
+                                amb.getAmClaveAccesoSri(),
+                                amb, foldervoAutorizado);
 
                     fEnvio = new File(archivoEnvioCliente);
                 }
@@ -603,12 +612,12 @@ public class ListaGuia {
                 }
                 if (valor.getIdCliente().getCliCorreo() != null) {
                     mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                            attachFiles,
-                            "GUIA DE REMISION ELECTRONICA",
-                            valor.getFacClaveAcceso(),
-                            valor.getFacNumeroText(),
-                            valor.getFacTotal(),
-                            valor.getIdCliente().getCliNombre());
+                                attachFiles,
+                                "GUIA DE REMISION ELECTRONICA",
+                                valor.getFacClaveAcceso(),
+                                valor.getFacNumeroText(),
+                                valor.getFacTotal(),
+                                valor.getIdCliente().getCliNombre(),amb);
                 }
 
             }

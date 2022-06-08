@@ -18,7 +18,7 @@
                 <tab label="Usuario" sclass="menutabs" /> 
                 <tab label="Configuraciones" sclass="menutabs" /> 
                 <tab label="Parametrizar Empresa" sclass="menutabs" /> 
-                <tab label="Consultar catastro" sclass="menutabs" /> 
+                <!--<tab label="Consultar catastro" sclass="menutabs" />--> 
             </tabs>
             <tabpanels >
                 
@@ -208,9 +208,9 @@
                 <tabpanel height="100%" hflex="min">
                     <include src="/administrar/parametrizar.zul"/>  
                 </tabpanel>
-                <tabpanel height="100%" hflex="min">
+<!--                <tabpanel height="100%" hflex="min">
                     <include src="/administrar/catastro.zul"/>  
-                </tabpanel>
+                </tabpanel>-->
             </tabpanels>
             
         </tabbox>

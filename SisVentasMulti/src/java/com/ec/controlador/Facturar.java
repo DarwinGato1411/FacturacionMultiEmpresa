@@ -288,6 +288,9 @@ public class Facturar extends SelectorComposer<Component> {
 
     ServicioDetallePago servicioDetallePago = new ServicioDetallePago();
     Verificaciones verificaciones = new Verificaciones();
+    
+//        UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") ParamFactura valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -374,10 +377,11 @@ public class Facturar extends SelectorComposer<Component> {
     public Facturar() {
 
         Session sess = Sessions.getCurrent();
-        //sess.setMaxInactiveInterval(10000);
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
-
+       credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        credential = cre;
+        amRuc=credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//      amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(accion);
         getDetallefactura();
         parametrizar = servicioParametrizar.FindALlParametrizar();
         listaFormaPago = servicioFormaPago.FindALlFormaPago();
@@ -388,7 +392,7 @@ public class Facturar extends SelectorComposer<Component> {
         } else {
 
         }
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+  
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                 + amb.getAmDirXml();
         partida = amb.getAmDireccionMatriz();
@@ -1932,7 +1936,7 @@ public class Facturar extends SelectorComposer<Component> {
             //guarda con o sin guia de remision 
             facConSinGuia = valor;
 
-            Tipoambiente amb = servicioTipoAmbiente.FindALlTipoambiente();
+            Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
             //armar la cabecera de la factura
 //Coloca la fecha para el cobro de la totalidad de la factura
             Calendar calendar = Calendar.getInstance(); //obtiene la fecha de hoy 

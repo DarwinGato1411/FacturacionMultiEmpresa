@@ -110,6 +110,7 @@ public class GuiaRemision {
 
     private static Tipoambiente tipoambiente = null;
     private String numeroGuiaRecibida = "";
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") String valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -118,15 +119,16 @@ public class GuiaRemision {
         findProductoLikeNombre();
         listaTransportistas = servicioTransportista.findTransportista("");
         getDetalle();
-        
+
     }
 
     public GuiaRemision() {
         Session sess = Sessions.getCurrent();
         sess.setMaxInactiveInterval(10000);
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
-        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
     }
 
     @Command
@@ -137,7 +139,7 @@ public class GuiaRemision {
         final HashMap<String, ParamFactura> map = new HashMap<String, ParamFactura>();
         map.put("valor", paramFactura);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/buscarclienteguia.zul", null, map);
+                    "/venta/buscarclienteguia.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
         clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
@@ -218,20 +220,19 @@ public class GuiaRemision {
 
             } else {
                 Clients.showNotification("Verifique el detalle de la guia",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 2000, true);
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 2000, true);
                 return;
             }
             numeroGuia();
-            if (!partida.equals("")                    
-                    && !numeroPlaca.equals("")
-                    && clienteBuscado != null
-                    && transportista != null) {
+            if (!partida.equals("")
+                        && !numeroPlaca.equals("")
+                        && clienteBuscado != null
+                        && transportista != null) {
 
                 Guiaremision guiaremision = new Guiaremision();
-               
 
                 if (tipoGuiaRemision.equals("EMITIDA")) {
-                     guiaremision.setFacNumero(numeroGuia);
+                    guiaremision.setFacNumero(numeroGuia);
 //                    numeroGuia();
                     guiaremision.setFacNumeroText(numeroGuiaText);
                 } else {
@@ -267,16 +268,16 @@ public class GuiaRemision {
                 }
                 servicioGuia.guardarGuiaremision(detalleGuia, guiaremision);
                 Clients.showNotification("Guardado con exito",
-                        Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+                            Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
 
                 Executions.sendRedirect("/venta/guia.zul");
             } else {
                 Clients.showNotification("Verifique la informacion",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
             }
         } catch (Exception e) {
             Clients.showNotification("Error al registrar " + e.getMessage(),
-                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
         }
     }
 

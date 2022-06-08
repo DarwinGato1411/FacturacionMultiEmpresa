@@ -8,6 +8,7 @@ import com.ec.dao.DetalleFacturaDAO;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.Factura;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
 import com.ec.untilitario.CompraPromedio;
 import com.ec.untilitario.Totales;
@@ -425,16 +426,17 @@ public class ServicioFactura {
     }
 
     //consulta las 20 primeras notas de venta
-    public List<Factura> FindALlFacturaMaxVeinte() {
+    public List<Factura> findALlFacturaMax(Tipoambiente codTipoAmbiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Factura.findAllMaxUltimoVeinte", Factura.class);
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoAmbiente ORDER BY f.facNumero DESC");
+             query.setParameter("codTipoAmbiente", codTipoAmbiente);
             query.setMaxResults(400);
-//           query.setParameter("codigoUsuario", factura);
+          
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

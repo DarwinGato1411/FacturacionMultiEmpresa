@@ -358,7 +358,7 @@ public class Tipoambiente implements Serializable {
     }
 
     public String getLlevarContabilidad() {
-        return llevarContabilidad;
+        return llevarContabilidad == null ? "NO" : llevarContabilidad;
     }
 
     public void setLlevarContabilidad(String llevarContabilidad) {

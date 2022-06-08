@@ -7,6 +7,8 @@ package com.ec.controlador;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.Factura;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioTipoAmbiente;
@@ -36,6 +38,8 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 
@@ -57,6 +61,8 @@ public class ReenviaEnLote {
 
     @Wire
     Window wAutoLote;
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") ParametroLote valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -64,26 +70,24 @@ public class ReenviaEnLote {
         inicio = valor.getInicio();
         fin = valor.getFin();
 
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+//        amb = servicioTipoAmbiente.FindALlTipoambiente();
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
 
     }
 
     public ReenviaEnLote() throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-//        List<Factura> listaFacturasPendiente = servicioFactura.findBetweenPendientesEnviarSRI(inicio, fin);
-//        for (Factura factura : listaFacturasPendiente) {
-//            autorizarFacturasSRI(factura);
-//        }
-//
-//        wAutoLote.detach();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
     }
 
     @Command
     @NotifyChange({"lstFacturas"})
     public void autorizarEnLote()
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         List<Factura> listaFacturasPendiente = servicioFactura.findBetweenDevueltaPorReenviarSRI(inicio, fin);
         for (Factura factura : listaFacturasPendiente) {
@@ -94,27 +98,26 @@ public class ReenviaEnLote {
 
     }
 
-
     public void reenviarSRI(@BindingParam("valor") Factura valor)
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
         File folderGen = new File(folderGenerados);
@@ -143,9 +146,9 @@ public class ReenviaEnLote {
 
  /*PARA CREAR EL ARCHIVO XML FIRMADO*/
         String nombreArchivoXML = File.separator + "FACT-"
-                + valor.getCodestablecimiento()
-                + valor.getPuntoemision()
-                + valor.getFacNumeroText() + ".xml";
+                    + valor.getCodestablecimiento()
+                    + valor.getPuntoemision()
+                    + valor.getFacNumeroText() + ".xml";
 
 
         /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
@@ -166,7 +169,7 @@ public class ReenviaEnLote {
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
         XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
 
         f = new File(pathArchivoFirmado);
 
@@ -188,7 +191,7 @@ public class ReenviaEnLote {
         }
         try {
 
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 
@@ -215,9 +218,9 @@ public class ReenviaEnLote {
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                     XAdESBESSignature.firmar(archivoEnvioCliente,
-                            nombreArchivoXML,
-                            amb.getAmClaveAccesoSri(),
-                            amb, foldervoAutorizado);
+                                nombreArchivoXML,
+                                amb.getAmClaveAccesoSri(),
+                                amb, foldervoAutorizado);
 
                     fEnvio = new File(archivoEnvioCliente);
                 }
@@ -241,12 +244,12 @@ public class ReenviaEnLote {
                 }
                 if (valor.getIdCliente().getCliCorreo() != null) {
                     mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                            attachFiles,
-                            "FACTURA ELECTRONICA",
-                            valor.getFacClaveAcceso(),
-                            valor.getFacNumeroText(),
-                            valor.getFacTotal(),
-                            valor.getIdCliente().getCliNombre());
+                                attachFiles,
+                                "FACTURA ELECTRONICA",
+                                valor.getFacClaveAcceso(),
+                                valor.getFacNumeroText(),
+                                valor.getFacTotal(),
+                                valor.getIdCliente().getCliNombre(),amb);
                 }
 
             }

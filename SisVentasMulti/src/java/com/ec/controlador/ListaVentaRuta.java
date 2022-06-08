@@ -74,7 +74,8 @@ public class ListaVentaRuta {
     private String numeroFacturaText = "";
     private Integer numeroFactura = 0;
 
-    UserCredential credential = new UserCredential();
+   UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public ListaVentaRuta() {
 
@@ -84,11 +85,11 @@ public class ListaVentaRuta {
         inicio = calendar.getTime();
 
         Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
-
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         findBuscarDocumentos();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+//        amb = servicioTipoAmbiente.FindALlTipoambiente();
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                 + amb.getAmDirXml();

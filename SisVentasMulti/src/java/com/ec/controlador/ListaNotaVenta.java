@@ -6,6 +6,8 @@ package com.ec.controlador;
 
 import com.ec.entidad.Factura;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioFactura;
@@ -46,6 +48,8 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
@@ -72,13 +76,18 @@ public class ListaNotaVenta {
     private Tipoambiente amb = new Tipoambiente();
     private Date fechainicio = new Date();
     private Date fechafin = new Date();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
 
     public ListaNotaVenta() {
         consultarFactura();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
     }
 
     private void consultarFactura() {
@@ -149,7 +158,7 @@ public class ListaNotaVenta {
 
             map.put("valor", param);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/modificar/factura.zul", null, map);
+                        "/modificar/factura.zul", null, map);
             window.doModal();
 //            window.detach();
             buscarFechas();
@@ -168,7 +177,7 @@ public class ListaNotaVenta {
             con = emf.unwrap(Connection.class);
 
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = "";
             if (tipo.equals("COMP")) {
                 reportPath = reportFile + File.separator + "puntoventa.jasper";
@@ -199,7 +208,7 @@ public class ListaNotaVenta {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/contenedorReporte.zul", null, map);
+                        "/venta/contenedorReporte.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             System.out.println("ERROR EL PRESENTAR EL REPORTE " + e.getMessage());
@@ -294,13 +303,13 @@ public class ListaNotaVenta {
 
             map.put("valor", valor);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/modificar/estadofact.zul", null, map);
+                        "/modificar/estadofact.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
         }
     }
-    
+
     /*EXPORTAR A EXCEL
     lstFacturas
      */
@@ -445,6 +454,7 @@ public class ListaNotaVenta {
         return pathSalida;
 
     }
+
     @Command
     public void verDetallePago(@BindingParam("valor") Factura valor) throws JRException, IOException, NamingException, SQLException {
         try {
@@ -452,7 +462,7 @@ public class ListaNotaVenta {
 
             map.put("valor", valor);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/detallepago.zul", null, map);
+                        "/venta/detallepago.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
@@ -460,6 +470,3 @@ public class ListaNotaVenta {
 
     }
 }
-
-
- 

@@ -4,30 +4,32 @@
          apply="com.ec.controlador.LogoutController" >
         <div class="row" >
             
-            <div class="col-12 col-sm-12 col-md-7 col-lg-7  " align="start">
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start">
                 <!--<image  src="/imagenes/logintrans.jpg" width="30px" height="30px" class="imgRedondaLogo" />-->
-                <label value="DECKXEL  Facturacion" sclass="banner-head labelNuevo" />   
+                <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />   
                 
                      
             </div>
-            <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start" style="float: right; " >
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7  " align="start" style="float: right; " >
                 <div apply="org.zkoss.bind.BindComposer" 
                      viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')">
-                    <toolbar id="tb" height="30px"  style="background-color:#1ebea5;" >
+                    <toolbar id="tb" height="30px"  style="background-color:#02c0cc;" align="end" >
                         <!--<toolbarbutton image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />-->
                         <toolbarbutton image="/iconos/page.png" label="Producto" if="${sessionScope.usuario.usuarioSistema.usuNivel == 1}" onClick="@command('nuevoProducto')" />
                         <toolbarbutton image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />
          
                         <label value="Usuario: " if="${not sessionScope.userCredential.anonymous}" class="labelNuevo" />
                         <label value="${sessionScope.usuario.nombreUsuario}" class="labelNuevo" if="${not sessionScope.userCredential.anonymous}" />
-                        <div  align="end" style="float: right; " >
-                            <a sclass="logout labelLogout" id="logout" >  
-                                <label  value="Salir " if="${not sessionScope.userCredential.anonymous}" sclass=" labelLogout"/> 
-                                <image src="/iconos/logout-24.png"  />  
-                       
+                       <label value="( RUC: ${sessionScope.usuario.tipoambiente.amRuc} / " class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" /> 
+                       <label value=" RAZÓN SOCIAL: ${sessionScope.usuario.tipoambiente.amRazonSocial} )" class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" />
+                        <!--<div  align="end" style="float: right; " >-->
+                            <a sclass="logout labelLogout" style="color:red" id="logout" if="${not sessionScope.userCredential.anonymous}" class="form-group" >  
+                                <!--<label  value="Salir " if="${not sessionScope.userCredential.anonymous}" sclass=" labelLogout"/>--> 
+                                <image src="/iconos/logout-24.png"  ></image>  
+                       Salir
                             </a>
                 
-                        </div>
+                        <!--</div>-->
                     </toolbar>
                 </div>
                

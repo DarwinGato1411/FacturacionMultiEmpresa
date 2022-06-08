@@ -71,6 +71,7 @@ public class ListaPortalFactura {
 
     private Date inicio = new Date();
     private Date fin = new Date();
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
@@ -82,12 +83,12 @@ public class ListaPortalFactura {
 
     public ListaPortalFactura() {
         Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        credential = cre;
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
     }
 
     private void consultarFactura() {
@@ -143,13 +144,13 @@ public class ListaPortalFactura {
 
     @Command
     public void descargaPDF(@BindingParam("valor") Factura valor) throws FileNotFoundException {
-     File f = new File(valor.getFacpath());
+        File f = new File(valor.getFacpath());
         Filedownload.save(f, null);
     }
 
     @Command
     public void descargaZIP(@BindingParam("valor") Factura valor) throws FileNotFoundException {
-      File f = new File(valor.getFacpath().replace(".pdf", ".zip"));
+        File f = new File(valor.getFacpath().replace(".pdf", ".zip"));
         Filedownload.save(f, null);
     }
 
@@ -162,7 +163,7 @@ public class ListaPortalFactura {
             con = emf.unwrap(Connection.class);
 
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = "";
             reportPath = reportFile + File.separator + "factura.jasper";
 
@@ -185,7 +186,7 @@ public class ListaPortalFactura {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/contenedorReporte.zul", null, map);
+                        "/venta/contenedorReporte.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             System.out.println("ERROR EL PRESENTAR EL REPORTE");

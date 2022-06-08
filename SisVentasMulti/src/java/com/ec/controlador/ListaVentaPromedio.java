@@ -5,6 +5,8 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioAcumuladoVentas;
 import com.ec.servicio.ServicioCompra;
 import com.ec.servicio.ServicioDetalleCompra;
@@ -33,6 +35,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -55,13 +59,18 @@ public class ListaVentaPromedio {
     private String buscarNumFac = "";
     private Date inicio = new Date();
     private Date fin = new Date();
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public ListaVentaPromedio() {
         findByBetweenFecha();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
     }
 
     private void findByBetweenFecha() {

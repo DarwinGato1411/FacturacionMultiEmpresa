@@ -14,7 +14,7 @@ import javax.persistence.Persistence;
 public class HelperPersistencia {
 
     public static EntityManager getEMF() {
-        EntityManager emf = (EntityManager) Persistence.createEntityManagerFactory("SisVentasPU").createEntityManager();
+        EntityManager emf = (EntityManager) Persistence.createEntityManagerFactory("SisVentasMultiPU").createEntityManager();
         return emf;
     }
 }

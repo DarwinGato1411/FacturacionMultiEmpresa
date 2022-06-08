@@ -6,6 +6,8 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioTipoAmbiente;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +17,8 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Image;
 import org.zkoss.io.Files;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Messagebox;
@@ -33,10 +37,17 @@ public class ConfiguracionSri {
     private String carpetaRaizSRI = "DOCUMENTOSRI";
     private String carpetaFirma = "FIRMA";
     private List<String> listaDicos = new ArrayList<String>();
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public ConfiguracionSri() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
 
-        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
+//        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
         if (tipoambiente != null) {
             amCodifo = tipoambiente.getAmCodigo();
             if (tipoambiente.getLlevarContabilidad().equals("NO")) {
@@ -57,7 +68,7 @@ public class ConfiguracionSri {
         /*COLOCA EL ANTERIOR EN FALSO*/
         tipoambiente.setAmEstado(Boolean.FALSE);
         servicioTipoAmbiente.modificar(tipoambiente);
-        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amCodifo);
+        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         /*COLOCA EL NUEVO AMBIENTE EN ACTIVO*/
         tipoambiente.setAmEstado(Boolean.TRUE);
         servicioTipoAmbiente.modificar(tipoambiente);
@@ -88,16 +99,15 @@ public class ConfiguracionSri {
                     baseDir.mkdirs();
                 }
                 Files.copy(new File(filePath + media.getName()),
-                        media.getStreamData());
+                            media.getStreamData());
                 tipoambiente.setAmDirFirma(nombre);
             }
 
         }
     }
-    
-    
+
     //Imagen ruta 
-    private String filePathImg;   
+    private String filePathImg;
 
     @Command
     @NotifyChange({"fileContent", "tipoambiente"})
@@ -120,13 +130,12 @@ public class ConfiguracionSri {
                     baseDir.mkdirs();
                 }
                 Files.copy(new File(filePathImg + media.getName()),
-                        media.getStreamData());
-                tipoambiente.setAm_DirImgPuntoVenta(filePathImg+ File.separator +nombre);
+                            media.getStreamData());
+                tipoambiente.setAm_DirImgPuntoVenta(filePathImg + File.separator + nombre);
             }
 
         }
     }
-
 
     @Command
     @NotifyChange({"tipoambiente", "llevaContabilidad"})
@@ -145,7 +154,7 @@ public class ConfiguracionSri {
         tipoambiente.setAmEnviocliente("ENVIARCLIENTE");
         servicioTipoAmbiente.modificar(tipoambiente);
         Clients.showNotification("Información registrada exitosamente",
-                Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
+                    Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
 
     }
 
@@ -209,5 +218,4 @@ public class ConfiguracionSri {
 
     }
 
-    
 }

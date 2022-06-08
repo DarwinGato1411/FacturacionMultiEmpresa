@@ -6,6 +6,8 @@ package com.ec.controlador;
 
 import com.ec.entidad.CabeceraCompra;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioAcumuladoVentas;
 import com.ec.servicio.ServicioCompra;
@@ -45,6 +47,8 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
@@ -68,6 +72,8 @@ public class ListaCompras {
     private String buscarNumFac = "";
     private Date inicio = new Date();
     private Date fin = new Date();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
 
     //reporte
     AMedia fileContent = null;
@@ -75,10 +81,14 @@ public class ListaCompras {
 
     public ListaCompras() {
         findByBetweenFecha();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(buscar);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
     }
 
     private void buscarLikeNombre() {
@@ -118,7 +128,7 @@ public class ListaCompras {
 
             map.put("valor", valor);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/compra/retencion.zul", null, map);
+                        "/compra/retencion.zul", null, map);
             window.doModal();
 //            window.detach();
         } catch (Exception e) {
@@ -134,7 +144,7 @@ public class ListaCompras {
 
                 map.put("valor", valor);
                 org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                        "/compra/modificarcompra.zul", null, map);
+                            "/compra/modificarcompra.zul", null, map);
                 window.doModal();
             }
 //            window.detach();
@@ -323,7 +333,7 @@ public class ListaCompras {
             emf.getTransaction().begin();
             con = emf.unwrap(Connection.class);
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = reportFile + File.separator + "facturacompra.jasper";
 
             Map<String, Object> parametros = new HashMap<String, Object>();
@@ -345,7 +355,7 @@ public class ListaCompras {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/contenedorReporte.zul", null, map);
+                        "/venta/contenedorReporte.zul", null, map);
             window.doModal();
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException " + e.getMessage());

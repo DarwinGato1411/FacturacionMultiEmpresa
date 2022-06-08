@@ -10,6 +10,8 @@ import com.ec.entidad.Cliente;
 import com.ec.entidad.Factura;
 import com.ec.entidad.NotaCreditoDebito;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioNotaCredito;
@@ -27,6 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import net.sf.jasperreports.engine.JRException;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -40,30 +44,35 @@ public class UtilitarioAutorizarSRI {
     ServicioNotaCredito servicioNotaCredito = new ServicioNotaCredito();
     private Tipoambiente amb = new Tipoambiente();
     ServicioCliente servicioCliente = new ServicioCliente();
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public void autorizarSRI(Factura valor)
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+      Session sess = Sessions.getCurrent();
+       credential= (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
         File folderGen = new File(folderGenerados);
@@ -92,9 +101,9 @@ public class UtilitarioAutorizarSRI {
 
  /*PARA CREAR EL ARCHIVO XML FIRMADO*/
         String nombreArchivoXML = File.separator + "FACT-"
-                + valor.getCodestablecimiento()
-                + valor.getPuntoemision()
-                + valor.getFacNumeroText() + ".xml";
+                    + valor.getCodestablecimiento()
+                    + valor.getPuntoemision()
+                    + valor.getFacNumeroText() + ".xml";
 
 
         /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
@@ -115,7 +124,7 @@ public class UtilitarioAutorizarSRI {
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
         XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
 
         f = new File(pathArchivoFirmado);
 
@@ -125,7 +134,7 @@ public class UtilitarioAutorizarSRI {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -137,7 +146,7 @@ public class UtilitarioAutorizarSRI {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -191,12 +200,12 @@ public class UtilitarioAutorizarSRI {
                             if (valor.getIdCliente().getCliCorreo() != null) {
                                 System.out.println("CORREO DESTINO " + valor.getIdCliente().getCliCorreo());
                                 mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                                        attachFiles,
-                                        "FACTURA ELECTRONICA",
-                                        valor.getFacClaveAcceso(),
-                                        valor.getFacNumeroText(),
-                                        valor.getFacTotal(),
-                                        valor.getIdCliente().getCliNombre());
+                                            attachFiles,
+                                            "FACTURA ELECTRONICA",
+                                            valor.getFacClaveAcceso(),
+                                            valor.getFacNumeroText(),
+                                            valor.getFacTotal(),
+                                            valor.getIdCliente().getCliNombre(),amb);
                             }
                         }
                     }
@@ -215,11 +224,11 @@ public class UtilitarioAutorizarSRI {
 
     /*GENERAR NOTA DE CREDITO*/
     public void enviarNotaCreditoSRI(NotaCreditoDebito valor)
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         /*CAMPOS DE NOTA DE */
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
 
         valor.setFacFechaSustento(new Date());
         valor.setTipodocumentomod(valor.getTipodocumento());
@@ -227,22 +236,22 @@ public class UtilitarioAutorizarSRI {
         /*CREA LOS CAMPOS PARA LA NOTA DE CREDITO */
 
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
         String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                + File.separator + new Date().getYear()
-                + File.separator + new Date().getMonth();
+                    + File.separator + new Date().getYear()
+                    + File.separator + new Date().getMonth();
 
         /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
         File folderGen = new File(folderGenerados);
@@ -271,9 +280,9 @@ public class UtilitarioAutorizarSRI {
 
  /*PARA CREAR EL ARCHIVO XML FIRMADO*/
         String nombreArchivoXML = File.separator + "NCRE-"
-                + valor.getCodestablecimiento()
-                + valor.getPuntoemision()
-                + valor.getFacNumeroText() + ".xml";
+                    + valor.getCodestablecimiento()
+                    + valor.getPuntoemision()
+                    + valor.getFacNumeroText() + ".xml";
 
 
         /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
@@ -294,7 +303,7 @@ public class UtilitarioAutorizarSRI {
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
         XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
 
         f = new File(pathArchivoFirmado);
 
@@ -304,7 +313,7 @@ public class UtilitarioAutorizarSRI {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -316,7 +325,7 @@ public class UtilitarioAutorizarSRI {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -365,18 +374,18 @@ public class UtilitarioAutorizarSRI {
                         }
                         if (valor.getIdFactura().getIdCliente().getCliCorreo() != null) {
                             mail.sendMailSimple(valor.getIdFactura().getIdCliente().getCliCorreo(),
-                                    attachFiles,
-                                    "NOTA DE CREDITO ELECTRONICA",
-                                    valor.getFacClaveAcceso(),
-                                    valor.getFacNumeroText(),
-                                    valor.getFacTotal(),
-                                    valor.getIdFactura().getIdCliente().getCliNombre());
+                                        attachFiles,
+                                        "NOTA DE CREDITO ELECTRONICA",
+                                        valor.getFacClaveAcceso(),
+                                        valor.getFacNumeroText(),
+                                        valor.getFacTotal(),
+                                        valor.getIdFactura().getIdCliente().getCliNombre(),amb);
                         }
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
                     Logger.getLogger(ListaFacturas.class
-                            .getName()).log(Level.SEVERE, null, ex);
+                                .getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 ArchivoUtils.FileCopy(pathArchivoFirmado, pathArchivoNoAutorizado);

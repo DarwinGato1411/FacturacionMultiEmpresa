@@ -8,6 +8,8 @@ import com.ec.entidad.Cliente;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.Factura;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioDetalleFactura;
@@ -23,8 +25,6 @@ import ec.gob.sri.comprobantes.exception.RespuestaAutorizacionException;
 import ec.gob.sri.comprobantes.ws.RespuestaSolicitud;
 import ec.gob.sri.comprobantes.ws.aut.Autorizacion;
 import ec.gob.sri.comprobantes.ws.aut.RespuestaComprobante;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +35,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,27 +56,13 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.CategoryLabelPositions;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.CategoryItemLabelGenerator;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.title.LegendTitle;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.RectangleEdge;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.image.AImage;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
@@ -106,17 +91,24 @@ public class ListaFacturas {
     private Tipoambiente amb = new Tipoambiente();
     private Date fechainicio = new Date();
     private Date fechafin = new Date();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
 
     public ListaFacturas() {
-        consultarFactura();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
+        
+        consultarFactura();
     }
 
     private void consultarFactura() {
-        lstFacturas = servicioFactura.FindALlFacturaMaxVeinte();
+        lstFacturas = servicioFactura.findALlFacturaMax(amb);
     }
 
     public List<Factura> getLstFacturas() {
@@ -384,95 +376,7 @@ public class ListaFacturas {
         lstFacturas = servicioFactura.findEstadoFactura(estadoBusqueda);
         //saldoPorCobrar();
     }
-    //GRAFICA POR UBICACION
-    JFreeChart jfreechartMes;
-    private byte[] graficoBarrasMes;
-    String pathSalidaMes = "";
-    private AImage reporteMes;
-
-    @Command
-    @NotifyChange({"reporteUbicacion"})
-    public void graficarForMes() throws IOException {
-        List<Factura> lstModel = servicioFactura.FindALlFacturaMaxVeinte();
-
-        //freechart
-        DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
-
-        for (Factura item : lstModel) {
-
-            defaultcategorydataset.addValue(item.getFacTotal(), item.getFacFecha(), item.getFacTipo());
-
-        }
-
-        jfreechartMes = ChartFactory.createBarChart(
-                    "ESTADÍSTICA POR VENTA MENSUAL", // título del
-                    // grafico
-                    "", // título de las categorias(eje x)
-                    "", // titulo de las series(eje y)
-                    defaultcategorydataset, // conjunto de datos
-                    PlotOrientation.VERTICAL, // orientación del gráfico
-                    true, // incluye o no las series
-                    false, // tooltips?
-                    false // URLs?
-        );
-        jfreechartMes.setBackgroundPaint(Color.decode("#ffffff"));
-        // plot maneja el dataset, axes(categories and series) y el rendered
-        CategoryPlot plot = (CategoryPlot) jfreechartMes.getPlot();
-
-        // renderer se uitiliza para getionar las barras
-        CategoryItemRenderer renderer = plot.getRenderer();
-        CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator(
-                    "{2}", new DecimalFormat("0"));
-        renderer.setBaseItemLabelGenerator(generator);
-
-        BarRenderer rerender1 = (BarRenderer) plot.getRenderer();
-        rerender1.setBaseItemLabelsVisible(true);
-        rerender1.setItemMargin(0.0);
-        rerender1.setShadowVisible(false);
-
-        renderer.setSeriesPaint(0, Color.decode("#4198af"));
-        renderer.setSeriesPaint(1, Color.decode("#91c3d5"));
-        renderer.setBaseItemLabelPaint(Color.black);
-
-//        plot.setBackgroundPaint(Color.WHITE);
-//        plot.setDomainGridlinePaint(Color.white);
-//        plot.setRangeGridlinePaint(Color.white);
-//        plot.setDomainGridlinesVisible(true);
-//        plot.setRangeGridlinesVisible(true);
-        plot.setBackgroundPaint(Color.white);
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setDomainGridlinesVisible(true);
-        plot.setRangeGridlinePaint(Color.white);
-
-        // legendSeries para ubicar las series
-        LegendTitle legendSeries = jfreechartMes.getLegend();
-        RectangleEdge posicion = null;
-        legendSeries.setPosition(posicion.RIGHT);
-
-        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-        CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-
-        BufferedImage image = jfreechartMes.createBufferedImage(650, 480);
-        graficoBarrasMes = ChartUtilities.encodeAsPNG(image);
-        reporteMes = new AImage("foto", graficoBarrasMes);
-
-        String directorioReportes = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
-
-        //crea la carpeta en el caso que no exista
-        File baseDir = new File(directorioReportes);
-        if (!baseDir.exists()) {
-            baseDir.mkdirs();
-        }
-        pathSalidaMes = directorioReportes + File.separator + "reportGenero.jpg";
-        System.out.println("RUTA " + pathSalidaMes);
-        ChartUtilities.saveChartAsJPEG(new File(pathSalidaMes), jfreechartMes, 500,
-                    300);
-
-    }
+    
 
     public AMedia getFileContent() {
         return fileContent;
@@ -482,37 +386,7 @@ public class ListaFacturas {
         this.fileContent = fileContent;
     }
 
-    public JFreeChart getJfreechartMes() {
-        return jfreechartMes;
-    }
-
-    public void setJfreechartMes(JFreeChart jfreechartMes) {
-        this.jfreechartMes = jfreechartMes;
-    }
-
-    public byte[] getGraficoBarrasMes() {
-        return graficoBarrasMes;
-    }
-
-    public void setGraficoBarrasMes(byte[] graficoBarrasMes) {
-        this.graficoBarrasMes = graficoBarrasMes;
-    }
-
-    public String getPathSalidaMes() {
-        return pathSalidaMes;
-    }
-
-    public void setPathSalidaMes(String pathSalidaMes) {
-        this.pathSalidaMes = pathSalidaMes;
-    }
-
-    public AImage getReporteMes() {
-        return reporteMes;
-    }
-
-    public void setReporteMes(AImage reporteMes) {
-        this.reporteMes = reporteMes;
-    }
+   
 
     public static String getPATH_BASE() {
         return PATH_BASE;
@@ -691,7 +565,7 @@ public class ListaFacturas {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -703,7 +577,7 @@ public class ListaFacturas {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -769,7 +643,7 @@ public class ListaFacturas {
                                             valor.getFacClaveAcceso(),
                                             valor.getFacNumeroText(),
                                             valor.getFacTotal(),
-                                            valor.getIdCliente().getCliNombre());
+                                            valor.getIdCliente().getCliNombre(),amb);
                             }
                         }
 
@@ -887,7 +761,7 @@ public class ListaFacturas {
         }
         try {
 
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
+            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 
@@ -945,7 +819,7 @@ public class ListaFacturas {
                                 valor.getFacClaveAcceso(),
                                 valor.getFacNumeroText(),
                                 valor.getFacTotal(),
-                                valor.getIdCliente().getCliNombre());
+                                valor.getIdCliente().getCliNombre(),amb);
                 }
 
             }

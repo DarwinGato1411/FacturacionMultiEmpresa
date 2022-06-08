@@ -10,6 +10,8 @@ import com.ec.entidad.CabeceraCompra;
 import com.ec.entidad.DetalleRetencionCompra;
 import com.ec.entidad.RetencionCompra;
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioDetalleRetencionCompra;
 import com.ec.servicio.ServicioRetencionCompra;
 import com.ec.servicio.ServicioTipoAmbiente;
@@ -23,6 +25,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -34,16 +38,22 @@ public class GenerarATS {
     ServicioRetencionCompra servicioRetencionCompra = new ServicioRetencionCompra();
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
     private static String PATH_BASE = "";
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public String generaXMLFactura(List<Acumuladoventas> detalleFactura, BigDecimal totalVentas, List<CabeceraCompra> detalleCompra, Date inicio, Date fin) {
         try {
-            Tipoambiente amb = servicioTipoAmbiente.FindALlTipoambiente();
+
+            Session sess = Sessions.getCurrent();
+            credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+            amRuc = credential.getUsuarioSistema().getUsuRuc();
+            Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
             PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                    + amb.getAmDirXml();
+                        + amb.getAmDirXml();
 
             String folderATS = PATH_BASE + File.separator + amb.getAmDirAts()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
 
             File folderGen = new File(folderATS);
             if (!folderGen.exists()) {
@@ -62,16 +72,16 @@ public class GenerarATS {
             DecimalFormat df = new DecimalFormat("#.##");
 
             linea = ("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
-                    + "<iva>\n");
+                        + "<iva>\n");
             build.append(linea);
             linea = "";
 
             linea = (" <TipoIDInformante>R</TipoIDInformante>\n"
-                    + " <IdInformante>" + amb.getAmRuc() + "</IdInformante>\n"
-                    + " <razonSocial>" + AutorizarDocumentos.removeCaracteres(amb.getAmRazonSocial()) + "</razonSocial>\n"
-                    + " <Anio>" + formatoAnio.format(inicio) + "</Anio>\n"
-                    + " <Mes>" + formatoMes.format(inicio) + "</Mes>\n"
-                    + " <numEstabRuc>" + amb.getAmEstab() + "</numEstabRuc>\n");
+                        + " <IdInformante>" + amb.getAmRuc() + "</IdInformante>\n"
+                        + " <razonSocial>" + AutorizarDocumentos.removeCaracteres(amb.getAmRazonSocial()) + "</razonSocial>\n"
+                        + " <Anio>" + formatoAnio.format(inicio) + "</Anio>\n"
+                        + " <Mes>" + formatoMes.format(inicio) + "</Mes>\n"
+                        + " <numEstabRuc>" + amb.getAmEstab() + "</numEstabRuc>\n");
             build.append(linea);
             if (detalleFactura.size() > 0) {
                 linea = (" <totalVentas>" + totalVentas.setScale(2, RoundingMode.HALF_UP) + "</totalVentas>\n");
@@ -101,39 +111,39 @@ public class GenerarATS {
 
                 BigDecimal subTotalGravaNograva = item.getCabSubTotal().add(item.getCabSubTotalCero());
                 linea = ("        <detalleCompras>\n"
-                        + "            <codSustento>01</codSustento>\n"
-                        + "            <tpIdProv>" + tpIdProv + "</tpIdProv>\n"
-                        + "            <idProv>" + item.getIdProveedor().getProvCedula() + "</idProv>\n"
-                        + "            <tipoComprobante>01</tipoComprobante>\n"
-                        + "            <parteRel>NO</parteRel>\n"
-                        + "            <fechaRegistro>" + formato.format(item.getCabFechaEmision()) + "</fechaRegistro>\n"
-                        + "            <establecimiento>" + item.getCabEstablecimiento().trim() + "</establecimiento>\n"
-                        + "            <puntoEmision>" + item.getCabPuntoEmi() + "</puntoEmision>\n"
-                        + "            <secuencial>" + item.getCabNumFactura() + "</secuencial>\n"
-                        + "            <fechaEmision>" + formato.format(item.getCabFechaEmision()) + "</fechaEmision>\n"
-                        + "            <autorizacion>" + item.getCabAutorizacion().trim() + "</autorizacion>\n"
-                        + "            <baseNoGraIva>" + item.getCabSubTotalCero().setScale(2, RoundingMode.FLOOR) + "</baseNoGraIva>\n"
-                        + "            <baseImponible>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</baseImponible>\n"
-                        + "            <baseImpGrav>" + item.getCabSubTotal().setScale(2, RoundingMode.FLOOR) + "</baseImpGrav>\n"
-                        + "            <baseImpExe>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</baseImpExe>\n"
-                        + "            <montoIce>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</montoIce>\n"
-                        + "            <montoIva>" + item.getCabIva().setScale(2, RoundingMode.HALF_UP) + "</montoIva>\n"
-                        + "            <valRetBien10>0.00</valRetBien10>\n"
-                        + "            <valRetServ20>0.00</valRetServ20>\n"
-                        + "            <valorRetBienes>0.00</valorRetBienes>\n"
-                        + "            <valRetServ50>0.00</valRetServ50>\n"
-                        + "            <valorRetServicios>0.00</valorRetServicios>\n"
-                        + "            <valRetServ100>0.00</valRetServ100>\n"
-                        + "            <totbasesImpReemb>0.00</totbasesImpReemb>\n"
-                        + "            <pagoExterior>\n"
-                        + "                    <pagoLocExt>01</pagoLocExt>\n"
-                        + "                    <paisEfecPago>NA</paisEfecPago>\n"
-                        + "                    <aplicConvDobTrib>NA</aplicConvDobTrib>\n"
-                        + "                    <pagExtSujRetNorLeg>NA</pagExtSujRetNorLeg>\n"
-                        + "            </pagoExterior>\n"
-                        + ((subTotalGravaNograva.doubleValue() >= 1000) ? "  <formasDePago>\n"
-                        + "                <formaPago>01</formaPago>\n"
-                        + "            </formasDePago>" : ""));
+                            + "            <codSustento>01</codSustento>\n"
+                            + "            <tpIdProv>" + tpIdProv + "</tpIdProv>\n"
+                            + "            <idProv>" + item.getIdProveedor().getProvCedula() + "</idProv>\n"
+                            + "            <tipoComprobante>01</tipoComprobante>\n"
+                            + "            <parteRel>NO</parteRel>\n"
+                            + "            <fechaRegistro>" + formato.format(item.getCabFechaEmision()) + "</fechaRegistro>\n"
+                            + "            <establecimiento>" + item.getCabEstablecimiento().trim() + "</establecimiento>\n"
+                            + "            <puntoEmision>" + item.getCabPuntoEmi() + "</puntoEmision>\n"
+                            + "            <secuencial>" + item.getCabNumFactura() + "</secuencial>\n"
+                            + "            <fechaEmision>" + formato.format(item.getCabFechaEmision()) + "</fechaEmision>\n"
+                            + "            <autorizacion>" + item.getCabAutorizacion().trim() + "</autorizacion>\n"
+                            + "            <baseNoGraIva>" + item.getCabSubTotalCero().setScale(2, RoundingMode.FLOOR) + "</baseNoGraIva>\n"
+                            + "            <baseImponible>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</baseImponible>\n"
+                            + "            <baseImpGrav>" + item.getCabSubTotal().setScale(2, RoundingMode.FLOOR) + "</baseImpGrav>\n"
+                            + "            <baseImpExe>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</baseImpExe>\n"
+                            + "            <montoIce>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</montoIce>\n"
+                            + "            <montoIva>" + item.getCabIva().setScale(2, RoundingMode.HALF_UP) + "</montoIva>\n"
+                            + "            <valRetBien10>0.00</valRetBien10>\n"
+                            + "            <valRetServ20>0.00</valRetServ20>\n"
+                            + "            <valorRetBienes>0.00</valorRetBienes>\n"
+                            + "            <valRetServ50>0.00</valRetServ50>\n"
+                            + "            <valorRetServicios>0.00</valorRetServicios>\n"
+                            + "            <valRetServ100>0.00</valRetServ100>\n"
+                            + "            <totbasesImpReemb>0.00</totbasesImpReemb>\n"
+                            + "            <pagoExterior>\n"
+                            + "                    <pagoLocExt>01</pagoLocExt>\n"
+                            + "                    <paisEfecPago>NA</paisEfecPago>\n"
+                            + "                    <aplicConvDobTrib>NA</aplicConvDobTrib>\n"
+                            + "                    <pagExtSujRetNorLeg>NA</pagExtSujRetNorLeg>\n"
+                            + "            </pagoExterior>\n"
+                            + ((subTotalGravaNograva.doubleValue() >= 1000) ? "  <formasDePago>\n"
+                            + "                <formaPago>01</formaPago>\n"
+                            + "            </formasDePago>" : ""));
 
                 build.append(linea);
 
@@ -146,22 +156,22 @@ public class GenerarATS {
                     for (DetalleRetencionCompra rcom : listaDetalleRetencion) {
                         if (!rcom.getTireCodigo().getTireCodigo().equals("001")) {
                             linea = ("              <detalleAir>\n"
-                                    + "                    <codRetAir>" + rcom.getTireCodigo().getTireCodigo() + "</codRetAir>\n"
-                                    + "                    <baseImpAir>" + rcom.getDrcBaseImponible().setScale(2, RoundingMode.HALF_UP) + "</baseImpAir>\n"
-                                    + "                    <porcentajeAir>" + rcom.getDrcPorcentaje().setScale(2, RoundingMode.HALF_UP) + "</porcentajeAir>\n"
-                                    + "                    <valRetAir>" + rcom.getDrcValorRetenido().setScale(2, RoundingMode.HALF_UP) + "</valRetAir>\n"
-                                    + "              </detalleAir>\n");
+                                        + "                    <codRetAir>" + rcom.getTireCodigo().getTireCodigo() + "</codRetAir>\n"
+                                        + "                    <baseImpAir>" + rcom.getDrcBaseImponible().setScale(2, RoundingMode.HALF_UP) + "</baseImpAir>\n"
+                                        + "                    <porcentajeAir>" + rcom.getDrcPorcentaje().setScale(2, RoundingMode.HALF_UP) + "</porcentajeAir>\n"
+                                        + "                    <valRetAir>" + rcom.getDrcValorRetenido().setScale(2, RoundingMode.HALF_UP) + "</valRetAir>\n"
+                                        + "              </detalleAir>\n");
 
                             build.append(linea);
                         }
                     }
 
                     linea = ("            </air>\n"
-                            + "            <estabRetencion1>" + amb.getAmEstab() + "</estabRetencion1>\n"
-                            + "            <ptoEmiRetencion1>" + amb.getAmPtoemi() + "</ptoEmiRetencion1>\n"
-                            + "            <secRetencion1>" + rc.getRcoSecuencial() + "</secRetencion1>\n"
-                            + "            <autRetencion1>" + rc.getRcoAutorizacion() + "</autRetencion1>\n"
-                            + "            <fechaEmiRet1>" + formato.format(rc.getRcoFecha()) + "</fechaEmiRet1>\n");
+                                + "            <estabRetencion1>" + amb.getAmEstab() + "</estabRetencion1>\n"
+                                + "            <ptoEmiRetencion1>" + amb.getAmPtoemi() + "</ptoEmiRetencion1>\n"
+                                + "            <secRetencion1>" + rc.getRcoSecuencial() + "</secRetencion1>\n"
+                                + "            <autRetencion1>" + rc.getRcoAutorizacion() + "</autRetencion1>\n"
+                                + "            <fechaEmiRet1>" + formato.format(rc.getRcoFecha()) + "</fechaEmiRet1>\n");
 
                     build.append(linea);
                 }
@@ -180,39 +190,39 @@ public class GenerarATS {
                 for (Acumuladoventas item : detalleFactura) {
 
                     linea = ("        <detalleVentas>\n"
-                            + "            <tpIdCliente>" + item.getTidCodigo() + "</tpIdCliente>\n"
-                            + "            <idCliente>" + item.getCliCedula() + "</idCliente>\n");
+                                + "            <tpIdCliente>" + item.getTidCodigo() + "</tpIdCliente>\n"
+                                + "            <idCliente>" + item.getCliCedula() + "</idCliente>\n");
                     build.append(linea);
                     if (!item.getTidCodigo().equals("07")) {
                         linea = ("            <parteRelVtas>NO</parteRelVtas>\n");
                         build.append(linea);
                     }
                     linea = ("            <tipoComprobante>18</tipoComprobante>\n"
-                            + "            <tipoEmision>F</tipoEmision>\n"
-                            + "            <numeroComprobantes>" + 1 + "</numeroComprobantes>\n"
-                            + "            <baseNoGraIva>" + BigDecimal.ZERO + "</baseNoGraIva>\n"
-                            + "            <baseImponible>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</baseImponible>\n"
-                            + "            <baseImpGrav>" + item.getFacTotalBaseGravaba().setScale(2, RoundingMode.HALF_UP) + "</baseImpGrav>\n"
-                            + "            <montoIva>" + item.getFacIva().setScale(2, RoundingMode.HALF_UP) + "</montoIva>\n"
-                            + "            <montoIce>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</montoIce>\n"
-                            + "            <valorRetIva>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</valorRetIva>\n"
-                            + "            <valorRetRenta>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</valorRetRenta>\n"
-                            + "         <formasDePago>\n"
-                            + "            <formaPago>" + item.getForCodigo() + "</formaPago>\n"
-                            + "         </formasDePago>\n"
-                            + "        </detalleVentas>\n");
+                                + "            <tipoEmision>F</tipoEmision>\n"
+                                + "            <numeroComprobantes>" + 1 + "</numeroComprobantes>\n"
+                                + "            <baseNoGraIva>" + BigDecimal.ZERO + "</baseNoGraIva>\n"
+                                + "            <baseImponible>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</baseImponible>\n"
+                                + "            <baseImpGrav>" + item.getFacTotalBaseGravaba().setScale(2, RoundingMode.HALF_UP) + "</baseImpGrav>\n"
+                                + "            <montoIva>" + item.getFacIva().setScale(2, RoundingMode.HALF_UP) + "</montoIva>\n"
+                                + "            <montoIce>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</montoIce>\n"
+                                + "            <valorRetIva>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</valorRetIva>\n"
+                                + "            <valorRetRenta>" + BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) + "</valorRetRenta>\n"
+                                + "         <formasDePago>\n"
+                                + "            <formaPago>" + item.getForCodigo() + "</formaPago>\n"
+                                + "         </formasDePago>\n"
+                                + "        </detalleVentas>\n");
                     build.append(linea);
                 }
 
 //            build.append(linea);
                 linea = ("    </ventas>\n"
-                        + "   <ventasEstablecimiento>\n"
-                        + "      <ventaEst>\n"
-                        + "         <codEstab>" + amb.getAmEstab() + "</codEstab>\n"
-                        + "         <ventasEstab>" + totalVentas.setScale(2, RoundingMode.HALF_UP) + "</ventasEstab>\n"
-                        + "         <ivaComp>0.00</ivaComp>\n"
-                        + "      </ventaEst>\n"
-                        + "   </ventasEstablecimiento>\n");
+                            + "   <ventasEstablecimiento>\n"
+                            + "      <ventaEst>\n"
+                            + "         <codEstab>" + amb.getAmEstab() + "</codEstab>\n"
+                            + "         <ventasEstab>" + totalVentas.setScale(2, RoundingMode.HALF_UP) + "</ventasEstab>\n"
+                            + "         <ivaComp>0.00</ivaComp>\n"
+                            + "      </ventaEst>\n"
+                            + "   </ventasEstablecimiento>\n");
                 build.append(linea);
 
             }
@@ -223,9 +233,9 @@ public class GenerarATS {
             /*FIN DE ATS VENTAS*/
             System.out.println("XML " + build);
             String pathArchivoSalida = folderATS
-                    + File.separator + "ATS_"
-                    + formatoAnio.format(inicio) + "_"
-                    + formatoMes.format(inicio) + ".xml";
+                        + File.separator + "ATS_"
+                        + formatoAnio.format(inicio) + "_"
+                        + formatoMes.format(inicio) + ".xml";
 
             /*ruta de salida del archivo XML 
             generados o autorizados para enviar al cliente 

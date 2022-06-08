@@ -5,6 +5,8 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioAcumuladoVentas;
 import com.ec.servicio.ServicioDetalleCompra;
 import com.ec.servicio.ServicioFactura;
@@ -33,6 +35,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -55,16 +59,20 @@ public class ListaCompraPromedio {
     private String buscarNumFac = "";
     private Date inicio = new Date();
     private Date fin = new Date();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
 
     public ListaCompraPromedio() {
         findByBetweenFecha();
-        amb = servicioTipoAmbiente.FindALlTipoambiente();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
     }
 
-   
     private void findByBetweenFecha() {
         listaCabeceraCompras = servicioCompra.findBetweenGroupByProducto(inicio, fin);
     }
@@ -74,8 +82,6 @@ public class ListaCompraPromedio {
     public void buscarForFechas() {
         findByBetweenFecha();
     }
-
-    
 
     public String getBuscar() {
         return buscar;
@@ -92,8 +98,6 @@ public class ListaCompraPromedio {
     public void setListaCabeceraCompras(List<CompraPromedio> listaCabeceraCompras) {
         this.listaCabeceraCompras = listaCabeceraCompras;
     }
-
-   
 
     public Date getInicio() {
         return inicio;
@@ -193,7 +197,6 @@ public class ListaCompraPromedio {
 //            HSSFCell ch4 = r.createCell(j++);
 //            ch4.setCellValue(new HSSFRichTextString("Precio promedio"));
 //            ch4.setCellStyle(estiloCelda);
-
             int rownum = 1;
             int i = 0;
 
@@ -209,15 +212,14 @@ public class ListaCompraPromedio {
                 c1.setCellValue(new HSSFRichTextString(sm.format(item.getFecha())));
 
                 HSSFCell c2 = r.createCell(i++);
-                c2.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCantidadInicial(),2).toString()));
+                c2.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getCantidadInicial(), 2).toString()));
 
 //                HSSFCell c3 = r.createCell(i++);
 //                c3.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales( item.getPrecioActual(),2).toPlainString()));
 //               
                 HSSFCell c4 = r.createCell(i++);
-                c4.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales( item.getPrecio(),2).toPlainString()));
+                c4.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getPrecio(), 2).toPlainString()));
 
-           
                 /*autemta la siguiente fila*/
                 rownum += 1;
 
@@ -234,7 +236,5 @@ public class ListaCompraPromedio {
         return pathSalida;
 
     }
-
-    
 
 }

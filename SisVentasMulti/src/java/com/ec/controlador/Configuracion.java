@@ -6,14 +6,12 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioTipoAmbiente;
-import com.ec.untilitario.ParamFactura;
 import com.ec.vista.servicios.ServicioSriCatastro;
-import com.ec.vistas.SriCatastro;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +19,16 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
-import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Image;
 import org.zkoss.io.Files;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -58,12 +56,14 @@ public class Configuracion extends SelectorComposer<Component> {
     private Tipoambiente tipoambiente = new Tipoambiente();
     private String llevaContabilidad = "NO";
     private String codigoAmbiente = "1";
-    private String amCodifo = "1";
+    private String amCodigo = "1";
     private String carpetaRaizSRI = "DOCUMENTOSRI";
     private String carpetaFirma = "FIRMA";
     private List<String> listaDicos = new ArrayList<String>();
 
     ServicioSriCatastro servicioSriCatastro = new ServicioSriCatastro();
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
@@ -72,10 +72,12 @@ public class Configuracion extends SelectorComposer<Component> {
     }
 
     public Configuracion() {
-
-        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amCodigo, amRuc);
         if (tipoambiente != null) {
-            amCodifo = tipoambiente.getAmCodigo();
+            amCodigo = tipoambiente.getAmCodigo();
             if (tipoambiente.getLlevarContabilidad().equals("NO")) {
                 llevaContabilidad = "NO";
             } else {
@@ -102,21 +104,21 @@ public class Configuracion extends SelectorComposer<Component> {
                 chkAR.setChecked(Boolean.FALSE);
                 chkCE.setChecked(Boolean.FALSE);
                 chkEX.setChecked(Boolean.FALSE);
-                for (SriCatastro catastro : servicioSriCatastro.findCatastro(tipoambiente.getAmRuc())) {
-                    if (catastro.getSigla().equals("MC")) {
-                        tipoambiente.setAmMicroEmp(Boolean.TRUE);
-                        chkRM.setChecked(Boolean.TRUE);
-                    } else if (catastro.getSigla().equals("AR")) {
-                        tipoambiente.setAmAgeRet(Boolean.TRUE);
-                        chkAR.setChecked(Boolean.TRUE);
-                    } else if (catastro.getSigla().equals("CE")) {
-                        tipoambiente.setAmContrEsp(Boolean.TRUE);
-                        chkCE.setChecked(Boolean.TRUE);
-                    } else if (catastro.getSigla().equals("EX")) {
-                        tipoambiente.setAmExp(Boolean.TRUE);
-                        chkEX.setChecked(Boolean.FALSE);
-                    }
-                }
+//                for (SriCatastro catastro : servicioSriCatastro.findCatastro(tipoambiente.getAmRuc())) {
+//                    if (catastro.getSigla().equals("MC")) {
+//                        tipoambiente.setAmMicroEmp(Boolean.TRUE);
+//                        chkRM.setChecked(Boolean.TRUE);
+//                    } else if (catastro.getSigla().equals("AR")) {
+//                        tipoambiente.setAmAgeRet(Boolean.TRUE);
+//                        chkAR.setChecked(Boolean.TRUE);
+//                    } else if (catastro.getSigla().equals("CE")) {
+//                        tipoambiente.setAmContrEsp(Boolean.TRUE);
+//                        chkCE.setChecked(Boolean.TRUE);
+//                    } else if (catastro.getSigla().equals("EX")) {
+//                        tipoambiente.setAmExp(Boolean.TRUE);
+//                        chkEX.setChecked(Boolean.FALSE);
+//                    }
+//                }
 
             }
         }
@@ -129,7 +131,7 @@ public class Configuracion extends SelectorComposer<Component> {
         /*COLOCA EL ANTERIOR EN FALSO*/
         tipoambiente.setAmEstado(Boolean.FALSE);
         servicioTipoAmbiente.modificar(tipoambiente);
-        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amCodifo);
+        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amCodigo, amRuc);
         /*COLOCA EL NUEVO AMBIENTE EN ACTIVO*/
         tipoambiente.setAmEstado(Boolean.TRUE);
         servicioTipoAmbiente.modificar(tipoambiente);
@@ -146,49 +148,36 @@ public class Configuracion extends SelectorComposer<Component> {
         org.zkoss.util.media.Media media = Fileupload.get();
         if (media instanceof org.zkoss.util.media.AMedia) {
             String nombre = media.getName();
-            if (media != null && nombre.contains("p12")) {
 
-                if (media.getByteData().length > 10 * 1024 * 1024) {
-                    Messagebox.show("El arhivo seleccionado sobrepasa el tamaño de 10Mb.\n Por favor seleccione un archivo más pequeño.", "Atención", Messagebox.OK, Messagebox.ERROR);
+            if (!nombre.contains("p12")) {
+                Clients.showNotification("Su firma electronica debe ser tipo archivo con extension .p12 ",
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
 
-                    return;
-                }
-                filePath = tipoambiente.getAmDirBaseArchivos() + File.separator + tipoambiente.getAmFolderFirma() + File.separator;
-
-                File baseDir = new File(filePath);
-                if (!baseDir.exists()) {
-                    baseDir.mkdirs();
-                }
-                HSSFWorkbook wb = new HSSFWorkbook(media.getStreamData());
-                Files.copy(new File(filePath + media.getName()),
-                            media.getStreamData());
-                tipoambiente.setAmDirFirma(nombre);
-
-                HSSFSheet sheet = wb.getSheetAt(0);
-
-                int rows = sheet.getLastRowNum();
-                for (int i = 1; i < rows; ++i) {
-                    HSSFRow row = sheet.getRow(i);
-
-                    HSSFCell productCell = row.getCell(0);
-                    HSSFCell priceCell = row.getCell(1);
-                    HSSFCell linkCell = row.getCell(2);
-
-                    String product = productCell.getStringCellValue();
-                    BigDecimal price = new BigDecimal(priceCell.getNumericCellValue()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-                    String link = linkCell.getStringCellValue();
-
-                    System.out.printf("%s, %s, %s%n", product, price.toString(), link);
-                }
+                return;
             }
+            if (media.getByteData().length > 10 * 1024 * 1024) {
+
+                Clients.showNotification("El arhivo seleccionado sobrepasa el tamaño de 10Mb.\n Por favor seleccione un archivo más pequeño. ",
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                return;
+            }
+            filePath = tipoambiente.getAmDirBaseArchivos() + File.separator + tipoambiente.getAmFolderFirma() + File.separator;
+
+            File baseDir = new File(filePath);
+            if (!baseDir.exists()) {
+                baseDir.mkdirs();
+            }
+        
+            Files.copy(new File(filePath + media.getName()),
+                        media.getStreamData());
+            tipoambiente.setAmDirFirma(nombre);
+
+        
 
         }
     }
 
     public void LeerExcel() {
-
-        
-   
 
     }
     //Imagen ruta 
@@ -284,11 +273,11 @@ public class Configuracion extends SelectorComposer<Component> {
     }
 
     public String getAmCodifo() {
-        return amCodifo;
+        return amCodigo;
     }
 
     public void setAmCodifo(String amCodifo) {
-        this.amCodifo = amCodifo;
+        this.amCodigo = amCodifo;
     }
 
     private void listaDiscos() {

@@ -127,6 +127,8 @@ public class Usuario implements Serializable {
     private String usuCorreo;
     @Column(name = "usu_nivel")
     private Integer usuNivel;
+    @Column(name = "usu_ruc")
+    private String usuRuc;
     @Size(max = 100)
     @Column(name = "usu_tipo_usuario")
     private String usuTipoUsuario;
@@ -439,4 +441,14 @@ public class Usuario implements Serializable {
     public void setIdParroquia(Parroquia idParroquia) {
         this.idParroquia = idParroquia;
     }
+
+    public String getUsuRuc() {
+        return usuRuc;
+    }
+
+    public void setUsuRuc(String usuRuc) {
+        this.usuRuc = usuRuc;
+    }
+    
+    
 }

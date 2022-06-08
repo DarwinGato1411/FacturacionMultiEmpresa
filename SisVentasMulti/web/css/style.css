@@ -30,7 +30,7 @@ element.style {
     overflow: hidden;
 }
 .banner {
-    background-color:#1ebea5;
+    background-color:#02c0cc;
     color: white;
     padding: 10px 5px 5px 10px;
 }
@@ -41,7 +41,12 @@ element.style {
     text-decoration: underline;
     cursor: pointer;
     padding-right:3px;
-    padding-left: 3px
+    padding-left: 3px;
+        font-size: 1.5em;
+    color: red;
+    text-align: center;
+    height: auto;
+    font-weight: bold;
 } 
 
 .footer {
@@ -400,11 +405,7 @@ element.style {
 
 }
 .labelLogout{
-    font-size: 1em;
-    color: red;
-    text-align: center;
-    height: auto;
-    font-weight: bold;
+
 
 }
 .labelNuevoNegro{
@@ -597,7 +598,7 @@ div.z-listbox-header th.z-listheader, div.z-listbox-header th.z-auxheader {
     border-color: #cfcfcf #cfcfcf #cfcfcf white;
     border-top: 0;
     padding: 0;
-    background: #90DCFF;
+    background: #02c0cc;
     font-weight: bold;
 }
 
@@ -655,7 +656,7 @@ div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
 }
 
 .z-window-embedded-tr, .z-window-modal-tr, .z-window-highlighted-tr, .z-window-overlapped-tr, .z-window-popup-tr {
-    background: #90DCFF;
+    background: #02c0cc;
     position: relative;
     height: 5px;
     margin-right: -5px;
@@ -672,17 +673,17 @@ div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
     font-size: 12px;
     font-weight: normal;
     cursor: default;
-    background: #90DCFF;
+    background: #02c0cc;
 }
 
 .z-window-embedded-hr, .z-window-modal-hr, .z-window-highlighted-hr, .z-window-overlapped-hr, .z-window-popup-hr {
-    background: #90DCFF no-repeat right 0;
+    background: #02c0cc no-repeat right 0;
     padding-right: 6px;
     zoom: 1;
 }
 
 .z-window-embedded-hl, .z-window-modal-hl, .z-window-highlighted-hl, .z-window-overlapped-hl, .z-window-popup-hl {
-    background: #90DCFF no-repeat right 0;    
+    background: #02c0cc no-repeat right 0;    
     padding-left: 6px;
     zoom: 1;
 }
@@ -696,12 +697,12 @@ div.z-listfooter-cnt, div.z-listcell-cnt, div.z-listheader-cnt {
     outline-width: 0;
     padding: 2px 21px 2px 3px;
     white-space: nowrap;
-    background: #1ebea5;
+    background: #02c0cc;
     background-image: none;
 }
 
 .z-menupopup .z-menupopup-cnt{
-    background:#1ebea5 none repeat 0 0;
+    background:#02c0cc none repeat 0 0;
     background-image:none;
     border:0 none;
     padding:0;
@@ -755,4 +756,12 @@ input, button, select, textarea {
 .celdabloqueada{
     font-size:12px;
     background:#EBF5FB
+}
+.infoEmpresa{
+    font-size: 2.5em;
+    color: #fee837;
+    text-align: center;
+    height: auto;
+    font-weight: bold;
+
 }

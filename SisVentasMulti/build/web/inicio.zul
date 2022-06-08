@@ -23,7 +23,7 @@
 
             <div class="row " align="lefth">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group"  align="center">
-                    <image  src="/imagenes/iniciofactura.png" class="imgRedondaLogoLogin" width="75%" ></image>
+                    <image  src="/imagenes/multifact.png" class="imgRedondaLogoLogin" width="100%" ></image>
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group">
                     <textbox id="account" type="text" class="form-control" 

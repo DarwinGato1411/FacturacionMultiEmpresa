@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -147,12 +147,12 @@ public class AutorizarDocumentos {
         return verificador;
     }
 
-    public RespuestaSolicitud validar(byte[] datos) {
+    public RespuestaSolicitud validar(byte[] datos, Tipoambiente amb) {
         try {
 
             //System.setProperty("https.protocols", "SSLv3");
             //System.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, Boolean.FALSE);
-            URL url = new URL("https://" + servicioTipoAmbiente.FindALlTipoambiente().getAmUrlsri() + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl");
+            URL url = new URL("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl");
             QName qname = new QName("http://ec.gob.sri.ws.recepcion", "RecepcionComprobantesOfflineService");
             RecepcionComprobantesOfflineService service = new RecepcionComprobantesOfflineService(url, qname);
             RecepcionComprobantesOffline portRec = service.getRecepcionComprobantesOfflinePort();
@@ -166,10 +166,10 @@ public class AutorizarDocumentos {
 
     }
 
-    public RespuestaComprobante autorizarComprobante(String claveDeAcceso) throws RespuestaAutorizacionException {
+    public RespuestaComprobante autorizarComprobante(String claveDeAcceso,Tipoambiente amb) throws RespuestaAutorizacionException {
 
         try {
-            RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + servicioTipoAmbiente.FindALlTipoambiente().getAmUrlsri() + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
+            RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
             return repuesta;
         } catch (Exception ex) {
             RespuestaComprobante response = new RespuestaComprobante();
