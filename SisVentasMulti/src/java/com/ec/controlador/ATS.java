@@ -6,10 +6,14 @@ package com.ec.controlador;
 
 import com.ec.entidad.Acumuladoventas;
 import com.ec.entidad.CabeceraCompra;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioAcumuladoVentas;
 import com.ec.servicio.ServicioCompra;
 import com.ec.servicio.ServicioDetalleCompra;
 import com.ec.servicio.ServicioFactura;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.GenerarATS;
 import com.ec.untilitario.Totales;
 import java.io.File;
@@ -19,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Filedownload;
 
@@ -40,21 +46,28 @@ public class ATS {
     private Date inicio = new Date();
     private Date fin = new Date();
 
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
+
     public ATS() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
     }
 
     private void findByBetweenFecha() {
-        listaCabeceraCompras = servicioCompra.findByBetweenFecha(inicio, fin);
+        listaCabeceraCompras = servicioCompra.findByBetweenFecha(inicio, fin, amb);
         listaAcumuladoventas = servicioAcumuladoVentas.findAcumuladoventas(inicio, fin);
     }
 
     @Command
-    @NotifyChange({"listaCabeceraCompras","listaAcumuladoventas", "inicio", "fin"})
+    @NotifyChange({"listaCabeceraCompras", "listaAcumuladoventas", "inicio", "fin"})
     public void buscarForFechas() {
         findByBetweenFecha();
     }
-
-
 
     @Command
     public void descargaATS() throws FileNotFoundException {
@@ -62,7 +75,7 @@ public class ATS {
 
         List<Totales> totalesesVenta = servicioFactura.totalVenta(inicio, fin);
 //        List<Totales> totalesesCompra = servicioCompra.totalCompra(inicio, fin);
-        if (totalesesVenta.size() > 0 ) {
+        if (totalesesVenta.size() > 0) {
             valida = Boolean.TRUE;
         } else {
             valida = Boolean.FALSE;
@@ -70,9 +83,9 @@ public class ATS {
         if (valida) {
             GenerarATS generarATS = new GenerarATS();
             File f = new File(generarATS.generaXMLFactura(servicioAcumuladoVentas.findAcumuladoventas(inicio, fin),
-                    totalesesVenta.get(0).getTotal(),
-                    servicioCompra.findByBetweenFecha(inicio, fin),                    
-                    inicio, fin));
+                        totalesesVenta.get(0).getTotal(),
+                        servicioCompra.findByBetweenFecha(inicio, fin,amb),
+                        inicio, fin));
             Filedownload.save(f, null);
             Clients.showNotification("ATS generado correctamente..", "info", null, "end_before", 2000, true);
         } else {

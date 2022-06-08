@@ -70,8 +70,7 @@
                                         <space bar="true"  /> 
                                         <radio label="Pagado" value="PA" />  
                                         <space bar="true"  />                                                                        
-                                        <radio  label="Pendiente" value="PE"/>     
-                                                                                  
+                                        <radio  label="Pendiente" value="PE"/>                                                                                       
                                     </radiogroup>
 
                                              
@@ -137,8 +136,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="col-sm-12 "  >
-                                    <label value="Plazo:" style="color:black;font-weight:bold"/>
-                
+                                    <label value="Plazo:" style="color:black;font-weight:bold"/>                
                                     <combobox onSelect="@command('actualizarCostoVenta')"  
                                               readonly="true"    
                                               style="width:150px"                                    

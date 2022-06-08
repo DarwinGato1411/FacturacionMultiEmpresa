@@ -172,6 +172,11 @@ public class Tipoambiente implements Serializable {
     @OneToMany(mappedBy = "codTipoambiente")
     private Collection<Cliente> clienteCollection;
 
+    
+       @OneToMany(mappedBy = "codTipoambiente")
+    private Collection<CabeceraCompra> cabeceraCompraCollection;
+       
+       
     public Tipoambiente() {
     }
 
@@ -562,6 +567,14 @@ public class Tipoambiente implements Serializable {
 
     public void setClienteCollection(Collection<Cliente> clienteCollection) {
         this.clienteCollection = clienteCollection;
+    }
+
+    public Collection<CabeceraCompra> getCabeceraCompraCollection() {
+        return cabeceraCompraCollection;
+    }
+
+    public void setCabeceraCompraCollection(Collection<CabeceraCompra> cabeceraCompraCollection) {
+        this.cabeceraCompraCollection = cabeceraCompraCollection;
     }
 
     @Override

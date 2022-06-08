@@ -6,11 +6,15 @@ package com.ec.controlador;
 
 import com.ec.entidad.CabeceraCompra;
 import com.ec.entidad.Factura;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 
 import com.ec.servicio.ServicioCompra;
 
 import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioGeneral;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ResultadoCompraVenta;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -18,6 +22,8 @@ import java.util.Date;
 import java.util.List;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -34,12 +40,21 @@ public class AdminstrarCompraVenta {
     private Date inicio = new Date();
     private Date fin = new Date();
     ResultadoCompraVenta compraVenta = new ResultadoCompraVenta();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    private Tipoambiente amb = new Tipoambiente();
 
     public AdminstrarCompraVenta() {
+
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
     }
 
     private void findByBetweenFecha() {
-        listaCompras = servicioCompra.findByBetweenFecha(inicio, fin);
+        listaCompras = servicioCompra.findByBetweenFecha(inicio, fin, amb);
         listaVentas = servicioFactura.findBetweenFecha(inicio, fin);
 //        for (Factura venta : listaVentas) {
 //            compraVenta

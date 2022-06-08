@@ -56,8 +56,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CabeceraCompra.findByCabDescripcion", query = "SELECT c FROM CabeceraCompra c WHERE c.cabDescripcion = :cabDescripcion")})
 public class CabeceraCompra implements Serializable {
 
-
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -133,6 +131,9 @@ public class CabeceraCompra implements Serializable {
     @JoinColumn(name = "id_proveedor", referencedColumnName = "id_proveedor")
     @ManyToOne
     private Proveedores idProveedor;
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
 
     public CabeceraCompra() {
     }
@@ -334,6 +335,14 @@ public class CabeceraCompra implements Serializable {
         this.cabPuntoEmi = cabPuntoEmi;
     }
 
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -358,7 +367,6 @@ public class CabeceraCompra implements Serializable {
     public String toString() {
         return "com.ec.entidad.CabeceraCompra[ idCabecera=" + idCabecera + " ]";
     }
-
 
     public Integer getIdTipoIdentificacionCompra() {
         return idTipoIdentificacionCompra;
@@ -392,6 +400,4 @@ public class CabeceraCompra implements Serializable {
 //    public void setRetencionCompraSriCollection(Collection<RetencionCompraSri> retencionCompraSriCollection) {
 //        this.retencionCompraSriCollection = retencionCompraSriCollection;
 //    }
-
-
 }

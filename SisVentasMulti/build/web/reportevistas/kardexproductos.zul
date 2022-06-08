@@ -34,7 +34,7 @@
 
                             
                                 <button   image="/imagenes/buscar1.png"  
-                                          onClick="@command('buscarDiaria')"  
+                                          onClick="@command('buscarKardexAll')"  
                                           class="btn btn-primary btn-sm  "
                                           tooltiptext="Buscar el total de las facturas"/>                                     
                             </div>   

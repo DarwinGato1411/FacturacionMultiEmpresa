@@ -85,7 +85,7 @@ public class ListaCompras {
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
         amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(buscar);
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
@@ -96,7 +96,7 @@ public class ListaCompras {
     }
 
     private void findByBetweenFecha() {
-        listaCabeceraCompras = servicioCompra.findByBetweenFecha(inicio, fin);
+        listaCabeceraCompras = servicioCompra.findByBetweenFecha(inicio, fin,amb);
     }
 
     private void findByNumFac() {
