@@ -54,15 +54,24 @@
                         <menu label="Gestion de ventas"  id="menuVentas">
                             <menupopup>                               
                                 <menuitem label="Facturas emitidas" id="btnNotaVentas" />
-                                <menuitem label="Nota de venta" id="btnNotaVenta"  />                                
+                                <!--<menuitem label="Nota de venta" id="btnNotaVenta"  />-->                                
                                 <menuitem label="Proformas emitidas" id="btnProformasEmitidas"  />
-                                <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />
-                                <menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />
+                                <!--<menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />-->
+                                <!--<menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />-->
                                 <menuitem label="Notas credito" id="btnNotaCredito"  />
                                 <!--<menuitem label="Lista ordenes de trabajo" id="btnListaOrden"  />-->
                                 <!--<menuitem label="Venta en ruta (GLP)" id="btnVentaRuta" />-->
                              
 
+                            </menupopup>
+                        </menu> 
+                        
+                        <menu label="Gestion de guias"  id="menuGuias">
+                            <menupopup>                               
+                                
+                                <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />
+                                <menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />
+                                
                             </menupopup>
                         </menu> 
                         <menu label="Gestion de compras" id="menuCompras">
@@ -72,7 +81,7 @@
                                 <menuitem label="Mercaderia ingresada" id="btnListaCompras"  />                                                          
                                 <menuitem label="Retenciones" id="btnRetenciones"  />
                               
-                                <menuitem label="ComprasSRI" id="btnListaComprasSRI"  />     
+                                <!--<menuitem label="ComprasSRI" id="btnListaComprasSRI"  />-->     
                             </menupopup>
                         </menu>          
                                      
@@ -94,10 +103,17 @@
                                 <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" />
                                 <menuitem label="Rotacion Productos" id="btnRotacionProducto" />
                                 <!--<menuitem label="Lista de cierre de caja" id="btnListarCierre" />--> 
+<<<<<<< HEAD
                                 <!--<menuitem label="ATS Ventas" id="btnContabilidad"  />--> 
                                 <!--<menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  />--> 
                                 <!--<menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />-->
                                 <!--<menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+=======
+<!--                                <menuitem label="ATS Ventas" id="btnContabilidad"  /> 
+                                <menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  /> 
+                                <menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />
+                                <menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+>>>>>>> 354e171f0ac97e0eea30625350f80ab04f1e746b
                                 <!--<menuitem label="Precio promedio venta" id="btnPreciPromVenta"  />-->
                             </menupopup>
                         </menu>

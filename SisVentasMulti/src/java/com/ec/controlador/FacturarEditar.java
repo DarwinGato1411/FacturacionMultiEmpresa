@@ -181,7 +181,7 @@ public class FacturarEditar {
         amRuc = credential.getUsuarioSistema().getUsuRuc();
         amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         getDetallefactura();
-        Factura recuperada = servicioFactura.FindUltimaFactura();
+        Factura recuperada = servicioFactura.FindUltimaFactura(amb);
         if (recuperada != null) {
             numeroFactura = recuperada.getFacNumero() + 1;
         } else {
