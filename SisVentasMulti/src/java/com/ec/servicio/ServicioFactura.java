@@ -654,17 +654,17 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findBetweenFecha(Date inicio, Date fin) {
+    public List<Factura> findBetweenFecha(Date inicio, Date fin, Tipoambiente tipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Factura.findBetweenFecha", Factura.class
-            );
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumero DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
+            query.setParameter("tipoambiente", tipoambiente);
             query.setMaxResults(400);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
