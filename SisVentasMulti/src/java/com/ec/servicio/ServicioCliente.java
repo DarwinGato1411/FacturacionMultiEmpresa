@@ -93,15 +93,16 @@ public class ServicioCliente {
         return listaClientes;
     }
 
-    public Cliente FindClienteForCedula(String buscar) {
+    public Cliente FindClienteForCedula(String buscar, Tipoambiente codTipoambiente) {
 
         Cliente cliente = new Cliente();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT c FROM Cliente c WHERE c.cliCedula = :cliCedula");
+            Query query = em.createQuery("SELECT c FROM Cliente c WHERE c.cliCedula = :cliCedula AND c.codTipoambiente=:codTipoambiente");
             query.setParameter("cliCedula", buscar);
+             query.setParameter("codTipoambiente", codTipoambiente);
             List<Cliente> listaCliente = (List<Cliente>) query.getResultList();
             if (listaCliente.size() > 0) {
                 cliente = (Cliente) query.getSingleResult();

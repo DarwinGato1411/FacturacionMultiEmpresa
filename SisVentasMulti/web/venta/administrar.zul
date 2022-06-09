@@ -31,6 +31,7 @@
                         <auxhead>
                             <auxheader colspan="10" >  
                                 <image  src="/iconos/nuevo_pro-24.png"
+                               
                                         class="btn btn btn-secondary btn-sm "
                                         onClick="@command('nuevoCliente')"
                                         tooltiptext="Nuevo cliente"/>
@@ -146,6 +147,7 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-12 col-md-1 col-lg-1 form-group " align="start"  >
                                             <image  src="/iconos/nuevo_pro-24.png"
+                                             visible="@load(vm.esVisisible)"
                                                     class="btn btn btn-secondary btn-sm "
                                                     onClick="@command('agregarUsario')"
                                                     tooltiptext="Nuevo usuario"/>

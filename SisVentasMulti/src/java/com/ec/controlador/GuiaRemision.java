@@ -108,7 +108,7 @@ public class GuiaRemision {
     private List<Producto> listaProducto = new ArrayList<Producto>();
     private String buscarNombreProd = "";
 
-    private static Tipoambiente tipoambiente = null;
+    private static Tipoambiente amb = null;
     private String numeroGuiaRecibida = "";
     private String amRuc = "";
 
@@ -117,7 +117,7 @@ public class GuiaRemision {
         Selectors.wireComponents(view, this, false);
         findClienteLikeNombre();
         findProductoLikeNombre();
-        listaTransportistas = servicioTransportista.findTransportista("");
+        listaTransportistas = servicioTransportista.findTransportista("",amb);
         getDetalle();
 
     }
@@ -127,7 +127,7 @@ public class GuiaRemision {
         sess.setMaxInactiveInterval(10000);
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
         amRuc = credential.getUsuarioSistema().getUsuRuc();
-        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
 //        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
     }
 
@@ -142,7 +142,7 @@ public class GuiaRemision {
                     "/venta/buscarclienteguia.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
         if (clienteBuscado != null) {
             llegada = clienteBuscado.getCliDireccion();
         }
@@ -246,10 +246,10 @@ public class GuiaRemision {
                 guiaremision.setPuntoemision("001");
                 guiaremision.setCodestablecimiento("001");
                 guiaremision.setEstadosri("PENDIENTE");
-                String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", tipoambiente.getAmRuc(), tipoambiente.getAmCodigo(), "001001", numeroGuiaText, "12345678", "1");
+                String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(), "001001", numeroGuiaText, "12345678", "1");
                 guiaremision.setFacClaveAcceso(claveAccesoGuia);
                 guiaremision.setFacClaveAutorizacion(claveAccesoGuia);
-                guiaremision.setCodTipoambiente(tipoambiente.getCodTipoambiente());
+                guiaremision.setCodTipoambiente(amb.getCodTipoambiente());
                 guiaremision.setFacFechaSustento(new Date());
                 guiaremision.setIdTransportista(transportista);
                 guiaremision.setNumplacaguia(numeroPlaca);
@@ -316,15 +316,15 @@ public class GuiaRemision {
     }
 
     private void findClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,tipoambiente);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
     }
 
     private void findClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,tipoambiente);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
     }
 
     private void findClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,tipoambiente);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
     }
 
     private void getDetalle() {
@@ -338,7 +338,7 @@ public class GuiaRemision {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,tipoambiente);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
     }
 
     public ListModelList<DetalleGuiaDao> getListaGuiaModel() {

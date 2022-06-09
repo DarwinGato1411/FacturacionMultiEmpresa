@@ -4,6 +4,7 @@
  */
 package com.ec.servicio;
 
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Transportista;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,15 +73,16 @@ public class ServicioTransportista {
 
     }
 
-    public List<Transportista> findTransportista(String valor) {
+    public List<Transportista> findTransportista(String valor,Tipoambiente codTipoambiente) {
 
         List<Transportista> listaTransportistas = new ArrayList<Transportista>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Transportista a WHERE a.trpRazonSocial LIKE :trpRazonSocial");
+            Query query = em.createQuery("SELECT a FROM Transportista a WHERE a.trpRazonSocial LIKE :trpRazonSocial AND a.codTipoambiente=:codTipoambiente");
             query.setParameter("trpRazonSocial", "%"+valor+"%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             listaTransportistas = (List<Transportista>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

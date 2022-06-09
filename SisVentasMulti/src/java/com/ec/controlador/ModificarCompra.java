@@ -153,7 +153,7 @@ public class ModificarCompra {
     }
 
     private void buscarProveedoresLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre("");
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre("",amb);
     }
 
     public ModificarCompra() {
@@ -368,7 +368,7 @@ public class ModificarCompra {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                 "/compra/buscarproveedor.zul", null, map);
         window.doModal();
-        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor);
+        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor,amb);
     }
 
     @Command
@@ -526,11 +526,11 @@ public class ModificarCompra {
 //    }
 
     private void findProveedorLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre);
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre,amb);
     }
 
     private void findProveedorCedula() {
-        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula);
+        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula,amb);
     }
 
     //para buscar karder y mostrar en productos

@@ -9,9 +9,13 @@ import com.ec.entidad.Producto;
 import com.ec.entidad.ProductoProveedor;
 import com.ec.entidad.ProductoProveedorPK;
 import com.ec.entidad.Proveedores;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioProducto;
 import com.ec.servicio.ServicioProductoProveedor;
 import com.ec.servicio.ServicioProveedor;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ProductoProveedorCosto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,6 +26,8 @@ import java.util.Set;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 
@@ -48,8 +54,21 @@ public class AdmProductoProveedor {
     //busquedas en las cajas de texto
     private String buscarProveedor = "";
     private String buscarProductoProveedorCostos = "";
+    
+     UserCredential credential = new UserCredential();
+    private String amRuc = "";
+    private Tipoambiente amb = null;
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    
 
     public AdmProductoProveedor() {
+        
+         Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        
+        
         findProveedorByNombre();
 //        findProductoProveedorCostos();
         getDetallefactura();
@@ -71,7 +90,7 @@ public class AdmProductoProveedor {
     }
 
     private void findProveedorByNombre() {
-        listaProveedores = servicioProveedor.findLikeProvNombre(buscarProveedor);
+        listaProveedores = servicioProveedor.findLikeProvNombre(buscarProveedor,amb);
     }
 
     public List<ProductoProveedor> getListaProductoProveedor() {

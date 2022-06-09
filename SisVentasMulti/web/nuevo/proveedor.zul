@@ -23,6 +23,7 @@
             <div class="col-12 col-sm-12 col-md-4 col-lg-4  form-group "  >
                 <label   style="color:red;font-weight:bold" value="(*) "  />CI/Ruc:
                 <textbox  maxlength="13"  
+                          onOK="@command('buscarAduana')"
                           value="@bind(vm.proveedor.provCedula)" 
                           class="form-control" />
             </div>          

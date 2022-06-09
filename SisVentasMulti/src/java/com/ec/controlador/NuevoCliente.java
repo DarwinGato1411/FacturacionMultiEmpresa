@@ -173,7 +173,7 @@ public class NuevoCliente {
             cliente.setCodTipoambiente(amb);
             if (accion.equals("create")) {
 
-                if (servicioCliente.FindClienteForCedula(cliente.getCliCedula()) == null) {
+                if (servicioCliente.FindClienteForCedula(cliente.getCliCedula(),amb) == null) {
                     cliente.setClietipo(Integer.valueOf(clietipo));
                     cliente.setClieFechaRegistro(fechaReg);
                     cliente.setIdTipoIdentificacion(tipoadentificacion);

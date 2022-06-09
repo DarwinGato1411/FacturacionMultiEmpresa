@@ -94,6 +94,7 @@ public class AdmProducto {
     UserCredential credential = new UserCredential();
     private String amRuc = "";
     private Tipoambiente amb = null;
+
     public AdmProducto() {
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -124,11 +125,11 @@ public class AdmProducto {
     }
 
     private void findLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombre,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombre, amb);
     }
 
     private void findLikeProdCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigo,amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigo, amb);
     }
 
     public List<Producto> getListaProducto() {

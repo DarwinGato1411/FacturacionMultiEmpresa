@@ -84,7 +84,7 @@ public class ServicioTipoIdentificacion {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
           em.getTransaction().begin();
-            Query query = em.createNamedQuery("Tipoadentificacion.findAll", Tipoadentificacion.class);
+            Query query = em.createQuery("SELECT t FROM Tipoadentificacion t ORDER BY t.tidNombre ASC");
 //           query.setParameter("codigoUsuario", tipoadentificacion);
             listaTipoadentificacions = (List<Tipoadentificacion>) query.getResultList();
 //            if (listaTipoadentificacions.size() > 0) {
@@ -92,7 +92,7 @@ public class ServicioTipoIdentificacion {
 //            }
           em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error en lsa consulta tipoadentificacion");
+            System.out.println("Error en lsa consulta tipoadentificacion "+e.getMessage());
         } finally {
             em.close();
         }

@@ -7,7 +7,7 @@
     /> 
     <div  class="container" >
         <div  class="row" >         
-             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "    >
+             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "   visible="@bind(!vm.readOnly)" >
                 <label    value="(*) " style="color:red;font-weight:bold"  ></label>Tipo de usaurio:
                 <combobox class="badge badge-default   btn-secondary  textoFechaDateBox" 
                 readonly="@bind(vm.readOnly)"

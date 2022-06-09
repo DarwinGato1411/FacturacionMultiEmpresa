@@ -5,8 +5,12 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Proveedores;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Transportista;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioProveedor;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTransportista;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +19,8 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -23,20 +29,30 @@ import org.zkoss.zk.ui.Executions;
 public class AdmConductor {
 
     ServicioTransportista servicioTransportista = new ServicioTransportista();
- 
+
     private List<Transportista> listaProveedores = new ArrayList<Transportista>();
-   
+
     private String buscarNombre = "";
 
+    UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     public AdmConductor() {
+
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        credential = cre;
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+
         findLikeNombre();
- 
+
     }
 
-  
-
     private void findLikeNombre() {
-        listaProveedores = servicioTransportista.findTransportista(buscarNombre);
+        listaProveedores = servicioTransportista.findTransportista(buscarNombre,amb);
     }
 
     public List<Transportista> getListaProveedores() {
@@ -46,8 +62,6 @@ public class AdmConductor {
     public void setListaProveedores(List<Transportista> listaProveedores) {
         this.listaProveedores = listaProveedores;
     }
-
-  
 
     public String getBuscarNombre() {
         return buscarNombre;
@@ -60,7 +74,7 @@ public class AdmConductor {
     @Command
     @NotifyChange({"listaProveedores", "buscarNombre"})
     public void buscarLikeNombre() {
-        
+
         findLikeNombre();
     }
 
@@ -69,7 +83,7 @@ public class AdmConductor {
     public void nuevo() {
         buscarNombre = "";
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/conductor.zul", null, null);
+                    "/nuevo/conductor.zul", null, null);
         window.doModal();
         findLikeNombre();
     }
@@ -81,10 +95,9 @@ public class AdmConductor {
         final HashMap<String, Transportista> map = new HashMap<String, Transportista>();
         map.put("valor", valor);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/conductor.zul", null, map);
+                    "/nuevo/conductor.zul", null, map);
         window.doModal();
         findLikeNombre();
     }
-
 
 }
