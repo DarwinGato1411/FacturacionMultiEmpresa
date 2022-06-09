@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ec.entidad;
 
 import java.io.Serializable;
@@ -32,17 +31,27 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "transportista")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Transportista.findAll", query = "SELECT t FROM Transportista t"),
-    @NamedQuery(name = "Transportista.findByIdTransportista", query = "SELECT t FROM Transportista t WHERE t.idTransportista = :idTransportista"),
-    @NamedQuery(name = "Transportista.findByTrpCedula", query = "SELECT t FROM Transportista t WHERE t.trpCedula = :trpCedula"),
-    @NamedQuery(name = "Transportista.findByTrpRazonSocial", query = "SELECT t FROM Transportista t WHERE t.trpRazonSocial = :trpRazonSocial"),
-    @NamedQuery(name = "Transportista.findByTrpDireccion", query = "SELECT t FROM Transportista t WHERE t.trpDireccion = :trpDireccion"),
-    @NamedQuery(name = "Transportista.findByTrpTelefono", query = "SELECT t FROM Transportista t WHERE t.trpTelefono = :trpTelefono"),
-    @NamedQuery(name = "Transportista.findByTrpMovil", query = "SELECT t FROM Transportista t WHERE t.trpMovil = :trpMovil"),
-    @NamedQuery(name = "Transportista.findByTrpCorreo", query = "SELECT t FROM Transportista t WHERE t.trpCorreo = :trpCorreo"),
-    @NamedQuery(name = "Transportista.findByTrpCiudad", query = "SELECT t FROM Transportista t WHERE t.trpCiudad = :trpCiudad"),
+    @NamedQuery(name = "Transportista.findAll", query = "SELECT t FROM Transportista t")
+    ,
+    @NamedQuery(name = "Transportista.findByIdTransportista", query = "SELECT t FROM Transportista t WHERE t.idTransportista = :idTransportista")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpCedula", query = "SELECT t FROM Transportista t WHERE t.trpCedula = :trpCedula")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpRazonSocial", query = "SELECT t FROM Transportista t WHERE t.trpRazonSocial = :trpRazonSocial")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpDireccion", query = "SELECT t FROM Transportista t WHERE t.trpDireccion = :trpDireccion")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpTelefono", query = "SELECT t FROM Transportista t WHERE t.trpTelefono = :trpTelefono")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpMovil", query = "SELECT t FROM Transportista t WHERE t.trpMovil = :trpMovil")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpCorreo", query = "SELECT t FROM Transportista t WHERE t.trpCorreo = :trpCorreo")
+    ,
+    @NamedQuery(name = "Transportista.findByTrpCiudad", query = "SELECT t FROM Transportista t WHERE t.trpCiudad = :trpCiudad")
+    ,
     @NamedQuery(name = "Transportista.findByTrpClave", query = "SELECT t FROM Transportista t WHERE t.trpClave = :trpClave")})
 public class Transportista implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,7 +87,10 @@ public class Transportista implements Serializable {
     private Tipoadentificacion idTipoIdentificacion;
     @OneToMany(mappedBy = "idTransportista")
     private Collection<Guiaremision> guiaremisionCollection;
-    
+
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
 
     public Transportista() {
     }
@@ -166,7 +178,8 @@ public class Transportista implements Serializable {
     public void setIdTipoIdentificacion(Tipoadentificacion idTipoIdentificacion) {
         this.idTipoIdentificacion = idTipoIdentificacion;
     }
-   @XmlTransient
+
+    @XmlTransient
     public Collection<Guiaremision> getGuiaremisionCollection() {
         return guiaremisionCollection;
     }
@@ -174,6 +187,15 @@ public class Transportista implements Serializable {
     public void setGuiaremisionCollection(Collection<Guiaremision> guiaremisionCollection) {
         this.guiaremisionCollection = guiaremisionCollection;
     }
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -198,5 +220,5 @@ public class Transportista implements Serializable {
     public String toString() {
         return "com.ec.entidad.Transportista[ idTransportista=" + idTransportista + " ]";
     }
-    
+
 }

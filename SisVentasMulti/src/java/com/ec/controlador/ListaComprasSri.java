@@ -631,7 +631,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
         cabeceraCompra.setCategoriaFactura("Inventario");
         cabeceraCompra.setCabSubTotalCero(baseCero);
         /*VERIFICAMOS EL PROVEEDOR Y SI NO LO CREAMOS*/
-        Proveedores prov = servicioProveedor.findProvCedula(adto.getInfoTributaria().getRuc());
+        Proveedores prov = servicioProveedor.findProvCedula(adto.getInfoTributaria().getRuc(),amb);
         if (prov != null) {
             cabeceraCompra.setIdProveedor(prov);
         } else {
@@ -1912,7 +1912,7 @@ public class ListaComprasSri extends SelectorComposer<Component> {
         cabeceraCompra.setCategoriaFactura("Inventario");
         cabeceraCompra.setCabSubTotalCero(baseCero);
         /*VERIFICAMOS EL PROVEEDOR Y SI NO LO CREAMOS*/
-        Proveedores prov = servicioProveedor.findProvCedula(adto.getComprobante().getFactura().getInfoTributaria().getRuc());
+        Proveedores prov = servicioProveedor.findProvCedula(adto.getComprobante().getFactura().getInfoTributaria().getRuc(),amb);
         if (prov != null) {
             cabeceraCompra.setIdProveedor(prov);
         } else {

@@ -5,9 +5,11 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Proveedores;
-import com.ec.entidad.TipoIdentificacionCompra;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioProveedor;
-import com.ec.servicio.ServicioTipoIdentificacionCompra;
+import com.ec.servicio.ServicioTipoAmbiente;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,8 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -29,17 +33,26 @@ public class AdmProveedor {
     private String buscarNombre = "";
     private String buscarCedula = "";
 
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
+    private Tipoambiente amb = null;
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     public AdmProveedor() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         findLikeNombre();
 
     }
 
     private void findLikeCedula() {
-        listaProveedores = servicioProducto.findProveedorCedula(buscarCedula);
+        listaProveedores = servicioProducto.findProveedorCedula(buscarCedula,amb);
     }
 
     private void findLikeNombre() {
-        listaProveedores = servicioProducto.findLikeProvNombre(buscarNombre);
+        listaProveedores = servicioProducto.findLikeProvNombre(buscarNombre,amb);
     }
 
     public List<Proveedores> getListaProveedores() {
@@ -85,7 +98,7 @@ public class AdmProveedor {
     public void nuevoProvedor() {
         buscarNombre = "";
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/proveedor.zul", null, null);
+                    "/nuevo/proveedor.zul", null, null);
         window.doModal();
         findLikeNombre();
     }
@@ -97,7 +110,7 @@ public class AdmProveedor {
         final HashMap<String, Proveedores> map = new HashMap<String, Proveedores>();
         map.put("valor", valor);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/proveedor.zul", null, map);
+                    "/nuevo/proveedor.zul", null, map);
         window.doModal();
         findLikeNombre();
     }

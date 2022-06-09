@@ -66,6 +66,8 @@ public class AdministrarVenta {
     private String amRuc = "";
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
+    private Boolean esVisisible = Boolean.FALSE;
+
     public AdministrarVenta() {
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -227,7 +229,7 @@ public class AdministrarVenta {
 
     /*ADMINISTRAR USUARIO*/
     private void cosultarUsuarios(String buscar) {
-        listaUsuarios = servicioUsuario.FindALlUsuarioPorLikeNombre(buscar);
+        listaUsuarios = servicioUsuario.FindALlUsuarioPorLikeNombre(buscar, credential.getUsuarioSistema());
     }
 
     public List<Usuario> getListaUsuarios() {
@@ -380,4 +382,21 @@ public class AdministrarVenta {
         return pathSalida;
 
     }
+
+    public UserCredential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(UserCredential credential) {
+        this.credential = credential;
+    }
+
+    public Boolean getEsVisisible() {
+        return credential.getUsuarioSistema().getUsuNivel() == 1 ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    public void setEsVisisible(Boolean esVisisible) {
+        this.esVisisible = esVisisible;
+    }
+
 }

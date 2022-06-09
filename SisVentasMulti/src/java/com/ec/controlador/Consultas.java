@@ -6,14 +6,20 @@ package com.ec.controlador;
 
 import com.ec.entidad.ProductoProveedor;
 import com.ec.entidad.Proveedores;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioProductoProveedor;
 import com.ec.servicio.ServicioProveedor;
+import com.ec.servicio.ServicioTipoAmbiente;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 /**
@@ -28,7 +34,19 @@ public class Consultas {
     private List<ProductoProveedor> lstProductoProveedor = new ArrayList<ProductoProveedor>();
     private Proveedores proveedorSelected = new Proveedores();
 
+    
+     UserCredential credential = new UserCredential();
+    private String amRuc = "";
+    private Tipoambiente amb = null;
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    
+    
     public Consultas() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        
         consultarProveedores();
     }
 
@@ -49,7 +67,7 @@ public class Consultas {
     }
 
     private void consultarProveedores() {
-        lstProveedores = servicioProveedor.FindALlProveedores();
+        lstProveedores = servicioProveedor.FindALlProveedores(amb);
     }
 
     private void consultarProductosPorProveedor() {

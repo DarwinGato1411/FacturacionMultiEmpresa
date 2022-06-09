@@ -560,7 +560,7 @@ public class NotaCreditoDebitoVm {
                     "/venta/buscarcliente.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
     }
 
     @Command

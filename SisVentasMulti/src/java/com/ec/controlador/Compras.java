@@ -134,7 +134,7 @@ public class Compras {
     }
 
     private void buscarProveedoresLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre("");
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre("",amb);
     }
 
     public Compras() {
@@ -349,7 +349,7 @@ public class Compras {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/compra/buscarproveedor.zul", null, map);
         window.doModal();
-        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor);
+        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor,amb);
     }
 
     @Command
@@ -507,11 +507,11 @@ public class Compras {
 //    }
 
     private void findProveedorLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre);
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre,amb);
     }
 
     private void findProveedorCedula() {
-        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula);
+        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula,amb);
     }
 
     //para buscar karder y mostrar en productos
@@ -572,6 +572,7 @@ public class Compras {
                 cabeceraCompra.setDrcCodigoSustento("01");
                 cabeceraCompra.setCabSubTotalCero(subTotalFacturaCero);
                 cabeceraCompra.setIdEstado(servicioEstadoFactura.findByEstCodigo(estdoFactura));
+                cabeceraCompra.setCodTipoambiente(amb);
                 if (cabeceraCompra.getCabEstado().equals("PE")) {
                     //para realizar un abono
                 } else {

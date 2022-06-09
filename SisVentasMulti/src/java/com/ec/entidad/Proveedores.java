@@ -111,6 +111,10 @@ public class Proveedores implements Serializable {
 
     @OneToMany(mappedBy = "idProveedor")
     private Collection<CabeceraCompraSri> cabeceraCompraSriCollection;
+    
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
 
     public Proveedores() {
     }
@@ -234,6 +238,14 @@ public class Proveedores implements Serializable {
 
     public void setProvNomComercial(String provNomComercial) {
         this.provNomComercial = provNomComercial;
+    }
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
 
     @XmlTransient

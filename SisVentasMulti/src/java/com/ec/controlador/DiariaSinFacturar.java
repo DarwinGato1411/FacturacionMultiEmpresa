@@ -587,7 +587,7 @@ public class DiariaSinFacturar {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/venta/buscarclienteEdit.zul", null, map);
         window.doModal();
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
     }
 
     @Command

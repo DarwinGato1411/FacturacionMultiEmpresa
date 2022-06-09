@@ -4,6 +4,7 @@
  */
 package com.ec.servicio;
 
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,9 @@ public class ServicioUsuario {
 
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             em.persist(usuario);
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en insertar usuario");
         } finally {
@@ -45,11 +46,9 @@ public class ServicioUsuario {
 
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             em.remove(em.merge(usuario));
-          em.getTransaction().commit();
-
-
+            em.getTransaction().commit();
 
         } catch (Exception e) {
             System.out.println("Error en eliminar  usuario" + e);
@@ -63,9 +62,9 @@ public class ServicioUsuario {
 
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             em.merge(usuario);
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en insertar usuario");
         } finally {
@@ -82,7 +81,7 @@ public class ServicioUsuario {
             //Connection connection = em.unwrap(Connection.class);
 
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.usuLogin = :usuLogin");
             query.setParameter("usuLogin", nombre);
             listaClientes = (List<Usuario>) query.getResultList();
@@ -93,7 +92,7 @@ public class ServicioUsuario {
             } else {
                 usuarioObtenido = null;
             }
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en lsa consulta usuario  FindUsuarioPorNombre  " + e);
         } finally {
@@ -103,21 +102,31 @@ public class ServicioUsuario {
         return usuarioObtenido;
     }
 
-    public List<Usuario> FindALlUsuarioPorLikeNombre(String nombre) {
+    public List<Usuario> FindALlUsuarioPorLikeNombre(String nombre, Usuario usuario) {
 
-        Usuario usuarioLogeado = new Usuario();
+//        Usuario usuarioLogeado = new Usuario();
         List<Usuario> listaUsuarios = new ArrayList<Usuario>();
         try {
-            System.out.println("Entra a consultar usuarios");
+            System.out.println("Entra a consultar usuarios ");
+
+            String SELECT = "SELECT u FROM Usuario u  WHERE u.usuNombre like :usuNombre";
+            String WHERE = "";
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
-            Query query = em.createNamedQuery("Usuario.findLikeNombre", Usuario.class);
+            em.getTransaction().begin();
+            if (usuario.getUsuNivel() != 1) {
+                WHERE = "  AND u.usuRuc=:usuRuc";
+            }
+            Query query = em.createQuery(SELECT + WHERE);
             query.setParameter("usuNombre", "%" + nombre + "%");
+            if (usuario.getUsuNivel() != 1) {
+                query.setParameter("usuRuc", usuario.getUsuRuc());
+            }
+
             listaUsuarios = (List<Usuario>) query.getResultList();
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error en lsa consulta usuarios");
+            System.out.println("Error en lsa consulta usuarios " + e.getMessage());
         } finally {
             em.close();
         }

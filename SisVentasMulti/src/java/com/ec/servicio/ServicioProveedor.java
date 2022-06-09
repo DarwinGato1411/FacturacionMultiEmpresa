@@ -5,7 +5,7 @@
 package com.ec.servicio;
 
 import com.ec.entidad.Proveedores;
-import com.ec.entidad.Proveedores;
+import com.ec.entidad.Tipoambiente;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,11 +31,11 @@ public class ServicioProveedor {
 
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             em.persist(proveedores);
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error en insertar proveedores");
+            System.out.println("Error en insertar proveedores "+e.getMessage());
         } finally {
             em.close();
         }
@@ -46,14 +46,12 @@ public class ServicioProveedor {
 
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             em.remove(em.merge(proveedores));
-          em.getTransaction().commit();
-
-
+            em.getTransaction().commit();
 
         } catch (Exception e) {
-            System.out.println("Error en eliminar  proveedores" + e);
+            System.out.println("Error en eliminar  proveedores "+e.getMessage());
         } finally {
             em.close();
         }
@@ -64,28 +62,28 @@ public class ServicioProveedor {
 
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
+            em.getTransaction().begin();
             em.merge(proveedores);
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error en insertar proveedores");
+            System.out.println("Error en insertar proveedores "+e.getMessage());
         } finally {
             em.close();
         }
 
     }
 
-    public List<Proveedores> FindALlProveedores() {
+    public List<Proveedores> FindALlProveedores(Tipoambiente codTipoambiente) {
 
         List<Proveedores> listaProveedoress = new ArrayList<Proveedores>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
-            Query query = em.createNamedQuery("Proveedores.findAll", Proveedores.class);
-//           query.setParameter("codigoUsuario", proveedores);
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT p FROM Proveedores p WHERE p.codTipoambiente=:codTipoambiente");
+            query.setParameter("codTipoambiente", codTipoambiente);
             listaProveedoress = (List<Proveedores>) query.getResultList();
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en lsa consulta proveedores");
         } finally {
@@ -95,17 +93,18 @@ public class ServicioProveedor {
         return listaProveedoress;
     }
 
-    public List<Proveedores> findLikeProvNombre(String buscar) {
+    public List<Proveedores> findLikeProvNombre(String buscar, Tipoambiente codTipoambiente) {
 
         List<Proveedores> listaProveedoress = new ArrayList<Proveedores>();
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
-            Query query = em.createNamedQuery("Proveedores.findLikeProvNombre", Proveedores.class);
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT p FROM Proveedores p WHERE p.provNombre like :provNombre AND p.codTipoambiente=:codTipoambiente");
             query.setParameter("provNombre", "%" + buscar + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(100);
             listaProveedoress = (List<Proveedores>) query.getResultList();
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en lsa consulta proveedores");
         } finally {
@@ -115,14 +114,15 @@ public class ServicioProveedor {
         return listaProveedoress;
     }
 
-    public Proveedores findProvCedula(String buscar) {
+    public Proveedores findProvCedula(String buscar, Tipoambiente codTipoambiente) {
         Proveedores proveedores = new Proveedores();
         List<Proveedores> listaProveedoress = new ArrayList<Proveedores>();
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
-            Query query = em.createNamedQuery("Proveedores.findByProvCedula", Proveedores.class);
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT p FROM Proveedores p WHERE p.provCedula = :provCedula AND p.codTipoambiente=:codTipoambiente");
             query.setParameter("provCedula", buscar);
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(100);
             listaProveedoress = (List<Proveedores>) query.getResultList();
             if (listaProveedoress.size() > 0) {
@@ -130,7 +130,7 @@ public class ServicioProveedor {
             } else {
                 proveedores = null;
             }
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en lsa consulta proveedores " + e);
         } finally {
@@ -140,18 +140,19 @@ public class ServicioProveedor {
         return proveedores;
     }
 
-    public List<Proveedores> findProveedorCedula(String buscar) {
+    public List<Proveedores> findProveedorCedula(String buscar, Tipoambiente codTipoambiente) {
 
         List<Proveedores> listaProveedoress = new ArrayList<Proveedores>();
         try {
             em = HelperPersistencia.getEMF();
-          em.getTransaction().begin();
-            Query query = em.createNamedQuery("Proveedores.findByLikeProvCedula", Proveedores.class);
-            query.setParameter("provCedula", "%"+buscar+"%");
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT p FROM Proveedores p WHERE p.provCedula LIKE :provCedula AND p.codTipoambiente=:codTipoambiente");
+            query.setParameter("provCedula", "%" + buscar + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(100);
             listaProveedoress = (List<Proveedores>) query.getResultList();
 
-          em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en lsa consulta proveedores " + e);
         } finally {

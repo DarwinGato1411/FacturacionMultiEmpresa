@@ -306,7 +306,7 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
                 "/venta/buscarclienteorden.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }
@@ -327,7 +327,7 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
             return;
         }
 
-        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula());
+        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula(),amb);
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }
