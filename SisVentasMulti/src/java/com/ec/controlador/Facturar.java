@@ -288,7 +288,7 @@ public class Facturar extends SelectorComposer<Component> {
 
     ServicioDetallePago servicioDetallePago = new ServicioDetallePago();
     Verificaciones verificaciones = new Verificaciones();
-    
+
 //        UserCredential credential = new UserCredential();
     private String amRuc = "";
 
@@ -309,7 +309,7 @@ public class Facturar extends SelectorComposer<Component> {
         } else if (valor.getBusqueda().equals("producto") || valor.getBusqueda().equals("cliente")) {
 
         } else if (valor.getBusqueda().equals("cambio")) {
-            PRODUCTOCAMBIO = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
+            PRODUCTOCAMBIO = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
         } else if (valor.getBusqueda().equals("nte")) {
             cargaNotaEntrega();
         } else {
@@ -350,9 +350,9 @@ public class Facturar extends SelectorComposer<Component> {
 
         }
         if (servicioCierreCaja.findALlCierreCajaForFechaIdUsuario(new Date(), credential.getUsuarioSistema()).isEmpty()
-                && credential.getUsuarioSistema().getUsuNivel() != 1) {
+                    && credential.getUsuarioSistema().getUsuNivel() != 1) {
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/aperturacaja.zul", null, null);
+                        "/nuevo/aperturacaja.zul", null, null);
             window.doModal();
             if (servicioCierreCaja.findALlCierreCajaForFechaIdUsuario(new Date(), credential.getUsuarioSistema()).isEmpty()) {
                 authService.logout();
@@ -377,9 +377,9 @@ public class Facturar extends SelectorComposer<Component> {
     public Facturar() {
 
         Session sess = Sessions.getCurrent();
-       credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
 //        credential = cre;
-        amRuc=credential.getUsuarioSistema().getUsuRuc();
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
         amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
 //      amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(accion);
         getDetallefactura();
@@ -392,9 +392,9 @@ public class Facturar extends SelectorComposer<Component> {
         } else {
 
         }
-  
+
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
         partida = amb.getAmDireccionMatriz();
 
     }
@@ -499,15 +499,16 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void numeroFactura() {
-        Factura recuperada = servicioFactura.FindUltimaFactura();
+        Factura recuperada = servicioFactura.FindUltimaFactura(amb);
         if (recuperada != null) {
             // System.out.println("numero de factura " + recuperada);
             numeroFactura = recuperada.getFacNumero() + 1;
-            numeroFacturaTexto();
+
         } else {
-            numeroFactura = 1;
-            numeroFacturaText = "000000001";
+            numeroFactura = amb.getAmSecFactura();
+
         }
+        numeroFacturaTexto();
     }
 //numero de guia
 
@@ -518,8 +519,8 @@ public class Facturar extends SelectorComposer<Component> {
             numeroGuia = recuperada.getFacNumero() + 1;
             numeroTexto(numeroGuia);
         } else {
-            numeroGuia = 1;
-            numeroGuiaText = "000000001";
+            numeroGuia = amb.getAmSecGuia();
+//            numeroGuiaText = "000000001";
         }
     }
 
@@ -534,7 +535,7 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void numeroProforma() {
-        Factura recuperada = servicioFactura.FindUltimaProforma();
+        Factura recuperada = servicioFactura.FindUltimaProforma(amb);
         if (recuperada != null) {
             System.out.println("numero de factura PROOOO " + recuperada);
             numeroFactura = recuperada.getFacNumProforma() + 1;
@@ -545,7 +546,7 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void numeroNotaEntrega() {
-        Factura recuperada = servicioFactura.findUltimaNotaEnt();
+        Factura recuperada = servicioFactura.findUltimaNotaEnt(amb);
         if (recuperada != null) {
             // System.out.println("numero de factura " + recuperada);
             numeroFactura = recuperada.getFacNumNotaEntrega() + 1;
@@ -555,7 +556,7 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void numeroNotaVenta() {
-        Factura recuperada = servicioFactura.findUltimaNotaVent();
+        Factura recuperada = servicioFactura.findUltimaNotaVent(amb);
         if (recuperada != null) {
             // System.out.println("numero de factura " + recuperada);
             numeroFactura = recuperada.getFacNumNotaVenta() + 1;
@@ -590,7 +591,7 @@ public class Facturar extends SelectorComposer<Component> {
 
         if (parametrizar.getParNumRegistrosFactura().intValue() <= listaDetalleFacturaDAOMOdel.size()) {
             Clients.showNotification("Numero de registros permitidos imprima y genere otra factura",
-                    Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 5000, true);
+                        Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 5000, true);
             return;
         }
         /*calcula con el iva para todo el 12%*/
@@ -612,7 +613,7 @@ public class Facturar extends SelectorComposer<Component> {
             Kardex kardex = servicioKardex.FindALlKardexs(productoBuscado);
             if (kardex.getKarTotal().intValue() < 1) {
                 Clients.showNotification("Verifique el stock del producto cuenta con " + kardex.getKarTotal().intValue() + " en estock",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                 agregarRegistroVacio();
                 return;
             }
@@ -646,7 +647,7 @@ public class Facturar extends SelectorComposer<Component> {
                     costVentaTipoCliente = productoBuscado.getProdCostoPreferencialDos();
                 }
 
-                valor.setTotalInicial(ArchivoUtils.redondearDecimales(costVentaTipoClienteInicial, 5) );
+                valor.setTotalInicial(ArchivoUtils.redondearDecimales(costVentaTipoClienteInicial, 5));
                 BigDecimal porcentajeDesc = valor.getDetPordescuento().divide(BigDecimal.valueOf(100.0), 5, RoundingMode.FLOOR);
                 BigDecimal valorDescuentoIva = costVentaTipoCliente.multiply(porcentajeDesc).setScale(5, RoundingMode.FLOOR);;
                 //valor unitario con descuento ioncluido iva
@@ -728,9 +729,9 @@ public class Facturar extends SelectorComposer<Component> {
             final HashMap<String, ParamFactura> map = new HashMap<String, ParamFactura>();
             map.put("valor", paramFactura);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/buscarproducto.zul", null, map);
+                        "/venta/buscarproducto.zul", null, map);
             window.doModal();
-            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
+            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda, amb);
             if (productoBuscado == null) {
                 return;
             }
@@ -739,7 +740,7 @@ public class Facturar extends SelectorComposer<Component> {
                 Kardex kardex = servicioKardex.FindALlKardexs(productoBuscado);
                 if (kardex.getKarTotal().intValue() < 1) {
                     Clients.showNotification("Verifique el stock del producto cuenta con " + kardex.getKarTotal().intValue() + " en estock",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                     agregarRegistroVacio();
                     return;
                 }
@@ -944,12 +945,12 @@ public class Facturar extends SelectorComposer<Component> {
         }
 
 //        BigDecimal factorIva = (parametrizar.getParIva().divide(BigDecimal.valueOf(100.0)));
-        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
+        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
 
         if (buscadoPorCodigo == null) {
             valor.setCodigo("");
             Clients.showNotification("No existe el producto",
-                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
             return;
         }
 
@@ -962,7 +963,7 @@ public class Facturar extends SelectorComposer<Component> {
             Kardex kardex = servicioKardex.FindALlKardexs(productoBuscado);
             if (kardex.getKarTotal().intValue() < 1) {
                 Clients.showNotification("Verifique el stock del producto cuenta con " + kardex.getKarTotal().intValue() + " en estock",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                 agregarRegistroVacio();
                 return;
             }
@@ -1293,15 +1294,15 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
     }
 
     public Cliente getClienteBuscado() {
@@ -1528,10 +1529,10 @@ public class Facturar extends SelectorComposer<Component> {
         final HashMap<String, ParamFactura> map = new HashMap<String, ParamFactura>();
         map.put("valor", paramFactura);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/buscarcliente.zul", null, map);
+                    "/venta/buscarcliente.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente, amb);
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }
@@ -1566,7 +1567,7 @@ public class Facturar extends SelectorComposer<Component> {
             return;
         }
 
-        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula(),amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula(), amb);
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }
@@ -1582,7 +1583,7 @@ public class Facturar extends SelectorComposer<Component> {
         final HashMap<String, ParamFactura> map = new HashMap<String, ParamFactura>();
         map.put("valor", paramFactura);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/venta/listanotaentrega.zul", null, map);
+                    "/venta/listanotaentrega.zul", null, map);
         window.doModal();
         buscarCliente = paramFactura.getCedula();
         listaDetalleFacturaDAODatos.clear();
@@ -1636,7 +1637,7 @@ public class Facturar extends SelectorComposer<Component> {
     public void nuevoCliente() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/cliente.zul", null, null);
+                    "/nuevo/cliente.zul", null, null);
         window.doModal();
     }
 
@@ -1688,7 +1689,7 @@ public class Facturar extends SelectorComposer<Component> {
                 calcularValoresTotales();
             } else {
                 Clients.showNotification("No tiene permisos para eliminar, verifique el usuario y contraseña",
-                        Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 5000, true);
+                            Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 5000, true);
             }
 
         } else {
@@ -1814,22 +1815,22 @@ public class Facturar extends SelectorComposer<Component> {
         try {
 
             String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
             String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
             String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
 
             String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
 
             String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
 
             /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
             File folderGen = new File(folderGenerados);
@@ -1867,7 +1868,7 @@ public class Facturar extends SelectorComposer<Component> {
                 if (transportista == null || numeroPlaca.equals("")) {
 
                     Clients.showNotification("Para generar una guia debe seleccionar un conductor e ingresar la placa",
-                            Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
                     return;
 
                 }
@@ -1896,8 +1897,8 @@ public class Facturar extends SelectorComposer<Component> {
                 } else if (tipoVenta.equals("NTV") && (!tipoVentaAnterior.equals("FACT"))) {
                     verificarSecNumeracion();
                 } else if (tipoVenta.equals("PROF") && (!tipoVentaAnterior.equals("PROF"))) {
-                    numeroFactura=factura.getFacNumProforma();
-                }else {
+                    numeroFactura = factura.getFacNumProforma();
+                } else {
 
                     if (tipoVenta.equals("NTV")) {
                         numeroFactura = factura.getFacNumNotaVenta();
@@ -2091,7 +2092,7 @@ public class Facturar extends SelectorComposer<Component> {
                         if (accion.equals("create")) {
                             verificarFact.setIdUsuario(credential.getUsuarioSistema());
                         }
-                        
+
                         verificarFact.setFacSubtotal(subTotal);
                         verificarFact.setFacIva(iva);
                         verificarFact.setFacTotal(total);
@@ -2175,109 +2176,6 @@ public class Facturar extends SelectorComposer<Component> {
                         }
                         servicioGuia.guardarGuiaremision(detalleGuia, guiaremision);
 
-                        /*PARA CREAR EL ARCHIVO XML FIRMADO*/
-//                        String nombreArchivoXML = File.separator + "GUIA-"
-//                                + guiaremision.getCodestablecimiento()
-//                                + guiaremision.getPuntoemision()
-//                                + guiaremision.getFacNumeroText() + ".xml";
-//
-//
-//                        /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
-//                        String pathArchivoFirmado = folderFirmado + nombreArchivoXML;
-//                        String pathArchivoAutorizado = foldervoAutorizado + nombreArchivoXML;
-//                        String pathArchivoNoAutorizado = folderNoAutorizados + nombreArchivoXML;
-//                        String archivoEnvioCliente = "";
-//
-//                        //tipoambiente tiene los parameteos para los directorios y la firma digital
-//                        AutorizarDocumentos aut = new AutorizarDocumentos();
-//                        /*Generamos el archivo XML de la factura*/
-//                        String archivo = aut.generaXMLGuiaRemision(guiaremision, amb, folderGenerados, nombreArchivoXML);
-//
-//                        byte[] datos = null;
-//                        File f = null;
-//                        File fEnvio = null;
-//                        /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
-//                        archivo es la ruta del archivo xml generado
-//                        nomre del archivo a firmar*/
-//                        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-//                                amb.getAmClaveAccesoSri(), amb, folderFirmado);
-//
-//                        f = new File(pathArchivoFirmado);
-//
-//                        datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-//                        //obtener la clave de acceso desde el archivo xml
-//                        String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
-//                        /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
-//                        guiaremision.setFacClaveAcceso(claveAccesoComprobante);
-//                        AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-//                        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
-//
-//                        if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
-//                            if (resSolicitud.getEstado().equals("RECIBIDA")) {
-//                                try {
-//                                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante);
-//                                    for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
-//                                        FileOutputStream nuevo = null;
-//
-//                                        /*CREA EL ARCHIVO XML AUTORIZADO*/
-//                                        System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
-//                                        nuevo = new FileOutputStream(pathArchivoNoAutorizado);
-//                                        nuevo.write(autorizacion.getComprobante().getBytes());
-//                                        if (!autorizacion.getEstado().equals("AUTORIZADO")) {
-//
-//                                            String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
-//                                            String smsInfo = autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional();
-//                                            nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
-//                                            if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
-//                                                nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
-//                                            }
-//
-//                                            guiaremision.setMensajesri(texto);
-//                                            guiaremision.setEstadosri(autorizacion.getEstado());
-//
-//                                            nuevo.flush();
-//                                            servicioGuia.modificar(guiaremision);
-//                                        } else {
-//
-//                                            guiaremision.setFacClaveAutorizacion(claveAccesoComprobante);
-//                                            guiaremision.setEstadosri(autorizacion.getEstado());
-//                                            guiaremision.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-//
-//                                            /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
-//                                            archivoEnvioCliente = aut.generaXMLGuiaRemision(guiaremision, amb, foldervoAutorizado, nombreArchivoXML);
-////                            XAdESBESSignature.firmar(archivoEnvioCliente,
-////                                    nombreArchivoXML,
-////                                    amb.getAmClaveAccesoSri(),
-////                                    amb, foldervoAutorizado);
-//
-//                                            fEnvio = new File(archivoEnvioCliente);
-//
-//                                            System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-//                                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), guiaremision.getFacNumero(), "GUIA");
-//                                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
-//                                            /*GUARDA EL PATH PDF CREADO*/
-////                                            guiaremision.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
-//                                            servicioGuia.modificar(guiaremision);
-//                                            /*envia el mail*/
-//
-//                                            String[] attachFiles = new String[2];
-//                                            attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
-//                                            attachFiles[1] = archivoEnvioCliente.replace(".xml", ".zip");
-//                                            MailerClass mail = new MailerClass();
-//
-//                                            if (guiaremision.getIdCliente().getCliCorreo() != null) {
-//                                                mail.sendMailSimple(guiaremision.getIdCliente().getCliCorreo(),
-//                                                        "Gracias por preferirnos se ha emitido nuestra guia de remision electrónica",
-//                                                        attachFiles,
-//                                                        "GUIA DE REMISION ELECTRONICA", guiaremision.getFacClaveAcceso());
-//                                            }
-//                                        }
-//
-//                                    }
-//                                } catch (Exception e) {
-//                                }
-//                            }
-//                        }
                     }
                     /*VERIFICA SI EL CLINETE QUIERE AUTORIZAR LA FACTURA*/
                     if (!parametrizar.getParEstado() || tipoVenta.equals("PROF")) {
@@ -2429,11 +2327,11 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd,amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd,amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
     }
 
     @Command
@@ -2442,18 +2340,18 @@ public class Facturar extends SelectorComposer<Component> {
         System.out.println("valor codigo " + valor.getCodigo());
 //        findProductoLikeCodigo();
         if (codigo.length() >= 3) {
-            listaProductoCmb = servicioProducto.findLikeProdNombre(codigo.toUpperCase(),amb);
+            listaProductoCmb = servicioProducto.findLikeProdNombre(codigo.toUpperCase(), amb);
         }
 
 //        valor.setListaProductoCmb(listaProductoCmb);
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd, amb);
     }
 
     @Command
@@ -2491,7 +2389,7 @@ public class Facturar extends SelectorComposer<Component> {
 
                 //  con = emf.unwrap(Connection.class);
                 String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                        .getRealPath("/reportes");
+                            .getRealPath("/reportes");
                 String reportPath = "";
 //                con = ConexionReportes.Conexion.conexion();
 
@@ -2515,6 +2413,7 @@ public class Facturar extends SelectorComposer<Component> {
 
                 //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
                 parametros.put("numfactura", numeroFactura);
+              parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
                 if (con != null) {
                     System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -2535,7 +2434,7 @@ public class Facturar extends SelectorComposer<Component> {
                     map.put("pdf", fileContent);
 
                     org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                            "/venta/contenedorReporte.zul", null, map);
+                                "/venta/contenedorReporte.zul", null, map);
                     window.doModal();
 
                 }
@@ -2641,7 +2540,7 @@ public class Facturar extends SelectorComposer<Component> {
 
                 //  con = emf.unwrap(Connection.class);
                 String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                        .getRealPath("/reportes");
+                            .getRealPath("/reportes");
                 String reportPath = "";
 //                con = ConexionReportes.Conexion.conexion();
 
@@ -2783,7 +2682,7 @@ public class Facturar extends SelectorComposer<Component> {
 
             map.put("valor", factura);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/detallepago.zul", null, map);
+                        "/venta/detallepago.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
@@ -3005,7 +2904,7 @@ public class Facturar extends SelectorComposer<Component> {
 
             map.put("valor", valor);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/modificar/motocicleta.zul", null, map);
+                        "/modificar/motocicleta.zul", null, map);
             window.doModal();
         } catch (Exception e) {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
@@ -3060,7 +2959,7 @@ public class Facturar extends SelectorComposer<Component> {
             final HashMap<String, ParamFactura> map = new HashMap<String, ParamFactura>();
             map.put("valor", paramFactura);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/cambioprecio.zul", null, map);
+                        "/venta/cambioprecio.zul", null, map);
             window.doModal();
             productoBuscado = valor.getProducto();
             if (productoBuscado == null) {
@@ -3071,7 +2970,7 @@ public class Facturar extends SelectorComposer<Component> {
                 Kardex kardex = servicioKardex.FindALlKardexs(productoBuscado);
                 if (kardex.getKarTotal().intValue() < 1) {
                     Clients.showNotification("Verifique el stock del producto cuenta con " + kardex.getKarTotal().intValue() + " en estock",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                     agregarRegistroVacio();
                     return;
                 }
@@ -3118,11 +3017,11 @@ public class Facturar extends SelectorComposer<Component> {
                     BigDecimal valorTotalIvaDesc = costVentaTipoCliente.subtract(valorDescuentoIva);
                     //valor unit sin iva sin descuento
                     BigDecimal subTotal
-                            = costVentaTipoCliente.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
+                                = costVentaTipoCliente.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
                     valor.setSubTotal(subTotal);
                     //valor unitario sin iva con descuento
                     BigDecimal subTotalDescuento
-                            = valorTotalIvaDesc.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
+                                = valorTotalIvaDesc.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
                     valor.setSubTotalDescuento(subTotalDescuento);
                     //valor del descuento
                     BigDecimal valorDescuento = valor.getSubTotal().subtract(valor.getSubTotalDescuento());

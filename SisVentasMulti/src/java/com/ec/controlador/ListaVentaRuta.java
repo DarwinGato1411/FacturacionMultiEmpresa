@@ -74,7 +74,7 @@ public class ListaVentaRuta {
     private String numeroFacturaText = "";
     private Integer numeroFactura = 0;
 
-   UserCredential credential = new UserCredential();
+    UserCredential credential = new UserCredential();
     private String amRuc = "";
 
     public ListaVentaRuta() {
@@ -92,7 +92,7 @@ public class ListaVentaRuta {
 //        amb = servicioTipoAmbiente.FindALlTipoambiente();
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                + amb.getAmDirXml();
+                    + amb.getAmDirXml();
 
     }
 
@@ -131,14 +131,14 @@ public class ListaVentaRuta {
     }
 
     private void numeroFactura() {
-        Factura recuperada = servicioFactura.FindUltimaFactura();
+        Factura recuperada = servicioFactura.FindUltimaFactura(amb);
         if (recuperada != null) {
             // System.out.println("numero de factura " + recuperada);
             numeroFactura = recuperada.getFacNumero() + 1;
             numeroFacturaTexto();
         } else {
-            numeroFactura = 1;
-            numeroFacturaText = "000000001";
+            numeroFactura = amb.getAmSecFactura();
+            numeroFacturaTexto();
         }
     }
 
@@ -192,7 +192,7 @@ public class ListaVentaRuta {
                     totalUnidad = BigDecimal.valueOf(1.6);
                     totalBaseCero = BigDecimal.ZERO;
                 }
-                factura.setIdCliente(servicioCliente.FindClienteForCedula(ventaRuta.getCedula(),amb));
+                factura.setIdCliente(servicioCliente.FindClienteForCedula(ventaRuta.getCedula(), amb));
                 factura.setIdUsuario(credential.getUsuarioSistema());
                 factura.setFacSubtotal(subTotalUnidad.multiply(BigDecimal.valueOf(Double.valueOf(ventaRuta.getCantidad()))));
 
@@ -224,12 +224,12 @@ public class ListaVentaRuta {
 
                 /*Detalle de factura GLP*/
                 DetalleFactura detalleFactura = new DetalleFactura(BigDecimal.valueOf(Double.valueOf(ventaRuta.getCantidad())),
-                        prodGLP.getProdNombre(),
-                        BigDecimal.valueOf(1.4285),
-                        BigDecimal.valueOf(1.60),
-                        prodGLP,
-                        factura,
-                        "NORMAL");
+                            prodGLP.getProdNombre(),
+                            BigDecimal.valueOf(1.4285),
+                            BigDecimal.valueOf(1.60),
+                            prodGLP,
+                            factura,
+                            "NORMAL");
                 detalleFactura.setDetIva(BigDecimal.valueOf(0.1714));
                 detalleFactura.setDetTotalconiva(BigDecimal.valueOf(1.6));
 
@@ -249,12 +249,12 @@ public class ListaVentaRuta {
                 if (ventaRuta.getTransporte().equals("S")) {
                     /*Detalle de factura TRANSPORTE*/
                     DetalleFactura detalleFacturaTr = new DetalleFactura(BigDecimal.valueOf(Double.valueOf(ventaRuta.getCantidad())),
-                            prodTransporte.getProdNombre(),
-                            BigDecimal.valueOf(1.40),
-                            BigDecimal.valueOf(1.40),
-                            prodTransporte,
-                            factura,
-                            "NORMAL");
+                                prodTransporte.getProdNombre(),
+                                BigDecimal.valueOf(1.40),
+                                BigDecimal.valueOf(1.40),
+                                prodTransporte,
+                                factura,
+                                "NORMAL");
                     detalleFacturaTr.setDetIva(BigDecimal.ZERO);
                     detalleFacturaTr.setDetTotalconiva(BigDecimal.valueOf(1.4));
 
@@ -277,14 +277,14 @@ public class ListaVentaRuta {
             }
             findBuscarDocumentos();
             Clients.showNotification("Sus facturas fueron generadas correctamente..",
-                    Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 2000, true);
         }
     }
 
     @Command
     @NotifyChange({"listaVentaRuta"})
     public void cargarVentas()
-            throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
     }
     /*subir rchivo*/
@@ -299,8 +299,8 @@ public class ListaVentaRuta {
 
         try {
             String folderDescargados = PATH_BASE + File.separator + "VENTARUTA"
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
+                        + File.separator + new Date().getYear()
+                        + File.separator + new Date().getMonth();
 
             /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
             File folderGen = new File(folderDescargados);
@@ -341,18 +341,18 @@ public class ListaVentaRuta {
 
                     /*ARMA EL OBJETO PRA SUBIR*/
                     nuevaVenta = new VentaRuta(camposInd[0],//cedula
-                            camposInd[1].toUpperCase(),//nombre
-                            camposInd[8],//cantidad
-                            camposInd[2].toUpperCase(),//direccion
-                            camposInd[4],//correo
-                            camposInd[3],//celular
-                            camposInd[5],//semana
-                            new Date(new Date().getYear(), Integer.valueOf(fecha[1]), Integer.valueOf(fecha[0])),//fecha
-                            camposInd[6],//codigo venta
-                            "N");
+                                camposInd[1].toUpperCase(),//nombre
+                                camposInd[8],//cantidad
+                                camposInd[2].toUpperCase(),//direccion
+                                camposInd[4],//correo
+                                camposInd[3],//celular
+                                camposInd[5],//semana
+                                new Date(new Date().getYear(), Integer.valueOf(fecha[1]), Integer.valueOf(fecha[0])),//fecha
+                                camposInd[6],//codigo venta
+                                "N");
                     nuevaVenta.setTransporte(camposInd[9]);
                     /*CREAR EL CLIENTE SI NO EXISTE*/
-                    Cliente buscado = servicioCliente.FindClienteForCedula(camposInd[0],amb);
+                    Cliente buscado = servicioCliente.FindClienteForCedula(camposInd[0], amb);
                     Cliente cliNuevo = null;
                     if (buscado == null) {
                         cliNuevo = new Cliente();

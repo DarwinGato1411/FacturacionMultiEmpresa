@@ -65,3 +65,5 @@ build/
 dist/
 /SisVentasMulti/nbproject/*
 /SisVentasMulti/nbproject/private/**
+SisVentasMulti/build/**
+SisVentasMulti/build/generated-sources/

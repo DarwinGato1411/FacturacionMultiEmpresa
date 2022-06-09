@@ -56,13 +56,22 @@
                                 <menuitem label="Facturas emitidas" id="btnNotaVentas" />
                                 <menuitem label="Nota de venta" id="btnNotaVenta"  />                                
                                 <menuitem label="Proformas emitidas" id="btnProformasEmitidas"  />
-                                <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />
-                                <menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />
+                                <!--<menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />-->
+                                <!--<menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />-->
                                 <menuitem label="Notas credito" id="btnNotaCredito"  />
                                 <!--<menuitem label="Lista ordenes de trabajo" id="btnListaOrden"  />-->
                                 <menuitem label="Venta en ruta (GLP)" id="btnVentaRuta" />
                              
 
+                            </menupopup>
+                        </menu> 
+                        
+                        <menu label="Gestion de guias"  id="menuGuias">
+                            <menupopup>                               
+                                
+                                <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />
+                                <menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />
+                                
                             </menupopup>
                         </menu> 
                         <menu label="Gestion de compras" id="menuCompras">

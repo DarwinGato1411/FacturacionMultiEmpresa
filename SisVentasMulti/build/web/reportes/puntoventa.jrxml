@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="puntoventa" language="groovy" pageWidth="212" pageHeight="400" columnWidth="190" leftMargin="9" rightMargin="13" topMargin="2" bottomMargin="20" isIgnorePagination="true">
 	<property name="ireport.zoom" value="2.253944402704733"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="414"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -130,6 +130,9 @@ order by detalle_factura.id_detalle ASC;]]>
 	<parameter name="numfactura" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="codTipoAmbiente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 *
@@ -140,7 +143,8 @@ INNER JOIN cliente ON factura.id_cliente = cliente.id_cliente
 INNER JOIN forma_pago ON factura.id_forma_pago = forma_pago.id_forma_pago
 INNER JOIN usuario ON factura.id_usuario = usuario.id_usuario
 where factura.fac_numero=$P{numfactura}
-and tipoambiente.am_estado is true limit 1;]]>
+and tipoambiente.cod_tipoambiente=$P{codTipoAmbiente}
+and  tipoambiente.am_estado is true limit 1;]]>
 	</queryString>
 	<field name="cod_tipoambiente" class="java.lang.Integer"/>
 	<field name="am_codigo" class="java.lang.String"/>
@@ -188,6 +192,12 @@ and tipoambiente.am_estado is true limit 1;]]>
 	<field name="am_age_ret" class="java.lang.Boolean"/>
 	<field name="am_contr_esp" class="java.lang.Boolean"/>
 	<field name="am_exp" class="java.lang.Boolean"/>
+	<field name="am_ripme" class="java.lang.Boolean"/>
+	<field name="am_sec_factura" class="java.lang.Integer"/>
+	<field name="am_sec_retencion" class="java.lang.Integer"/>
+	<field name="am_sec_nota_credito" class="java.lang.Integer"/>
+	<field name="am_sec_guia" class="java.lang.Integer"/>
+	<field name="am_valor_iva" class="java.math.BigDecimal"/>
 	<field name="id_factura" class="java.lang.Integer"/>
 	<field name="id_estado" class="java.lang.Integer"/>
 	<field name="id_usuario" class="java.lang.Integer"/>
@@ -304,6 +314,7 @@ and tipoambiente.am_estado is true limit 1;]]>
 	<field name="usu_drive_placa" class="java.lang.String"/>
 	<field name="usu_drive_color" class="java.lang.String"/>
 	<field name="usu_drive_disponible" class="java.lang.Boolean"/>
+	<field name="usu_ruc" class="java.lang.String"/>
 	<title>
 		<band height="250" splitType="Stretch">
 			<textField isBlankWhenNull="true">
