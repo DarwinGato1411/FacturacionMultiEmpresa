@@ -18,7 +18,6 @@ import com.ec.servicio.ServicioProducto;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoKardex;
 import com.ec.untilitario.ArchivoUtils;
-import com.sun.imageio.plugins.common.BogusColorSpace;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;

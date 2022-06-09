@@ -10,7 +10,6 @@ import com.ec.entidad.Usuario;
 import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioUsuario;
-import static com.sun.jmx.snmp.SnmpStatusException.readOnly;
 import java.math.BigDecimal;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
