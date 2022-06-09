@@ -164,7 +164,7 @@ public class ServicioKardex {
             Query query = em.createQuery("SELECT a from Kardex a where (a.idProducto.prodCodigo like :prodCodigo and a.idProducto.prodNombre LIKE :prodNombre) AND a.idProducto.codTipoambiente=:codTipoambiente ORDER BY a.idProducto.prodNombre ASC");
             query.setParameter("prodCodigo", "%" + prodCodigo + "%");
             query.setParameter("prodNombre", "%" + prodNombre + "%");
-            query.setParameter("codTipoambiente",codTipoambiente);
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(200);
             listaKardexs = (List<Kardex>) query.getResultList();
             em.getTransaction().commit();
@@ -198,7 +198,7 @@ public class ServicioKardex {
         return actualiza;
     }
 
-    public List<Kardex> FindALlKardexMaxMininimo(String estado) {
+    public List<Kardex> FindALlKardexMaxMininimo(String estado, Tipoambiente codTipoambiente) {
 
         List<Kardex> listaKardexs = new ArrayList<Kardex>();
         try {
@@ -206,6 +206,7 @@ public class ServicioKardex {
             em.getTransaction().begin();
             String SQL = "SELECT a from Kardex a ";
             String WHERE = "";
+            String TIPO_AMBIENTE = "a.idProducto.codTipoambiente=:codTipoambiente";
             String ORDERBY = " ORDER BY a.idProducto.prodNombre ASC";
 
             if (estado.equals("MEM")) {
@@ -213,12 +214,13 @@ public class ServicioKardex {
             } else if (estado.equals("MAM")) {
                 WHERE = "WHERE a.idProducto.prodCantMinima < a.karTotal";
             }
-            SQL = SQL + WHERE + ORDERBY;
+            SQL = SQL + WHERE + TIPO_AMBIENTE + ORDERBY;
             Query query = em.createQuery(SQL);
+            query.setParameter("codTipoambiente", codTipoambiente);
             listaKardexs = (List<Kardex>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error en lsa consulta kardex");
+            System.out.println("Error en lsa consulta kardex" + e.getMessage());
         } finally {
             em.close();
         }
