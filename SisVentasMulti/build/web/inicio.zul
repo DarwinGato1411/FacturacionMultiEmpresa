@@ -40,8 +40,8 @@
 
                             
                             <div class="forgot">
-                                <span id="btnRegistra" >Olvidaste tu contraseña?</span>  
-                                <span>Realiza tu registro aquí?</span>
+                                <span id="linkOlvideContrasena" >Olvidaste tu contraseña?</span>  
+                                <span id="btnRegistra" >Realiza tu registro aquí?</span>
                             </div>
                             
                             
