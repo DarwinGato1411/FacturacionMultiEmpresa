@@ -999,10 +999,6 @@ exists or setup the property manually. For example like this:
     <target depends="init" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.absolutelayout.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.ZK6.5.3CE.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
-<<<<<<< HEAD
-=======
-        <copyfiles files="${libs.Jasper.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
->>>>>>> 354e171f0ac97e0eea30625350f80ab04f1e746b
         <copyfiles files="${file.reference.barbecue-1.5-beta1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.escpos-coffee-4.0.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.cliente-ws-offline.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
@@ -1142,10 +1138,6 @@ exists or setup the property manually. For example like this:
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
         <copyfiles files="${libs.absolutelayout.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.ZK6.5.3CE.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
-<<<<<<< HEAD
-=======
-        <copyfiles files="${libs.Jasper.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
->>>>>>> 354e171f0ac97e0eea30625350f80ab04f1e746b
         <copyfiles files="${file.reference.barbecue-1.5-beta1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.escpos-coffee-4.0.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.cliente-ws-offline.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
