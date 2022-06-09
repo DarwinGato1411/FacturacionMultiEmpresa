@@ -3,6 +3,7 @@ package com.ec.entidad;
 import com.ec.entidad.DetalleKardex;
 import com.ec.entidad.EstadoFacturas;
 import com.ec.entidad.Proveedores;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,7 +12,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-08T01:46:34")
+@Generated(value="EclipseLink-2.7.9.v20210604-rNA", date="2022-06-08T19:07:20")
 @StaticMetamodel(CabeceraCompra.class)
 public class CabeceraCompra_ { 
 
@@ -38,6 +39,7 @@ public class CabeceraCompra_ {
     public static volatile SingularAttribute<CabeceraCompra, Date> cabFechaEmision;
     public static volatile SingularAttribute<CabeceraCompra, String> cabEstablecimiento;
     public static volatile SingularAttribute<CabeceraCompra, Usuario> usuIdUsuario;
+    public static volatile SingularAttribute<CabeceraCompra, Tipoambiente> codTipoambiente;
     public static volatile SingularAttribute<CabeceraCompra, String> cabEstado;
     public static volatile SingularAttribute<CabeceraCompra, BigDecimal> cabTotal;
     public static volatile SingularAttribute<CabeceraCompra, String> cabClaveAcceso;

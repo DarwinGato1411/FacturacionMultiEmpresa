@@ -20,6 +20,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
@@ -64,14 +65,24 @@ public class LoginController extends SelectorComposer<Component> {
             System.out.println("numeroDocumentos " + numeroDocumentos);
             if (numeroDocumentos > param.getParNumeroFactura()) {
                 System.out.println("caduco  " + actual + " vigente hasta " + caduca);
-                Messagebox.show("Usted cuenta con un plan basico y sobre paso el limite de " + param.getParNumeroFactura() + " documentos ¡contactese con el administrador!", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
+                
+                Clients.showNotification("Usted cuenta con un plan basico y sobre paso el limite de " + param.getParNumeroFactura() + " documentos ¡contactese con el administrador!",
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+
+             
+
+                // Messagebox.show("Usted cuenta con un plan basico y sobre paso el limite de " + param.getParNumeroFactura() + " documentos ¡contactese con el administrador!", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
                 return;
             }
         }
         System.out.println("actual " + actual);
         if (actual.after(caduca) && param.getParIlimitadoArriendo()) {
             System.out.println("caduco  " + actual + " vigente hasta " + caduca);
-            Messagebox.show("Usted cuenta con un plan ilimitado mensual, pero su sistema caduco ¡contactese con el administrador!", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
+            
+             Clients.showNotification("Usted cuenta con un plan ilimitado mensual, pero su sistema caduco ¡contactese con el administrador!",
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+            
+//            Messagebox.show("Usted cuenta con un plan ilimitado mensual, pero su sistema caduco ¡contactese con el administrador!", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
         } else {
             System.out.println("vigente  " + actual + " vegente hasta " + caduca);
             AutentificadorLogeo servicioAuth = new AutentificadorLogeo();
@@ -84,7 +95,12 @@ public class LoginController extends SelectorComposer<Component> {
                     Executions.sendRedirect("/venta/facturar.zul");
                 }
             } else {
-                Messagebox.show("Usuario o Contraseña incorrecto. \n Contactese con el administrador.", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
+                  Clients.showNotification("Usuario o Contraseña incorrecto. \n Contactese con el administrador.",
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+
+       
+                
+//                Messagebox.show("Usuario o Contraseña incorrecto. \n Contactese con el administrador.", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
 
             }
         }

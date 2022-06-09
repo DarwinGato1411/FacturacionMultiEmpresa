@@ -1,110 +1,16 @@
-<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>   
-<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/base.css"?>   
+<?link rel="stylesheet" type="text/css" href="/css/app/signin/index.css"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>  
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?page title="Facturacion electrónica" contentType="text/html;charset=UTF-8"?>
 
-<zk contentStyle="overflow:auto" >
+<zk contentStyle="" >
 
-    <style>
-        body{
-        <!--background-image: url('./fondo/fondocrm.jpg');-->
-<!--        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        margin:0;
-        padding:0;-->
-        overflow:hidden;
-        <!--background-color:#f0f2f5;-->
-        position:absolute ; 
-        background:radial-gradient(#ffffff,#1158b6);
-        height:100%;
-        width:100%;
-  
-        }
-<!--        .leaf{
-        position:absolute ;
-        width:100%;
-        height:100%;
-        top:0;
-        left:0;
-        }
-        .leaf div{
-        position:absolute ;
-        display:block ;
-        }
-        .leaf div:nth-child(1){
-        left:75%; 
-        animation:fall 15s linear infinite ;
-        animation-delay:-10s;
-
-        }
-        .leaf div:nth-child(2){
-        left:5%; 
-        animation:fall 15s linear infinite ;
-        animation-delay:-4s;
-        }
-        
-
-        @keyframes fall{
-        0%{
-        opacity:1;
-        top:-10%;
-        transform:translateX (20px) rotate(0deg);
-        }
-        20%{
-        opacity:0.8;
-        transform:translateX (-20px) rotate(45deg);
-        }
-        40%{
-
-        transform:translateX (-20px) rotate(90deg);
-        }
-        60%{
-        
-        transform:translateX (-20px) rotate(135deg); 
-        }
-        80%{
-    
-        transform:translateX (-20px) rotate(180deg);
-        }
-        100%{
-        
-        top:110%;
-        transform:translateX (-20px) rotate(225deg);
-        }
-        }
-        .leaf1{
-        transform: rotateX(180deg);
-        }
-        h2{
-        position:absolute ;
-        top:40%;
-        width:100%;
-        font-family: 'Courgette', cursive;
-        font-size:4em;
-        text-align:center;
-        transform:translate ;
-        color:#fff;
-        transform:translateY (-50%);
-        }-->
-    </style>
-    
-    <div class="leaf">
-    <!--        <div>  
-                <image src="/imagenes/emitdoc.png" class=" hidden-sm-down " style="border-radius:50px;border:0.5px solid #ffffff;" 
-                       height="50%" width="75%">
-                </image>
-            </div>
-            <div>
-                <image src="/imagenes/contdecl.png" class=" hidden-sm-down "  style="border-radius:50px;border:0.5px solid #ffffff;" 
-                       height="50%" width="38%">
-                </image>
-            </div>-->
-      
-            
-    </div>
-    <div class="container col-12 col-sm-6 col-md-5 col-lg-4 form-control" id="loginWin" style="margin:2% auto;background: transparent;   border: 5px;
+    <!--
+    <div 
+        class="container col-12 col-sm-6 col-md-5 col-lg-4 form-control" 
+        id="loginWin" 
+        style="margin:2% auto;background: transparent;   border: 5px;
                 border-color: white;"   
          apply="com.ec.controlador.LoginController" >
  
@@ -114,27 +20,147 @@
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group">
                 <textbox id="account" type="text" class="form-control" 
-                         onCreate="self.focus()"
-                         placeholder="Ingrese el usuario"   />
-          
+                    onCreate="self.focus()"
+                    placeholder="Ingrese el usuario"   
+                />
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                  
                 <textbox id="password" type="password" 
-                         class="form-control" 
-                         placeholder="Ingrese la constraseña" />      
+                    class="form-control" 
+                    placeholder="Ingrese la constraseña" 
+                />      
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12" align="center">
-                <button id="buttonEntrar" 
-                        class="btn btn-lg btn-primary btn-block" label="Ingresar">
+                <button 
+                    id="buttonEntrar" 
+                    class="btn btn-lg btn-primary btn-block" 
+                    label="Ingresar"
+                >
+                    Ingresar
                 </button>   
-                <!--                    <button id="buttonConsultar"  
-                        class="btn btn-lg btn-success btn-block" label="Consultas">
-                </button>   -->
             </div>
         </div>
     
     </div>
-  
+    -->
+
+<!--
+    <div class='main_container' id="loginWin" > 
+        <div class="wrapper">
+            <div class="nav">
+                <div class="logo_wrapper">
+                    <image src="./imagenes/logo/2.png" class="logo"/>
+                </div>
+            </div>
+
+            <div class="form">
+                <div class="logo_wrapper2">
+                    <image src="./imagenes/logo/3.png" class="logo"/>
+                    <div class="desc">
+                        <span>Inicia sesión</span>
+                        <span>Administrar tus facturas nunca ha sido tan facil!</span>
+                    </div>
+                </div>
+
+                <div class="wrapper_container_input">
+                    <div class="wrapper_input">
+                        <textbox id="account" type="text" class="input"
+                            onCreate="self.focus()"
+                            placeholder="Ingrese el usuario"   
+                    />
+                    </div>
+                    <div class="wrapper_input">
+                         <textbox id="password" type="password" 
+                            class="input" 
+                            placeholder="Ingrese la constraseña" 
+                    />      
+                    </div>
+                    
+                    <div class="forgot">
+                        <span>Olvidaste tu contraseña?</span>
+                    </div>
+                    
+                    
+                    <button 
+                        id="buttonEntrar" 
+                        class="main_btn" 
+                        label="Ingresar"
+                    >
+                        Ingresar
+                    </button>   
+                </div>
+
+            </div>
+
+            <div class="foot">
+                <image src="./imagenes/signin/wave1.png" class="wave"/>
+            </div>
+        </div>
+    </div>
+
+    -->
+
+    <div class='main_container' id="loginWin" apply="com.ec.controlador.LoginController"> 
+        <div class="wrapper">
+            <div class="nav">
+                <div class="logo_wrapper">
+                    <image src="./imagenes/logo/2.png" class="logo"/>
+                </div>
+            </div>
+            
+            <div class="info_wrapper">
+                <div class="form_wrapper">
+                    <div class="form">
+                        <div class="desc">
+                            <span>Inicia sesión</span>
+                            <span>Administrar tus facturas nunca ha sido tan facil!</span>
+                        </div>
+
+                        <div class="wrapper_container_input">
+                            <div class="wrapper_input">
+                                <div class="fa-solid fa-user icon" />
+                                <textbox id="account" type="text" class="input"
+                                    onCreate="self.focus()"
+                                    placeholder="Ingrese el usuario"   
+                            />
+                            </div>
+                            <div class="wrapper_input">
+                                <div class="fa-solid fa-key icon" />
+                                <textbox id="password" type="password" 
+                                    class="input" 
+                                    placeholder="Ingrese la constraseña" 
+                            />      
+                            </div>
+
+                            
+                            <div class="forgot">
+                                <span>Olvidaste tu contraseña?</span>
+                                <span>Realiza tu registro aquí?</span>
+                            </div>
+                            
+                            
+                            <button 
+                                id="buttonEntrar" 
+                                class="main_btn" 
+                                label="Ingresar"
+                            >
+                                Ingresar
+                            </button>   
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="banner">
+                    <image src="https://deckxel.com/resource/img/banner.svg" class="banner_img"/>
+                </div>
+            </div>
+
+
+            <div class="foot">
+                <image src="https://deckxel.com/resource/img/wave.svg" class="wave"/>
+            </div>
+        </div>
+    </div>
     
 </zk>
