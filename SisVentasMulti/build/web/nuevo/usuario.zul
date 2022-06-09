@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="../css/boostrap/bootstrap.css"?> 
+<?link rel="stylesheet" type="text/css" href="../css/style.css"?> 
 <window  id="windowIdUsuario"  position="center" class="col-12 col-sm-12 col-md-6 col-lg-4" closable="true"  
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.AgregarUsuario')">

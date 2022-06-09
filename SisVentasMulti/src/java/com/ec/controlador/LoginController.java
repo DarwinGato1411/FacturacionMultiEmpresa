@@ -130,4 +130,17 @@ public class LoginController extends SelectorComposer<Component> {
     public void buttonConsultar() {
         Executions.sendRedirect("/consultas.zul");
     }
+    
+    @Listen("onClick = #btnRecupera")
+    public void btnRecupera() {
+        Executions.sendRedirect("/consultas.zul");
+    }
+    
+      @Listen("onClick = #btnRegistra")
+    public void btnRegistra() {
+         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+                    "/nuevo/registrousuario.zul", null, null);
+        window.doModal();
+      
+    }
 }

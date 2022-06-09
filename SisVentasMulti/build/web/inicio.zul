@@ -6,100 +6,6 @@
 
 <zk contentStyle="" >
 
-    <!--
-    <div 
-        class="container col-12 col-sm-6 col-md-5 col-lg-4 form-control" 
-        id="loginWin" 
-        style="margin:2% auto;background: transparent;   border: 5px;
-                border-color: white;"   
-         apply="com.ec.controlador.LoginController" >
- 
-        <div class="row " align="lefth" >
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group"  align="center">
-                <image  src="/imagenes/multifact.png" class="imgRedondaLogoLogin" width="100%" ></image>
-            </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group">
-                <textbox id="account" type="text" class="form-control" 
-                    onCreate="self.focus()"
-                    placeholder="Ingrese el usuario"   
-                />
-            </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                <textbox id="password" type="password" 
-                    class="form-control" 
-                    placeholder="Ingrese la constraseña" 
-                />      
-            </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12" align="center">
-                <button 
-                    id="buttonEntrar" 
-                    class="btn btn-lg btn-primary btn-block" 
-                    label="Ingresar"
-                >
-                    Ingresar
-                </button>   
-            </div>
-        </div>
-    
-    </div>
-    -->
-
-<!--
-    <div class='main_container' id="loginWin" > 
-        <div class="wrapper">
-            <div class="nav">
-                <div class="logo_wrapper">
-                    <image src="./imagenes/logo/2.png" class="logo"/>
-                </div>
-            </div>
-
-            <div class="form">
-                <div class="logo_wrapper2">
-                    <image src="./imagenes/logo/3.png" class="logo"/>
-                    <div class="desc">
-                        <span>Inicia sesión</span>
-                        <span>Administrar tus facturas nunca ha sido tan facil!</span>
-                    </div>
-                </div>
-
-                <div class="wrapper_container_input">
-                    <div class="wrapper_input">
-                        <textbox id="account" type="text" class="input"
-                            onCreate="self.focus()"
-                            placeholder="Ingrese el usuario"   
-                    />
-                    </div>
-                    <div class="wrapper_input">
-                         <textbox id="password" type="password" 
-                            class="input" 
-                            placeholder="Ingrese la constraseña" 
-                    />      
-                    </div>
-                    
-                    <div class="forgot">
-                        <span>Olvidaste tu contraseña?</span>
-                    </div>
-                    
-                    
-                    <button 
-                        id="buttonEntrar" 
-                        class="main_btn" 
-                        label="Ingresar"
-                    >
-                        Ingresar
-                    </button>   
-                </div>
-
-            </div>
-
-            <div class="foot">
-                <image src="./imagenes/signin/wave1.png" class="wave"/>
-            </div>
-        </div>
-    </div>
-
-    -->
-
     <div class='main_container' id="loginWin" apply="com.ec.controlador.LoginController"> 
         <div class="wrapper">
             <div class="nav">
@@ -120,21 +26,21 @@
                             <div class="wrapper_input">
                                 <div class="fa-solid fa-user icon" />
                                 <textbox id="account" type="text" class="input"
-                                    onCreate="self.focus()"
-                                    placeholder="Ingrese el usuario"   
-                            />
+                                         onCreate="self.focus()"
+                                         placeholder="Ingrese el usuario"   
+                                />
                             </div>
                             <div class="wrapper_input">
                                 <div class="fa-solid fa-key icon" />
                                 <textbox id="password" type="password" 
-                                    class="input" 
-                                    placeholder="Ingrese la constraseña" 
-                            />      
+                                         class="input" 
+                                         placeholder="Ingrese la constraseña" 
+                                />      
                             </div>
 
                             
                             <div class="forgot">
-                                <span>Olvidaste tu contraseña?</span>
+                                <span id="btnRegistra" >Olvidaste tu contraseña?</span>  
                                 <span>Realiza tu registro aquí?</span>
                             </div>
                             
@@ -142,8 +48,7 @@
                             <button 
                                 id="buttonEntrar" 
                                 class="main_btn" 
-                                label="Ingresar"
-                            >
+                                label="Ingresar">
                                 Ingresar
                             </button>   
                         </div>

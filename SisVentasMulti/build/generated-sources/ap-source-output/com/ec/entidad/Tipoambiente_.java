@@ -4,12 +4,14 @@ import com.ec.entidad.CabeceraCompra;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.Factura;
 import com.ec.entidad.Producto;
+import com.ec.entidad.Proveedores;
+import com.ec.entidad.Transportista;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.9.v20210604-rNA", date="2022-06-08T19:07:20")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-08T19:48:32")
 @StaticMetamodel(Tipoambiente.class)
 public class Tipoambiente_ { 
 
@@ -19,7 +21,9 @@ public class Tipoambiente_ {
     public static volatile SingularAttribute<Tipoambiente, String> am_DirImgPuntoVenta;
     public static volatile SingularAttribute<Tipoambiente, Boolean> amEstado;
     public static volatile SingularAttribute<Tipoambiente, String> amNombreComercial;
+    public static volatile CollectionAttribute<Tipoambiente, Transportista> transportistaCollection;
     public static volatile SingularAttribute<Tipoambiente, String> amDireccionSucursal;
+    public static volatile CollectionAttribute<Tipoambiente, Proveedores> proveedorCollection;
     public static volatile SingularAttribute<Tipoambiente, String> amCodigo;
     public static volatile SingularAttribute<Tipoambiente, String> amUsuarioSmpt;
     public static volatile SingularAttribute<Tipoambiente, String> amAutorizados;

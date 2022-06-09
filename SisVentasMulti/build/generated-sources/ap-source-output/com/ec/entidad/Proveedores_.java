@@ -3,13 +3,14 @@ package com.ec.entidad;
 import com.ec.entidad.CabeceraCompra;
 import com.ec.entidad.ProductoProveedor;
 import com.ec.entidad.TipoIdentificacionCompra;
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.sri.CabeceraCompraSri;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.9.v20210604-rNA", date="2022-06-08T19:07:20")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-08T19:48:32")
 @StaticMetamodel(Proveedores.class)
 public class Proveedores_ { 
 
@@ -25,6 +26,7 @@ public class Proveedores_ {
     public static volatile SingularAttribute<Proveedores, String> provNombre;
     public static volatile SingularAttribute<Proveedores, String> provMovil;
     public static volatile SingularAttribute<Proveedores, String> provNomComercial;
+    public static volatile SingularAttribute<Proveedores, Tipoambiente> codTipoambiente;
     public static volatile SingularAttribute<Proveedores, String> provDireccion;
     public static volatile CollectionAttribute<Proveedores, ProductoProveedor> productoProveedorCollection;
     public static volatile SingularAttribute<Proveedores, String> provCorreo;

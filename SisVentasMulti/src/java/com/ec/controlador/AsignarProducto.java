@@ -7,7 +7,6 @@ package com.ec.controlador;
 import com.ec.entidad.ProductoProveedor;
 import com.ec.entidad.Proveedores;
 import com.ec.servicio.ServicioProductoProveedor;
-import com.ec.servicio.ServicioProveedor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

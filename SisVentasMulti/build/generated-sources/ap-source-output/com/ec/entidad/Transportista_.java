@@ -2,12 +2,13 @@ package com.ec.entidad;
 
 import com.ec.entidad.Guiaremision;
 import com.ec.entidad.Tipoadentificacion;
+import com.ec.entidad.Tipoambiente;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.9.v20210604-rNA", date="2022-06-08T19:07:20")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-08T19:48:32")
 @StaticMetamodel(Transportista.class)
 public class Transportista_ { 
 
@@ -17,6 +18,7 @@ public class Transportista_ {
     public static volatile SingularAttribute<Transportista, Integer> idTransportista;
     public static volatile SingularAttribute<Transportista, Tipoadentificacion> idTipoIdentificacion;
     public static volatile SingularAttribute<Transportista, String> trpRazonSocial;
+    public static volatile SingularAttribute<Transportista, Tipoambiente> codTipoambiente;
     public static volatile SingularAttribute<Transportista, String> trpMovil;
     public static volatile SingularAttribute<Transportista, String> trpDireccion;
     public static volatile SingularAttribute<Transportista, String> trpTelefono;
