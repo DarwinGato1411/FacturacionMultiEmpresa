@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?> 
-
-<window  id="wOlvideMiclave"  position="center" class="col-12 col-sm-12 col-md-6 col-lg-4" closable="true"  
+<div class='main_container' id="loginWin" apply="com.ec.controlador.LoginController"> 
+        <div class="wrapper">
+            <div class="nav">
+                <div class="logo_wrapper">
+                    <image src="./imagenes/logo/2.png" class="logo"/>
+                </div>
+            </div>
+            
+            <div class="info_wrapper">
+                <div class="form_wrapper">
+                   <window  id="wOlvideMiclave"  position="center" class="col-12 col-sm-12 col-md-6 col-lg-4" closable="true"  
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.RecuperarClave')">
     
@@ -46,3 +55,12 @@
                     
                   
 </window>
+                </div>
+
+               
+            </div>
+
+
+            
+        </div>
+    </div>
