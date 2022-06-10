@@ -55,14 +55,18 @@ public class AdminstrarCompraVenta {
 
     private void findByBetweenFecha() {
         listaCompras = servicioCompra.findByBetweenFecha(inicio, fin, amb);
-        listaVentas = servicioFactura.findBetweenFecha(inicio, fin);
+        listaVentas = servicioFactura.findBetweenFecha(inicio, fin,amb);
 //        for (Factura venta : listaVentas) {
 //            compraVenta
 //        }
 //        for (CabeceraCompra taCompra : listaCompras) {
 //            
 //        }
+<<<<<<< HEAD
         compraVenta = servicioGeneral.totalesCompraVenta(inicio, fin, amb);
+=======
+        compraVenta = servicioGeneral.totalesCompraVenta(inicio, fin,amb);
+>>>>>>> 1caa7a85926feadb7393bde3238a9b6f9d38f45d
     }
 
     @Command
