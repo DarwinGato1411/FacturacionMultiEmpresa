@@ -6,21 +6,19 @@ import com.ec.entidad.Factura;
 import com.ec.entidad.Producto;
 import com.ec.entidad.Proveedores;
 import com.ec.entidad.Transportista;
+import java.math.BigDecimal;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-<<<<<<< HEAD
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-09T12:07:19")
-=======
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-09T12:22:10")
->>>>>>> 354e171f0ac97e0eea30625350f80ab04f1e746b
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2022-06-10T09:05:46")
 @StaticMetamodel(Tipoambiente.class)
 public class Tipoambiente_ { 
 
     public static volatile SingularAttribute<Tipoambiente, String> amDescripcion;
     public static volatile SingularAttribute<Tipoambiente, String> amGenerados;
+    public static volatile SingularAttribute<Tipoambiente, Integer> amSecFactura;
     public static volatile SingularAttribute<Tipoambiente, String> amCiudad;
     public static volatile SingularAttribute<Tipoambiente, String> am_DirImgPuntoVenta;
     public static volatile SingularAttribute<Tipoambiente, Boolean> amEstado;
@@ -50,6 +48,8 @@ public class Tipoambiente_ {
     public static volatile SingularAttribute<Tipoambiente, String> amTipoEmision;
     public static volatile SingularAttribute<Tipoambiente, String> amDirXml;
     public static volatile SingularAttribute<Tipoambiente, String> amUnidadDisco;
+    public static volatile SingularAttribute<Tipoambiente, BigDecimal> amValorIva;
+    public static volatile SingularAttribute<Tipoambiente, Integer> amSecGuia;
     public static volatile SingularAttribute<Tipoambiente, Boolean> amRimpe;
     public static volatile CollectionAttribute<Tipoambiente, Factura> facturaCollection;
     public static volatile SingularAttribute<Tipoambiente, String> amDireccionMatriz;
@@ -57,12 +57,14 @@ public class Tipoambiente_ {
     public static volatile SingularAttribute<Tipoambiente, String> amHost;
     public static volatile CollectionAttribute<Tipoambiente, CabeceraCompra> cabeceraCompraCollection;
     public static volatile SingularAttribute<Tipoambiente, String> amPort;
+    public static volatile SingularAttribute<Tipoambiente, Integer> amSecNotaCredito;
     public static volatile SingularAttribute<Tipoambiente, String> amEstab;
     public static volatile SingularAttribute<Tipoambiente, String> amDirBaseArchivos;
     public static volatile SingularAttribute<Tipoambiente, String> amDirFirma;
     public static volatile SingularAttribute<Tipoambiente, String> amNoAutorizados;
     public static volatile SingularAttribute<Tipoambiente, Boolean> amAgeRet;
     public static volatile SingularAttribute<Tipoambiente, Integer> amIdEmpresa;
+    public static volatile SingularAttribute<Tipoambiente, Integer> amSecRetencion;
     public static volatile SingularAttribute<Tipoambiente, String> amNroContribuyente;
     public static volatile SingularAttribute<Tipoambiente, String> amTelefono;
     public static volatile SingularAttribute<Tipoambiente, String> amFirmados;

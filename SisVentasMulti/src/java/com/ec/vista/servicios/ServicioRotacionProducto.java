@@ -4,6 +4,7 @@
  */
 package com.ec.vista.servicios;
 
+import com.ec.entidad.Tipoambiente;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.vistas.RotacionProducto;
 import com.ec.vistas.RotacionProducto;
@@ -29,15 +30,16 @@ public class ServicioRotacionProducto {
         this.em = em;
     }
 
-    public List<RotacionProducto> findBetweenGroupByProducto(Date inicio, Date fin) {
+    public List<RotacionProducto> findBetweenGroupByProducto(Date inicio, Date fin, Tipoambiente codTipoambiente) {
 
         List<RotacionProducto> listaRotacionProductos = new ArrayList<RotacionProducto>();
         try {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT new com.ec.vistas.RotacionProducto(max(a.prodNombre),SUM(a.cantidadVenta),SUM(a.valorVentaProducto)) FROM RotacionProducto a WHERE a.facFecha BETWEEN :inicio and :fin  GROUP BY a.idProducto" );
+            Query query = em.createQuery("SELECT new com.ec.vistas.RotacionProducto(max(a.prodNombre),SUM(a.cantidadVenta),SUM(a.valorVentaProducto)) FROM RotacionProducto a WHERE a.facFecha BETWEEN :inicio and :fin  AND a.codTipoambiente=:codTipoambiente GROUP BY a.idProducto " );
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
+             query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
             listaRotacionProductos = (List<RotacionProducto>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
