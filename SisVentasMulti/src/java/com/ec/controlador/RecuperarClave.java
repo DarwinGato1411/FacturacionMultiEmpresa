@@ -4,24 +4,22 @@
  */
 package com.ec.controlador;
 
-import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
-import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioUsuario;
-import java.math.BigDecimal;
+import com.ec.untilitario.MailerClass;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
-import org.zkoss.bind.annotation.ExecutionArgParam;
-import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 /**
@@ -32,13 +30,28 @@ public class RecuperarClave {
 
     @Wire
     Window wOlvideMiclave;
+
     ServicioUsuario servicioUsuario = new ServicioUsuario();
     private Usuario usuarioSistema = new Usuario();
     private String usuCorreo = "";
     private String usuRuc = "";
 
-    public RecuperarClave() {
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+//    UserCredential credential = new UserCredential();
+//    private String amRuc = "";
+//    private Tipoambiente amb = new Tipoambiente();
 
+    @AfterCompose
+    public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
+        Selectors.wireComponents(view, this, false);
+
+    }
+
+    public RecuperarClave() {
+//        Session sess = Sessions.getCurrent();
+//        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+//        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
     }
 
     @Command
@@ -47,6 +60,22 @@ public class RecuperarClave {
                     && usuRuc != null && !usuCorreo.equals("")) {
             usuarioSistema = servicioUsuario.findRecuperaPassword(usuRuc, usuCorreo);
             if (usuarioSistema != null) {
+
+                Usuario usuario = servicioUsuario.findRecuperaPassword(usuRuc, usuCorreo);
+                Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuRuc);
+
+                if (usuario != null) {
+                    try {
+                        MailerClass mail = new MailerClass();
+                        mail.sendMailRecuperarPassword(usuCorreo, "Recuperar accesos DEFACT", usuario.getUsuLogin(), usuario.getUsuPassword(), amb);
+                        Clients.showNotification("Los accesos se enviaron al correo electrónico",
+                                    Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
+                    } catch (RemoteException ex) {
+                        Clients.showNotification("Ocurrio un error al recuperar su password",
+                                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                        Logger.getLogger(RecuperarClave.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 wOlvideMiclave.detach();
             } else {
                 Clients.showNotification("Verifique su RUc o Correo electronico",
