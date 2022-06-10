@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/base.css"?>
+
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
@@ -16,20 +18,19 @@
     </style>
                <!--onCreate="@command('aperturaCaja')"-->
     <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-                  
           viewModel="@id('vm') @init('com.ec.controlador.Facturar')" width="100%">
-        
-        
+    
         <timer id="timer" delay="300000" repeats="true" onTimer="@command('refrescarPagina')" />
         <tabbox  width="100%"  tabscroll="true" >
             <tabs >
                 <tab label="Emitir factura" sclass="menutabs"/>
             </tabs>
+
             <tabpanels >
                 
                 <tabpanel  height="100%" width="98%"  >
                     
-                    <div class="container-fluid " >
+                    <div class="container-fluid factura_main" >
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="input-group  col-sm-12">
@@ -62,6 +63,8 @@
                                                  
                                        value="@bind(vm.clienteBuscado.cliNombre)"  />
                             </div>
+
+                            <!--radio State-->
                             <div class="col-sm-3">
                                 <div class="col-sm-12  hidden-sm-down" align="start">
                                     <label  style="font-weight:bold" 
@@ -73,15 +76,12 @@
                                         <radio  label="Pendiente" value="PE"/>                                                                                       
                                     </radiogroup>
 
-                                             
-                                
-                              
                                 </div>
                             </div>
+
+                            <!--radio docuement-->
                             <div class="col-sm-5">
                                 <div class="col-sm-12  hidden-sm-down" align="start">
-                                    
-
                                     <label  style="font-weight:bold;padding-left: 10px" 
                                             value="Documento:"  />
                                     <radiogroup    
@@ -107,14 +107,14 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                Emisión:<datebox compact="true"  value="@bind(vm.fechafacturacion)" 
+                                Emisión: <datebox compact="true"  value="@bind(vm.fechafacturacion)" 
                                                  readonly="true" style="font-weight:bold;" 
                                                  buttonVisible="true" 
                                                  lenient="true" format="dd/MM/yyyy" 
                                                  constraint="no empty: Ingrese la fecha "/>
                             </div>
                             <div class="col-sm-3">
-                                Cobro:<datebox compact="true" value="@bind(vm.facFechaCobro)" 
+                                Cobro: <datebox compact="true" value="@bind(vm.facFechaCobro)" 
                                                readonly="true" style="font-weight:bold;" 
                                                buttonVisible="true" 
                                                lenient="true" format="dd/MM/yyyy" 
@@ -165,7 +165,7 @@
       
                     
                                         <listhead> 
-                                            <listheader width="20%"      align="left"   >
+                                            <listheader width="20%" align="left" class="tableHeader" >
                                                 <textbox value="@bind(vm.buscarCodigoProd)"  
                                            
                                                          class="form-control form-control-sm"
@@ -188,7 +188,6 @@
                                             <listheader width="13%"  label="PV X MAYOR" align="center" /> 
                                             <listheader width="13%"  label="PVP" align="center" /> 
                                             <listheader width="8%"  label="" align="center"/>
-                           
                                         </listhead>  
                     
                                         <template name="model">                                                            
@@ -348,10 +347,8 @@
                                                                 value="@bind(each.detTotalconivadescuento)"  width="99%" />
                                                 </listcell>
                                            
-                                        
                                             </listitem>
                                         </template>
-
                                     </listbox>
                                 </div>                         
                             </div>
@@ -493,15 +490,8 @@
                         </div>
                     </div>
                     
-                    
-               
                 </tabpanel>
             </tabpanels>
-           
-
         </tabbox>   
-         
     </hbox>
-
-    
 </zk>

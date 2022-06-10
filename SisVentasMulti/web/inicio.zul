@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/css/app/base.css"?>   
-<?link rel="stylesheet" type="text/css" href="/css/app/signin/index.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/landing/signin.css"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>  
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?page title="Facturacion electrónica" contentType="text/html;charset=UTF-8"?>
@@ -38,10 +38,10 @@
                                 />      
                             </div>
 
-                            
+                        
                             <div class="forgot">
-                                <span id="btnRegistra" >Olvidaste tu contraseña?</span>  
-                                <span>Realiza tu registro aquí?</span>
+                                <span>Olvidaste tu contraseña?</span>  
+                                <span id="btnRegistra">Realiza tu registro aquí?</span>
                             </div>
                             
                             

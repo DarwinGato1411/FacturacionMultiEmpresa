@@ -28,7 +28,6 @@
 
 .foot {
   position: absolute;
-  z-index: -1;
   bottom: 0;
   width: 100%;
 }
@@ -42,6 +41,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: 50;
 }
 
 .info_wrapper {
@@ -86,7 +87,7 @@
   margin-top: 3em !important;
 }
 
-.wrapper_container_input > .wrapper_input {
+.wrapper_input {
   width: 100%;
   background-color: transparent;
   position: relative;
@@ -94,12 +95,13 @@
   position: relative;
 }
 
-.wrapper_container_input > .icon {
+.wrapper_container_input > .wrapper_input > .icon {
   position: absolute;
-  top: 10px;
+  top: 12px;
+  color: #1247b9;
 }
 
-.wrapper_container_input > .wrapper_input::after {
+.wrapper_input::after {
   content: "";
   display: block;
   width: 0;
@@ -111,15 +113,15 @@
   transition: 0.3s ease-in-out;
 }
 
-.wrapper_container_input > .wrapper_input:focus-within::after {
+.wrapper_input:focus-within::after {
   width: 100%;
   border-bottom: none;
 }
 
-.wrapper_container_input > .wrapper_input > .input {
+.wrapper_input > .input {
   width: 100%;
   background-color: transparent !important;
-  padding: 10px 17px !important;
+  padding: 10px 7px 10px 25px !important;
   border: none !important;
   outline: none !important;
   color: #1247b9;
@@ -151,14 +153,18 @@
 
 .main_btn {
   width: 100%;
-  border-radius: 7px;
   padding: 10px 17px !important;
+  border-radius: 7px;
   color: #fff;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   background-color: #1247b9;
   border: none !important;
+}
+
+.main_btn:active {
+  transform: translateY(-2px);
 }
 
 .banner {
@@ -168,10 +174,6 @@
 
 .banner > .banner_img {
   object-fit: cover;
-}
-
-.main_btn:active {
-  transform: translateY(-2px);
 }
 
 @media only screen and (min-width: 640px) {
