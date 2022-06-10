@@ -60,11 +60,11 @@ public class ServicioFactura {
             DetalleFactura detalleFactura = null;
             for (DetalleFacturaDAO item : detalleFacturaDAOs) {
                 detalleFactura = new DetalleFactura(item.getCantidad(),
-                        item.getDescripcion(),
-                        item.getSubTotal(),
-                        item.getTotal(),
-                        item.getProducto(),
-                        factura, item.getTipoVenta());
+                            item.getDescripcion(),
+                            item.getSubTotal(),
+                            item.getTotal(),
+                            item.getProducto(),
+                            factura, item.getTipoVenta());
                 detalleFactura.setDetIva(item.getDetIva());
                 detalleFactura.setDetTotalconiva(item.getDetTotalconiva());
 
@@ -117,11 +117,11 @@ public class ServicioFactura {
             DetalleFactura detalleFactura = null;
             for (DetalleFacturaDAO item : detalleFacturaDAOs) {
                 detalleFactura = new DetalleFactura(item.getCantidad(),
-                        item.getDescripcion(),
-                        item.getSubTotal(),
-                        item.getTotal(),
-                        item.getProducto(),
-                        factura, item.getTipoVenta());
+                            item.getDescripcion(),
+                            item.getSubTotal(),
+                            item.getTotal(),
+                            item.getProducto(),
+                            factura, item.getTipoVenta());
                 detalleFactura.setDetIva(item.getDetIva());
                 detalleFactura.setDetTotalconiva(item.getDetTotalconiva());
 //                servicioDetalleFactura.modificar(detalleFactura);
@@ -148,11 +148,11 @@ public class ServicioFactura {
             DetalleFactura detalleFactura = null;
             for (DetalleFacturaDAO item : detalleFacturaDAOs) {
                 detalleFactura = new DetalleFactura(item.getCantidad(),
-                        item.getDescripcion(),
-                        item.getSubTotal(),
-                        item.getTotal(),
-                        item.getProducto(),
-                        factura, item.getTipoVenta());
+                            item.getDescripcion(),
+                            item.getSubTotal(),
+                            item.getTotal(),
+                            item.getProducto(),
+                            factura, item.getTipoVenta());
                 detalleFactura.setDetSubtotaldescuento(item.getSubTotalDescuento());
                 detalleFactura.setDetTotaldescuento(item.getDetTotaldescuento());
                 detalleFactura.setDetPordescuento(item.getDetPordescuento());
@@ -224,7 +224,7 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public Factura FindUltimaFactura() {
+    public Factura FindUltimaFactura(Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         Factura facturas = new Factura();
@@ -232,7 +232,8 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Factura.findUltimaFactura", Factura.class);
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='FACT' AND f.facNumero IS NOT NULL AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.facNumero DESC");
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(2);
 //           query.setParameter("codigoUsuario", factura);
             listaFacturas = (List<Factura>) query.getResultList();
@@ -251,7 +252,7 @@ public class ServicioFactura {
         return facturas;
     }
 
-    public Factura FindUltimaProforma() {
+    public Factura FindUltimaProforma(Tipoambiente tipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         Factura facturas = new Factura();
@@ -259,9 +260,10 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='PROF' AND f.facNumProforma IS NOT NULL ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='PROF' AND f.facNumProforma IS NOT NULL AND f.cod_tipoambiente=:tipoambiente ORDER BY f.idFactura DESC");
+
+            query.setParameter("tipoambiente", tipoambiente);
             query.setMaxResults(2);
-//           query.setParameter("codigoUsuario", factura);
             listaFacturas = (List<Factura>) query.getResultList();
             if (listaFacturas.size() > 0) {
                 facturas = listaFacturas.get(0);
@@ -434,9 +436,9 @@ public class ServicioFactura {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoAmbiente ORDER BY f.facNumero DESC");
-             query.setParameter("codTipoAmbiente", codTipoAmbiente);
+            query.setParameter("codTipoAmbiente", codTipoAmbiente);
             query.setMaxResults(400);
-          
+
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -807,7 +809,7 @@ public class ServicioFactura {
     }
 
     /*NOTA DE ENTREGA*/
-    public Factura findUltimaNotaEnt() {
+    public Factura findUltimaNotaEnt(Tipoambiente tipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         Factura facturas = new Factura();
@@ -815,9 +817,10 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='NTE' AND f.facNumNotaEntrega IS NOT NULL ORDER BY f.facNumNotaEntrega DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='NTE' AND f.facNumNotaEntrega IS NOT NULL AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumNotaEntrega DESC");
+            query.setParameter("tipoambiente", tipoambiente);
             query.setMaxResults(2);
-//           query.setParameter("codigoUsuario", factura);
+
             listaFacturas = (List<Factura>) query.getResultList();
             if (listaFacturas.size() > 0) {
                 facturas = listaFacturas.get(0);
@@ -881,7 +884,7 @@ public class ServicioFactura {
     }
 
     /*NOTA DE venta numero*/
-    public Factura findUltimaNotaVent() {
+    public Factura findUltimaNotaVent(Tipoambiente tipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         Factura facturas = new Factura();
@@ -889,9 +892,9 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='NTV' AND f.facNumNotaVenta IS NOT NULL ORDER BY f.facNumNotaVenta DESC");
-            query.setMaxResults(2);
-//           query.setParameter("codigoUsuario", factura);
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='NTV' AND f.facNumNotaVenta IS NOT NULL AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumNotaVenta DESC");
+            query.setParameter("tipoambiente", tipoambiente);
+            query.setMaxResults(2);  
             listaFacturas = (List<Factura>) query.getResultList();
             if (listaFacturas.size() > 0) {
                 facturas = listaFacturas.get(0);

@@ -133,4 +133,37 @@ public class ServicioUsuario {
 
         return listaUsuarios;
     }
+    
+    /*Recupera contraseña
+    */
+    
+    public Usuario findRecuperaPassword(String ruc,String correo) {
+
+        List<Usuario> listaClientes = new ArrayList<Usuario>();
+        Usuario usuarioObtenido = new Usuario();
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.usuCorreo = :usuCorreo AND u.usuRuc=:ruc");
+            query.setParameter("usuCorreo", correo);
+            query.setParameter("ruc", ruc);
+            listaClientes = (List<Usuario>) query.getResultList();
+            if (listaClientes.size() > 0) {
+                for (Usuario usuario : listaClientes) {
+                    usuarioObtenido = usuario;
+                }
+            } else {
+                usuarioObtenido = null;
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta usuario  FindUsuarioPorNombre  " + e);
+        } finally {
+            em.close();
+        }
+
+        return usuarioObtenido;
+    }
 }

@@ -107,17 +107,12 @@ public class LoginController extends SelectorComposer<Component> {
 
     }
 
-    @Listen("onClick = #linkRegistrarme")
-    public void doRegistrarme() {
-        Window window = (Window) Executions.createComponents(
-                "/celec/candidato/registrame.zul", null, null);
-        window.doModal();
-    }
+  
 
     @Listen("onClick= #linkOlvideContrasena")
     public void linkOlvideContrasena() {
-        Window window = (Window) Executions.createComponents(
-                "/celec/candidato/olvideMiClave.zul", null, null);
+      org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+                    "/nuevo/olvidemiclave.zul", null, null);
         window.doModal();
     }
 
@@ -131,10 +126,7 @@ public class LoginController extends SelectorComposer<Component> {
         Executions.sendRedirect("/consultas.zul");
     }
     
-    @Listen("onClick = #btnRecupera")
-    public void btnRecupera() {
-        Executions.sendRedirect("/consultas.zul");
-    }
+  
     
       @Listen("onClick = #btnRegistra")
     public void btnRegistra() {

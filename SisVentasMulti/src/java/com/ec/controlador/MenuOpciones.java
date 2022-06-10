@@ -56,6 +56,8 @@ public class MenuOpciones extends SelectorComposer<Component> {
     Menu menuReportes;
     @Wire("#btnAdministarVenta")
     Menuitem btnAdministarVenta;
+    @Wire("#btnHisDeclaraciones")
+    Menuitem btnHisDeclaraciones;
     UserCredential credential = new UserCredential();
     private String acceso = "";
 
@@ -111,6 +113,11 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Listen("onClick = #btnAdministarVenta")
     public void doAdministrarVenta() {
         Executions.sendRedirect("/venta/administrar.zul");
+    }
+
+    @Listen("onClick = #btnHisDeclaraciones")
+    public void doAdministrarHistoDeclaraciones() {
+        Executions.sendRedirect("/reportevistas/histodeclaraciones.zul");
     }
 
     @Listen("onClick = #btnConsulta")
@@ -292,7 +299,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void btnCierreCaja() {
 //        if (credential.getUsuarioSistema().getUsuNivel() != 1) {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/cierrecaja.zul", null, null);
+                "/nuevo/cierrecaja.zul", null, null);
         window.doModal();
 //        } else {
 //            Clients.showNotification("El usuario administrador no puede cerrar una caja",
@@ -305,7 +312,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void nuevoProducto() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/producto.zul", null, null);
+                "/nuevo/producto.zul", null, null);
         window.doModal();
 
     }
@@ -314,7 +321,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void nuevoCliente() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/cliente.zul", null, null);
+                "/nuevo/cliente.zul", null, null);
         window.doModal();
 
     }
@@ -335,5 +342,4 @@ public class MenuOpciones extends SelectorComposer<Component> {
         this.acceso = acceso;
     }
 
-    
 }

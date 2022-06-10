@@ -42,7 +42,7 @@ import org.zkoss.zul.Window;
  * @author gato
  */
 public class NuevoProducto {
-    
+
     ServicioKardex servicioKardex = new ServicioKardex();
     ServicioDetalleKardex servicioDetalleKardex = new ServicioDetalleKardex();
     ServicioTipoKardex servicioTipoKardex = new ServicioTipoKardex();
@@ -56,14 +56,14 @@ public class NuevoProducto {
     Window windowCliente;
     @Wire
     Textbox txtIvaRec;
-    
+
     private String conIva = "S";
     private String esProducto = "P";
     UserCredential credential = new UserCredential();
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
     private Tipoambiente amb = new Tipoambiente();
     private String amRuc = "";
-    
+
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") Producto producto, @ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -75,7 +75,7 @@ public class NuevoProducto {
             } else {
                 conIva = "N";
             }
-            
+
             if (producto.getProdEsproducto()) {
                 esProducto = "P";
             } else {
@@ -105,19 +105,19 @@ public class NuevoProducto {
             this.producto.setProdUnidadMedida("UNIDAD");
             this.producto.setProdUnidadConversion("UNIDAD");
             this.producto.setProdFactorConversion(BigDecimal.ONE);
-            
+
             accion = "create";
         }
-        
+
     }
-    
+
     public NuevoProducto() {
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
         amRuc = credential.getUsuarioSistema().getUsuRuc();
         amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void colocarIva() {
@@ -129,7 +129,7 @@ public class NuevoProducto {
             producto.setProdIva(BigDecimal.ZERO);
         }
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void calculopreciofinal() {
@@ -143,10 +143,10 @@ public class NuevoProducto {
             BigDecimal UtiManTrans = ((producto.getProdUtilidadNormal().add(producto.getProdManoObra()).add(producto.getProdTrasnporte())).divide(BigDecimal.valueOf(100))).add(BigDecimal.ONE);
             BigDecimal costoPorUtiManTrans = compraMasIva.multiply(UtiManTrans).setScale(4, RoundingMode.UP);
             producto.setPordCostoVentaFinal(costoPorUtiManTrans);
-            
+
         }
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void calculopreciofinalUno() {
@@ -160,10 +160,10 @@ public class NuevoProducto {
             BigDecimal UtiManTransPref = ((producto.getProdUtilidadPreferencial().add(producto.getProdManoObra()).add(producto.getProdTrasnporte())).divide(BigDecimal.valueOf(100), 4, RoundingMode.FLOOR)).add(BigDecimal.ONE);
             BigDecimal costoPorUtiManTransPref = compraMasIva.multiply(UtiManTransPref).setScale(4, RoundingMode.UP);
             producto.setProdCostoPreferencial(costoPorUtiManTransPref);
-            
+
         }
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void calculopreciofinalDos() {
@@ -179,7 +179,7 @@ public class NuevoProducto {
             producto.setProdCostoPreferencialDos(costoPorUtiManTransPref1);
         }
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidad() {
@@ -188,7 +188,7 @@ public class NuevoProducto {
         BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
         producto.setProdUtilidadNormal(utilidad);
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidadUno() {
@@ -197,7 +197,7 @@ public class NuevoProducto {
         BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
         producto.setProdUtilidadPreferencial(utilidad);
     }
-    
+
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidadDos() {
@@ -206,11 +206,11 @@ public class NuevoProducto {
         BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
         producto.setProdUtilidadDos(utilidad);
     }
-    
+
     @Command
     @NotifyChange({"producto", "conIva"})
     public void calcularValores() {
-        
+
         BigDecimal porcenIva = (producto.getProdIva().divide(BigDecimal.valueOf(100), 4, RoundingMode.FLOOR)).add(BigDecimal.ONE);
         // BigDecimal porcenUtilidad = ((producto.getProdIva().add(producto.getProdUtilidadNormal()).add(producto.getProdManoObra()).add(producto.getProdTrasnporte())).divide(BigDecimal.valueOf(100))).add(BigDecimal.ONE);
         //BigDecimal porcenUtilidadPref = ((producto.getProdIva().add(producto.getProdUtilidadPreferencial()).add(producto.getProdManoObra()).add(producto.getProdTrasnporte())).divide(BigDecimal.valueOf(100))).add(BigDecimal.ONE);
@@ -226,20 +226,20 @@ public class NuevoProducto {
             BigDecimal compraMasIva = ArchivoUtils.redondearDecimales(producto.getPordCostoCompra().multiply(porcenIva), 3);
             producto.setPordCostoVentaRef(compraMasIva);
             /*PRECIO FINAL*/
-            
+
         }
 
 
         /*COSTO CON LA UTILIDAD MAS MENOR*/
 //        producto.setProdCostoPreferencial(costoPorUtiManTransPref);
     }
-    
+
     @Command
     public void verificarValor() {
         System.out.println("varificar");
         System.out.println("Valor " + producto.getPordCostoCompra());
     }
-    
+
     @Command
     public void guardar() {
         if (producto.getProdNombre() != null
@@ -265,7 +265,7 @@ public class NuevoProducto {
                                 Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
                     return;
                 }
-                
+
                 servicioProducto.crear(producto);
                 if (servicioKardex.FindALlKardexs(producto) == null && producto.getProdEsproducto()) {
                     kardex = new Kardex();
@@ -285,7 +285,7 @@ public class NuevoProducto {
                     detalleKardex.setIdTipokardex(servicioTipoKardex.findByTipkSigla("ING"));
                     servicioDetalleKardex.crear(detalleKardex);
                 }
-                
+
                 windowCliente.detach();
             } else {
                 servicioProducto.modificar(producto);
@@ -307,45 +307,45 @@ public class NuevoProducto {
                     detalleKardex.setIdTipokardex(servicioTipoKardex.findByTipkSigla("ING"));
                     servicioDetalleKardex.crear(detalleKardex);
                 }
-                
+
                 windowCliente.detach();
             }
-            
+
         } else {
             Messagebox.show("Verifique la informacion requerida", "Atención", Messagebox.OK, Messagebox.ERROR);
         }
     }
-    
+
     public Producto getProducto() {
         return producto;
     }
-    
+
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    
+
     public String getAccion() {
         return accion;
     }
-    
+
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    
+
     public String getConIva() {
         return conIva;
     }
-    
+
     public void setConIva(String conIva) {
         this.conIva = conIva;
     }
-    
+
     public String getEsProducto() {
         return esProducto;
     }
-    
+
     public void setEsProducto(String esProducto) {
         this.esProducto = esProducto;
     }
-    
+
 }

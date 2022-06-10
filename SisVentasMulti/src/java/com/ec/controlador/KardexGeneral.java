@@ -6,6 +6,9 @@ package com.ec.controlador;
 
 import com.ec.entidad.Kardex;
 import com.ec.entidad.RetencionCompra;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioKardex;
 import com.ec.servicio.ServicioTipoAmbiente;
@@ -45,6 +48,8 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -52,19 +57,26 @@ import org.zkoss.zul.Filedownload;
  * @author gato
  */
 public class KardexGeneral {
-
-    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    
     ServicioKardex servicioKardex = new ServicioKardex();
     private String estdoKardex = "TOD";
     private List<Kardex> listKardex = new ArrayList<Kardex>();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    private Tipoambiente amb = new Tipoambiente();
+    UserCredential credential = new UserCredential();
+    private String amRuc = "";
 
     public KardexGeneral() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         buscarKardex();
 
     }
 
     private void buscarKardex() {
-        listKardex = servicioKardex.FindALlKardexMaxMininimo(estdoKardex);
+        listKardex = servicioKardex.FindALlKardexMaxMininimo(estdoKardex, amb);
 
     }
 
@@ -255,6 +267,38 @@ public class KardexGeneral {
 
     public void setEstdoKardex(String estdoKardex) {
         this.estdoKardex = estdoKardex;
+    }
+
+    public Tipoambiente getAmb() {
+        return amb;
+    }
+
+    public void setAmb(Tipoambiente amb) {
+        this.amb = amb;
+    }
+
+    public UserCredential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(UserCredential credential) {
+        this.credential = credential;
+    }
+
+    public String getAmRuc() {
+        return amRuc;
+    }
+
+    public void setAmRuc(String amRuc) {
+        this.amRuc = amRuc;
+    }
+
+    public Connection getCon() {
+        return con;
+    }
+
+    public void setCon(Connection con) {
+        this.con = con;
     }
 
 }

@@ -6,6 +6,7 @@
 package com.ec.entidad;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -177,10 +178,22 @@ public class Tipoambiente implements Serializable {
 
     @OneToMany(mappedBy = "codTipoambiente")
     private Collection<Proveedores> proveedorCollection;
-    
-     @OneToMany(mappedBy = "codTipoambiente")
+
+    @OneToMany(mappedBy = "codTipoambiente")
     private Collection<Transportista> transportistaCollection;
-    
+
+    /*informacion para cada empresa*/
+    @Column(name = "am_sec_factura")
+    private Integer amSecFactura;
+    @Column(name = "am_sec_retencion")
+    private Integer amSecRetencion;
+    @Column(name = "am_sec_nota_credito")
+    private Integer amSecNotaCredito;
+    @Column(name = "am_sec_guia")
+    private Integer amSecGuia;
+    @Column(name = "am_valor_iva")
+    private BigDecimal amValorIva;
+
     public Tipoambiente() {
     }
 
@@ -595,6 +608,46 @@ public class Tipoambiente implements Serializable {
 
     public void setTransportistaCollection(Collection<Transportista> transportistaCollection) {
         this.transportistaCollection = transportistaCollection;
+    }
+
+    public Integer getAmSecFactura() {
+        return amSecFactura == null ? 1 : amSecFactura;
+    }
+
+    public void setAmSecFactura(Integer amSecFactura) {
+        this.amSecFactura = amSecFactura;
+    }
+
+    public Integer getAmSecRetencion() {
+        return amSecRetencion == null ? 1 : amSecRetencion;
+    }
+
+    public void setAmSecRetencion(Integer amSecRetencion) {
+        this.amSecRetencion = amSecRetencion;
+    }
+
+    public Integer getAmSecGuia() {
+        return amSecGuia == null ? 1 : amSecGuia;
+    }
+
+    public void setAmSecGuia(Integer amSecGuia) {
+        this.amSecGuia = amSecGuia;
+    }
+
+    public BigDecimal getAmValorIva() {
+        return amValorIva;
+    }
+
+    public void setAmValorIva(BigDecimal amValorIva) {
+        this.amValorIva = amValorIva;
+    }
+
+    public Integer getAmSecNotaCredito() {
+        return amSecNotaCredito == null ? 1 : amSecNotaCredito;
+    }
+
+    public void setAmSecNotaCredito(Integer amSecNotaCredito) {
+        this.amSecNotaCredito = amSecNotaCredito;
     }
 
     @Override
