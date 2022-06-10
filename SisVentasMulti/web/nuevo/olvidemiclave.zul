@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?> 
-<window  id="wOlvideMiclave"  position="center" class="col-12 col-sm-12 col-md-6 col-lg-4" closable="true"  
+
+<window  id="wOlvideMiclave"  position="center" class="window_reg"  closable="true"  
                             apply="org.zkoss.bind.BindComposer" 
                             viewModel="@id('vm') @init('com.ec.controlador.RecuperarClave')">
     
                     <caption label="Olvide mi clave" style="font-weight:bold"
                     /> 
-                    <div  class="container" >
+                    <!-- <div  class="container" >
                         <div  class="row" >         
           
             
@@ -40,8 +41,41 @@
                             </div> 
                         </div>
    
-                    </div>
-    
+                    </div> -->
+
                     
+    
+     <div class="container_registro">
+        <div class="wrapper">
+            <div class="col_base">
+                <span>RUC</span>
+                <div class="wrapper_input">
+                    <div class="fa-solid fa-address-card icon"></div>
+                    <textbox  maxlength="20"   
+                        value="@bind(vm.usuRuc)" 
+                        class="input" 
+                    />
+                </div>
+            </div>
+
+            <div class="col_base">
+             <span>Correo</span>
+             <div class="wrapper_input">
+                <div class="fa-solid fa-envelope icon"></div>
+                 <textbox  maxlength="20"   
+                    value="@bind(vm.usuCorreo)" 
+                    class="input" 
+                />
+             </div>
+            </div>
+            <button 
+                class="col_base btn btn_reg" 
+                onClick="@command('recuperar')"
+                label="Recuperar contraseña">
+                Recuperar contraseña
+            </button>   
+           
+        </div>
+    </div>
                   
-                </window>
+</window>

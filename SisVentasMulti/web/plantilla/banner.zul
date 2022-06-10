@@ -3,7 +3,8 @@
     <div class="banner" id="loginWin"  style="height:auto"  width="100%"
          apply="com.ec.controlador.LogoutController" >
         <div class="row" >
-            
+
+
             <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start">
                 <!--<image  src="/imagenes/logintrans.jpg" width="30px" height="30px" class="imgRedondaLogo" />-->
                 <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />   
@@ -41,7 +42,7 @@
             class="row col-12 col-sm-12 col-md-12 col-lg-12" >
                 
          <div class="col-6 col-sm-6 col-md-11 col-lg-11  " align="start" >
-        
+
                     <menubar id="menubar" orient="horizontal"  autodrop="true">
                         <menu label="Ventas" >
                             <menupopup> 
