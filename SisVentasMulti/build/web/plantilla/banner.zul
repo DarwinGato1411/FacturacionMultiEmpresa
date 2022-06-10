@@ -1,0 +1,150 @@
+   <zk>
+
+    <div class="banner" id="loginWin"  style="height:auto"  width="100%"
+         apply="com.ec.controlador.LogoutController" >
+        <div class="row" >
+            
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start">
+                <!--<image  src="/imagenes/logintrans.jpg" width="30px" height="30px" class="imgRedondaLogo" />-->
+                <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />   
+                
+                     
+            </div>
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7  " align="start" style="float: right; " >
+                <div apply="org.zkoss.bind.BindComposer" 
+                     viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')">
+                    <toolbar id="tb" height="30px"  style="background:transparent;" align="end" >
+                        <!--<toolbarbutton image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />-->
+                        <toolbarbutton image="/iconos/page.png" label="Producto"  onClick="@command('nuevoProducto')" />
+                        <toolbarbutton image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />
+         
+                        <label value="Usuario: " if="${not sessionScope.userCredential.anonymous}" class="labelNuevo" />
+                        <label value="${sessionScope.usuario.nombreUsuario} / TIPO AMBIENTE ${sessionScope.usuario.tipoambiente.codTipoambiente}" class="labelNuevo" if="${not sessionScope.userCredential.anonymous}" />
+                       <!--<label value="( / " class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" />--> 
+                       <!--<label value="  )" class="infoEmpresa" if="${not sessionScope.userCredential.anonymous}" />-->
+                        <!--<div  align="end" style="float: right; " >-->
+                            <a sclass="logout labelLogout" style="color:red" id="logout" if="${not sessionScope.userCredential.anonymous}" class="form-group" >  
+                                <!--<label  value="Salir " if="${not sessionScope.userCredential.anonymous}" sclass=" labelLogout"/>--> 
+                                <image src="/iconos/logout-24.png"  ></image>  
+                       Salir
+                            </a>
+                
+                        <!--</div>-->
+                    </toolbar>
+                </div>
+               
+            </div>
+        </div>
+        <div class="row">
+            <div  viewModel="@id('vm')" id="gridMenu" 
+                  apply="com.ec.controlador.MenuOpciones" 
+            class="row col-12 col-sm-12 col-md-12 col-lg-12" >
+                
+         <div class="col-6 col-sm-6 col-md-11 col-lg-11  " align="start" >
+        
+                    <menubar id="menubar" orient="horizontal"  autodrop="true">
+                        <menu label="Ventas" >
+                            <menupopup> 
+                                <menuitem label="Emitir Facturas" id="btnFacturar"  />
+                                <!--<menuitem label="Orden de trabajo" id="btnOrdenTrab"  />-->
+                                 <menuitem label="Facturas por cobrar" id="btnfactCobra"  />
+                                <!--<menuitem label="Cierre de caja" id="btnCierreCajaUsu"  />-->
+                            </menupopup>
+                        </menu>
+                        <menu label="Gestion de ventas"  id="menuVentas">
+                            <menupopup>                               
+                                <menuitem label="Facturas emitidas" id="btnNotaVentas" />
+                                <!--<menuitem label="Nota de venta" id="btnNotaVenta"  />-->                                
+                                <menuitem label="Proformas emitidas" id="btnProformasEmitidas"  />
+                                <!--<menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />-->
+                                <!--<menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />-->
+                                <menuitem label="Notas credito" id="btnNotaCredito"  />
+                                <!--<menuitem label="Lista ordenes de trabajo" id="btnListaOrden"  />-->
+                                <!--<menuitem label="Venta en ruta (GLP)" id="btnVentaRuta" />-->
+                             
+
+                            </menupopup>
+                        </menu> 
+                        
+                        <menu label="Gestion de guias"  id="menuGuias">
+                            <menupopup>                               
+                                
+                                <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />
+                                <menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />
+                                
+                            </menupopup>
+                        </menu> 
+                        <menu label="Gestion de compras" id="menuCompras">
+                            <menupopup>                     
+                      
+                                <menuitem label="Ingreso de mercaderia" id="btnIngresoCompras"  />                                
+                                <menuitem label="Mercaderia ingresada" id="btnListaCompras"  />                                                          
+                                <menuitem label="Retenciones" id="btnRetenciones"  />
+                              
+                                <!--<menuitem label="ComprasSRI" id="btnListaComprasSRI"  />-->     
+                            </menupopup>
+                        </menu>          
+                                     
+                        <menu label="Kardex" id="menuKardex">
+                            <menupopup>  
+                                <menuitem label="Ajuste de Entrada/Salida" id="btnAjuste"  />                                                                       
+                                <menuitem label="Kardex detallado" id="btnKardex"  /> 
+                                 <menuitem label="Kardex general" id="btnKardexPorProd"  />                                               
+                                                                         
+<!--                                <menuitem label="Contabilidad" id="btnContabilidad" image="/iconmenu/page_refresh.png" />-->
+                               
+                            </menupopup>
+                        </menu>
+                         <menu label="Reportes" id="menuReportes">
+                            <menupopup>                                                                         
+                                <menuitem label="Facturas autorizadas SRI" id="btnFactAutori"  />                              
+                                <menuitem label="Compras vs Ventas" id="btnBalanceUtilidad"  />
+                                <!--<menuitem label="Cantidad de venta (GLP)" id="btnRepVentCant" />-->
+                                <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" />
+                                <menuitem label="Rotacion Productos" id="btnRotacionProducto" />
+                                <!--<menuitem label="Lista de cierre de caja" id="btnListarCierre" />--> 
+
+                                <!--<menuitem label="ATS Ventas" id="btnContabilidad"  />--> 
+                                <!--<menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  />--> 
+                                <!--<menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />-->
+                                <!--<menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+
+<!--                                <menuitem label="ATS Ventas" id="btnContabilidad"  /> 
+                                <menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  /> 
+                                <menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />
+                                <menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+
+                                <!--<menuitem label="Precio promedio venta" id="btnPreciPromVenta"  />-->
+                            </menupopup>
+                        </menu>
+                        <menuitem label="H. Declaraciones" id="btnHisDeclaraciones"  />
+                        <menuitem label="Catalogos" id="btnAdministarVenta"  />
+                          
+<!--                        <menuitem image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />
+                        <menuitem image="/iconos/page.png" label="Producto" onClick="@command('nuevoProducto')" />
+                        <menuitem image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />-->
+                      
+                    </menubar>
+                    
+                     </div>
+                     <div apply="org.zkoss.bind.BindComposer" 
+                     viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')"
+                          class="col-6 col-sm-6 col-md-1 col-lg-1 hidden-sm-down " align="start" >
+                      <menubar id="menubarEmpresa" orient="horizontal"  autodrop="true">   
+                         <menu label="Empresa" id="menuInformacion" image="/iconos/info.png" >
+                            <menupopup >                                                                         
+                                <menuitem label="RUC: ${sessionScope.usuario.tipoambiente.amRuc} "  image="/iconos/infor.png"  />                              
+                                <menuitem label="RAZÓN SOCIAL: ${sessionScope.usuario.tipoambiente.amRazonSocial}" image="/iconos/infor.png" />
+                                <menuitem label="Modificar usuario" image="/iconos/Boss.png" onClick="@command('modificarUsuario')" />
+                                <menuitem label="Salir"  image="/iconos/logout-24.png"  id="logoutMenu" />
+                               
+                            </menupopup>
+                        </menu>
+                    </menubar>    
+                       </div>              
+                </div>
+                
+        </div>
+        
+    </div>
+</zk>
