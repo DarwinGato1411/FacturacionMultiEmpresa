@@ -1,11 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/css/app/base.css"?>   
-<<<<<<< HEAD
 <?link rel="stylesheet" type="text/css" href="/css/app/landing/signin.css"?>
-<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>  
-=======
-<?link rel="stylesheet" type="text/css" href="/css/app/signin/index.css"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/defact.ico"?>  
->>>>>>> b12b595301135eab9facf21ebda3bca3c36999a3
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?page title="Facturacion electrónica" contentType="text/html;charset=UTF-8"?>
 
@@ -43,15 +38,10 @@
                                 />      
                             </div>
 
-                        
+                            
                             <div class="forgot">
-<<<<<<< HEAD
-                                <span>Olvidaste tu contraseña?</span>  
-                                <span id="btnRegistra">Realiza tu registro aquí?</span>
-=======
-                                <span id="linkOlvideContrasena" >Olvidaste tu contraseña?</span>  
+                                <span id="linkOlvideContrasena">Olvidaste tu contraseña?</span>  
                                 <span id="btnRegistra" >Realiza tu registro aquí?</span>
->>>>>>> b12b595301135eab9facf21ebda3bca3c36999a3
                             </div>
                             
                             
