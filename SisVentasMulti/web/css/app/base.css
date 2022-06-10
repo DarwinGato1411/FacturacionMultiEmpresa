@@ -145,17 +145,17 @@ select {
 
 @media only screen and (min-width: 768px) {
   .window_reg {
-    width: 700px !important;
+    width: 400px !important;
   }
 
-  .container_registro > .wrapper {
+  /* .container_registro > .wrapper {
     flex-direction: row !important;
     flex-wrap: wrap;
-  }
+  } */
 
-  .container_registro > .wrapper > .col_base {
+  /* .container_registro > .wrapper > .col_base {
     width: 215px;
-  }
+  } */
 }
 
 /*
