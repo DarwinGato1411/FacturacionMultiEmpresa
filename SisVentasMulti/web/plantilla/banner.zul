@@ -60,7 +60,7 @@
                                 <!--<menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />-->
                                 <menuitem label="Notas credito" id="btnNotaCredito"  />
                                 <!--<menuitem label="Lista ordenes de trabajo" id="btnListaOrden"  />-->
-                                <menuitem label="Venta en ruta (GLP)" id="btnVentaRuta" />
+                                <!--<menuitem label="Venta en ruta (GLP)" id="btnVentaRuta" />-->
                              
 
                             </menupopup>
@@ -103,14 +103,21 @@
                                 <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" />
                                 <menuitem label="Rotacion Productos" id="btnRotacionProducto" />
                                 <!--<menuitem label="Lista de cierre de caja" id="btnListarCierre" />--> 
+
+                                <!--<menuitem label="ATS Ventas" id="btnContabilidad"  />--> 
+                                <!--<menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  />--> 
+                                <!--<menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />-->
+                                <!--<menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+
 <!--                                <menuitem label="ATS Ventas" id="btnContabilidad"  /> 
                                 <menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  /> 
                                 <menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />
                                 <menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+
                                 <!--<menuitem label="Precio promedio venta" id="btnPreciPromVenta"  />-->
                             </menupopup>
                         </menu>
-                        
+                        <menuitem label="H. Declaraciones" id="btnHisDeclaraciones"  />
                         <menuitem label="Catalogos" id="btnAdministarVenta"  />
                           
 <!--                        <menuitem image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />

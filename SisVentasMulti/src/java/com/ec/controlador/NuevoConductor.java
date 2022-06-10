@@ -4,17 +4,13 @@
  */
 package com.ec.controlador;
 
-import com.ec.entidad.Proveedores;
-import com.ec.entidad.TipoIdentificacionCompra;
 import com.ec.entidad.Tipoadentificacion;
 import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Transportista;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
-import com.ec.servicio.ServicioProveedor;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoIdentificacion;
-import com.ec.servicio.ServicioTipoIdentificacionCompra;
 import com.ec.servicio.ServicioTransportista;
 import com.ec.untilitario.AduanaJson;
 import com.ec.untilitario.ArchivoUtils;
