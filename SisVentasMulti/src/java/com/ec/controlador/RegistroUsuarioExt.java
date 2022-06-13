@@ -10,7 +10,11 @@ import com.ec.entidad.Usuario;
 import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioUsuario;
+import com.ec.untilitario.MailerClassSistema;
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -20,6 +24,7 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
@@ -60,11 +65,6 @@ public class RegistroUsuarioExt {
 
     public RegistroUsuarioExt() {
 
-//        Session sess = Sessions.getCurrent();
-//        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-//        amRuc = credential.getUsuarioSistema().getUsuRuc();
-//        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
-//        readOnly = credential.getUsuarioSistema().getUsuNivel() == 1 ? Boolean.FALSE : Boolean.TRUE;
     }
 
     public Usuario getUsuarioSistema() {
@@ -91,13 +91,17 @@ public class RegistroUsuarioExt {
                     && !tipoUSuario.equals("")) {
             usuarioSistema.setUsuNivel(Integer.valueOf(tipoUSuario));
             /*verifica si tiene tipo ambiente*/
-
+            if (usuarioSistema.getUsuRuc().length() == 13) {
+                Clients.showNotification("Ingrese un RUC valido..!!",
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                return;
+            }
             // verifica si existe sino lo crea
-            Tipoambiente tipoAmbiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuarioSistema.getUsuRuc());
-            if (tipoAmbiente == null) {
+            Tipoambiente tipoAmbienteRecup = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuarioSistema.getUsuRuc());
+
+            if (tipoAmbienteRecup == null) {
                 // PRUEBAS
                 Tipoambiente tipoambiente = new Tipoambiente();
-
                 tipoambiente.setAmDirBaseArchivos("//DOCUMENTOSRI");
                 tipoambiente.setAmCodigo("1");
                 tipoambiente.setAmDescripcion("PRUEBAS");
@@ -119,12 +123,17 @@ public class RegistroUsuarioExt {
                 tipoambiente.setAmEnviocliente("ENVIARCLIENTE");
                 tipoambiente.setAmRuc(usuarioSistema.getUsuRuc());
                 tipoambiente.setAmNombreComercial("");
-                tipoambiente.setAmRazonSocial("");
-                tipoambiente.setAmDireccionMatriz("QUITO");
-                tipoambiente.setAmDireccionSucursal("QUITO");
+                tipoambiente.setAmRazonSocial(usuarioSistema.getUsuNombre());
+                tipoambiente.setAmDireccionMatriz("");
+                tipoambiente.setAmDireccionSucursal("");
+                tipoambiente.setAmEstab("001");
+                tipoambiente.setAmPtoemi("001");
 
-                tipoambiente.setAmPort("587");
+                tipoambiente.setAmPort("26");
                 tipoambiente.setAmProtocol("smtp");
+                tipoambiente.setAmUsuarioSmpt("defact@deckxel.com");
+                tipoambiente.setAmPassword("Dereckandre02!");
+                tipoambiente.setAmHost("mail.deckxel.com");
                 tipoambiente.setLlevarContabilidad("NO");
                 tipoambiente.setAmMicroEmp(Boolean.FALSE);
                 tipoambiente.setAmAgeRet(Boolean.FALSE);
@@ -155,13 +164,18 @@ public class RegistroUsuarioExt {
                 tipoambienteProd.setAmEnviocliente("ENVIARCLIENTE");
                 tipoambienteProd.setAmRuc(usuarioSistema.getUsuRuc());
                 tipoambienteProd.setAmNombreComercial("");
-                tipoambienteProd.setAmRazonSocial("");
-                tipoambienteProd.setAmDireccionMatriz("QUITO");
-                tipoambienteProd.setAmDireccionSucursal("QUITO");
-
-                tipoambienteProd.setAmPort("587");
-                tipoambienteProd.setAmProtocol("smtp");
+                tipoambienteProd.setAmRazonSocial(usuarioSistema.getUsuNombre());
+                tipoambienteProd.setAmEstab("001");
+                tipoambienteProd.setAmPtoemi("001");
+                tipoambienteProd.setAmDireccionMatriz("");
+                tipoambienteProd.setAmDireccionSucursal("");
                 tipoambienteProd.setLlevarContabilidad("NO");
+                tipoambienteProd.setAmPort("26");
+                tipoambienteProd.setAmProtocol("smtp");
+                tipoambienteProd.setAmUsuarioSmpt("defact@deckxel.com");
+                tipoambienteProd.setAmPassword("Dereckandre02!");
+                tipoambienteProd.setAmHost("mail.deckxel.com");
+
                 tipoambienteProd.setAmMicroEmp(Boolean.FALSE);
                 tipoambienteProd.setAmAgeRet(Boolean.FALSE);
                 tipoambienteProd.setAmContrEsp(Boolean.FALSE);
@@ -202,13 +216,22 @@ public class RegistroUsuarioExt {
             }
 
 //            usuarioSistema = new Usuario();
+            try {
+                tipoAmbienteRecup = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuarioSistema.getUsuRuc());
+                MailerClassSistema mail = new MailerClassSistema();
+                mail.sendMailRecuperarPassword(usuarioSistema.getUsuCorreo(), "Cuenta creada", usuarioSistema.getUsuLogin(), usuarioSistema.getUsuPassword(), tipoAmbienteRecup);
+                Clients.showNotification("Los accesos se enviaron al correo electrónico",
+                            Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
+            } catch (RemoteException ex) {
+                Clients.showNotification("Ocurrio un error al recuperar su password",
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                Logger.getLogger(RecuperarClave.class.getName()).log(Level.SEVERE, null, ex);
+            }
             windowIdUsuario.detach();
 
         } else {
             Messagebox.show("Verifique la informacion ingresada", "Atención", Messagebox.OK, Messagebox.ERROR);
         }
     }
-
-   
 
 }

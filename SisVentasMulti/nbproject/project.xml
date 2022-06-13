@@ -5,22 +5,13 @@
         <data xmlns="http://www.netbeans.org/ns/web-project/3">
             <name>SisVentasMulti</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <explicit-platform explicit-source-supported="true"/>
             <web-module-libraries>
                 <library dirs="200">
-<<<<<<< HEAD
                     <file>${libs.ZK6.5.3CE.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.absolutelayout.classpath}</file>
-=======
-                    <file>${libs.ZK6.5.3.CE.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${libs.Jasper.classpath}</file>
->>>>>>> 1caa7a85926feadb7393bde3238a9b6f9d38f45d
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">

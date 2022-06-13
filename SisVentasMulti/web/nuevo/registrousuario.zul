@@ -4,126 +4,67 @@
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.RegistroUsuarioExt')">
 
-         <caption label="Registrar usuario" style="font-weight:bold" class="caption" />
+    <caption label="Registrar usuario" style="font-weight:bold" class="caption" />
     
-    <!-- <caption label="Registrar usuario" style="font-weight:bold" /> 
-    <div  class="container container_registro" >
-        <div  class="row" >         
-          
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group " >
-                <label value="(*) " style="color:red;font-weight:bold"/>RUC de la empresa :
-                
-                <textbox  maxlength="20"      
-                             
-                          value="@bind(vm.usuarioSistema.usuRuc)" 
-                          class="form-control" />
-            </div>
-            
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*) " style="color:red;font-weight:bold"/>Correo :
-                
-                <textbox  maxlength="100"                          
-                          value="@bind(vm.usuarioSistema.usuCorreo)" 
-                          class="form-control" />
-            </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*) " style="color:red;font-weight:bold"/>Nombre del responsable de la cuenta:
-                
-                <textbox  maxlength="100" 
-                          onChange="self.setValue(self.getValue().toUpperCase())"
-                          value="@bind(vm.usuarioSistema.usuNombre)" 
-                          class="form-control" />
-            </div>
-           
-           
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*) " style="color:red;font-weight:bold"/>Usuario:
-                
-                <textbox  maxlength="100"
-                          value="@bind(vm.usuarioSistema.usuLogin)"                           
-                          class="form-control" />
-            </div>
-            
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
-                <label value="(*)" style="color:transparent;font-weight:bold"/>Contraseña :
-              
-                <textbox  maxlength="10"  
-                          value="@bind(vm.usuarioSistema.usuPassword)"
-                          class="form-control" />
-            </div> 
-            
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group" align="center" >
-                    
-                <image src="/iconos/guardar.png"  
-                       onClick="@command('guardar')"
-                       tooltiptext="Guardar Registro"/>
- 
-
-            </div> 
-        </div>
-
-        <div class="">
-            sdfsdfd
-        </div>
    
-    </div>
-    --> 
-
     <div class="container_registro">
         <div class="wrapper">
             <div class="col_base">
                 <span>RUC de la empresa</span>
                 <div class="wrapper_input">
                     <div class="fa-solid fa-address-card icon"></div>
-                    <textbox  maxlength="20"   
-                        value="@bind(vm.usuarioSistema.usuRuc)"
-                        class="input" 
+                    <textbox  maxlength="13"   
+                              value="@bind(vm.usuarioSistema.usuRuc)"
+                              class="input" 
                     />
                 </div>
             </div>
             <div class="col_base">
-             <span>Correo</span>
-             <div class="wrapper_input">
-                <div class="fa-solid fa-envelope icon"></div>
-                 <textbox  maxlength="20"   
-                    value="@bind(vm.usuarioSistema.usuCorreo)" 
-                    class="input" 
-                />
-             </div>
+                <span>Correo</span>
+                <div class="wrapper_input">
+                    <div class="fa-solid fa-envelope icon"></div>
+                    <textbox  maxlength="100"   
+                              value="@bind(vm.usuarioSistema.usuCorreo)" 
+                              class="input" 
+                    />
+                </div>
             </div>
             <div class="col_base">
                 <span>Responsable de la cuenta</span>
                 <div class="wrapper_input"> 
                     <div class="fa-solid fa-user-group icon"></div>
-                    <textbox  maxlength="20"   
-                        value="@bind(vm.usuarioSistema.usuNombre)" 
-                        class="input" 
+                    <textbox  maxlength="100"   
+                              value="@bind(vm.usuarioSistema.usuNombre)" 
+                              class="input" 
                     />
                 </div>
             </div>
             <div class="col_base">
-                 <span>Usuario</span>
-                 <div class="wrapper_input">
+                <span>Usuario</span>
+                <div class="wrapper_input">
                     <div class="fa-solid fa-user icon"></div>
-                    <textbox  maxlength="20"   
-                        value="@bind(vm.usuarioSistema.usuLogin)"
-                        class="input" 
+                    <textbox  maxlength="25"   
+                              value="@bind(vm.usuarioSistema.usuLogin)"
+                              class="input" 
                     />
-                 </div>
+                </div>
             </div>
             <div class="col_base">
-                 <span>Contraseña</span> 
-                 <div class="wrapper_input">
+                <span>Contraseña</span> 
+                <div class="wrapper_input">
                     <div class="fa-solid fa-key icon"></div>
-                    <textbox  maxlength="20"   
-                        value="@bind(vm.usuarioSistema.usuPassword)"
-                        class="input" 
+                    <textbox  maxlength="25"   
+                              type="password"
+                              value="@bind(vm.usuarioSistema.usuPassword)"
+                              class="input" 
                     />
-                 </div>
+                </div>
             </div>
 
             <button 
                 class="col_base btn btn_reg" 
+                onClick="@command('guardar')"
+                autodisable="self"
                 label="Ingresar">
                 Guardar
             </button>   

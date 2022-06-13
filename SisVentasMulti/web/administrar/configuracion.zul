@@ -213,6 +213,37 @@
                              class="form-control form-control-sm"
                              tooltiptext="Host: Password123" />
                 </div> 
+                <div class="col-12 col-sm-12 col-md-2 col-lg-2  form-group "  >
+                   Secuencial de facturas
+                    <textbox value="@bind(vm.tipoambiente.amSecFactura)"                            
+                             placeholder="Secuencial factura"
+                             class="form-control form-control-sm"
+                             tooltiptext="Ingrese el secuencial de su factura inicial" />
+                </div> 
+                <div class="col-12 col-sm-12 col-md-2 col-lg-2  form-group "  >
+                   
+                    Secuencial de retenciones
+                    <textbox value="@bind(vm.tipoambiente.amSecRetencion)"                            
+                             placeholder="Secuencial factura"
+                             class="form-control form-control-sm"
+                             tooltiptext="Ingrese el secuencial de su retencion inicial" />
+                </div> 
+                <div class="col-12 col-sm-12 col-md-2 col-lg-2  form-group "  >
+                   
+                     Secuencial de nota de credito
+                    <textbox value="@bind(vm.tipoambiente.amSecNotaCredito)"                            
+                             placeholder="Secuencial factura"
+                             class="form-control form-control-sm"
+                             tooltiptext="Ingrese el secuencial de su nota de credito inicial" />
+                </div> 
+                <div class="col-12 col-sm-12 col-md-2 col-lg-2  form-group "  >
+                   
+                     Secuencial de guia de remision
+                    <textbox value="@bind(vm.tipoambiente.amSecGuia)"                            
+                             placeholder="Secuencial guia"
+                             class="form-control form-control-sm"
+                             tooltiptext="Ingrese el secuencial de su guia inicial" />
+                </div> 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group" align="center" >
                     
                     <button src="/iconos/guardar.png"  

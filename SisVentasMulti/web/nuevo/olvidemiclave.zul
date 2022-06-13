@@ -62,7 +62,7 @@
              <span>Correo</span>
              <div class="wrapper_input">
                 <div class="fa-solid fa-envelope icon"></div>
-                 <textbox  maxlength="20"   
+                 <textbox  maxlength="100"   
                     value="@bind(vm.usuCorreo)" 
                     class="input" 
                 />
@@ -71,6 +71,7 @@
             <button 
                 class="col_base btn btn_reg" 
                 onClick="@command('recuperar')"
+                 autodisable="self"
                 label="Recuperar contraseña">
                 Recuperar contraseña
             </button>   

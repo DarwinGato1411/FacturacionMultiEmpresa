@@ -6,15 +6,10 @@ package com.ec.untilitario;
 
 import com.ec.entidad.Tipoambiente;
 import com.ec.servicio.ServicioTipoAmbiente;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import javax.mail.Session;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -32,15 +27,34 @@ import javax.mail.internet.MimeUtility;
  * Clase que permite el envio de e-mails utilizando el API javamail.
  *
  */
-public class MailerClass {
+public class MailerClassSistema {
 
     private Tipoambiente amb = new Tipoambiente();
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
+    /**
+     * Recupera el nombre del catálogo descrito en la enumeración
+     *
+     * @param categoria nombre del parametroa a buscar
+     * @return
+     */
     public String getConfiguracionCorreo(String categoria) {
-
+//        Set<BeCatalogo> dato = ofertaServicio.getCatalogo1(categoria);
+//        if (dato.iterator().hasNext()) {
+//            return dato.iterator().next().getNbCatalogo();
+//        }
         return null;
     }
+
+    /**
+     * Método que envía al mail las credenciales de acceso al sistema
+     *
+     * @param address Dirección de correo electronico
+     * @param mensaje Contenido del mensaje
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+   
 
     class SmtpAuthenticator extends Authenticator {
 
@@ -52,38 +66,40 @@ public class MailerClass {
         @Override
         public PasswordAuthentication getPasswordAuthentication() {
 //            amb = servicioTipoAmbiente.FindALlTipoambiente();
-            String username = amb.getAmUsuarioSmpt().trim();
-            String password = amb.getAmPassword().trim();
+//            String username = amb.getAmUsuarioSmpt().trim();
+//            String password = amb.getAmPassword().trim();
+            String username = "defact@deckxel.com";
+            String password = "Dereckandre02!";
             return new PasswordAuthentication(username, password);
 
         }
     }
 
-    //envio de mail simple
-//    
-//      m.setRecipients(Message.RecipientType.TO,
-//                    InternetAddress.parse(address));
-    public boolean sendMailSimple(String address,
-                String[] attachFiles, String asuntoInf, String acceso,
-                String numeroDocumento, BigDecimal valorTotal, String cliente, Tipoambiente ambiente)
+   
+    /*MAIL RECUPERA CONTRASEÑA*/
+    public boolean sendMailRecuperarPassword(String address,
+                String asuntoInf, String usuarioRecup,
+                String passwordRecup, Tipoambiente ambiente)
                 throws java.rmi.RemoteException {
 
         try {
+//                        String usuarioSmpt = "deckxelec@gmail.com";
+//            String password = "metalicas366";
 
             amb = ambiente;
 
-//            String asunto = asuntoInf;
-//              String host = "mail.deckxel.com";
-//            String port = "26";
-//            String protocol = "smtp";
-//            String usuarioSmpt = "defact@deckxel.com";
-//            String password = "Dereckandre02!";
             String asunto = asuntoInf;
-            String host = amb.getAmHost();
-            String port = amb.getAmPort();
-            String protocol = amb.getAmProtocol();
-            String usuarioSmpt = amb.getAmUsuarioSmpt().trim();
-            String password = amb.getAmPassword().trim();
+            String host = "mail.deckxel.com";
+            String port = "26";
+            String protocol = "smtp";
+            String usuarioSmpt = "defact@deckxel.com";
+            String password = "Dereckandre02!";
+//            String asunto = asuntoInf;
+//            String host = amb.getAmHost();
+//            String port = amb.getAmPort();
+//            String protocol = amb.getAmProtocol();
+//            String usuarioSmpt = amb.getAmUsuarioSmpt().trim();
+//            String password = amb.getAmPassword().trim();
 
             // Propiedades de la conexión
             // Get system properties
@@ -103,7 +119,7 @@ public class MailerClass {
             // Get the default Session object.
             Session session = Session.getInstance(properties, auth);
             MimeMessage m = new MimeMessage(session);
-            String nickFrom = MimeUtility.encodeText(amb.getAmNombreComercial());
+            String nickFrom = MimeUtility.encodeText("DEFACT");
 //            String nickTo = MimeUtility.encodeText(amb.getAmNombreComercial());
             Address addressfrom = new InternetAddress(usuarioSmpt, nickFrom);
 
@@ -127,9 +143,9 @@ public class MailerClass {
                         + "                                 overflow: hidden;\n"
                         + "                                 line-height: 32px;\">\n"
                         + "        <div style=\"color:#00000;font-size:18px\"><strong>\n"
-                        + "		 DOCUMENTO ELETRONICO DE: " + amb.getAmNombreComercial().toUpperCase() + "</strong></div>\n"
+                        + "		 USUARIO DEFACT : " + amb.getAmNombreComercial().toUpperCase() + "</strong></div>\n"
                         + "		<div style=\"color:#00000;font-size:11px\"><strong>\n"
-                        + "		SISTEMA DE FACTURACION ELECTRONICA  </strong></div>\n"
+                        + "		SISTEMA DE FACTURACION ELECTRONICA DEFACT  </strong></div>\n"
                         + "    </div>\n"
                         + "    <div class=\"info-wrap\" style=\"border-bottom-left-radius: 10px;\n"
                         + "                                  border-bottom-right-radius: 10px;\n"
@@ -138,16 +154,16 @@ public class MailerClass {
                         + "                                  padding: 15px 15px 20px;\">\n"
                         + "        <div class=\"tips\" style=\"padding:15px;\">\n"
                         + "            <p style=\" list-style: 160%; margin: 10px 0;\">Estimado cliente,</p>\n"
-                        + "            <p style=\" list-style: 160%; margin: 10px 0;\">" + cliente + "</p>\n"
-                        + "			<p style=\" list-style: 160%; margin: 10px 0;\">Su documento electronico se ha generado correctamente</p>\n"
-                        + "			<p style=\" list-style: 160%; margin: 10px 0;\">Numero de documento:"
-                        + "                 <strong style=\"color:#010e07\"> " + numeroDocumento + "</strong></p>\n"
-                        + "			<p style=\" list-style: 160%; margin: 10px 0;\">Clave de acceso:"
-                        + "                 <strong style=\"color:#010e07\"> " + acceso + "</strong></p>\n"
-                        + "            <p style=\" list-style: 160%; margin: 10px 0;\">Sus archivos PDF y XML se enviaron de forma adjunta, por favor reviselos</p>\n"
+                        + "            <p style=\" list-style: 160%; margin: 10px 0;\">" + amb.getAmRazonSocial() + "</p>\n"
+                        + "			<p style=\" list-style: 160%; margin: 10px 0;\">Su acceso a la plataforma ha sido generado correctamente </p>\n"
+                        + "			<p style=\" list-style: 160%; margin: 10px 0;\">Usuario:"
+                        + "                 <strong style=\"color:#010e07\"> " + usuarioRecup + "</strong></p>\n"
+                        + "			<p style=\" list-style: 160%; margin: 10px 0;\">Password:"
+                        + "                 <strong style=\"color:#010e07\"> " + passwordRecup + "</strong></p>\n"
+                        //                        + "            <p style=\" list-style: 160%; margin: 10px 0;\">Sus archivos PDF y XML se enviaron de forma adjunta, por favor reviselos</p>\n"
                         + "        </div>\n"
-                        + "        <div class=\"time\" style=\"text-align: right; color: #999; padding: 0 15px 15px;\">Valor total:"
-                        + "<strong style=\"color:#010e07\"> $" + ArchivoUtils.redondearDecimales(valorTotal, 2) + "</strong> </div>\n"
+                        + "        <div class=\"time\" style=\"text-align: right; color: #999; padding: 0 15px 15px;\">"
+                        + "<strong style=\"color:#010e07\"></strong> </div>\n"
                         + "        <br>\n"
                         + "        <table class=\"list\" style=\"width: 100%; border-collapse: collapse; border-top:1px solid #eee\">\n"
                         + "            <thead>\n"
@@ -158,18 +174,18 @@ public class MailerClass {
                         + "            </thead>\n"
                         + "            <tbody>\n"
                         + "	\n"
-                        + "			  <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:7px\n"
+                        + "			  <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:10px\n"
                         + "				align-items: center;display: flex;justify-content: center;\">\n"
                         + "			  <td style=\" font-size:9px\">Copyright © 2022 DECKXEL, All rights reserved.</td>\n"
                         + "\n"
                         + "			 </tr>\n"
-                        + "			 <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:7px\n"
+                        + "			 <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:10px\n"
                         + "				align-items: center;display: flex;justify-content: center;\">\n"
                         + "			  <td style=\" font-size:9px\">DECKXEL - Tlf. 0993530018</td>\n"
                         + "\n"
                         + "			 </tr>\n"
                         + "\n"
-                        + "			  <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:7px\n"
+                        + "			  <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:10px\n"
                         + "				align-items: center;display: flex;justify-content: center;\">\n"
                         + "			  <td style=\" font-size:9px\">Tabacundo - Ecuador</td>\n"
                         + "\n"
@@ -185,20 +201,6 @@ public class MailerClass {
             texto.setContent(HTMLENVIO, "text/html");
 
             MimeMultipart multiParte = new MimeMultipart();
-            // inicio adjunto
-            if (attachFiles != null && attachFiles.length > 0) {
-                for (String filePath : attachFiles) {
-                    MimeBodyPart attachPartDoc = new MimeBodyPart();
-                    try {
-                        if (!filePath.equals("")) {
-                            attachPartDoc.attachFile(filePath);
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    multiParte.addBodyPart(attachPartDoc);
-                }
-            }
             m.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(address));
             multiParte.addBodyPart(texto);
@@ -222,10 +224,10 @@ public class MailerClass {
 
             return false;
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(MailerClass.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MailerClassSistema.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
-
+    
 
 }

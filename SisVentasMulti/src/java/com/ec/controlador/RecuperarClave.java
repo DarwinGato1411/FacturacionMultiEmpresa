@@ -8,7 +8,7 @@ import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioUsuario;
-import com.ec.untilitario.MailerClass;
+import com.ec.untilitario.MailerClassSistema;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,7 +66,7 @@ public class RecuperarClave {
 
                 if (usuario != null) {
                     try {
-                        MailerClass mail = new MailerClass();
+                        MailerClassSistema mail = new MailerClassSistema();
                         mail.sendMailRecuperarPassword(usuCorreo, "Recuperar accesos DEFACT", usuario.getUsuLogin(), usuario.getUsuPassword(), amb);
                         Clients.showNotification("Los accesos se enviaron al correo electrónico",
                                     Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
