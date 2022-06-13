@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
@@ -13,10 +17,10 @@
             </tabs>
             <tabpanels >
                 
-                <tabpanel  height="98%" width="99%"  >     
+                <tabpanel  height="98%" width="99%" class="factura" >     
                                    
                     <div class="row container-fluid">
-                        <div class="input-group  mb-6 col-6 col-sm-12 col-md-2 col-lg-2">
+                        <!-- <div class="input-group  mb-6 col-6 col-sm-12 col-md-2 col-lg-2">
                                     
                             <textbox   class="form-control form-control-sm"
                                                    style="font-size:10px;background-color:trasnsparent;
@@ -36,7 +40,8 @@
                                
                                
                             </div>
-                        </div>
+                        </div> -->
+
                         <!--                        <div class="row  col-12 col-sm-12 col-md-2 col-lg-2">
                             <textbox value="@bind(vm.buscarCliente)"  
                                      class="form-control form-control-sm"
@@ -44,8 +49,31 @@
                                      placeholder=""
                                      onOK="@command('buscarLikeCliente')"
                                      onChange="self.setValue(self.getValue().toUpperCase());" />
-                        </div>-->
-                        <div class="row  col-12 col-sm-12 col-md-12 col-lg-12">
+                        </div>--> 
+
+                        <div class="factura_header paint_all_row">
+                            <div class="fact_row fact_only_row_wrap">
+                                <div class="wrapper_data wrapper_data_only">
+                                    <div class="wrapper_input">
+                                        <span>Buscar</span>
+                                        <textbox 
+                                            class="input"
+                                            onChange="self.setValue(self.getValue().toUpperCase());"  
+                                            value="@bind(vm.buscarCliente)"                                                   
+                                            onOK="@command('buscarLikeCliente')"                                               
+                                            maxlength="100" 
+                                        />
+                                        <div 
+                                            class="fa-solid fa-magnifying-glass icon" style="font-size:10px;background-color:trasnsparent;font-weight:bold"
+                                            onClick="@command('buscarLikeCliente')"  
+                                            tooltiptext="Buscar "
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="factura_body">
                             <listbox model="@load(vm.lstFacturas)" 
                                      nonselectableTags="*"  mold="paging" pageSize="15"  >
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>

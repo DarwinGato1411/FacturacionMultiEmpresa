@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
@@ -14,9 +17,9 @@
                 
             </tabs>
             <tabpanels >
-                <tabpanel  height="100%" width="98%"  >
+                <tabpanel  height="100%" width="98%" class="factura" >
                     <div class="container-fluid">
-                        <div class="row">
+                        <!-- <div class="row">
                             <div  class="col-12 col-sm-12 col-md-2 col-lg-2 ">
                                 <label value="Inicio: "   />
                                 <datebox   value="@bind(vm.inicio)" 
@@ -41,10 +44,129 @@
                        
                             </div>
                             
-                        </div>
+                        </div> -->
+
+                            <div class="factura_header">
+                                <div class="fact_row">
+                                    <div class="wrapper_data">
+                                        <div class="wrapper_input">
+                                            <span>Inicio:</span>
+                                            <datebox   
+                                                value="@bind(vm.inicio)" 
+                                                readonly="true" 
+                                                onCreate="self.value = new Date()"                                                    
+                                                buttonVisible="true" 
+                                                lenient="true"  
+                                                format="dd/MM/yyyy" 
+                                                constraint="no empty: Ingrese de inicio de la busqueda"
+                                                class="input_date"
+                                            />
+                                            <div class="fa-solid fa-calendar icon" />
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Fin:</span>
+                                            <datebox   
+                                                value="@bind(vm.fin)" 
+                                                readonly="true"
+                                                onCreate="self.value = new Date()"                                                   
+                                                buttonVisible="true" 
+                                                lenient="true"  
+                                                format="dd/MM/yyyy" 
+                                                constraint="no empty: IBuscar por fecha fin de la busqueda"
+                                                class="input_date"
+                                            />
+                                            <div class="fa-solid fa-calendar icon" />
+                                        </div>
+                                    </div>
+                                    <div class="wrapper_data">
+                                        <button 
+                                            class="fa-solid fa-magnifying-glass btn_fact btn_primary"
+                                            onClick="@command('buscarForFechas')"  
+                                            tooltiptext="Buscar"
+                                        >
+                                            Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="fact_row">
+                                    <div class="wrapper_data">
+                                        <div class="wrapper_input">
+                                            <span>Subt/venta:</span>
+                                            <decimalbox  
+                                                format="###.##"  
+                                                value="@bind(vm.compraVenta.sumaSubtotalVenta)"                                             
+                                                readonly="true" 
+                                                onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                                class="input" 
+                                            />
+                                            <div class="fa-solid fa-sack-dollar icon"></div>
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Subt/compra:</span>
+                                            <decimalbox  
+                                                format="###.##"  
+                                                value="@bind(vm.compraVenta.sumaSubtotalCompra)"
+                                                readonly="true"
+                                                onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                                class="input" 
+                                            />
+                                            <div class="fa-solid fa-comment-dollar icon"></div>
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Dif/Subt:</span>
+                                            <decimalbox  
+                                                format="###.##" 
+                                                value="@bind(vm.compraVenta.utilidadSubtotal)" 
+                                                readonly="true" style="text-align:center;font-size:1.2em"
+                                                onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                                class="input" 
+                                            />
+                                            <div class="fa-solid fa-scale-balanced icon"></div>
+                                        </div>
+                                    </div>
+                                    <div class="wrapper_data">
+                                        <div class="wrapper_input">
+                                            <span>Total/venta:</span>
+                                            <decimalbox  
+                                                format="###.##"  
+                                                value="@bind(vm.compraVenta.sumaTotalVenta)"                                             
+                                                readonly="true" 
+                                                onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                                class="input" 
+                                            />
+                                            <div class="fa-solid fa-circle-dollar-to-slot icon"></div>
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Total/compra:</span>
+                                            <decimalbox  
+                                                format="###.##"  
+                                                value="@bind(vm.compraVenta.sumaTotalCompra)"
+                                                readonly="true" 
+                                                onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                                class="input" 
+                                            />
+                                            <div class="fa-solid fa-comments-dollar icon"></div>
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Dif/total:</span>
+                                            <decimalbox  
+                                                format="###.##" 
+                                                value="@bind(vm.compraVenta.utilidadTotal)" 
+                                                readonly="true" style="text-align:center;font-size:1.2em"
+                                                onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                                class="input" 
+                                            />
+                                            <div class="fa-solid fa-scale-unbalanced-flip icon"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        
                   
-                        <div class="row " align="center">                            
-                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 " align="start">
+                        <div class="factura_body factura_body_content">                            
+                            <div class="factura_body_item">
                                 <listbox model="@load(vm.listaVentas)" 
                                          nonselectableTags=""  
                                          mold="paging" pageSize="12"  >
@@ -98,7 +220,7 @@
                             </div>
                             
                             
-                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 " align="start">
+                            <div class="factura_body_item">
                                 <listbox model="@load(vm.listaCompras)" 
                                          nonselectableTags=""  
                                          mold="paging" pageSize="12"  >
@@ -150,7 +272,8 @@
                                     </template>
                                 </listbox>
                             </div>
-                            <div class=" col-12 col-sm-12 col-md-2 col-lg-2 " align="center" >
+                            
+                            <!-- <div class=" col-12 col-sm-12 col-md-2 col-lg-2 " align="center" >
        
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 " >
                                     <label value="SUBT-VENTA" class="form-control-sm" 
@@ -232,7 +355,7 @@
                                                  onChange="self.setValue(self.getValue().toUpperCase().trim());" 
                                                  class="form-control" />
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </tabpanel>

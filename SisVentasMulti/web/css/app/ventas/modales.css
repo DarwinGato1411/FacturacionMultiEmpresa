@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1.5 !important;
+  -webkit-font-smoothing: antialiased !important;
+  font-family: "Poppins", sans-serif !important;
+}
+.wrapp {
+  border: solid red 1px !important;
+}
+
+.container_modal {
+  background-color: #fff;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.container_modal > .header,
+.container_modal > .body {
+  width: 100%;
+  background-color: #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+.wrapper_input {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.wrapper_input > span {
+  display: block;
+  width: 100px !important;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.wrapper_input > input,
+.wrapper_input > .wrapper_input_text > input {
+  width: 70%;
+  padding: 5px 10px;
+  border: solid 1px #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 12px;
+  color: #333;
+}
+
+.wrapper_input > .wrapper_input_text > input {
+  padding-left: 20px !important;
+}
+
+.container_row_input {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.container_row_input > .wrapper_input {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.container_row_input > .wrapper_input > span {
+  font-size: 11px;
+}
+
+.container_row_input > .wrapper_input > .wrapper_input_text {
+  position: relative;
+  width: 70%;
+}
+
+.container_row_input > .wrapper_input > .wrapper_input_text > .input_text {
+  width: 100%;
+}
+
+.container_row_input > .wrapper_input > .wrapper_input_text > .icon {
+  position: absolute;
+  top: 8px;
+  left: 6px;
+  font-size: 10px;
+  color: #1247b9;
+}
+
+.btn_modal {
+  padding: 1em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: #1247b9;
+  color: #fff;
+  width: 100%;
+  transition: ease 0.3s;
+}
+
+.btn_modal:active {
+  transform: translate(0, 3px);
+}
+
+@media only screen and (min-width: 632px) {
+  .container_modal {
+    width: 1200px;
+  }
+
+  .container_modal > .header {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2em;
+  }
+  .wrapper_input > span {
+    width: fit-content;
+  }
+
+  .container_row_input {
+    flex-direction: row;
+  }
+
+  .container_row_input > .wrapper_input {
+    width: 33%;
+    display: flex;
+  }
+}

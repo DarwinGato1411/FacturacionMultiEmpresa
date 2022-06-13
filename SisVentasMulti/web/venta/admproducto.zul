@@ -1,6 +1,10 @@
 <?init class="com.ec.seguridad.Autentificador"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+
 <div apply="org.zkoss.bind.BindComposer" 
      viewModel="@id('vm') @init('com.ec.controlador.AdmProducto')"  width="100%"  >
     

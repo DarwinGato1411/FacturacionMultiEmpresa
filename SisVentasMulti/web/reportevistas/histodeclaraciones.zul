@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+
+
 <zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
     <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
           viewModel="@id('vm') @init('com.ec.controlador.vistas.ListaVentasAnioMes')" >
@@ -12,8 +19,8 @@
                 <tab label="Historial de Declaraciones" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
-                <tabpanel  width="99%"  >                    
-                    <div class="row">
+                <tabpanel  width="99%" class="factura">                    
+                    <!-- <div class="row">
                        
                         <div class=" input-group col-12 col-sm-12 col-md-4 col-lg-4 ">
 
@@ -44,47 +51,111 @@
                                       tooltiptext="Descargar en Excel"/>
 
                         </div> 
+                    </div> -->
+                    
+
+                    <div class="factura_header paint_all_row">
+                        <div class="fact_row fact_only_row">
+                            <div class="wrapper_data" style="max-width:300px">
+
+                                <div class="wrapper_input" >
+                                    <span style="width:unset">Inicio:</span>
+                                        <datebox   
+                                            value="@bind(vm.fechainicioDiaria)"  
+                                            readonly="true"
+                                            onCreate="self.value = new Date()"                                                    
+                                            buttonVisible="true" 
+                                            lenient="true"  
+                                            format="dd/MM/yyyy" 
+                                            constraint="no empty: Ingrese de inicio de la busqueda"
+                                            class="input_date"
+                                        />
+                                    <div class="fa-solid fa-calendar icon" />
+                                </div>
+                            </div>
+
+                            <div class="wrapper_data " style="max-width:300px">
+                                <div class="wrapper_input">
+                                    <span style="width:unset">Fin:</span>
+                                    <datebox   
+                                        value="@bind(vm.fechafinDiaria)"
+                                        readonly="true"
+                                        onCreate="self.value = new Date()"                                                   
+                                        buttonVisible="true" 
+                                        lenient="true"  
+                                        format="dd/MM/yyyy" 
+                                        constraint="no empty: IBuscar por fecha fin de la busqueda"
+                                        class="input_date"
+                                    /> 
+                                    <div class="fa-solid fa-calendar icon" />
+                                </div>
+                            </div>
+                            <div class="wrapper_data" style="display:flex;flex-direction:row;gap:1em;">
+                            
+                                <button 
+                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary btn_one_element"
+                                    style="height:unset;"
+                                    onClick="@command('buscarDiaria')" 
+                                >
+                                    Buscar por fecha
+                                </button>
+
+                                    <button 
+                                    class="fa-solid fa-floppy-disk btn_fact btn_access btn_one_element"
+                                    style="height:unset;"
+                                    onClick="@command('exportExcelDiario')" 
+                                >
+                                    Descargar
+                                </button>
+
+                            </div>                            
+                        </div>
                     </div>
-                    <listbox 
-                             nonselectableTags=""  mold="paging" pageSize="20"  >
-                        <custom-attributes org.zkoss.zul.listbox.rod="true"/>
-                    
-                        <listhead sizable="false">
-                            <listheader label="Archivo Declaraciones "  align="left" hflex="3"></listheader>
-                            <listheader label=""  align="left" width="33px"></listheader>
-                            <listheader label=""  align="left" width="33px"></listheader>
-                        </listhead>
-                        
-                    
-                        <template name="model">
-                            <listitem  >
-                                <listcell zclass = "mycss-listcell">
-                                    <label sclass="letraLisbox" 
-                                                   value="" style="font-weight:bold" 
-                                                   width="100%"/>
-                                </listcell>  
-                                                                     
-                                <listcell zclass = "mycss-listcell">
-                                                     
-                                    <button    style="width:30px;height:30px; background: green" iconSclass="z-icon-search"
+
+                    <div class="factura_body factura_content">
+                        <div class="factura_item">
+                            <listbox 
+                                    nonselectableTags=""  mold="paging" pageSize="20"  >
+                                <custom-attributes org.zkoss.zul.listbox.rod="true"/>
+                            
+                                <listhead sizable="false">
+                                    <listheader label="Archivo Declaraciones "  align="left" hflex="3"></listheader>
+                                    <listheader label=""  align="left" width="33px"></listheader>
+                                    <listheader label=""  align="left" width="33px"></listheader>
+                                </listhead>
                                 
-                                                       class="btn btn-primary btn-xs"
-                                                       onClick="@command('',valor=each)" 
-                                                       tooltiptext="Ver"/> 
-                                    
-                                </listcell>                                
-                                <listcell zclass = "mycss-listcell">
-                                                     
-                                    <button    style="width:30px;height:30px; background: red" iconSclass="z-icon-times"
-                                
-                                                       class="btn btn-primary btn-xs"
-                                                       onClick="@command('',valor=each)" 
-                                                       tooltiptext="Eliminar"/> 
-                                    
-                                </listcell>                                
-                            </listitem>
-                        </template> 
-                    </listbox>
+                            
+                                <template name="model">
+                                    <listitem  >
+                                        <listcell zclass = "mycss-listcell">
+                                            <label sclass="letraLisbox" 
+                                                        value="" style="font-weight:bold" 
+                                                        width="100%"/>
+                                        </listcell>  
+                                                                            
+                                        <listcell zclass = "mycss-listcell">
+                                                            
+                                            <button    style="width:30px;height:30px; background: green" iconSclass="z-icon-search"
+                                        
+                                                            class="btn btn-primary btn-xs"
+                                                            onClick="@command('',valor=each)" 
+                                                            tooltiptext="Ver"/> 
+                                            
+                                        </listcell>                                
+                                        <listcell zclass = "mycss-listcell">
+                                                            
+                                            <button    style="width:30px;height:30px; background: red" iconSclass="z-icon-times"
+                                        
+                                                            class="btn btn-primary btn-xs"
+                                                            onClick="@command('',valor=each)" 
+                                                            tooltiptext="Eliminar"/> 
+                                            
+                                        </listcell>                                
+                                    </listitem>
+                                </template> 
+                            </listbox>
+                        </div>
+                    </div>
          
                 </tabpanel>
 

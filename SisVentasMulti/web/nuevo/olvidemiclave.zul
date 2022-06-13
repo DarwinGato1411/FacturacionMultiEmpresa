@@ -2,6 +2,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?> 
 
+
 <window  id="wOlvideMiclave"  position="center" class="window_reg"  closable="true"  
                             apply="org.zkoss.bind.BindComposer" 
                             viewModel="@id('vm') @init('com.ec.controlador.RecuperarClave')">
