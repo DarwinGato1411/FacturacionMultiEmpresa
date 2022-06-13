@@ -71,12 +71,8 @@ body {
 .z-datebox-real-readonly,
 .z-bandbox-real-readonly,
 .z-combobox-real-readonly {
-  width: 100% !important;
-}
-
-.z-combobox,
-.z-combobox-real-readonly {
-  width: 100% !important;
+  background-color: #fafafa;
+  width: 100%;
 }
 
 .wrapper_input_mod > .input_date > input,
