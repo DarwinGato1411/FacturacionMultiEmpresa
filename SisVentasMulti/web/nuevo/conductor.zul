@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  id="windowCliente"  position="center" class="col-12 col-sm-12 col-md-8 col-lg-6" closable="true"  
+<window  id="windowCliente"  position="center" closable="true"  
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.NuevoConductor')">
     
@@ -95,6 +95,126 @@
    
     </div> -->
     
-                    
+
+   <div class="container_modal">
+
+        <div class="body">
+            <div class="container_row_input">
+                <div class="wrapper_input_mod">
+                    <span>Identificación: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-address-card icon"></div>
+                        <combobox  
+                            model="@load(vm.listaIdentificacionCompras)"  
+                           class="input_select"  
+                           selectedItem="@bind(vm.identificacionCompra)"
+                           readonly="true" 
+                        >             
+                            <template name="model">
+                                <comboitem  label="@bind(each.tidNombre)"/>
+                            </template>                                      
+                        </combobox>
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>CI / RUC: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-address-card icon"></div>
+                        <textbox  
+                            maxlength="13"  
+                            onOK="@command('buscarAduana')"
+                            value="@bind(vm.transportista.trpCedula)" 
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Nombres: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-user icon"></div>
+                        <textbox  
+                            maxlength="100" 
+                            onChange="self.setValue(self.getValue().toUpperCase())"
+                            value="@bind(vm.transportista.trpRazonSocial)" 
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+
+            </div>
+            <div class="container_row_input">
+                <div class="wrapper_input_mod">
+                    <span>Telf. Conv.: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-user icon"></div>
+                        <textbox  
+                            maxlength="100"
+                            value="@bind(vm.transportista.trpTelefono)" 
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Telf. Cel: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-clipboard-user icon"></div>
+                        <textbox  
+                            maxlength="10"  
+                            value="@bind(vm.transportista.trpMovil)"
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                 <div class="wrapper_input_mod">
+                    <span>Ciudad. </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-city icon"></div>
+                        <textbox  
+                            maxlength="100" 
+                            onChange="self.setValue(self.getValue().toUpperCase());"
+                            value="@bind(vm.transportista.trpCiudad)"
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="body">
+            <div class="container_row_input">
+                <div class="wrapper_input_mod">
+                    <span>Correo: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-calendar icon"></div>
+                        <textbox  
+                            maxlength="100" 
+                            value="@bind(vm.transportista.trpCorreo)"
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+               
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span style="margin:0 1em">Dirección. </span>
+                    <div class="wrapper_input_text" style="width:100%">
+                        <div class="fa-solid fa-location-dot icon"></div>
+                        <textbox id="txtDireccion" maxlength="100" 
+                            value="@bind(vm.transportista.trpDireccion)" 
+                            onChange="self.setValue(self.getValue().toUpperCase());"  
+                            class="input_text" 
+                         />
+                    </div>
+                </div>
+                
+            </div>
+           
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+            <button class="btn_modal" style="width:300px" onClick="@command('guardar')">
+                Guardar
+            </button>
+        </div>
+    </div>     
                   
 </window>

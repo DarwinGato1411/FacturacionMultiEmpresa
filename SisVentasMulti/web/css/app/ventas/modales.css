@@ -74,6 +74,11 @@ body {
   width: 100% !important;
 }
 
+.z-combobox,
+.z-combobox-real-readonly {
+  width: 100% !important;
+}
+
 .wrapper_input_mod > .input_date > input,
 .wrapper_input_mod > .input_select > input,
 .wrapper_input_text > .input_date > input,
