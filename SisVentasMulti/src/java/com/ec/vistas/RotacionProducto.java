@@ -41,6 +41,8 @@ public class RotacionProducto implements Serializable {
     @Column(name = "fac_fecha")
     @Temporal(TemporalType.DATE)
     private Date facFecha;
+    @Column(name = "cod_tipoambiente")
+    private Integer codTipoambiente;
 
     @Transient
     private BigDecimal totalVenta = BigDecimal.ZERO;
@@ -120,5 +122,15 @@ public class RotacionProducto implements Serializable {
     public void setPorcentaje(BigDecimal porcentaje) {
         this.porcentaje = porcentaje;
     }
+
+    public Integer getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Integer codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
+    
+    
 
 }

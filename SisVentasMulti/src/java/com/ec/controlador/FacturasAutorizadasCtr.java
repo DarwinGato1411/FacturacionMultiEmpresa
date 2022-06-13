@@ -5,7 +5,11 @@
 package com.ec.controlador;
 
 import com.ec.entidad.FacturasActorizadaSri;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioFacturasAutorizadas;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.CantidadTotal;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +32,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -36,6 +42,11 @@ import org.zkoss.zul.Filedownload;
  */
 public class FacturasAutorizadasCtr {
 
+        UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    
     ServicioFacturasAutorizadas servicioFacturasAutorizadas = new ServicioFacturasAutorizadas();
 
     private List<FacturasActorizadaSri> listaFacturasActorizadaSri = new ArrayList<FacturasActorizadaSri>();
@@ -44,13 +55,18 @@ public class FacturasAutorizadasCtr {
     private Date fin = new Date();
 
     public FacturasAutorizadasCtr() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         buscarPorFechas();
+        
 
     }
 
     private void buscarPorFechas() {
-        listaFacturasActorizadaSri = servicioFacturasAutorizadas.findFacturasAutorizadas(inicio, fin);
-        cantidadTotal = servicioFacturasAutorizadas.totalFacturasAutorizadas(inicio, fin);
+        listaFacturasActorizadaSri = servicioFacturasAutorizadas.findFacturasAutorizadas(inicio, fin, amb);
+        cantidadTotal = servicioFacturasAutorizadas.totalFacturasAutorizadas(inicio, fin, amb);
     }
 
     @Command

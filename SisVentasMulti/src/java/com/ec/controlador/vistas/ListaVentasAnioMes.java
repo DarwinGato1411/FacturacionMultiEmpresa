@@ -5,7 +5,11 @@
 package com.ec.controlador.vistas;
 
 import com.ec.entidad.Factura;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioAcumuladoVentas;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ArchivoUtils;
 import com.ec.vistas.Acumuladoaniomes;
 import com.ec.vistas.Acumuladopordia;
@@ -32,6 +36,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -50,9 +56,19 @@ public class ListaVentasAnioMes {
     private Date fechafinDiaria = new Date();
 
     private List<Acumuladopordia> listaAcumuladopordias = new ArrayList<Acumuladopordia>();
+    
+       UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
     public ListaVentasAnioMes() {
 
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        
         Calendar calendar = Calendar.getInstance(); //obtiene la fecha de hoy 
         calendar.add(Calendar.MONTH, -6); //el -3 indica que se le restaran 3 dias 
         fechainicio = calendar.getTime();
@@ -82,11 +98,11 @@ public class ListaVentasAnioMes {
     }
 
     private void consultaVentasAnioMes() {
-        listaAcumuladoaniomeses = servicioAcumuladoVentas.findAcumuladoventasAnioMes(fechainicio, fechafin);
+        listaAcumuladoaniomeses = servicioAcumuladoVentas.findAcumuladoventasAnioMes(fechainicio, fechafin,amb);
     }
 
     private void consultaVentasDiarias() {
-        listaAcumuladopordias = servicioAcumuladoVentas.findAcumuladoventasdiaria(fechainicioDiaria, fechafinDiaria);
+        listaAcumuladopordias = servicioAcumuladoVentas.findAcumuladoventasdiaria(fechainicioDiaria, fechafinDiaria, amb);
     }
 
     public Date getFechainicio() {

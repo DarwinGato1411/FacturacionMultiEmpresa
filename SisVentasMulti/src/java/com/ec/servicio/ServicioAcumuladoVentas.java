@@ -6,6 +6,7 @@ package com.ec.servicio;
 
 import com.ec.entidad.Acumuladoventas;
 import com.ec.entidad.Acumuladoventas;
+import com.ec.entidad.Tipoambiente;
 import com.ec.vistas.Acumuladoaniomes;
 import com.ec.vistas.Acumuladopordia;
 import java.text.SimpleDateFormat;
@@ -98,7 +99,7 @@ public class ServicioAcumuladoVentas {
         return listaAcumuladoventass;
     }
     
-      public List<Acumuladoaniomes> findAcumuladoventasAnioMes(Date inicio, Date fin) {
+      public List<Acumuladoaniomes> findAcumuladoventasAnioMes(Date inicio, Date fin, Tipoambiente codTipoambiente) {
 
         List<Acumuladoaniomes> listaAcumuladoventass = new ArrayList<Acumuladoaniomes>();
         try {
@@ -115,10 +116,11 @@ public class ServicioAcumuladoVentas {
             String mesfin = smInicio.format(fin);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Acumuladoaniomes a WHERE a.anio >=:anio and a.mes BETWEEN :inicio and :fin");
+            Query query = em.createQuery("SELECT a FROM Acumuladoaniomes a WHERE a.anio >=:anio and a.mes BETWEEN :inicio and :fin AND a.codTipoambiente=:codTipoambiente");
             query.setParameter("anio", Double.valueOf(anio));
             query.setParameter("inicio", Double.valueOf(mesIni));
             query.setParameter("fin", Double.valueOf(mesfin));
+            query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
             listaAcumuladoventass = (List<Acumuladoaniomes>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -130,7 +132,7 @@ public class ServicioAcumuladoVentas {
         return listaAcumuladoventass;
     }
       
-       public List<Acumuladopordia> findAcumuladoventasdiaria(Date inicio, Date fin) {
+       public List<Acumuladopordia> findAcumuladoventasdiaria(Date inicio, Date fin, Tipoambiente codTipoambiente) {
 
         List<Acumuladopordia> listaAcumuladoventass = new ArrayList<Acumuladopordia>();
         try {
@@ -139,9 +141,10 @@ public class ServicioAcumuladoVentas {
           
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Acumuladopordia a WHERE a.facFecha BETWEEN :inicio and :fin");
+            Query query = em.createQuery("SELECT a FROM Acumuladopordia a WHERE a.facFecha BETWEEN :inicio and :fin AND a.codTipoambiente=:codTipoambiente");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
+            query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
             listaAcumuladoventass = (List<Acumuladopordia>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

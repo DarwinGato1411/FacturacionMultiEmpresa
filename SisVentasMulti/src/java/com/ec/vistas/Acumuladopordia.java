@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Acumuladopordia.findByFacTotal", query = "SELECT a FROM Acumuladopordia a WHERE a.facTotal = :facTotal")
     , @NamedQuery(name = "Acumuladopordia.findByTotalntv", query = "SELECT a FROM Acumuladopordia a WHERE a.totalntv = :totalntv")
     , @NamedQuery(name = "Acumuladopordia.findByTotalacumulado", query = "SELECT a FROM Acumuladopordia a WHERE a.totalacumulado = :totalacumulado")
-    , @NamedQuery(name = "Acumuladopordia.findByFacFecha", query = "SELECT a FROM Acumuladopordia a WHERE a.facFecha = :facFecha")})
+    , @NamedQuery(name = "Acumuladopordia.findByFacFecha", query = "SELECT a FROM Acumuladopordia a WHERE a.facFecha = :facFecha")
+    , @NamedQuery(name = "Acumuladopordia.findByCodTipoambiente", query = "SELECT a FROM Acumuladopordia a WHERE a.codTipoambiente = :codTipoambiente")})
 public class Acumuladopordia implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +49,8 @@ public class Acumuladopordia implements Serializable {
     @Column(name = "fac_fecha")
     @Temporal(TemporalType.DATE)
     private Date facFecha;
+        @Column(name = "cod_tipoambiente")
+    private Integer codTipoambiente;
 
     public Acumuladopordia() {
     }
@@ -91,5 +94,14 @@ public class Acumuladopordia implements Serializable {
     public void setFacFecha(Date facFecha) {
         this.facFecha = facFecha;
     }
+
+    public Integer getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Integer codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
+    
 
 }
