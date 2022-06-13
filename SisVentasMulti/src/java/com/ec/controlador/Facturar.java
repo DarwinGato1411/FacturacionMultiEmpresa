@@ -247,7 +247,7 @@ public class Facturar extends SelectorComposer<Component> {
 
     /*si es con o sin guia*/
     private String facConSinGuia = "";
-    private String facplazo = "30";
+    private String facplazo = "0";
 
     /*CUENTA LOS ITEMS DE LA FACTURA*/
     private String totalItems = "";

@@ -192,6 +192,7 @@
                                 <div class="wrapper_input">
                                     <span>Emisión:</span>
                                     <datebox 
+                                        value="@bind(vm.fechafacturacion)" 
                                         compact="true" 
                                         readonly="true" 
                                         buttonVisible="true" 
@@ -206,6 +207,7 @@
                                     <span>Cobro:</span>
                                     <datebox compact="true"  
                                         readonly="true"
+                                        value="@bind(vm.facFechaCobro)" 
                                         buttonVisible="true" 
                                         class="input_date"
                                         lenient="true" 
@@ -217,7 +219,7 @@
                             </div>
                             <div class="wrapper_data">
                                 <div class="wrapper_input">
-                                    <span>Forma de pago:</span>
+                                    <span>Forma pago:</span>
                                     <combobox  
                                         model="@load(vm.listaFormaPago)"  
                                         selectedItem="@bind(vm.formaPagoSelected)" 
@@ -235,8 +237,8 @@
                                         readonly="true"    
                                         style="width:150px"      
                                         class="input_select"                              
-                                        selectedItem="@bind(vm.facplazo)" 
-                                    >
+                                        selectedItem="@bind(vm.facplazo)">
+                                         <comboitem label="CONTADO" value="0"/> 
                                         <comboitem label="15 DIAS" value="15" />                    
                                         <comboitem label="30 DIAS" value="30" />
                                         <comboitem label="45 DIAS" value="45" />
