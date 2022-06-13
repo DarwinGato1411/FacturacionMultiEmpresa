@@ -62,7 +62,11 @@ public class AdminstrarCompraVenta {
 //        for (CabeceraCompra taCompra : listaCompras) {
 //            
 //        }
+<<<<<<< HEAD
+        compraVenta = servicioGeneral.totalesCompraVenta(inicio, fin, amb);
+=======
         compraVenta = servicioGeneral.totalesCompraVenta(inicio, fin,amb);
+>>>>>>> 1caa7a85926feadb7393bde3238a9b6f9d38f45d
     }
 
     @Command

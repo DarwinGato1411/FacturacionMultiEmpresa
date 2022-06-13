@@ -31,7 +31,11 @@ public class ServicioGeneral {
         this.em = em;
     }
 
+<<<<<<< HEAD
+    public ResultadoCompraVenta totalesCompraVenta(Date inicio, Date fin,  Tipoambiente codTipoambiente) {
+=======
     public ResultadoCompraVenta totalesCompraVenta(Date inicio, Date fin, Tipoambiente tipoambiente) {
+>>>>>>> 1caa7a85926feadb7393bde3238a9b6f9d38f45d
         ResultadoCompraVenta compraVenta = new ResultadoCompraVenta(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.TEN, BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
 
         try {
@@ -40,6 +44,17 @@ public class ServicioGeneral {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
 
+<<<<<<< HEAD
+            Query query = em.createQuery("SELECT new com.ec.untilitario.SumaTotales(SUM(f.facSubtotal),SUM(f.facTotal))FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.codTipoambiente=:codTipoambiente ");
+            query.setParameter("inicio", inicio);
+            query.setParameter("fin", fin);
+            query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
+            List<SumaTotales> lstVentas = query.getResultList();
+            Query queryCompras = em.createQuery("SELECT new com.ec.untilitario.SumaTotales(SUM(c.cabSubTotal),SUM(c.cabTotal))FROM CabeceraCompra c WHERE c.cabFechaEmision BETWEEN :inicio AND :fin AND c.codTipoambiente=:codTipoambiente");
+            queryCompras.setParameter("inicio", inicio);
+            queryCompras.setParameter("fin", fin);
+            query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
+=======
             Query query = em.createQuery("SELECT new com.ec.untilitario.SumaTotales(SUM(f.facSubtotal),SUM(f.facTotal))FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:tipoambiente ");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
@@ -49,6 +64,7 @@ public class ServicioGeneral {
             queryCompras.setParameter("inicio", inicio);
             queryCompras.setParameter("fin", fin);
             queryCompras.setParameter("tipoambiente", tipoambiente);
+>>>>>>> 1caa7a85926feadb7393bde3238a9b6f9d38f45d
             List<SumaTotales> lstCompras = queryCompras.getResultList();
 
             for (SumaTotales lstVenta : lstVentas) {

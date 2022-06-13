@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/menuOpciones.zul</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/nuevo/usuario.zul</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/nuevo/olvidemiclave.zul</file>
@@ -12,6 +13,10 @@
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/banner.zul</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/plantilla.zul</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/venta/administrar.zul</file>
+=======
+            <file>file:/home/gt37285/NetBeansProjects/faturacion/SisVentasMulti/web/css/app/ventas/facturar.css</file>
+            <file>file:/home/gt37285/NetBeansProjects/faturacion/SisVentasMulti/web/venta/facturar.zul</file>
+>>>>>>> 1fcda39dcaa23a79f1616569b92ede7021bff479
         </group>
     </open-files>
 </project-private>

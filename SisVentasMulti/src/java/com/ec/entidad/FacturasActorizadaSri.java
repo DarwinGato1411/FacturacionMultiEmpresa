@@ -52,6 +52,8 @@ public class FacturasActorizadaSri implements Serializable {
     private BigDecimal facTotalBaseCero;
     @Column(name = "fac_total_base_gravaba")
     private BigDecimal facTotalBaseGravaba;
+    @Column(name = "cod_tipoambiente")
+    private Integer codTipoambiente;
 
     public FacturasActorizadaSri() {
     }
@@ -135,5 +137,14 @@ public class FacturasActorizadaSri implements Serializable {
     public void setFacTotalBaseGravaba(BigDecimal facTotalBaseGravaba) {
         this.facTotalBaseGravaba = facTotalBaseGravaba;
     }
+
+    public Integer getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Integer codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
+    
 
 }

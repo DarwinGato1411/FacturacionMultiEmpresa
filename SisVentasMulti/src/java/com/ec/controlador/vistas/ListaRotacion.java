@@ -4,6 +4,10 @@
  */
 package com.ec.controlador.vistas;
 
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ArchivoUtils;
 import com.ec.vista.servicios.ServicioRotacionProducto;
 import com.ec.vistas.RotacionProducto;
@@ -31,6 +35,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -45,9 +51,19 @@ public class ListaRotacion {
     private Date fechafin = new Date();
     private BigDecimal totalVenta = BigDecimal.ZERO;
     private List<RotacionProducto> listaRotacionProductos = new ArrayList<RotacionProducto>();
+    
+    UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    private String amRuc = "";
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
     /*DIARIA*/
     public ListaRotacion() {
+        
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
 
         Calendar calendar = Calendar.getInstance(); //obtiene la fecha de hoy 
         calendar.add(Calendar.DATE, -6); //el -3 indica que se le restaran 3 dias 
@@ -67,7 +83,7 @@ public class ListaRotacion {
 
     private void consultaVentasDiarias() {
         totalVenta = BigDecimal.ZERO;
-        listaRotacionProductos = servicioRotacionProducto.findBetweenGroupByProducto(fechainicio, fechafin);
+        listaRotacionProductos = servicioRotacionProducto.findBetweenGroupByProducto(fechainicio, fechafin, amb);
 
         /*Calculo el total*/
         for (RotacionProducto item : listaRotacionProductos) {

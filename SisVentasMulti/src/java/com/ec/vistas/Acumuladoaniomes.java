@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Acumuladoaniomes.findByTotalntv", query = "SELECT a FROM Acumuladoaniomes a WHERE a.totalntv = :totalntv")
     , @NamedQuery(name = "Acumuladoaniomes.findByTotalacumulado", query = "SELECT a FROM Acumuladoaniomes a WHERE a.totalacumulado = :totalacumulado")
     , @NamedQuery(name = "Acumuladoaniomes.findByAnio", query = "SELECT a FROM Acumuladoaniomes a WHERE a.anio = :anio")
-    , @NamedQuery(name = "Acumuladoaniomes.findByMes", query = "SELECT a FROM Acumuladoaniomes a WHERE a.mes = :mes")})
+    , @NamedQuery(name = "Acumuladoaniomes.findByMes", query = "SELECT a FROM Acumuladoaniomes a WHERE a.mes = :mes")
+    , @NamedQuery(name = "Acumuladoaniomes.findByCodTipoambiente", query = "SELECT a FROM Acumuladoaniomes a WHERE a.codTipoambiente = :codTipoambiente")})
 public class Acumuladoaniomes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +49,8 @@ public class Acumuladoaniomes implements Serializable {
     private Double anio;
     @Column(name = "mes")
     private Double mes;
+    @Column(name = "cod_tipoambiente")
+    private Integer codTipoambiente;
 
     public Acumuladoaniomes() {
     }
@@ -98,6 +101,14 @@ public class Acumuladoaniomes implements Serializable {
 
     public void setMes(Double mes) {
         this.mes = mes;
+    }
+
+    public Integer getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Integer codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
     
 }
