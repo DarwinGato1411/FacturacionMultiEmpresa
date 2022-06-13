@@ -175,7 +175,7 @@
                                     onClick="@command('buscarPendientesEnvSRI')" 
                                     tooltiptext="Buscar facturas pendientes para enviar al SRI"
                                 >
-                                    PEN SRI
+                                    Pendientes por autorizar
                                 </button>
                                 <button 
                                     image="/iconos/sri24x24.png"
@@ -184,16 +184,16 @@
                                     onClick="@command('autorizarEnLote')" 
                                     tooltiptext="Autorizar facturas en lote"
                                 >
-                                    AUTH LOTE
+                                    Autorizar Facturas en Lote
                                 </button>
                                 <button 
                                     image="/iconos/sri24x24.png"
                                     class="btn_fact btn_base"
-                                    label="DEV-SRI-REEN"
+                                    label="Reenviar Facturas"
                                     onClick="@command('buscarDevueltaSRIReenvio')" 
                                     tooltiptext="Buscar facturas pendientes para enviar al SRI"
                                 >
-                                    DEV SRI REEN
+                                    Reenviar Facturas
                                 </button>
                             </div>
                             <div class="wrapper_data">
@@ -204,19 +204,19 @@
                                     onClick="@command('reenviarEnLote')" 
                                     tooltiptext="Autorizar facturas en lote"
                                 >
-                                    REEN LOTE
+                                    Reenviar Lote de Factura
                                 </button>
                                 <button 
                                     class="fa-solid fa-magnifying-glass btn_fact btn_alert"
-                                    label="DEV-CORREGIR"
                                     onClick="@command('buscarDevueltaSRIPorCorregir')" 
                                     tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                    label="Facturas Devueltas por Corregir"
                                 />
                                 <button 
                                     class="fa-solid fa-floppy-disk btn_fact btn_access"
                                     onClick="@command('exportListboxToExcel')"  
                                     tooltiptext="Descargar"
-                                    label="Descargar"
+                                    label="Descargar Registros de Factura"
                                 />
                             </div>
                         </div>

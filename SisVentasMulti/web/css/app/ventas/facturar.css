@@ -213,6 +213,7 @@ body {
   content: "";
   font-family: "Font Awesome 6 Free" !important;
   margin-right: 0.5em;
+  font-size: 16px;
 }
 
 .btn_fact > img {
@@ -238,6 +239,13 @@ body {
 
 .factura_body_content > .factura_body_item {
   width: 100%;
+}
+
+.text_total {
+  font-size: 30px !important;
+  color: #77dd77;
+  font-weight: bold;
+  border: solid red 1px;
 }
 
 @media only screen and (min-width: 1070px) {

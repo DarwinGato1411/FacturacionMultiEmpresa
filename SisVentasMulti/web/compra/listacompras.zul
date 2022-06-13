@@ -107,10 +107,10 @@
 
                                              <button 
                                                 class="fa-solid fa-floppy-disk btn_fact btn_access btn_one_element"
-                                                style="height:unset;"
+                                                style="height:unset;width:fit-content !important;"
                                                 onClick="@command('exportListboxToExcel')"
                                             >
-                                                Descargar
+                                                Descargar Listado de Compras
                                             </button>
 
                                         </div>

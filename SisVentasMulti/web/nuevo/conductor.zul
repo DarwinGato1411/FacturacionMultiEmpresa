@@ -5,7 +5,7 @@
     
     <caption label="Transportista" style="font-weight:bold"
     /> 
-    <div  class="container" >
+    <!-- <div  class="container" >
         <div  class="row" >
             <div class="col-12 col-6 col-md-4 col-lg-4  form-group "  >
                 <label value="(*) " style="color:red;font-weight:bold"/>Tipo de Identif.
@@ -93,7 +93,7 @@
             </div> 
         </div>
    
-    </div>
+    </div> -->
     
                     
                   

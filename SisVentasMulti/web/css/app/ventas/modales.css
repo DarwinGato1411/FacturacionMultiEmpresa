@@ -65,6 +65,15 @@ body {
   display: none;
 }
 
+.z-spinner-real-readonly,
+.z-doublespinner-real-readonly,
+.z-timebox-real-readonly,
+.z-datebox-real-readonly,
+.z-bandbox-real-readonly,
+.z-combobox-real-readonly {
+  width: 100% !important;
+}
+
 .wrapper_input_mod > .input_date > input,
 .wrapper_input_mod > .input_select > input,
 .wrapper_input_text > .input_date > input,
