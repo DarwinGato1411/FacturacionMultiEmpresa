@@ -11,9 +11,6 @@ body {
   -webkit-font-smoothing: antialiased !important;
   font-family: "Poppins", sans-serif !important;
 }
-.wrapp {
-  border: solid red 1px !important;
-}
 
 .container_modal {
   background-color: #fff;

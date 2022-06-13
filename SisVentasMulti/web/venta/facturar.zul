@@ -232,8 +232,7 @@
                                     <span>plazo:</span>
                                     <combobox 
                                         onSelect="@command('actualizarCostoVenta')"  
-                                        readonly="true"    
-                                        style="width:150px"      
+                                        readonly="true"         
                                         class="input_select"                              
                                         selectedItem="@bind(vm.facplazo)" 
                                     >
@@ -472,10 +471,16 @@
                                                     width="96%" />
                                         </listcell>
         
-                                        <listcell zclass = "mycss-listcell">   
-                                            <image  src="/iconos/Forward.png" 
+                                        <listcell zclass = "mycss-listcell">  
+                                            <div 
+                                                class="fa-solid fa-chevron-right"
+                                                style="font-size:16px; padding:0.5em; cursor:pointer;font-weight: bold"
+                                                onClick="@command('agregarItemLista',valor=each.idProducto)"
+                                                tooltiptext="Asigar producto"
+                                            />
+                                            <!-- <image  src="/iconos/Forward.png" 
                                                     onClick="@command('agregarItemLista',valor=each.idProducto)" 
-                                                    tooltiptext="Asigar producto"/> 
+                                                    tooltiptext="Asigar producto"/> -->
                                             
                                         </listcell>
                                     </listitem>
