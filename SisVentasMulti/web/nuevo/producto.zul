@@ -211,9 +211,9 @@
         </div>
     </div> -->
     
-        <div class="container_modal">
+    <div class="container_modal">
         <div class="header">
-            <div class="wrapper_input">
+            <div class="wrapper_input_mod">
                 <span>Tipo: </span>
                 <radiogroup  
                     class="radio_group"
@@ -224,7 +224,7 @@
                     <radio label="SERVICIO" value="S"/>                          
                 </radiogroup>
             </div>
-            <div class="wrapper_input">
+            <div class="wrapper_input_mod">
                 <span>Declaración: </span>
                 <radiogroup
                     class="radio_group" 
@@ -235,7 +235,7 @@
                     <radio label="Sin IVA" value="N"/>                          
                 </radiogroup>
             </div>
-            <div class="wrapper_input">
+            <div class="wrapper_input_mod">
                 <span>F. Registro: </span>
                 <datebox 
                     compact="true" 
@@ -252,7 +252,7 @@
 
         <div class="body">
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Código: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-barcode icon"></div>
@@ -263,7 +263,7 @@
                             class="input_text" />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Nombre: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-user icon"></div>
@@ -275,7 +275,7 @@
                             class="input_text" />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Costo / compra: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-sack-dollar icon"></div>
@@ -291,7 +291,7 @@
 
             </div>
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>%IVA recuperar: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-wallet icon"></div>
@@ -303,7 +303,7 @@
                             class="input_text" />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Compra / IVA: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-hand-holding-dollar icon"></div>
@@ -314,7 +314,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Precio: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -327,7 +327,7 @@
                 </div>
             </div>
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>% Utilidad: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-percent icon"></div>
@@ -339,7 +339,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Precio / Unidad: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -351,7 +351,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Subsidio: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-wallet icon"></div>
@@ -363,7 +363,7 @@
                 </div>
             </div>
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>% Utilidad / mayor: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-wallet icon"></div>
@@ -374,7 +374,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Cant. inicial: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -384,7 +384,7 @@
                          />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Cant. mínima: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -397,7 +397,7 @@
                 </div>
             </div>
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>% Utilidad / caja: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -408,7 +408,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Precio / 3 Unid.: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -420,7 +420,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Precio / 6 Unid.: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -433,7 +433,7 @@
                 </div>
             </div>
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Precio / caja: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -448,7 +448,7 @@
         </div>
         <div class="body">
             <div class="container_row_input">
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Factor: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-percent icon"></div>
@@ -459,7 +459,7 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Unid. medida: </span>
                     <combobox  
                         selectedItem="@bind(vm.producto.prodUnidadMedida)"  
@@ -471,7 +471,7 @@
                         <comboitem label="METROS" value="METROS" />
                     </combobox>
                 </div>
-                <div class="wrapper_input">
+                <div class="wrapper_input_mod">
                     <span>Unid. Conv.: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-ruler-combined icon"></div>
@@ -490,9 +490,12 @@
             </div>
 
         </div>
-        <button class="btn_modal">
-            Guardar
-        </button>
+
+        <div style="display:flex;justify-content:flex-end;">
+            <button class="btn_modal" style="width:300px">
+                Guardar
+            </button>
+        </div>
     </div>
    
                     
