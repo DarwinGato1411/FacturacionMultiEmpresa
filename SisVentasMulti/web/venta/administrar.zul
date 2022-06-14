@@ -18,12 +18,11 @@
                 <tab label="Productos" sclass="menutabs" /> 
                 <tab label="Proveedores" sclass="menutabs" /> 
                 <tab label="Conductor" sclass="menutabs" /> 
-                <!--                <tab label="Asugnar productos a un proveedor" sclass="menutabs" /> -->
-                <!--<tab label="mailing" sclass="menutabs" />--> 
+
                 <tab label="Usuario" sclass="menutabs" /> 
                 <tab label="Configuraciones" sclass="menutabs" /> 
                 <tab label="Parametrizar Empresa" sclass="menutabs" /> 
-                <!--<tab label="Consultar catastro" sclass="menutabs" />--> 
+
             </tabs>
             <tabpanels >
                 
@@ -40,15 +39,12 @@
                                         class="btn btn btn-secondary btn-sm "
                                         onClick="@command('nuevoCliente')"
                                         tooltiptext="Nuevo cliente"/>
-                                <!--                                <div class="col-12 col-sm-12 col-md-1 col-lg-1 " align="start"  >-->
-                           
+
                                 <image  src="/iconos/excel1.png"
                                         class="btn btn btn-secondary btn-sm "
                                         onClick="@command('exportListboxToExcel')"
                                         tooltiptext="Descargar productos"/>
                     
-                                <!--</div>-->
-                                <!--<button  label="Nuevo cliente"  onClick="@command('nuevoCliente',valor=each)" sclass="botonLista"  tooltiptext="Nuevo cliente"/>-->
                             </auxheader>
                         </auxhead>
                     
@@ -101,9 +97,6 @@
                                     <textbox readonly="true"  style="font-size:12px;background:#EBF5FB"
                                             class="form-control form-control-sm"  value="@bind(each.cliNombre)"  />
                                 </listcell>
-                                <!--                                <listcell>
-                                    <label value="@bind(each.cliRazonSocial)"  />
-                                </listcell>-->
                                 <listcell zclass = "mycss-listcell">
                                     <textbox readonly="true"  style="font-size:12px;background:#EBF5FB"
                                             class="form-control form-control-sm" value="@bind(each.cliDireccion)" />
@@ -141,9 +134,6 @@
                 <tabpanel height="100%" hflex="min">
                     <include src="/venta/admconductor.zul"/>  
                 </tabpanel>      
-                <!--                <tabpanel height="100%" hflex="min">
-                     <include src="/compra/admproductoproveedor.zul"/>  
-                </tabpanel>-->
                 <tabpanel height="100%" hflex="min">
                     <listbox width="100%" model="@load(vm.listaUsuarios)" nonselectableTags="*"  mold="paging" pageSize="9">
                         <auxhead>
@@ -215,9 +205,6 @@
                 <tabpanel height="100%" hflex="min">
                     <include src="/administrar/parametrizar.zul"/>  
                 </tabpanel>
-<!--                <tabpanel height="100%" hflex="min">
-                    <include src="/administrar/catastro.zul"/>  
-                </tabpanel>-->
             </tabpanels>
             
         </tabbox>

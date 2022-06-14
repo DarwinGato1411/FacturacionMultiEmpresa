@@ -6,7 +6,7 @@
 
     <div  apply="org.zkoss.bind.BindComposer" 
           viewModel="@id('vm') @init('com.ec.controlador.Configuracion')" >
-        <div  class="container" >
+        <!-- <div  class="container" >
             <div  class="row border border-primary" >
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6  form-group "  align="center" >
               
@@ -223,9 +223,141 @@
 
                 </div> 
             </div>
+        </div> -->
+
+    <div class="container_modal">
+
+        <div class="body">
+            <div class="container_row_input">
+                <div class="wrapper_input_mod">
+                    <span>Ruta Base: </span>
+                    <div class="wrapper_input_text">
+                        <combobox  
+                            model="@load(vm.listaDicos)" 
+                            readonly="false"
+                            class="badge badge-default btn-secondary  textoFechaDateBox"  
+                            selectedItem="@bind(vm.tipoambiente.amUnidadDisco)"
+                            style="padding:0.5em 0;width:100% !important;"
+                            tooltiptext="Ruta base dependiendo del sistema operativo (D: ó /Documentos)" 
+                        >       
+                            <template name="model">
+                                <comboitem  label="@bind(each)"/>
+                            </template>                                      
+                        </combobox> 
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>RUC: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-address-card icon"></div>
+                        <textbox 
+                            value="@bind(vm.tipoambiente.amRuc)" 
+                            placeholder="RUC..."
+                            onOK="@command('buscarCatastro')"
+                            class="input_text"
+                            tooltiptext="RUC"
+                        />
+                    </div>
+                </div>
+                
+
+                <div class="wrapper_input_mod">
+                    <span>Modo: </span>
+                    <div class="wrapper_input_text">
+                        <radiogroup 
+                            class="input_group" 
+                            onCheck="@command('ambienteCodigo')"
+                            selectedItem="@bind(vm.amCodifo)" 
+                        >
+                            <space bar="false"  />                        
+                            <radio label="PRUEBAS" value="1"/>
+                            <space bar="false"  /> 
+                            <radio label="PRODUCCION" value="2"/>
+                            <space bar="false"  />  
+                        </radiogroup>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="container_row_input">
+                
+                <div class="wrapper_input_mod">
+                    <span>Nombre Comercial: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-user icon"></div>
+                        <textbox 
+                            value="@bind(vm.tipoambiente.amNombreComercial)" 
+                            placeholder="Nombre Comercial"
+                            class="input_text"
+                            tooltiptext="Nombre Comercial" 
+                        />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Razón Social: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-user icon"></div>
+                        <textbox 
+                            value="@bind(vm.tipoambiente.amRazonSocial)" 
+                            placeholder="Razon Social"
+                            class="input_text"
+                            tooltiptext="Razon Social" 
+                        />
+                    </div>
+                </div>
+                
+                <div class="wrapper_input_mod">
+                    <span>LLeva Contabilidad: </span>
+                    <div class="wrapper_input_text">
+                        <radiogroup 
+                            class="radio_group" 
+                            selectedItem="@bind(vm.llevaContabilidad)" 
+                        >
+                            <space bar="false"  />   
+                            <radio label="NO" value="NO"  />
+                            <space bar="false"  />
+                            <radio label="SI" value="SI"  />                        
+                            <space bar="false"  /> 
+                        </radiogroup> 
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <div class="body">
+            <div class="wrapper_checkbox">
+                <checkbox 
+                    id="chkRM" 
+                    label="CONTRIBUYENTE REGIMEN MICROEMPRESAS" 
+                    checked="@bind(vm.tipoambiente.amMicroEmp)" 
+                />
+                
+                <checkbox 
+                    id="chkAR" 
+                    label="AGENTE DE RETENCION" 
+                    checked="@bind(vm.tipoambiente.amAgeRet)"
+                />
+                
+                <checkbox 
+                    id="chkCE" 
+                    label="CONTRIBUYENTE ESPECIAL"  
+                    checked="@bind(vm.tipoambiente.amContrEsp)"
+                />
+                
+                <checkbox 
+                    id="chkEX" 
+                    label="EXPORTADORES"  
+                    checked="@bind(vm.tipoambiente.amExp)"
+                />
+
+            </div>
+        </div>
+       
+    </div>
+
         
     </div>
-    <!--</window>-->
 </zk>
 

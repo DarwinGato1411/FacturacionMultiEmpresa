@@ -404,6 +404,7 @@
                                         <comboitem label="90 DIAS" value="90" />
                                         <comboitem label="120 DIAS" value="120" />
                                     </combobox>
+                                    <div class="fa-solid fa-chevron-down icon" />
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Estado:</span>
