@@ -124,6 +124,7 @@
                                         <comboitem label="PENDIENTE" value="PE" />
                                         <comboitem label="PAGADO" value="PA" />
                                     </combobox>
+                                    <div class="fa-solid fa-chevron-down icon"></div>
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Inicio:</span>
