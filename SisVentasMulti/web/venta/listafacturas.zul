@@ -213,7 +213,7 @@
                                     label="Facturas Devueltas por Corregir"
                                 />
                                 <button 
-                                    class="fa-solid fa-floppy-disk btn_fact btn_access"
+                                    class="fa-solid fa-file-excel btn_fact btn_access"
                                     onClick="@command('exportListboxToExcel')"  
                                     tooltiptext="Descargar"
                                     label="Descargar Registros de Factura"
