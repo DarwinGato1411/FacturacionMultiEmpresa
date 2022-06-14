@@ -31,16 +31,17 @@
                         <div class="row" style="margin-top:5px">
                             <div class="row  col-12 col-sm-12 col-md-12 col-lg-12">
                             
-                                <!--<div class="col-12 col-sm-12 col-md-3 col-lg-3 " align="center">-->
                                     <div class="input-group mb-3 col-4 col-sm-4 col-md-2 col-lg-2">
                                     
-                                        <textbox   class="form-control form-control-sm"
-                                                   ctrlKeys="^A" onCtrlKey="@command('buscarClienteEnLista')" 
-                                                   placeholder="Cedula"
-                                                   value="@bind(vm.clienteBuscado.cliCedula)" 
-                                                   onDoubleClick="@command('buscarClienteEnLista')"
-                                                   style="font-weight:bold"
-                                                   maxlength="13"  />
+                                        <textbox   
+                                            class="form-control form-control-sm"
+                                            ctrlKeys="^A" onCtrlKey="@command('buscarClienteEnLista')" 
+                                            placeholder="Cedula"
+                                            value="@bind(vm.clienteBuscado.cliCedula)" 
+                                            onDoubleClick="@command('buscarClienteEnLista')"
+                                            style="font-weight:bold"
+                                            maxlength="13"  
+                                        />
                         
                                         <div class="input-group-append">
                                             <button   image="/imagenes/buscar1.png" 
@@ -51,7 +52,7 @@
                                
                                         </div>
                                     </div>
-                                <!--</div>-->
+
                                 <div class="col-8 col-sm-8 col-md-3 col-lg-3 " >
                                   
 
@@ -95,14 +96,7 @@
                                 
                               
                                 </div>
-<!--                                <div class="col-12 col-sm-12 col-md-2 col-lg-2 " align="center">
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                                    
-                                        <label   style="font-weight:bold" 
-                                                 value="@bind(vm.clienteBuscado.cliDireccion)"    />
-                                 
-                                    </div>
-                                </div>-->
+
                                 <div class="col-4 col-sm-4 col-md-2 col-lg-2 d-none d-sm-block "  align="start" >
                                  
                                     <datebox compact="true" value="@bind(vm.fechafacturacion)" 
@@ -169,92 +163,7 @@
                                              value="@bind(vm.totalItems)"  >
                                      </label>
                                  </div>
-<!--                                <div class="col-4 col-sm-4 col-md-2 col-lg-2 form-group d-none d-sm-block ">
-                                    <label  style="color:red;font-weight:bold" value=""  ></label>Trans:
-                                        
-                                    <combobox  model="@load(vm.listaTransportistas)"  
-                                               selectedItem="@bind(vm.transportista)" 
-                                               style="width:110px"  
-                                               readonly="true" >
-                                        <template name="model">
-                                            <comboitem  label="@bind(each.trpRazonSocial)"/>
-                                        </template>                                      
-                                    </combobox>
-                                </div>
-                                <div class="col-3 col-sm-3 col-md-2 col-lg-2 form-group d-none d-sm-block ">
-                                    <label  style="color:red;font-weight:bold" value=""  ></label>Mot:
-        
-                                
-                                    <combobox 
-                                        readonly="true"    
-                                        style="width:70%" selectedItem="@bind(vm.motivoGuia)"                                >
-                                        <comboitem label="COMPRA" value="COMPRA" />                    
-                                        <comboitem label="CONSIGNACION" value="CONSIGNACION" />
-                                        <comboitem label="DEVOLUCION" value="DEVOLUCION" />
-                                        <comboitem label="EXPORTACION" value="EXPORTACION" />
-                                        <comboitem label="IMPORTACION" value="IMPORTACION" />
-                                        <comboitem label="TRANSFORMACION" value="TRANSFORMACION" />
-                                        <comboitem label="TRASLADO" value="TRASLADO" />
-                                        <comboitem label="VENTA" value="VENTA" />
-                                        <comboitem label="OTROS" value="OTROS" />
-                                    </combobox>
-                                </div>
-                                <div class="col-3 col-sm-3 col-md-2 col-lg-2 form-group" >
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                                       
-                                        <textbox  style="font-weight:bold" 
-                                                  placeholder="Placa: PBA6939 "
-                                                  class="form-control form-control-sm"
-                                                  onChange="self.setValue(self.getValue().toUpperCase());"
-                                                  value="@bind(vm.numeroPlaca)"  />
-                         
-                                    </div>
-                                </div>
-                                <div class="col-3 col-sm-3 col-md-2 col-lg-2 d-none d-sm-block " >
-                                    Inicio:
-                                    <datebox compact="true" value="@bind(vm.incioTraslado)" 
-                                             readonly="true" style="font-weight:bold;" 
-                                             buttonVisible="true" 
-                                             width="70%"
-                                             lenient="true" format="dd/MM/yyyy" 
-                                             constraint="no empty: Ingrese la fecha "/>
 
-                                </div>
-                                <div class="col-3 col-sm-3 col-md-2 col-lg-2 d-none d-sm-block "   >
-                                    Fin:
-                                    <datebox compact="true" value="@bind(vm.finTraslado)" 
-                                             readonly="true" style="font-weight:bold;" 
-                                             buttonVisible="true" 
-                                             width="70%"
-                                             lenient="true" format="dd/MM/yyyy" 
-                                             constraint="no empty: Ingrese la fecha "/>
-
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 d-none d-sm-block" >
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                                      
-                                        <textbox  style="font-weight:bold" 
-                                                  class="form-control form-control-sm"
-                                                  placeholder="Direccion origen"
-                                                  onChange="self.setValue(self.getValue().toUpperCase());"
-                                                  value="@bind(vm.partida)"  />
-                         
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 form-group d-none d-sm-block" >
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                                   
-                                        <textbox  style="font-weight:bold" 
-                                                  class="form-control form-control-sm"
-                                                  placeholder="Direccion destino"
-                                                  onChange="self.setValue(self.getValue().toUpperCase());"
-                                                  value="@bind(vm.llegada)"  />
-                         
-                                    </div>
-                                </div>-->
-                            
-                                <!--<div class="col-12 col-sm-12 col-md-1 col-lg-1 " align="center"></div>-->
-                              
 
                                 <div class="col-12 col-sm-12 col-md-5 col-lg-5 hidden-sm-down" >
                                     <listbox model="@load(vm.listaProducto)" 
