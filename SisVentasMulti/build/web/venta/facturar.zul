@@ -270,7 +270,7 @@
                         <div class="fact_row">
                             <div class="wrapper_data">
                                 <div class="wrapper_input">
-                                    <span>Sindescuent:</span>
+                                    <span>Sindesc:</span>
                                     <decimalbox  
                                         format="###.##"   
                                         value="@bind(vm.valorTotalInicialVent)"                                             
@@ -363,16 +363,16 @@
                                     style="font-size:18px; height:46px"
                                 />
 
-                                <!-- <div class="wrapper_input" style="display: flex; gap:10px; align-items:center">
+                                <div class="wrapper_input wrapper_total">
                                     <span style="text_total">Total:</span>
 
                                     <decimalbox  
                                         format="###.##"   
                                         value="@bind(vm.valorTotalCotizacion)"                                                 
                                         readonly="true"
-                                        style="font-size:60px; background-color: transparent; border:none; outline:none;color:#77dd77;font-weight:bold;" 
+                                        
                                     />
-                                </div> -->
+                                </div> 
 
                                 
                             </div>
