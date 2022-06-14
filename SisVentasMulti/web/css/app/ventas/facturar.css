@@ -251,11 +251,11 @@ body {
 
 .wrapper_total > input {
   text-align: center;
-  border: none;
-  outline: none;
+  border: none !important;
+  outline: none !important;
   background-color: transparent;
-  font-size: 35px;
-  color: #77dd77;
+  font-size: 35px !important;
+  color: #77dd77 !important;
 }
 
 .wrapper_total {
