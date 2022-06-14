@@ -111,7 +111,7 @@
                                 </button>
 
                                     <button 
-                                    class="fa-solid fa-floppy-disk btn_fact btn_access btn_one_element"
+                                    class="fa-solid fa-file-excel btn_fact btn_access btn_one_element"
                                     style="height:unset;"
                                     onClick="@command('exportExcelDiario')"
                                 >

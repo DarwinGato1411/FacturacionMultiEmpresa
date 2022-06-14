@@ -29,7 +29,6 @@ public class ServicioGeneral {
         this.em = em;
     }
 
-
     public ResultadoCompraVenta totalesCompraVenta(Date inicio, Date fin, Tipoambiente tipoambiente) {
 
         ResultadoCompraVenta compraVenta = new ResultadoCompraVenta(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.TEN, BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -40,7 +39,6 @@ public class ServicioGeneral {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
 
-
             Query query = em.createQuery("SELECT new com.ec.untilitario.SumaTotales(SUM(f.facSubtotal),SUM(f.facTotal))FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:tipoambiente ");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
@@ -50,6 +48,7 @@ public class ServicioGeneral {
             queryCompras.setParameter("inicio", inicio);
             queryCompras.setParameter("fin", fin);
             queryCompras.setParameter("tipoambiente", tipoambiente);
+
 
             List<SumaTotales> lstCompras = queryCompras.getResultList();
 

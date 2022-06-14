@@ -34,12 +34,12 @@ body {
   border-radius: 10px;
 }
 
-.wrapper_input {
+.wrapper_input_mod {
   display: flex;
   align-items: center;
   gap: 0.5em;
 }
-.wrapper_input > span {
+.wrapper_input_mod > span {
   display: block;
   width: 100px !important;
   white-space: nowrap;
@@ -47,8 +47,8 @@ body {
   font-weight: 400;
 }
 
-.wrapper_input > input,
-.wrapper_input > .wrapper_input_text > input {
+.wrapper_input_mod > input,
+.wrapper_input_mod > .wrapper_input_text > input {
   width: 70%;
   padding: 5px 10px;
   border: solid 1px #ccc;
@@ -58,7 +58,58 @@ body {
   color: #333;
 }
 
-.wrapper_input > .wrapper_input_text > input {
+.wrapper_input_mod > .input_date > i,
+.wrapper_input_mod > .input_select > i,
+.wrapper_input_text > .input_date > i,
+.wrapper_input_text > .input_select > i {
+  display: none;
+}
+
+.wrapper_check {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.input_check {
+  width: fit-content !important;
+}
+.input_check > input {
+  margin-right: 0.5em;
+}
+
+.z-spinner-real-readonly,
+.z-doublespinner-real-readonly,
+.z-timebox-real-readonly,
+.z-datebox-real-readonly,
+.z-bandbox-real-readonly,
+.z-combobox-real-readonly {
+  background-color: #fafafa;
+  width: 100%;
+}
+
+.icon_sign {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  cursor: pointer;
+  color: #1247b9;
+}
+
+.wrapper_input_mod > .input_date > input,
+.wrapper_input_mod > .input_select > input,
+.wrapper_input_text > .input_date > input,
+.wrapper_input_text > .input_select > input {
+  width: 100% !important;
+  padding: 5px 10px 5px 25px;
+  border: solid 1px #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 12px;
+  color: #333;
+}
+
+.wrapper_input_mod > .wrapper_input_text > input {
   padding-left: 20px !important;
 }
 
@@ -68,26 +119,26 @@ body {
   justify-content: space-between;
 }
 
-.container_row_input > .wrapper_input {
+.container_row_input > .wrapper_input_mod {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.container_row_input > .wrapper_input > span {
+.container_row_input > .wrapper_input_mod > span {
   font-size: 11px;
 }
 
-.container_row_input > .wrapper_input > .wrapper_input_text {
+.container_row_input > .wrapper_input_mod > .wrapper_input_text {
   position: relative;
   width: 70%;
 }
 
-.container_row_input > .wrapper_input > .wrapper_input_text > .input_text {
+.container_row_input > .wrapper_input_mod > .wrapper_input_text > .input_text {
   width: 100%;
 }
 
-.container_row_input > .wrapper_input > .wrapper_input_text > .icon {
+.container_row_input > .wrapper_input_mod > .wrapper_input_text > .icon {
   position: absolute;
   top: 8px;
   left: 6px;
@@ -111,6 +162,40 @@ body {
   transform: translate(0, 3px);
 }
 
+.cont_body,
+.container_headers {
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 1em;
+}
+
+.wrapper_input_head {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.wrapper_input_head > input {
+  padding: 5px 10px;
+  border: solid 1px #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 12px;
+  color: #333;
+  width: fit-content;
+}
+
+.container_headers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.container_headers {
+  font-size: 18px;
+  cursor: pointer;
+  color: gray;
+}
+
 @media only screen and (min-width: 632px) {
   .container_modal {
     width: 1200px;
@@ -121,7 +206,7 @@ body {
     justify-content: space-between;
     gap: 2em;
   }
-  .wrapper_input > span {
+  .wrapper_input_mod > span {
     width: fit-content;
   }
 
@@ -129,7 +214,7 @@ body {
     flex-direction: row;
   }
 
-  .container_row_input > .wrapper_input {
+  .container_row_input > .wrapper_input_mod {
     width: 33%;
     display: flex;
   }

@@ -216,7 +216,7 @@
                                         />
                                     </div>
                                     <div class="wrapper_input">
-                                        <span>nombre:</span>
+                                        <span>Nombre:</span>
                                         <textbox  
                                             readonly="true" 
                                             placeholder="Nombre proveedor"
@@ -225,16 +225,17 @@
                                         />
                                         <div class="fa-solid fa-user icon"></div>
                                     </div>
-                                    <div class="wrapper_input">
-                                        <span>Dirección</span>
+                                    <div class="wrapper_input" style="flex:auto">
+                                        <span>Autorización:</span>
                                         <textbox  
-                                            readonly="true" 
-                                            placeholder="Tabacundo la Esperanza"
-                                            class="input" 
-                                            value="@bind(vm.proveedorSeleccionado.provDireccion)"  
+                                            readonly="false" 
+                                            maxlength="49"                                           
+                                            value="@bind(vm.cabeceraCompra.cabAutorizacion)" 
+                                            class="input"   
                                         />
-                                        <div class="fa-solid fa-location-dot icon"/>
+                                        <div class="fa-solid fa-user icon"></div>
                                     </div>
+                                    
 
                                 </div>
 
@@ -250,14 +251,14 @@
                                         <div class="fa-solid fa-phone icon"/>
                                     </div>
                                     <div class="wrapper_input">
-                                        <span>Autoriza:</span>
+                                        <span>Dirección</span>
                                         <textbox  
-                                            readonly="false" 
-                                            maxlength="49"                                           
-                                            value="@bind(vm.cabeceraCompra.cabAutorizacion)" 
-                                            class="input"   
+                                            readonly="true" 
+                                            placeholder="Tabacundo la Esperanza"
+                                            class="input" 
+                                            value="@bind(vm.proveedorSeleccionado.provDireccion)"  
                                         />
-                                        <div class="fa-solid fa-user icon"></div>
+                                        <div class="fa-solid fa-location-dot icon"/>
                                     </div>
 
 

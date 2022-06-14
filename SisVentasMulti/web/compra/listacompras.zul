@@ -17,7 +17,7 @@
             </tabs>
             <tabpanels >
                 
-                <tabpanel  height="98%" width="99%" class="factura"  >                    
+                <tabpanel  height="98%" width="99%" class="factura">                    
                    
                     <listbox model="@load(vm.listaCabeceraCompras)" 
                              nonselectableTags=""  mold="paging" pageSize="12"  >
@@ -106,11 +106,11 @@
                                             </button>
 
                                              <button 
-                                                class="fa-solid fa-floppy-disk btn_fact btn_access btn_one_element"
-                                                style="height:unset;"
+                                                class="fa-solid fa-file-excel btn_fact btn_access btn_one_element"
+                                                style="height:unset;width:fit-content !important;"
                                                 onClick="@command('exportListboxToExcel')"
                                             >
-                                                Descargar
+                                                Descargar Listado de Compras
                                             </button>
 
                                         </div>

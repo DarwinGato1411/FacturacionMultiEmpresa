@@ -102,15 +102,15 @@
                                             <div class="fa-solid fa-sack-dollar icon"></div>
                                         </div>
                                         <div class="wrapper_input">
-                                            <span>Subt/compra:</span>
+                                            <span>Total/venta:</span>
                                             <decimalbox  
                                                 format="###.##"  
-                                                value="@bind(vm.compraVenta.sumaSubtotalCompra)"
-                                                readonly="true"
+                                                value="@bind(vm.compraVenta.sumaTotalVenta)"                                             
+                                                readonly="true" 
                                                 onChange="self.setValue(self.getValue().toUpperCase().trim());" 
                                                 class="input" 
                                             />
-                                            <div class="fa-solid fa-comment-dollar icon"></div>
+                                            <div class="fa-solid fa-circle-dollar-to-slot icon"></div>
                                         </div>
                                         <div class="wrapper_input">
                                             <span>Dif/Subt:</span>
@@ -125,16 +125,17 @@
                                         </div>
                                     </div>
                                     <div class="wrapper_data">
+                                        
                                         <div class="wrapper_input">
-                                            <span>Total/venta:</span>
+                                            <span>Subt/compra:</span>
                                             <decimalbox  
                                                 format="###.##"  
-                                                value="@bind(vm.compraVenta.sumaTotalVenta)"                                             
-                                                readonly="true" 
+                                                value="@bind(vm.compraVenta.sumaSubtotalCompra)"
+                                                readonly="true"
                                                 onChange="self.setValue(self.getValue().toUpperCase().trim());" 
                                                 class="input" 
                                             />
-                                            <div class="fa-solid fa-circle-dollar-to-slot icon"></div>
+                                            <div class="fa-solid fa-comment-dollar icon"></div>
                                         </div>
                                         <div class="wrapper_input">
                                             <span>Total/compra:</span>

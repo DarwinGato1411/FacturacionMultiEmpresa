@@ -56,17 +56,8 @@ public class AdminstrarCompraVenta {
     private void findByBetweenFecha() {
         listaCompras = servicioCompra.findByBetweenFecha(inicio, fin, amb);
         listaVentas = servicioFactura.findBetweenFecha(inicio, fin,amb);
-//        for (Factura venta : listaVentas) {
-//            compraVenta
-//        }
-//        for (CabeceraCompra taCompra : listaCompras) {
-//            
-//        }
-
-        compraVenta = servicioGeneral.totalesCompraVenta(inicio, fin, amb);
 
         compraVenta = servicioGeneral.totalesCompraVenta(inicio, fin,amb);
-
     }
 
     @Command
@@ -75,28 +66,7 @@ public class AdminstrarCompraVenta {
         findByBetweenFecha();
     }
 
-    @Command
-    public void descargaATS() throws FileNotFoundException {
-        Boolean valida = Boolean.TRUE;
-//
-//        List<Totales> totalesesVenta = servicioFactura.totalVenta(inicio, fin);
-//        if (totalesesVenta.size() > 0) {
-//            valida = Boolean.TRUE;
-//        } else {
-//            valida = Boolean.FALSE;
-//        }
-//        if (valida) {
-//            GenerarATS generarATS = new GenerarATS();
-//            File f = new File(generarATS.generaXMLFactura(servicioAcumuladoVentas.findAcumuladoventas(inicio, fin),
-//                    totalesesVenta.get(0).getTotal(),
-//                    new ArrayList<CabeceraCompra>(),
-//                    inicio, fin));
-//            Filedownload.save(f, null);
-//            Clients.showNotification("ATS generado correctamente..", "info", null, "end_before", 2000, true);
-//        } else {
-//            Clients.showNotification("Verifique la informacion para generar el ATS", "error", null, "start_before", 2000, true);
-//        }
-    }
+
 
     public String getBuscar() {
         return buscar;

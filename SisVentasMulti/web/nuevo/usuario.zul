@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="../css/boostrap/bootstrap.css"?> 
 <?link rel="stylesheet" type="text/css" href="../css/style.css"?> 
-<window  id="windowIdUsuario"  position="center" class="col-12 col-sm-12 col-md-6 col-lg-4" closable="true"  
+<window  id="windowIdUsuario"  position="center" closable="true"  
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.AgregarUsuario')">
     
     <caption label="Registrar usuario" style="font-weight:bold"
     /> 
-    <div  class="container" >
+
+    <!-- <div  class="container" >
         <div  class="row" >         
              <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "   visible="@bind(!vm.readOnly)" >
                 <label    value="(*) " style="color:red;font-weight:bold"  ></label>Tipo de usaurio:
@@ -74,6 +75,98 @@
             </div> 
         </div>
    
+    </div> -->
+
+       <div class="container_modal">
+
+        <div class="body">
+            <div class="container_row_input">
+                <div class="wrapper_input_mod">
+                    <span>Tipo Usuario: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-address-card icon"></div>
+                        <combobox 
+                            class="input_select" 
+                            readonly="@bind(vm.readOnly)"
+                            buttonVisible="@bind(!vm.readOnly)" 
+                            selectedItem="@bind(vm.tipoUSuario)"
+                        >
+                            <comboitem label="ADMINISTRADOR" value="1" />
+                            <comboitem label="VENTAS" value="2" />
+                        </combobox>    
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Ruc: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-address-card icon"></div>
+                       <textbox  
+                            maxlength="20"      
+                            readonly="@bind(vm.readOnly)"                    
+                            value="@bind(vm.usuarioSistema.usuRuc)" 
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Correo: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-envelope icon"></div>
+                        <textbox  
+                            maxlength="100"                          
+                            value="@bind(vm.usuarioSistema.usuCorreo)" 
+                            class="input_text"
+                        />
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="container_row_input">
+                
+                <div class="wrapper_input_mod">
+                    <span>Responsable: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-clipboard-user icon"></div>
+                        <textbox  
+                            maxlength="100" 
+                            onChange="self.setValue(self.getValue().toUpperCase())"
+                            value="@bind(vm.usuarioSistema.usuNombre)" 
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Usuario: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-city icon"></div>
+                        <textbox  
+                            maxlength="100"
+                            value="@bind(vm.usuarioSistema.usuLogin)"                           
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Contraseña: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-city icon"></div>
+                        <textbox 
+                            maxlength="10"  
+                            value="@bind(vm.usuarioSistema.usuPassword)"
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div style="display:flex;justify-content:flex-end;">
+            <button class="btn_modal" style="width:300px" onClick="@command('guardar')">
+                Guardar
+            </button>
+        </div>
     </div>
     
                     
