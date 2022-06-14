@@ -1,3 +1,5 @@
+   <?link rel="stylesheet" type="text/css" href="/css/app/menu.css"?>
+
    <zk>
 
     <div class="banner" id="loginWin"  style="height:auto"  width="100%"
@@ -43,89 +45,76 @@
                 
          <div class="col-6 col-sm-6 col-md-11 col-lg-11  " align="start" >
 
-                    <menubar id="menubar" orient="horizontal"  autodrop="true">
-                        <menu label="Ventas" >
-                            <menupopup> 
-                                <menuitem label="Emitir Facturas" id="btnFacturar"  />
-                                <!--<menuitem label="Orden de trabajo" id="btnOrdenTrab"  />-->
-                                 <menuitem label="Facturas por cobrar" id="btnfactCobra"  />
-                                <!--<menuitem label="Cierre de caja" id="btnCierreCajaUsu"  />-->
-                            </menupopup>
-                        </menu>
-                        <menu label="Gestion de ventas"  id="menuVentas">
-                            <menupopup>                               
-                                <menuitem label="Facturas emitidas" id="btnNotaVentas" />
-                                <!--<menuitem label="Nota de venta" id="btnNotaVenta"  />-->                                
-                                <menuitem label="Proformas emitidas" id="btnProformasEmitidas"  />
-                                <!--<menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />-->
-                                <!--<menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />-->
-                                <menuitem label="Notas credito" id="btnNotaCredito"  />
-                                <!--<menuitem label="Lista ordenes de trabajo" id="btnListaOrden"  />-->
-                                <!--<menuitem label="Venta en ruta (GLP)" id="btnVentaRuta" />-->
-                             
-
-                            </menupopup>
-                        </menu> 
+            <menubar id="menubar" orient="horizontal"  autodrop="true" class="wrapper_menu">
+                <menu label="Ventas"  class="menu_child">
+                    <menupopup class="submenu"> 
+                        <menuitem label="Emitir Facturas" id="btnFacturar" class="fa-solid fa-receipt menu_item" />
+                        <menuitem label="Facturas por cobrar" id="btnfactCobra" class="fa-solid fa-dollar-sign menu_item" />
+                    </menupopup>
+                </menu>
+                <menu label="Gestion de ventas"  id="menuVentas" class="menu_child">
+                    <menupopup class="submenu">                               
+                        <menuitem label="Facturas emitidas" id="btnNotaVentas" class="fa-solid fa-paper-plane menu_item"/>                             
+                        <menuitem label="Proformas emitidas" id="btnProformasEmitidas" class="fa-solid fa-newspaper menu_item" />
+                        <menuitem label="Notas credito" id="btnNotaCredito" class="fa-solid fa-clipboard menu_item" />
                         
-                        <menu label="Gestion de guias"  id="menuGuias">
-                            <menupopup>                               
+
+                    </menupopup>
+                </menu> 
+                
+                <menu label="Gestion de guias"  id="menuGuias" class="menu_child">
+                    <menupopup class="submenu">                        
+                        <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision" class="fa-solid fa-paper-plane menu_item" />
+                        <menuitem label="Guias de remision emitidas" id="btnGuiaRemision" class="fa-solid fa-ticket menu_item" />
+                        
+                    </menupopup>
+                </menu> 
+                <menu label="Gestion de compras" id="menuCompras" class="menu_child">
+                    <menupopup class="submenu">                     
+                
+                        <menuitem label="Ingreso de mercaderia" id="btnIngresoCompras" class="fa-solid fa-paper-plane menu_item" />                                
+                        <menuitem label="Mercaderia ingresada" id="btnListaCompras" class="fa-solid fa-list menu_item" />                                                          
+                        <menuitem label="Retenciones" id="btnRetenciones" class="fa-solid fa-list menu_item" />
+                        
+                    </menupopup>
+                </menu>          
                                 
-                                <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision"  />
-                                <menuitem label="Guias de remision emitidas" id="btnGuiaRemision"  />
-                                
-                            </menupopup>
-                        </menu> 
-                        <menu label="Gestion de compras" id="menuCompras">
-                            <menupopup>                     
-                      
-                                <menuitem label="Ingreso de mercaderia" id="btnIngresoCompras"  />                                
-                                <menuitem label="Mercaderia ingresada" id="btnListaCompras"  />                                                          
-                                <menuitem label="Retenciones" id="btnRetenciones"  />
-                              
-                                <!--<menuitem label="ComprasSRI" id="btnListaComprasSRI"  />-->     
-                            </menupopup>
-                        </menu>          
-                                     
-                        <menu label="Kardex" id="menuKardex">
-                            <menupopup>  
-                                <menuitem label="Ajuste de Entrada/Salida" id="btnAjuste"  />                                                                       
-                                <menuitem label="Kardex detallado" id="btnKardex"  /> 
-                                 <menuitem label="Kardex general" id="btnKardexPorProd"  />                                               
-                                                                         
-<!--                                <menuitem label="Contabilidad" id="btnContabilidad" image="/iconmenu/page_refresh.png" />-->
-                               
-                            </menupopup>
-                        </menu>
-                         <menu label="Reportes" id="menuReportes">
-                            <menupopup>                                                                         
-                                <menuitem label="Facturas autorizadas SRI" id="btnFactAutori"  />                              
-                                <menuitem label="Compras vs Ventas" id="btnBalanceUtilidad"  />
-                                <!--<menuitem label="Cantidad de venta (GLP)" id="btnRepVentCant" />-->
-                                <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" />
-                                <menuitem label="Rotacion Productos" id="btnRotacionProducto" />
-                                <!--<menuitem label="Lista de cierre de caja" id="btnListarCierre" />--> 
+                <menu label="Kardex" id="menuKardex" class="menu_child">
+                    <menupopup class="submenu">  
+                        <menuitem label="Ajuste de Entrada/Salida" id="btnAjuste" class="fa-solid fa-gear menu_item" />                                                                       
+                        <menuitem label="Kardex detallado" id="btnKardex"  class="fa-solid fa-list menu_item" /> 
+                        <menuitem label="Kardex general" id="btnKardexPorProd"  class="fa-solid fa-list-check menu_item" /> 
+                    </menupopup>
+                </menu>
+                    <menu label="Reportes" id="menuReportes" class="menu_child">
+                    <menupopup class="submenu">                                                                         
+                        <menuitem label="Facturas autorizadas SRI" id="btnFactAutori" class="fa-solid fa-gear menu_item" />                              
+                        <menuitem label="Compras vs Ventas" id="btnBalanceUtilidad" class="fa-solid fa-gear menu_item" />
+                        <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" class="fa-solid fa-gear menu_item"/>
+                        <menuitem label="Rotacion Productos" id="btnRotacionProducto" class="fa-solid fa-gear menu_item"/>
+                    </menupopup>
+                </menu>
+                <menuitem label="H. Declaraciones" id="btnHisDeclaraciones" class="menu_child" />
+                <menuitem label="Catalogos" id="btnAdministarVenta" class="menu_child" />
+            </menubar> 
 
-                                <!--<menuitem label="ATS Ventas" id="btnContabilidad"  />--> 
-                                <!--<menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  />--> 
-                                <!--<menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />-->
-                                <!--<menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
+            <!-- <div class="menu_nav">
+                <div class="menu_ul">
+                    <div class="menu_li"><span>One</span></div>
+                    <div class="menu_li"><span>Two</span>
+                    <div class="dropdown menu_ul">
+                        <div class="menu_li"><span>Sub-1</span></div>
+                        <div class="menu_li"><span>Sub-2</span></div>
+                        <div class="menu_li"><span>Sub-3</span></div>
+                    </div>
+                    </div>
+                    <div class="menu_li"><span>Three</span></div>
+                </div>
+            </div> -->
 
-<!--                                <menuitem label="ATS Ventas" id="btnContabilidad"  /> 
-                                <menuitem label="ATS Compras y Ventas" id="btnContabilidadATS"  /> 
-                                <menuitem label="Retenciones por casillero" id="btnRetencionesCasillero"  />
-                                <menuitem label="Precio promedio compra" id="btnPreciPromCompra"  />-->
 
-                                <!--<menuitem label="Precio promedio venta" id="btnPreciPromVenta"  />-->
-                            </menupopup>
-                        </menu>
-                        <menuitem label="H. Declaraciones" id="btnHisDeclaraciones"  />
-                        <menuitem label="Catalogos" id="btnAdministarVenta"  />
-                          
-<!--                        <menuitem image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />
-                        <menuitem image="/iconos/page.png" label="Producto" onClick="@command('nuevoProducto')" />
-                        <menuitem image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />-->
-                      
-                    </menubar>
+
+
                     
                      </div>
                      <div apply="org.zkoss.bind.BindComposer" 
