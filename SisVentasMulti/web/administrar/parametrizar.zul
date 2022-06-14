@@ -272,7 +272,7 @@
                                     value="@bind(vm.parametrizar.parContactoEmpresa)" 
                                     onChange="self.setValue(self.getValue().toUpperCase().trim());" 
                                     placeholder="Razon Social"
-                                    class="form-control"
+                                    class="input_text"
                                     tooltiptext="Razon Social" 
                                 />
                             </div>
@@ -291,7 +291,7 @@
                             />
                         </div>
                         <div class="wrapper_input_mod">
-                            <span>Utilidad al por mayor: </span>
+                            <span>Utilidad 2: </span>
                             <div class="wrapper_input_text">
                                 <div class="fa-solid fa-clipboard-user icon"></div>
                                 <decimalbox  
@@ -334,33 +334,17 @@
                             />
                         </div>
                         <div class="wrapper_input_mod">
-                            <span>Num. Registros Fact: </span>
+                            <span>Num. Reg. Fact: </span>
                             <decimalbox  format="#####" 
                                  value="@bind(vm.parametrizar.parNumRegistrosFactura)" 
                                  placeholder="Direccion Matriz"
                                  class="input_text"
                                  tooltiptext="Direccion matriz" />
                         </div>
-                        <div class="wrapper_input_mod">
-                            <span>Lleva kardex: </span>
-                            <div class="wrapper_input_text">
-                                <radiogroup 
-                                    class="radio_group" 
-                                    selectedItem="@bind(vm.tieneKardex)" 
-                                >
-                                <space bar="false"  />
-                                <radio label="SI" value="SI"/>
-                                <space bar="false"  />   
-                                <radio label="NO" value="NO"/>
-                                <space bar="false"  /> 
-                            </radiogroup>   
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="container_row_input">
                         <div class="wrapper_input_mod" style="width:200px">
-                            <span>Credito Clientes: </span>
+                            <div style="width:120px">
+                                <span>Credito Clientes: </span>
+                            </div>
                             <radiogroup 
                                 class="radio_group" 
                                 selectedItem="@bind(vm.creditoClientes)" 
@@ -372,22 +356,21 @@
                                 <space bar="false"  /> 
                             </radiogroup> 
                         </div>
-                        <div class="wrapper_input_mod" style="width:500px">
-                            <span>Impresión: </span>
-                            <div class="wrapper_input_text" >
-                                <radiogroup 
-                                    class="radio_group" 
-                                    selectedItem="@bind(vm.parametrizar.parImprimeFactura)" 
-                                >
-                                    <space bar="false"  />
-                                    <radio label="Factura Electrónica" value="factura.jasper"/>
-                                    <space bar="false"  />   
-                                    <radio label="Punto Venta" value="puntoventa.jasper"/>
-                                    <space bar="false"  /> 
-                                    <radio label="Personalizado" value="facturaa5.jasper"/>
-                                    <space bar="false"  /> 
-                                </radiogroup> 
+                        
+
+                    </div>
+                    <div class="container_row_input">
+                        
+                        <div class="wrapper_input_mod">
+                            <div style="width:140px">
+                                <span>Correo defecto: </span>
                             </div>
+                            <textbox  
+                                value="@bind(vm.parametrizar.parCorreoDefecto)"                              
+                                placeholder="Correo....."
+                                class="input_text"
+                                tooltiptext="Correo para mostrar al crear un cliente" 
+                            />
                         </div>
                         <div class="wrapper_input_mod">
                             <span>Ciudad defecto </span>
@@ -402,23 +385,32 @@
                                 />
                             </div>
                         </div>
+                        <div class="wrapper_input_mod" style="width:200px">
+                            <div style="width:170px">
+                                <span>Lleva kardex: </span>
+                            </div>
+                            <div class="wrapper_input_text">
+                                <radiogroup 
+                                    class="radio_group" 
+                                    selectedItem="@bind(vm.tieneKardex)" 
+                                >
+                                <space bar="false"  />
+                                <radio label="SI" value="SI"/>
+                                <space bar="false"  />   
+                                <radio label="NO" value="NO"/>
+                                <space bar="false"  /> 
+                            </radiogroup>   
+                            </div>
+                        </div>
+                        
+                        
+                        
                     </div>
                 </div>
 
                  <div class="body">
                     <div class="container_row_input">
-                        <div class="wrapper_input_mod">
-                            <div style="width:140px">
-                                <span>Correo defecto: </span>
-                            </div>
-                            <textbox  
-                                value="@bind(vm.parametrizar.parCorreoDefecto)"                              
-                                placeholder="Correo....."
-                                class="input_text"
-                                tooltiptext="Correo para mostrar al crear un cliente" 
-                            />
-                        </div>
-                        <div class="wrapper_input_mod">
+                        <div class="wrapper_input_mod" style="display:flex; justify-content:flex-start; gap:25px; align-items:center">
                             <span>Mostrar Comprobante: </span>
                             <radiogroup 
                                 class="radio_group" 
@@ -430,7 +422,24 @@
                                 <space bar="false"  /> 
                             </radiogroup>
                         </div>
-                        <div class="wrapper_input_mod">
+
+                        <div class="wrapper_input_mod" style="display:flex; justify-content:flex-start; gap:25px; align-items:center">
+                            <span>Nuevo Reg. con lector: </span>
+                            <div class="wrapper_input_text">
+                                 <radiogroup 
+                                    class="radio_group" 
+                                    selectedItem="@bind(vm.parPistolaNuevo)" 
+                                >
+                                    <space bar="false"  />
+                                    <radio label="SI" value="SI"/>
+                                    <space bar="false"  />   
+                                    <radio label="NO" value="NO"/>
+                                    <space bar="false"  /> 
+                                </radiogroup>
+                            </div>
+                        </div>
+
+                        <div class="wrapper_input_mod" style="display:flex; justify-content:flex-start; gap:25px; align-items:center">
                             <span>Impresión automática: </span>
                             <div class="wrapper_input_text">
                                 <radiogroup 
@@ -447,6 +456,10 @@
                         </div>
 
                     </div>
+                    
+                </div>
+
+                <div class="body">
                     <div class="container_row_input">
                         <div class="wrapper_input_mod">
                             <span>Impresora: </span>
@@ -457,19 +470,22 @@
                                 tooltiptext="Nombre de la impresora" 
                             />
                         </div>
-                        <div class="wrapper_input_mod">
-                            <span>Nuevo Registro con lector: </span>
-                            <div class="wrapper_input_text">
-                                 <radiogroup 
+
+                         <div class="wrapper_input_mod" style="width:500px">
+                            <span>Impresión: </span>
+                            <div class="wrapper_input_text" >
+                                <radiogroup 
                                     class="radio_group" 
-                                    selectedItem="@bind(vm.parPistolaNuevo)" 
+                                    selectedItem="@bind(vm.parametrizar.parImprimeFactura)" 
                                 >
                                     <space bar="false"  />
-                                    <radio label="SI" value="SI"/>
+                                    <radio label="Factura Electrónica" value="factura.jasper"/>
                                     <space bar="false"  />   
-                                    <radio label="NO" value="NO"/>
+                                    <radio label="Punto Venta" value="puntoventa.jasper"/>
                                     <space bar="false"  /> 
-                                </radiogroup>
+                                    <radio label="Personalizado" value="facturaa5.jasper"/>
+                                    <space bar="false"  /> 
+                                </radiogroup> 
                             </div>
                         </div>
                     </div>
