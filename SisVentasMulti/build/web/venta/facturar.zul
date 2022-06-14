@@ -157,7 +157,6 @@
                         </div> -->
                         
                         
-                    
                     <div class="factura_header">
                         <div class="fact_row">
                             <div class="wrapper_data">
@@ -180,7 +179,7 @@
                                         tooltiptext="Buscar"
                                     />
 
-                                    
+                                     
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Tipo:</span>
@@ -333,15 +332,13 @@
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Cambio:</span>
-                                    <decimalbox  
+                                     <decimalbox  
                                         format="###.##"   
                                         readonly="true" 
                                         class="input"
                                         value="@bind(vm.cambio)" 
                                     />
                                 </div>
-
-
 
                             </div>
                             <div class="fact_row wrapper_buttons">
@@ -356,7 +353,7 @@
                                     Cargar notas
                                 </button> -->
                                 
-                            
+                              
                                 <button 
                                     autodisable="self"   
                                     class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
@@ -365,17 +362,6 @@
                                     label="Facturar"
                                     style="font-size:18px; height:46px"
                                 />
-
-                                <div class="wrapper_input wrapper_total" style="flex-direction:row; justify-content:space-between;">
-                                    <span>Total:</span>
-                                    <decimalbox  
-                                        value="@bind(vm.valorTotalCotizacion)"
-                                        format="###.##" 
-                                        readonly="true"  
-                                        onChange="self.setValue(self.getValue().toUpperCase().trim());" 
-                                        class="input_total" 
-                                    />
-                                </div>
 
                                 <!-- <div class="wrapper_input" style="display: flex; gap:10px; align-items:center">
                                     <span style="text_total">Total:</span>
@@ -392,6 +378,10 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
 
                     <div class="factura_body factura_body_content">
                     
