@@ -1,5 +1,9 @@
+
 <?link rel="stylesheet" type="text/css" href="/css/app/base.css"?>   
 <?link rel="stylesheet" type="text/css" href="/css/app/landing/signin.css"?>
+
+<?link rel="stylesheet" type="text/css" href="/css/app/menu.css"?>
+
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <zk>
     <borderlayout  >
@@ -15,16 +19,6 @@
             
         </center>
         <south autoscroll="true" self="@{insert(footer)}">
-<!--            <div apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')">
-                <toolbar id="tb" height="30px"  align="end" style="background-color:#d6eefd;" >
-                    <toolbarbutton image="/iconos/fact.png" label="Facturar" onClick="@command('facturar')" />
-                    <toolbarbutton image="/iconos/page.png" label="Producto" onClick="@command('nuevoProducto')" />
-                    <toolbarbutton image="/iconos/user.png" label="Cliente" onClick="@command('nuevoCliente')" />
-         
-          
-                </toolbar>
-            </div>-->
         </south>
     </borderlayout>
 </zk>

@@ -298,17 +298,7 @@
                                         <div class="fa-solid fa-calendar icon"/>
                                     </div>
 
-                                    <div class="wrapper_input">
-                                        <span>IVA</span>
-                                        <decimalbox  
-                                            format="###.##"  
-                                            value="@bind(vm.ivaFactura)"
-                                            readonly="true" 
-                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
-                                            class="input" 
-                                        />
-                                        <div class="fa-solid fa-sack-dollar icon"></div>
-                                    </div>
+                                    
                                 </div>
                                 <div class="wrapper_data">
 
@@ -337,6 +327,18 @@
                                     </div>
 
                                     <div class="wrapper_input">
+                                        <span>IVA</span>
+                                        <decimalbox  
+                                            format="###.##"  
+                                            value="@bind(vm.ivaFactura)"
+                                            readonly="true" 
+                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                            class="input" 
+                                        />
+                                        <div class="fa-solid fa-sack-dollar icon"></div>
+                                    </div>
+
+                                    <!-- <div class="wrapper_input">
                                         <span>Total</span>
                                         <decimalbox  
                                             format="###.##"  
@@ -346,7 +348,7 @@
                                             class="input" 
                                         />
                                         <div class="fa-solid fa-dollar-sign icon"></div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="fact_row wrapper_buttons">
                                     <button               
@@ -356,6 +358,18 @@
                                         onClick="@command('Guardar')"
                                         tooltiptext="Guardar mercaderia"
                                     />
+
+                                    <div class="wrapper_input wrapper_total" style="flex-direction:row">
+                                    
+                                        <decimalbox  
+                                            format="###.##"  
+                                            value="@bind(vm.valorTotalFactura)"
+                                            readonly="true" 
+                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                            class="input" 
+                                            style="width:120px"
+                                        />
+                                    </div> 
                                 </div>
                             </div>
                         </div>

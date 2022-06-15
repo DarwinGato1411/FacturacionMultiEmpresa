@@ -251,11 +251,11 @@ body {
 
 .wrapper_total > input {
   text-align: center;
-  border: none;
-  outline: none;
+  border: none !important;
+  outline: none !important;
   background-color: transparent;
-  font-size: 35px;
-  color: #77dd77;
+  font-size: 35px !important;
+  color: #77dd77 !important;
 }
 
 .wrapper_total {
@@ -263,6 +263,109 @@ body {
   flex-direction: column !important;
   justify-content: center;
   align-items: center;
+}
+
+.menu_nav {
+  font-family: monospace;
+}
+
+.menu_ul {
+  background: darkorange;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.menu_li {
+  color: #fff;
+  background: darkorange;
+  display: block;
+  float: left;
+  padding: 1rem;
+  position: relative;
+  text-decoration: none;
+  transition-duration: 0.5s;
+  z-index: 2000 !important;
+}
+
+.menu_li span {
+  color: #fff;
+}
+
+.menu_li:hover,
+.menu_li:focus-within {
+  background: red;
+  cursor: pointer;
+}
+
+.menu_li:focus-within span {
+  outline: none;
+}
+
+.menu_ul .menu_li .menu_ul {
+  background: orange;
+  visibility: hidden;
+  opacity: 0;
+  min-width: 5rem;
+  position: absolute;
+  z-index: 2000 !important;
+  transition: all 0.5s ease;
+  margin-top: 1rem;
+  left: 0;
+  display: none;
+  border: solid red 1px;
+}
+
+.menu_ul .menu_li:hover > .menu_ul,
+.menu_ul .menu_li:focus-within > .menu_ul,
+.menu_ul .menu_li .menu_ul:hover,
+.menu_ul .menu_li .menu_ul:focus {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+}
+
+.menu_ul .menu_li .menu_ul .menu_li {
+  clear: both;
+  width: 100%;
+}
+
+.wrapper_menu {
+  margin-bottom: 1em;
+}
+
+.submenu {
+  border-radius: 10px;
+}
+.submenu * {
+  background-color: #eee !important;
+}
+
+.menu_item {
+  padding: 0.5em !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  position: relative;
+}
+
+.menu_item::before {
+  content: "";
+  font-family: "Font Awesome 6 Free" !important;
+  margin-right: 0.5em;
+  font-size: 16px;
+  position: absolute;
+  color: gray;
+}
+
+.menu_child {
+  padding: 0 1em !important;
+  position: relative;
+}
+
+.menu_child:hover > * {
+  border: none !important;
+  outline: none !important;
+  background-color: transparent !important;
 }
 
 @media only screen and (min-width: 1070px) {

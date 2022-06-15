@@ -3,7 +3,7 @@
          apply="org.zkoss.bind.BindComposer"
          viewModel="@id('vm') @init('com.ec.controlador.paneles.InfoFactura')">
     
-    <caption label="Informacion de la factura asdfsdf" style="font-weight:bold"/> 
+    <caption label="Informacion de la factura" style="font-weight:bold"/> 
     
     <div  class="container-fluid" >
         <!--<div  class="row" >

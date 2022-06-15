@@ -196,6 +196,16 @@ body {
   color: gray;
 }
 
+.wrapper_checkbox {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.wrapper_checkbox > span > input {
+  margin-right: 0.5em;
+}
+
 @media only screen and (min-width: 632px) {
   .container_modal {
     width: 1200px;

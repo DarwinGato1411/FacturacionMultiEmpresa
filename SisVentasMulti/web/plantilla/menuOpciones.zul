@@ -1,12 +1,10 @@
 <?init class="com.ec.seguridad.Autentificador"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/menu.css"?>
 <zk>
 
-
-
-    
-<!--    <div  viewModel="@id('vm')" id="gridMenu" apply="com.ec.controlador.MenuOpciones" >
+    <div  viewModel="@id('vm')" id="gridMenu" apply="com.ec.controlador.MenuOpciones" >
         
         <menubar id="menubar" orient="vertical"  autodrop="true">
             <menuitem label="Emitir Facturas" id="btnFacturar" image="/iconmenu/cart_add.png" />
@@ -22,6 +20,6 @@
             <menuitem label="Catalogos" id="btnAdministarVenta" image="/iconmenu/cog.png" />
 
         </menubar>
-    </div>-->
+    </div>
                 
 </zk>

@@ -62,6 +62,7 @@
                                                     ctrlKeys="^A" onCtrlKey="@command('buscarClienteEnLista')" 
                                                     placeholder="Motivo del ajuste..."                                                                                                  
                                                     maxlength="150"  
+                                                    value="@bind(vm.motivoAjuste)"
                                                />
                                             </div>
                                         </div>
