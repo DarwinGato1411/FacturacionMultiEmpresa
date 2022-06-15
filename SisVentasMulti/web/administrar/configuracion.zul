@@ -548,7 +548,11 @@
                 
             </div>
 
-            
+            <div style="display:flex;justify-content:flex-end;">
+                <button class="btn_modal" style="width:300px" onClick="@command('guardar')" tooltiptext="Guardar informacion">
+                    Guardar
+                </button>
+            </div>
         
         </div>
 
