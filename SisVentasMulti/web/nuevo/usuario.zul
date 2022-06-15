@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="../css/boostrap/bootstrap.css"?> 
-<?link rel="stylesheet" type="text/css" href="../css/style.css"?> 
 <window  id="windowIdUsuario"  position="center" closable="true"  
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.AgregarUsuario')">
@@ -77,7 +75,7 @@
    
     </div> -->
 
-       <div class="container_modal">
+    <div class="container_modal">
 
         <div class="body">
             <div class="container_row_input">
@@ -85,15 +83,19 @@
                     <span>Tipo Usuario: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-address-card icon"></div>
-                        <combobox 
-                            class="input_select" 
-                            readonly="@bind(vm.readOnly)"
+                         <combobox 
+                            readonly="true"
                             buttonVisible="@bind(!vm.readOnly)" 
                             selectedItem="@bind(vm.tipoUSuario)"
+                            class="input_select"
                         >
                             <comboitem label="ADMINISTRADOR" value="1" />
                             <comboitem label="VENTAS" value="2" />
-                        </combobox>    
+                        </combobox>  
+                        <div 
+                            class="fa-solid fa-chevron-down"
+                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                        />
                     </div>
                 </div>
                 <div class="wrapper_input_mod">

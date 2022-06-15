@@ -478,6 +478,39 @@
                             />
                         </div>
                     </div>
+                    <div class="wrapper_input_mod" style="flex:auto;">
+                        <span style="margin:0 0.5em;">Dir. Matriz </span>
+                        <div class="wrapper_input_text" style="width:86%;">
+                            <div class="fa-solid fa-location-dot icon"></div>
+                            <textbox 
+                                value="@bind(vm.tipoambiente.amDireccionMatriz)" 
+                                placeholder="Direccion Matriz"
+                                class="input_text"
+                                style="width:100%;"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container_row_input">
+                    <div class="wrapper_input_mod">
+                        <span></span>
+                        <div class="wrapper_input_text">
+                        </div>
+                    </div>
+                    <div class="wrapper_input_mod" style="flex:auto;">
+                        <span style="margin:0 0.5em;">Dir. Establecimiento </span>
+                        <div class="wrapper_input_text" style="width:86%;">
+                            <div class="fa-solid fa-location-dot icon"></div>
+                            <textbox 
+                                value="@bind(vm.tipoambiente.amDireccionSucursal)" 
+                                placeholder="Direccion establecimiento sucursal"
+                                class="input_text"
+                                style="width:100%;"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -538,18 +571,7 @@
                             />
                         </div>
                     </div>
-                    <div class="wrapper_input_mod" style="flex:auto;">
-                        <span style="margin:0 0.5em;">Dir. Matriz </span>
-                        <div class="wrapper_input_text" style="width:86%;">
-                            <div class="fa-solid fa-location-dot icon"></div>
-                            <textbox 
-                                value="@bind(vm.tipoambiente.amDireccionMatriz)" 
-                                placeholder="Direccion Matriz"
-                                class="input_text"
-                                style="width:100%;"
-                            />
-                        </div>
-                    </div>
+                    
 
                 </div>
 
@@ -567,18 +589,7 @@
                             />
                         </div>
                     </div>
-                    <div class="wrapper_input_mod" style="flex:auto;">
-                        <span style="margin:0 0.5em;">Dir. Establecimiento </span>
-                        <div class="wrapper_input_text" style="width:86%;">
-                            <div class="fa-solid fa-location-dot icon"></div>
-                            <textbox 
-                                value="@bind(vm.tipoambiente.amDireccionSucursal)" 
-                                placeholder="Direccion establecimiento sucursal"
-                                class="input_text"
-                                style="width:100%;"
-                            />
-                        </div>
-                    </div>
+                    
 
                 </div>
 

@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="banner">
-                    <image src="https://deckxel.com/resource/img/banner.svg" class="banner_img"/>
+                    <image src="./imagenes/defact.png" class="banner_img"/>
                 </div>
             </div>
 
