@@ -485,7 +485,7 @@
                                                 class="fa-solid fa-chevron-right"
                                                 style="font-size:16px; padding:0.5em; cursor:pointer;font-weight: bold"
                                                 onClick="@command('agregarItemLista',valor=each.idProducto)"
-                                                tooltiptext="Asigar producto"
+                                                tooltiptext="Asignar producto"
                                             />
                                             <!-- <image  src="/iconos/Forward.png" 
                                                     onClick="@command('agregarItemLista',valor=each.idProducto)" 

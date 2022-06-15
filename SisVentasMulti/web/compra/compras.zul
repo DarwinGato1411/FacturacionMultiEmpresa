@@ -198,70 +198,75 @@
 
 
                         <div class="factura_header">
-                            <div class="fact_row">
-                                <div class="wrapper_data">
-                                    <div class="wrapper_input">
-                                        <span>Proveedor:</span>
-                                        <textbox   
-                                            class="form-control form-control-sm "  
-                                            placeholder="Cedula"
-                                            readonly="false" 
-                                            onDoubleClick="@command('buscarProveedorEnLista')" 
-                                            value="@bind(vm.proveedorSeleccionado.provCedula)" 
-                                            maxlength="13" 
-                                        />
-                                        <div 
-                                            class="fa-solid fa-magnifying-glass icon"
-                                            onClick="@command('buscarProveedorEnLista')"
-                                        />
+                            <div class="fact_row_custom">
+                                <div class="container_data">
+                                    <div class="wrapper_data wrapper_data_custom" style="position:relative">
+                                        <div class="wrapper_input">
+                                            <span>Proveedor:</span>
+                                            <textbox   
+                                                class="form-control form-control-sm "  
+                                                placeholder="Cedula"
+                                                readonly="false" 
+                                                onDoubleClick="@command('buscarProveedorEnLista')" 
+                                                value="@bind(vm.proveedorSeleccionado.provCedula)" 
+                                                maxlength="13" 
+                                            />
+                                            <div 
+                                                class="fa-solid fa-magnifying-glass icon"
+                                                onClick="@command('buscarProveedorEnLista')"
+                                            />
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Nombre:</span>
+                                            <textbox  
+                                                readonly="true" 
+                                                placeholder="Nombre proveedor"
+                                                class="input" 
+                                                value="@bind(vm.proveedorSeleccionado.provNombre)"  
+                                            />
+                                            <div class="fa-solid fa-user icon"></div>
+                                        </div>
                                     </div>
-                                    <div class="wrapper_input">
-                                        <span>Nombre:</span>
-                                        <textbox  
-                                            readonly="true" 
-                                            placeholder="Nombre proveedor"
-                                            class="input" 
-                                            value="@bind(vm.proveedorSeleccionado.provNombre)"  
-                                        />
-                                        <div class="fa-solid fa-user icon"></div>
-                                    </div>
-                                    <div class="wrapper_input" style="flex:auto">
-                                        <span>Autorización:</span>
-                                        <textbox  
-                                            readonly="false" 
-                                            maxlength="49"                                           
-                                            value="@bind(vm.cabeceraCompra.cabAutorizacion)" 
-                                            class="input"   
-                                        />
-                                        <div class="fa-solid fa-user icon"></div>
-                                    </div>
-                                    
 
+                                    <div class="wrapper_data">
+                                        <div class="wrapper_input">
+                                            <span>Teléfono:</span>
+                                            <textbox  
+                                                readonly="true" 
+                                                placeholder="022222222"
+                                                class="input" 
+                                                value="@bind(vm.proveedorSeleccionado.provTelefono)"  
+                                            />
+                                            <div class="fa-solid fa-phone icon"/>
+                                        </div>
+                                        <div class="wrapper_input">
+                                            <span>Dirección</span>
+                                            <textbox  
+                                                readonly="true" 
+                                                placeholder="Tabacundo la Esperanza"
+                                                class="input" 
+                                                value="@bind(vm.proveedorSeleccionado.provDireccion)"  
+                                            />
+                                            <div class="fa-solid fa-location-dot icon"/>
+                                        </div>
+
+
+                                    </div>
                                 </div>
 
-                                <div class="wrapper_data">
-                                    <div class="wrapper_input">
-                                        <span>Teléfono:</span>
-                                        <textbox  
-                                            readonly="true" 
-                                            placeholder="022222222"
-                                            class="input" 
-                                            value="@bind(vm.proveedorSeleccionado.provTelefono)"  
-                                        />
-                                        <div class="fa-solid fa-phone icon"/>
+                                <div class="container_data">
+                                    <div class="wrapper_data" >
+                                        <div class="wrapper_input">
+                                            <span>Autorización:</span>
+                                            <textbox  
+                                                readonly="false" 
+                                                maxlength="49"                                           
+                                                value="@bind(vm.cabeceraCompra.cabAutorizacion)" 
+                                                class="input"   
+                                            />
+                                            <div class="fa-solid fa-user icon"></div>
+                                        </div>
                                     </div>
-                                    <div class="wrapper_input">
-                                        <span>Dirección</span>
-                                        <textbox  
-                                            readonly="true" 
-                                            placeholder="Tabacundo la Esperanza"
-                                            class="input" 
-                                            value="@bind(vm.proveedorSeleccionado.provDireccion)"  
-                                        />
-                                        <div class="fa-solid fa-location-dot icon"/>
-                                    </div>
-
-
                                 </div>
                             </div>
                             <div class="fact_row">
@@ -281,7 +286,7 @@
                                             maxlength="9"   
                                             onChange="self.setValue(self.getValue().toUpperCase());"
                                             placeholder="000000009"
-                                            style="min-width:35%"
+                                            style="min-width:29%"
                                             value="@bind(vm.numeroFactura)"  
                                         />
                                     </div>
@@ -445,9 +450,15 @@
                                                 </listcell>
                 
                                                 <listcell zclass = "mycss-listcell">   
-                                                    <image  src="/iconos/Forward.png" 
+                                                    <!--<image  src="/iconos/Forward.png" 
                                                             onClick="@command('agregarItemLista',valor=each.idProducto)" 
-                                                            tooltiptext="Asigar producto"/> 
+                                                            tooltiptext="Asigar producto"/> -->
+                                                    <div 
+                                                        class="fa-solid fa-chevron-right"
+                                                        style="font-size:16px; padding:0.5em; cursor:pointer;font-weight: bold"
+                                                        onClick="@command('agregarItemLista',valor=each.idProducto)"
+                                                        tooltiptext="Asignar producto"
+                                                    />
                                                 
                                                 </listcell>
                                             </listitem>
