@@ -127,27 +127,31 @@
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Inicio:</span>
-                                    <datebox 
-                                        compact="true" 
+                                        <datebox 
                                         value="@bind(vm.fechainicio)" 
-                                        class="input_date"
+                                        compact="true" 
+                                        readonly="true" 
                                         buttonVisible="true" 
+                                        class="input_date"
                                         lenient="true" 
                                         format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha "
-                                    />
+                                        constraint="no empty: Ingrese la fecha"
+                                    /> 
+                                        <div class="fa-solid fa-calendar icon" />                                 
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Fin:</span>
                                     <datebox 
-                                        compact="true" 
                                         value="@bind(vm.fechafin)" 
-                                        class="input_date"                                               
+                                        compact="true" 
+                                        readonly="true" 
                                         buttonVisible="true" 
+                                        class="input_date"
                                         lenient="true" 
                                         format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha "
+                                        constraint="no empty: Ingrese la fecha"
                                     />
+                                    <div class="fa-solid fa-calendar icon" />
                                 </div>
                             </div>
                             <div class="wrapper_data">
@@ -159,7 +163,7 @@
                                     Buscar por estado
                                 </button>
                                 <button 
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_element"
+                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary"
                                     onClick="@command('buscarFechas')"  
                                     tooltiptext="Buscar facturas por fecha"
                                 >
@@ -263,7 +267,7 @@
                                 <listheader width="8%"  label="Estado SRI" align="rigth" /> 
                                 <listheader width="8%"  label="Fecha Aut." align="rigth" /> 
                                 <!--<listheader width="20%"  label="Clave Autorizacion"  />-->                                   
-                                <listheader width="10%"  label="Responsable"  />                                   
+                                <listheader width="10%"  label="Responsable/cuenta"  />                                   
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
@@ -371,7 +375,7 @@
                                         <textbox  readonly="true" 
                                         style="font-size:12px;background:#EBF5FB"
                                             class="form-control form-control-sm"  
-                                                value="@bind(each.idUsuario.usuNombre)" width="100%"/>
+                                                value="@bind(each.cod_tipoambiente.amNombreComercial)" width="100%"/>
                                     </listcell>
                                 
                                     

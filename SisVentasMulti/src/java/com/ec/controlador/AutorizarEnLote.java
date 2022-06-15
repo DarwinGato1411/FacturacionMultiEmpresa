@@ -88,7 +88,7 @@ public class AutorizarEnLote {
     public void autorizarEnLote()
                 throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        List<Factura> listaFacturasPendiente = servicioFactura.findBetweenPendientesEnviarSRI(inicio, fin);
+        List<Factura> listaFacturasPendiente = servicioFactura.findBetweenPendientesEnviarSRI(inicio, fin,amb);
         for (Factura factura : listaFacturasPendiente) {
             autorizarFacturasSRI(factura);
         }

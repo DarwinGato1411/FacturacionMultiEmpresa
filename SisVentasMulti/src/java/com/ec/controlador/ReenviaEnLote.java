@@ -89,7 +89,7 @@ public class ReenviaEnLote {
     public void autorizarEnLote()
                 throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        List<Factura> listaFacturasPendiente = servicioFactura.findBetweenDevueltaPorReenviarSRI(inicio, fin);
+        List<Factura> listaFacturasPendiente = servicioFactura.findBetweenDevueltaPorReenviarSRI(inicio, fin,amb);
         for (Factura factura : listaFacturasPendiente) {
             reenviarSRI(factura);
         }

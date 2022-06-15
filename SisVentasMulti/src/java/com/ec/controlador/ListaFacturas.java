@@ -325,12 +325,12 @@ public class ListaFacturas {
     }
 
     private void consultarFacturasNum() {
-        lstFacturas = servicioFactura.FindLikeNumeroFacturaText(buscarNumFactura);
+        lstFacturas = servicioFactura.FindLikeNumeroFacturaText(buscarNumFactura,amb);
         //saldoPorCobrar();
     }
 
     private void consultarFacturas() {
-        lstFacturas = servicioFactura.FindLikeCliente(buscarCliente);
+        lstFacturas = servicioFactura.FindLikeCliente(buscarCliente,amb);
         //saldoPorCobrar();
     }
 
@@ -351,7 +351,7 @@ public class ListaFacturas {
     }
 
     private void consultarFacturasForCedula() {
-        lstFacturas = servicioFactura.findLikeCedula(buscarCedula);
+        lstFacturas = servicioFactura.findLikeCedula(buscarCedula,amb);
         //   saldoPorCobrar();
     }
 
@@ -370,11 +370,11 @@ public class ListaFacturas {
     }
 
     private void consultarFacturaFecha() {
-        lstFacturas = servicioFactura.findFacFecha(fechainicio, fechafin, estadoBusqueda);
+        lstFacturas = servicioFactura.findFacFecha(fechainicio, fechafin, estadoBusqueda,amb);
     }
 
     private void consultarFacturasEstado() {
-        lstFacturas = servicioFactura.findEstadoFactura(estadoBusqueda);
+        lstFacturas = servicioFactura.findEstadoFactura(estadoBusqueda,amb);
         //saldoPorCobrar();
     }
     
@@ -436,15 +436,15 @@ public class ListaFacturas {
     }
 
     private void pendientesSRIEnv() {
-        lstFacturas = servicioFactura.findBetweenPendientesEnviarSRI(fechainicio, fechafin);
+        lstFacturas = servicioFactura.findBetweenPendientesEnviarSRI(fechainicio, fechafin,amb);
     }
 
     private void devueltaSRIEnvReenvio() {
-        lstFacturas = servicioFactura.findBetweenDevueltaPorReenviarSRI(fechainicio, fechafin);
+        lstFacturas = servicioFactura.findBetweenDevueltaPorReenviarSRI(fechainicio, fechafin,amb);
     }
 
     private void devueltaSRIEnvPorCorregir() {
-        lstFacturas = servicioFactura.findBetweenDevueltaPorCorregirSRI(fechainicio, fechafin);
+        lstFacturas = servicioFactura.findBetweenDevueltaPorCorregirSRI(fechainicio, fechafin,amb);
     }
 
     @Command

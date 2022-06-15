@@ -200,7 +200,7 @@ public class ListaPortalFactura {
     }
 
     private void consultarFacturas() {
-        lstFacturas = servicioFactura.FindLikeCliente(buscarCliente);
+        lstFacturas = servicioFactura.FindLikeCliente(buscarCliente,amb);
     }
 
     public AMedia getFileContent() {

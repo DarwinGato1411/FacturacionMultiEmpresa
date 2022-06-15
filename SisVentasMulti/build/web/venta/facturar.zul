@@ -161,7 +161,7 @@
                         <div class="fact_row">
                             <div class="wrapper_data">
                                 <div class="wrapper_input">
-                                    <span>Estado:</span>
+                                    <span>Documento:</span>
                                     <textbox 
                                         class="input"
                                         ctrlKeys="^A" 
@@ -182,7 +182,7 @@
                                      
                                 </div>
                                 <div class="wrapper_input">
-                                    <span>Tipo:</span>
+                                    <span>Cliente:</span>
                                     <textbox 
                                         value="@bind(vm.clienteBuscado.cliNombre)" 
                                         class="input" 

@@ -361,16 +361,17 @@ public class ServicioFactura {
         return facturas;
     }
 
-    public List<Factura> FindLikeCliente(String cliente) {
+    public List<Factura> FindLikeCliente(String cliente,Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("Factura.findLikeCliente", Factura.class);
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliNombre LIKE :cliente AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("cliente", "%" + cliente + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -382,16 +383,17 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> FindLikeNumeroFacturaText(String numfac) {
+    public List<Factura> FindLikeNumeroFacturaText(String numfac, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumeroText LIKE :facNumeroText AND f.facNumero > 0 AND f.facTipo='FACT' ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumeroText LIKE :facNumeroText AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("facNumeroText", "%" + numfac + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -494,7 +496,7 @@ public class ServicioFactura {
     }
 
     //buscar por estado
-    public List<Factura> findEstadoFactura(String estado) {
+    public List<Factura> findEstadoFactura(String estado, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
@@ -503,10 +505,12 @@ public class ServicioFactura {
             em.getTransaction().begin();
             Query query;
             if (!estado.equals("TODO")) {
-                query = em.createQuery("SELECT f FROM Factura f WHERE  f.facEstado=:facEstado AND f.facTipo='FACT'");
+                query = em.createQuery("SELECT f FROM Factura f WHERE  f.facEstado=:facEstado AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente");
                 query.setParameter("facEstado", estado);
+                query.setParameter("codTipoambiente", codTipoambiente);
             } else {
-                query = em.createQuery("SELECT f FROM Factura f");
+                query = em.createQuery("SELECT f FROM Factura f WHERE f.cod_tipoambiente=:codTipoambiente AND f.facTipo='FACT' ");
+                query.setParameter("codTipoambiente", codTipoambiente);
                 query.setMaxResults(2000);
             }
 
@@ -621,7 +625,7 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findFacFecha(Date inicio, Date fin, String estado) {
+    public List<Factura> findFacFecha(Date inicio, Date fin, String estado, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
@@ -632,14 +636,16 @@ public class ServicioFactura {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             if (!estado.equals("TODO")) {
-                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin AND f.facEstado=:facEstado AND f.facTipo='FACT' ORDER BY f.facFecha DESC");
+                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin AND f.facEstado=:facEstado AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.facFecha DESC");
                 query.setParameter("inicio", inicio);
                 query.setParameter("fin", fin);
                 query.setParameter("facEstado", estado);
+                query.setParameter("codTipoambiente", codTipoambiente);
             } else {
-                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.facTipo='FACT' ORDER BY f.facFecha DESC");
+                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.facTipo='FACT'  AND f.cod_tipoambiente=:codTipoambiente  ORDER BY f.facFecha DESC");
                 query.setParameter("inicio", inicio);
                 query.setParameter("fin", fin);
+                query.setParameter("codTipoambiente", codTipoambiente);
             }
 
 //            query.setMaxResults(400);
@@ -677,16 +683,17 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findBetweenPendientesEnviarSRI(Date inicio, Date fin) {
+    public List<Factura> findBetweenPendientesEnviarSRI(Date inicio, Date fin, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='PENDIENTE' AND a.facTipo='FACT' ORDER BY a.facFecha DESC");
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='PENDIENTE' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente ORDER BY a.facFecha DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(400);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
@@ -699,16 +706,17 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findBetweenDevueltaPorReenviarSRI(Date inicio, Date fin) {
+    public List<Factura> findBetweenDevueltaPorReenviarSRI(Date inicio, Date fin, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='DEVUELTA' AND a.mensajesri='CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' ORDER BY a.facFecha DESC");
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='DEVUELTA' AND a.mensajesri='CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(400);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
@@ -721,16 +729,17 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findBetweenDevueltaPorCorregirSRI(Date inicio, Date fin) {
+    public List<Factura> findBetweenDevueltaPorCorregirSRI(Date inicio, Date fin, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri<>'AUTORIZADO' AND a.estadosri<>'PENDIENTE' AND a.mensajesri<>'CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' ORDER BY a.facFecha DESC");
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri<>'AUTORIZADO' AND a.estadosri<>'PENDIENTE' AND a.mensajesri<>'CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
+            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(400);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
@@ -787,16 +796,17 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findLikeCedula(String valor) {
+    public List<Factura> findLikeCedula(String valor, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliCedula LIKE :cliCedula AND f.facNumero > 0 AND f.facTipo='FACT' ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliCedula LIKE :cliCedula AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("cliCedula", "%" + valor + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -894,7 +904,7 @@ public class ServicioFactura {
             em.getTransaction().begin();
             Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='NTV' AND f.facNumNotaVenta IS NOT NULL AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumNotaVenta DESC");
             query.setParameter("tipoambiente", tipoambiente);
-            query.setMaxResults(2);  
+            query.setMaxResults(2);
             listaFacturas = (List<Factura>) query.getResultList();
             if (listaFacturas.size() > 0) {
                 facturas = listaFacturas.get(0);
