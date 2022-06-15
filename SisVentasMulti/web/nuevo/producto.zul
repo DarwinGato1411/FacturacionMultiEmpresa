@@ -360,18 +360,6 @@
                     <span>Subsidio: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-wallet icon"></div>
-                        <textbox    constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                            
-                            value="@bind(vm.producto.prodPrecioSinSubsidio)"  
-                            class="input_text"  
-                        />
-                    </div>
-                </div>
-            </div>
-            <div class="container_row_input">
-                <div class="wrapper_input_mod">
-                    <span>% Utilidad / mayor: </span>
-                    <div class="wrapper_input_text">
-                        <div class="fa-solid fa-wallet icon"></div>
                         <textbox    
                             constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                            
                             value="@bind(vm.producto.prodSubsidio)"  
@@ -379,16 +367,39 @@
                         />
                     </div>
                 </div>
+            </div>
+            <div class="container_row_input">
                 <div class="wrapper_input_mod">
-                    <span>Cant. inicial: </span>
+                    <span>% Utilidad por mayor: </span>
                     <div class="wrapper_input_text">
-                        <div class="fa-solid fa-dollar-sign icon"></div>
-                        <textbox constraint="/^[0-9]{1,9}(?:[.][0-9]{1,2})?$/:Ingrese solo numeros"                       
-                            value="@bind(vm.producto.prodCantidadInicial)"  
+                        <div class="fa-solid fa-wallet icon"></div>
+                        <textbox    
+                            onOK="@command('calculopreciofinalUno')"
+                            constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                            
+                            value="@bind(vm.producto.prodUtilidadPreferencial)"   
                             class="input_text"  
-                         />
+                        />
                     </div>
                 </div>
+
+                <div class="wrapper_input_mod">
+                    <span>Precio / 3 Unid.: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-dollar-sign icon"></div>
+                        <textbox    
+                            constraint="/^[0-9]{1,9}(?:[.][0-9]{1,5})?$/:Ingrese solo numeros" 
+                            onOK="@command('calculoutilidadUno')"
+                            value="@bind(vm.producto.prodCostoPreferencial)"  
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+
+
+
+
+
+                
                 <div class="wrapper_input_mod">
                     <span>Cant. mínima: </span>
                     <div class="wrapper_input_text">
@@ -403,7 +414,7 @@
             </div>
             <div class="container_row_input">
                 <div class="wrapper_input_mod">
-                    <span>% Utilidad / caja: </span>
+                    <span>% Utilidad por caja: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
                         <textbox constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"
@@ -413,19 +424,8 @@
                         />
                     </div>
                 </div>
-                <div class="wrapper_input_mod">
-                    <span>Precio / 3 Unid.: </span>
-                    <div class="wrapper_input_text">
-                        <div class="fa-solid fa-dollar-sign icon"></div>
-                        <textbox    
-                            constraint="/^[0-9]{1,9}(?:[.][0-9]{1,5})?$/:Ingrese solo numeros" 
-                            onOK="@command('calculoutilidadUno')"
-                            value="@bind(vm.producto.prodCostoPreferencial)" 
-                            class="input_text" 
-                        />
-                    </div>
-                </div>
-                <div class="wrapper_input_mod">
+                
+                 <div class="wrapper_input_mod">
                     <span>Precio / 6 Unid.: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
@@ -436,6 +436,19 @@
                         />
                     </div>
                 </div>
+
+                <div class="wrapper_input_mod">
+                    <span>Cant. inicial: </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-dollar-sign icon"></div>
+                        <textbox constraint="/^[0-9]{1,9}(?:[.][0-9]{1,2})?$/:Ingrese solo numeros"                       
+                            value="@bind(vm.producto.prodCantidadInicial)"  
+                            class="input_text"  
+                         />
+                    </div>
+                </div>
+
+               
             </div>
             <div class="container_row_input">
                 <div class="wrapper_input_mod">
