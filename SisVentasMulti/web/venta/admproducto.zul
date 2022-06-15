@@ -58,20 +58,30 @@
         </div>
     </div> -->
 
-    <div class="container_headers">
-        <image  
-            src="/iconos/nuevo_pro-24.png"
-            class="btn btn btn-secondary btn-sm icon"
+    <div class="container_headers" style="margin-bottom:1em">
+
+        <div 
+            class="fa-solid fa-plus-circle fa-2x icon"
             onClick="@command('nuevoCliente')"
             tooltiptext="Nuevo producto"
         />
-        <image  
-            src="/iconos/armareval.png"
-            class="btn btn btn-secondary btn-sm icon"
+       
+        <div 
+            class="fa-solid fa-list-check fa-2x icon"
             onClick="@command('inicializarKardex')"
             tooltiptext="Iniciar inventario de productos anteriores"
         />
-        <div class="wrapper_input_head">
+        <div 
+            class="fa-solid fa-barcode fa-2x icon"
+            onClick="@command('crearCodigoBarras')"
+            tooltiptext="Generar codigos de barras"
+        />
+        <div 
+            class="fa-solid fa-file-excel fa-2x icon"
+            onClick="@command('exportListboxToExcelTodo')"
+            tooltiptext="Descargar todos los productos"
+        />
+         <div class="wrapper_input_head">
             <span>Cant. cod barras</span>
             <intbox 
                 value="@bind(vm.cantidadCodBar)" 
@@ -80,18 +90,6 @@
                 tooltiptext="Cantidad de veces que imprimira cada codigo de barras"
             />
         </div>
-        <image  
-            src="/iconos/codbar.jpg"
-            class="btn btn btn-secondary btn-sm icon"
-            onClick="@command('crearCodigoBarras')"
-            tooltiptext="Generar codigos de barras"
-        />
-        <image  
-            src="/iconos/excel1.png"
-            class="btn btn btn-secondary btn-sm icon"
-            onClick="@command('exportListboxToExcelTodo')"
-            tooltiptext="Descargar todos los productos"
-        />
     </div>
 
     <div class="cont_body">

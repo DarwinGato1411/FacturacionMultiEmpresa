@@ -211,6 +211,7 @@
                                                 <comboitem  label="@bind(each.trpRazonSocial)"/>
                                             </template>                                      
                                         </combobox>
+                                        <div class="fa-solid fa-chevron-down icon"/>
                                     </div>
                                     <div class="wrapper_input">
                                         <span>Motivo:</span>
@@ -229,6 +230,7 @@
                                             <comboitem label="VENTA" value="VENTA" />
                                             <comboitem label="OTROS" value="OTROS" />
                                         </combobox>
+                                        <div class="fa-solid fa-chevron-down icon"/>
                                     </div>
                                     <div class="wrapper_input">
                                         <span>Placa:</span>
@@ -381,9 +383,15 @@
                                             </listcell>
                 
                                             <listcell  zclass = "mycss-listcell"  >   
-                                                <image  src="/iconos/Forward.png" 
+                                                <!-- <image  src="/iconos/Forward.png" 
                                                         onClick="@command('agregarItemLista',valor=each)" 
-                                                        tooltiptext="Asigar producto"/> 
+                                                        tooltiptext="Asigar producto"/>  -->
+                                                    <div 
+                                                        class="fa-solid fa-chevron-right"
+                                                        style="font-size:16px; padding:0.5em; cursor:pointer;font-weight: bold"
+                                                        onClick="@command('agregarItemLista',valor=each)" 
+                                                        tooltiptext="Asignar producto"
+                                                    />
                                             </listcell>
                                         </listitem>
                                     </template>

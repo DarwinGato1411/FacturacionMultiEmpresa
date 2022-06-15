@@ -392,6 +392,7 @@
                     <div class="wrapper_input_mod">
                         <span>Num. Contribuyente: </span>
                         <div class="wrapper_input_text">
+                            <div class="fa-solid fa-user-pen icon"></div>
                             <textbox 
                                 value="@bind(vm.tipoambiente.amNroContribuyente)" 
                                 placeholder="Numero contribuyente"
@@ -446,13 +447,18 @@
                     </div>
                     <div class="wrapper_input_mod" style="flex:auto;">
                         <span style="margin:0 0.5em;">Firma Electrónica </span>
-                        <div class="wrapper_input_text" style="width:86%;">
+                        <div class="wrapper_input_text" style="width:86%;position:relative">
                             <div class="fa-solid fa-unlock-keyhole icon"></div>
                             <textbox 
                                 tooltiptext="Nombre de la firma electrónica (fernando_perez.p12)"
                                 placeholder="Firma Electrónica"
                                 class="input_text"
                                 style="width:100%;"
+                            />
+                            <div 
+                                class="fa-solid fa-folder icon_signature" 
+                                onClick="@command('subirFirma')"  
+                                tooltiptext="Subir archivos"
                             />
                         </div>
                     </div>
@@ -579,7 +585,11 @@
                 
             </div>
 
-            
+            <div style="display:flex;justify-content:flex-end;">
+                <button class="btn_modal" style="width:300px" onClick="@command('guardar')" tooltiptext="Guardar informacion">
+                    Guardar
+                </button>
+            </div>
         
         </div>
 

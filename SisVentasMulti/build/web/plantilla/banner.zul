@@ -8,8 +8,8 @@
 
 
             <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start">
-                <!--<image  src="/imagenes/logintrans.jpg" width="30px" height="30px" class="imgRedondaLogo" />-->
-                <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />   
+                <image  src="/imagenes/logo/5.png" class="logo_defact" />
+                <!-- <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />  --> 
                 
                      
             </div>
@@ -28,9 +28,12 @@
                         <!--<div  align="end" style="float: right; " >-->
                             <a sclass="logout labelLogout" style="color:red" id="logout" if="${not sessionScope.userCredential.anonymous}" class="form-group" >  
                                 <!--<label  value="Salir " if="${not sessionScope.userCredential.anonymous}" sclass=" labelLogout"/>--> 
-                                <image src="/iconos/logout-24.png"  ></image>  
-                       Salir
+                                
+                                
+                            <div class="fa-solid fa-arrow-right-from-bracket icon_exit" />
+                                <span>Salir</span>
                             </a>
+
                 
                         <!--</div>-->
                     </toolbar>
@@ -113,14 +116,26 @@
             </div> -->
 
 
-
-
                     
-                     </div>
+            </div>
                      <div apply="org.zkoss.bind.BindComposer" 
                      viewModel="@id('vm') @init('com.ec.controlador.MenuToolbar')"
                           class="col-6 col-sm-6 col-md-1 col-lg-1 hidden-sm-down " align="start" >
-                      <menubar id="menubarEmpresa" orient="horizontal"  autodrop="true">   
+
+                <menubar id="menubarEmpresa" orient="horizontal"  autodrop="true"  class="wrapper_menu">   
+                    <menu label="Empresa" id="menuInformacion" class="menu_child"  >
+                        <menupopup  class="submenu">                     
+                    
+                            <menuitem label="RUC: ${sessionScope.usuario.tipoambiente.amRuc}" class="fa-solid fa-user menu_item" />                                
+                            <menuitem label="RAZÓN SOCIAL: ${sessionScope.usuario.tipoambiente.amRazonSocial}"  class="fa-solid fa-user menu_item" />                                                          
+                            <menuitem label="Modificar usuario" onClick="@command('modificarUsuario')" class="fa-solid fa-pen-to-square menu_item" />
+                            <menuitem label="Salir" id="logoutMenu" class="fa-solid fa-arrow-right-from-bracket menu_item" />  
+                        </menupopup>
+                    </menu>    
+                </menubar>
+
+
+                      <!-- <menubar id="menubarEmpresa" orient="horizontal"  autodrop="true">   
                          <menu label="Empresa" id="menuInformacion" image="/iconos/info.png" >
                             <menupopup >                                                                         
                                 <menuitem label="RUC: ${sessionScope.usuario.tipoambiente.amRuc} "  image="/iconos/infor.png"  />                              
@@ -130,7 +145,7 @@
                                
                             </menupopup>
                         </menu>
-                    </menubar>    
+                    </menubar>  -->   
                        </div>              
                 </div>
                 
