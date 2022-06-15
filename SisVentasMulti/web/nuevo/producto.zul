@@ -229,13 +229,14 @@
                 <radiogroup
                     class="radio_group" 
                     onCheck="@command('colocarIva')" 
-                    selectedItem="@bind(vm.conIva)"  >                   
+                    selectedItem="@bind(vm.conIva)"  
+                >                   
                     <radio label="Graba IVA" value="S"/>
                     <space bar="false"  />   
                     <radio label="Sin IVA" value="N"/>                          
                 </radiogroup>
             </div>
-            <div class="wrapper_input_mod">
+            <div class="wrapper_input_mod" style="position: relative">
                 <span>F. Registro: </span>
                 <datebox 
                     compact="true" 
@@ -245,6 +246,10 @@
                     lenient="true" 
                     format="dd/MM/yyyy" 
                     class="input_date"
+                />
+                <div 
+                    class="fa-solid fa-calendar"
+                    style="position: absolute; left: 35%; top: 10px;color:  #1247b9;font-size: 12px"
                 />
             </div>
 
@@ -315,7 +320,7 @@
                     </div>
                 </div>
                 <div class="wrapper_input_mod">
-                    <span>Precio: </span>
+                    <span>Precio sin subsidio: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-dollar-sign icon"></div>
                         <textbox    
@@ -455,35 +460,48 @@
                         <textbox    
                             constraint="/^[0-9]{1,9}(?:[.][0-9]{1,5})?$/:Ingrese solo numeros"
                             value="@bind(vm.producto.prodFactorConversion)" 
-                            class="form-control" 
+                            class="input_text" 
                         />
                     </div>
                 </div>
+                
+
                 <div class="wrapper_input_mod">
                     <span>Unid. medida: </span>
-                    <combobox  
-                        selectedItem="@bind(vm.producto.prodUnidadMedida)"  
-                        readonly="true"  
-                        class="input_select"
-                    >
-                        <comboitem label="UNIDAD" value="UNIDAD" />
-                        <comboitem label="KILO" value="KILO" />
-                        <comboitem label="METROS" value="METROS" />
-                    </combobox>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-ruler icon"></div>
+                        <combobox  
+                            selectedItem="@bind(vm.producto.prodUnidadMedida)"  
+                            readonly="true"  
+                            class="input_select"
+                        >
+                            <comboitem label="UNIDAD" value="UNIDAD" />
+                            <comboitem label="KILO" value="KILO" />
+                            <comboitem label="METROS" value="METROS" />
+                        </combobox>
+                        <div 
+                            class="fa-solid fa-chevron-down"
+                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                        />
+                    </div>
                 </div>
                 <div class="wrapper_input_mod">
                     <span>Unid. Conv.: </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-ruler-combined icon"></div>
                         <combobox  
-                            selectedItem="@bind(vm.producto.prodUnidadConversion)"                                      
-                            readonly="true"  
-                            class="input_select"
-                        >
-                        <comboitem label="UNIDAD" value="UNIDAD" />
-                        <comboitem label="KILO" value="KILO" />
-                        <comboitem label="METROS" value="METROS" />
-                    </combobox>
+                                selectedItem="@bind(vm.producto.prodUnidadConversion)"                                      
+                                readonly="true"  
+                                class="input_select"
+                            >
+                            <comboitem label="UNIDAD" value="UNIDAD" />
+                            <comboitem label="KILO" value="KILO" />
+                            <comboitem label="METROS" value="METROS" />
+                        </combobox>
+                        <div 
+                            class="fa-solid fa-chevron-down"
+                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                        />
                     </div>
                 </div>
 
