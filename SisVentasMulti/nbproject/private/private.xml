@@ -3,24 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/menuOpciones.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/nuevo/olvidemiclave.zul</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/ListaFacturas.java</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/venta/facturar.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/nuevo/registrousuario.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/setup/glassfish-resources.xml</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/servicio/ServicioGeneral.java</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/Facturar.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/AutorizarEnLote.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/ReenviaEnLote.java</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/venta/administrar.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/AdminstrarCompraVenta.java</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/nuevo/usuario.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/inicio.zul</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/venta/listacotizaciones.zul</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/venta/listafacturas.zul</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/ListaPortalFactura.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/Tipoambiente.java</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/banner.zul</file>
-            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/css/style.css</file>
             <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/plantilla.zul</file>
-=======
-            <file>file:/home/gt37285/NetBeansProjects/faturacion/SisVentasMulti/web/css/app/ventas/modales.css</file>
->>>>>>> 15745d3d3a3a6a335b2ec262a985331eb3ebe240
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/RegistroUsuarioExt.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/servicio/ServicioFactura.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/Factura.java</file>
         </group>
     </open-files>
 </project-private>

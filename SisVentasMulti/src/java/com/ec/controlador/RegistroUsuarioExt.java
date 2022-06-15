@@ -91,7 +91,7 @@ public class RegistroUsuarioExt {
                     && !tipoUSuario.equals("")) {
             usuarioSistema.setUsuNivel(Integer.valueOf(tipoUSuario));
             /*verifica si tiene tipo ambiente*/
-            if (usuarioSistema.getUsuRuc().length() == 13) {
+            if (usuarioSistema.getUsuRuc().length() != 13) {
                 Clients.showNotification("Ingrese un RUC valido..!!",
                             Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
                 return;
