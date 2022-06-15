@@ -199,23 +199,22 @@
 
                         <div class="factura_header">
                             <div class="fact_row_custom">
-                                <div class="container_data">
-                                    <div class="wrapper_data wrapper_data_custom" style="position:relative">
+
+
+
+                                <div class="container_data_custom">
+                                    <div class="wrapper_data">
                                         <div class="wrapper_input">
-                                            <span>Proveedor:</span>
-                                            <textbox   
-                                                class="form-control form-control-sm "  
-                                                placeholder="Cedula"
-                                                readonly="false" 
-                                                onDoubleClick="@command('buscarProveedorEnLista')" 
-                                                value="@bind(vm.proveedorSeleccionado.provCedula)" 
-                                                maxlength="13" 
+                                            <span>Nombre:</span>
+                                            <textbox  
+                                                readonly="true" 
+                                                placeholder="Nombre proveedor"
+                                                class="input" 
+                                                value="@bind(vm.proveedorSeleccionado.provNombre)"  
                                             />
-                                            <div 
-                                                class="fa-solid fa-magnifying-glass icon"
-                                                onClick="@command('buscarProveedorEnLista')"
-                                            />
+                                            <div class="fa-solid fa-user icon"></div>
                                         </div>
+                                        
                                         <div class="wrapper_input">
                                             <span>Nombre:</span>
                                             <textbox  
@@ -254,7 +253,9 @@
                                     </div>
                                 </div>
 
-                                <div class="container_data">
+
+
+                                <div class="container_data_custom" style="margin-top: 1em;">
                                     <div class="wrapper_data" >
                                         <div class="wrapper_input">
                                             <span>Autorización:</span>
@@ -269,6 +270,12 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+
+
+
                             <div class="fact_row">
                                 <div class="wrapper_data">
                                 <div class="wrapper_input">

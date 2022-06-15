@@ -114,6 +114,10 @@
                                 <comboitem  label="@bind(each.tidNombre)"/>
                             </template>                                      
                         </combobox>
+                        <div 
+                            class="fa-solid fa-chevron-down"
+                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                        />
                     </div>
                 </div>
                 <div class="wrapper_input_mod">
@@ -217,4 +221,5 @@
         </div>
     </div>     
                   
+
 </window>

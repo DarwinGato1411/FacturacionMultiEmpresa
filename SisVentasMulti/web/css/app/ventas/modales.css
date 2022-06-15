@@ -214,6 +214,11 @@ body {
   cursor: pointer;
 }
 
+.input_select_custom {
+  border: solid red 1px;
+  width: 100%;
+}
+
 @media only screen and (min-width: 632px) {
   .container_modal {
     width: 1200px;
