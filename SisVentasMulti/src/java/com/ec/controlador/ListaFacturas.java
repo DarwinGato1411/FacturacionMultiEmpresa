@@ -63,6 +63,7 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
@@ -95,7 +96,7 @@ public class ListaFacturas {
     UserCredential credential = new UserCredential();
 
     public ListaFacturas() {
-        
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
         amRuc = credential.getUsuarioSistema().getUsuRuc();
@@ -103,7 +104,7 @@ public class ListaFacturas {
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
-        
+
         consultarFactura();
     }
 
@@ -325,12 +326,12 @@ public class ListaFacturas {
     }
 
     private void consultarFacturasNum() {
-        lstFacturas = servicioFactura.FindLikeNumeroFacturaText(buscarNumFactura,amb);
+        lstFacturas = servicioFactura.FindLikeNumeroFacturaText(buscarNumFactura, amb);
         //saldoPorCobrar();
     }
 
     private void consultarFacturas() {
-        lstFacturas = servicioFactura.FindLikeCliente(buscarCliente,amb);
+        lstFacturas = servicioFactura.FindLikeCliente(buscarCliente, amb);
         //saldoPorCobrar();
     }
 
@@ -351,7 +352,7 @@ public class ListaFacturas {
     }
 
     private void consultarFacturasForCedula() {
-        lstFacturas = servicioFactura.findLikeCedula(buscarCedula,amb);
+        lstFacturas = servicioFactura.findLikeCedula(buscarCedula, amb);
         //   saldoPorCobrar();
     }
 
@@ -370,14 +371,13 @@ public class ListaFacturas {
     }
 
     private void consultarFacturaFecha() {
-        lstFacturas = servicioFactura.findFacFecha(fechainicio, fechafin, estadoBusqueda,amb);
+        lstFacturas = servicioFactura.findFacFecha(fechainicio, fechafin, estadoBusqueda, amb);
     }
 
     private void consultarFacturasEstado() {
-        lstFacturas = servicioFactura.findEstadoFactura(estadoBusqueda,amb);
+        lstFacturas = servicioFactura.findEstadoFactura(estadoBusqueda, amb);
         //saldoPorCobrar();
     }
-    
 
     public AMedia getFileContent() {
         return fileContent;
@@ -386,8 +386,6 @@ public class ListaFacturas {
     public void setFileContent(AMedia fileContent) {
         this.fileContent = fileContent;
     }
-
-   
 
     public static String getPATH_BASE() {
         return PATH_BASE;
@@ -436,15 +434,15 @@ public class ListaFacturas {
     }
 
     private void pendientesSRIEnv() {
-        lstFacturas = servicioFactura.findBetweenPendientesEnviarSRI(fechainicio, fechafin,amb);
+        lstFacturas = servicioFactura.findBetweenPendientesEnviarSRI(fechainicio, fechafin, amb);
     }
 
     private void devueltaSRIEnvReenvio() {
-        lstFacturas = servicioFactura.findBetweenDevueltaPorReenviarSRI(fechainicio, fechafin,amb);
+        lstFacturas = servicioFactura.findBetweenDevueltaPorReenviarSRI(fechainicio, fechafin, amb);
     }
 
     private void devueltaSRIEnvPorCorregir() {
-        lstFacturas = servicioFactura.findBetweenDevueltaPorCorregirSRI(fechainicio, fechafin,amb);
+        lstFacturas = servicioFactura.findBetweenDevueltaPorCorregirSRI(fechainicio, fechafin, amb);
     }
 
     @Command
@@ -566,7 +564,7 @@ public class ListaFacturas {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos, amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -578,7 +576,7 @@ public class ListaFacturas {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -590,21 +588,26 @@ public class ListaFacturas {
                         }
 
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
-                            String texto = "Sin Identificar el error";
-                            String smsInfo = "Sin identificar el error";
+                            if (autorizacion.getEstado().equals("EN PROCESO")) {
+                                 Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+                                reenviarFactura(valor);
+                            } else {
+                                String texto = "Sin Identificar el error";
+                                String smsInfo = "Sin identificar el error";
 
-                            if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
-                                texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
-                                smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
-                                nuevo.write(smsInfo.getBytes());
-                                nuevo.write(smsInfo.getBytes());
+                                if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
+                                    texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
+                                    smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
+                                    nuevo.write(smsInfo.getBytes());
+                                    nuevo.write(smsInfo.getBytes());
+                                }
+
+                                valor.setMensajesri(texto);
+                                valor.setEstadosri(autorizacion.getEstado());
+                                valor.setFacMsmInfoSri(smsInfo);
+                                nuevo.flush();
+                                servicioFactura.modificar(valor);
                             }
-
-                            valor.setMensajesri(texto);
-                            valor.setEstadosri(autorizacion.getEstado());
-                            valor.setFacMsmInfoSri(smsInfo);
-                            nuevo.flush();
-                            servicioFactura.modificar(valor);
                         } else {
 
                             valor.setFacClaveAutorizacion(claveAccesoComprobante);
@@ -621,7 +624,7 @@ public class ListaFacturas {
                             fEnvio = new File(archivoEnvioCliente);
 
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT");
+                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
                             valor.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -644,7 +647,7 @@ public class ListaFacturas {
                                             valor.getFacClaveAcceso(),
                                             valor.getFacNumeroText(),
                                             valor.getFacTotal(),
-                                            valor.getIdCliente().getCliNombre(),amb);
+                                            valor.getIdCliente().getCliNombre(), amb);
                             }
                         }
 
@@ -667,10 +670,7 @@ public class ListaFacturas {
         }
     }
 
-    @Command
-    @NotifyChange({"lstFacturas"})
-    public void reenviarSRI(@BindingParam("valor") Factura valor)
-                throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private void reenviarFactura(Factura valor) throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
                     + File.separator + new Date().getYear()
@@ -762,7 +762,7 @@ public class ListaFacturas {
         }
         try {
 
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 
@@ -797,7 +797,7 @@ public class ListaFacturas {
                 }
 
                 System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT");
+                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                 /*GUARDA EL PATH PDF CREADO*/
                 valor.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -820,7 +820,7 @@ public class ListaFacturas {
                                 valor.getFacClaveAcceso(),
                                 valor.getFacNumeroText(),
                                 valor.getFacTotal(),
-                                valor.getIdCliente().getCliNombre(),amb);
+                                valor.getIdCliente().getCliNombre(), amb);
                 }
 
             }
@@ -828,6 +828,12 @@ public class ListaFacturas {
             Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    @Command
+    @NotifyChange({"lstFacturas"})
+    public void reenviarSRI(@BindingParam("valor") Factura valor) throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        reenviarFactura(valor);
     }
 
     public Date getFechainicio() {

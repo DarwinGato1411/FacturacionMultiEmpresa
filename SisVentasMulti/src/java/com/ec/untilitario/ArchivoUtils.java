@@ -123,7 +123,7 @@ public class ArchivoUtils {
     }
 
     public static byte[] archivoToByte(File file)
-            throws IOException {
+                throws IOException {
         /* 136 */ byte[] buffer = new byte[(int) file.length()];
         /* 137 */ InputStream ios = null;
         try {
@@ -255,7 +255,7 @@ public class ArchivoUtils {
     }
 
     private static Document merge(String exp, File[] files)
-            throws Exception {
+                throws Exception {
         /* 537 */ XPathFactory xPathFactory = XPathFactory.newInstance();
         /* 538 */ XPath xpath = xPathFactory.newXPath();
         /* 539 */ XPathExpression expression = xpath.compile(exp);
@@ -312,9 +312,9 @@ public class ArchivoUtils {
             //in = new FileInputStream(Utilidades.DirXMLPrincipal + Utilidades.DirFirmados + prefijo + establecimiento + "-" + puntoemision + "-" + secuencial + ".xml");
             in = new FileInputStream(pathArchivo);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-           
+
             DocumentBuilder builder
-                    = factory.newDocumentBuilder();
+                        = factory.newDocumentBuilder();
             Document document = builder.parse(in);
 
             Source source = new DOMSource(document);
@@ -327,19 +327,19 @@ public class ArchivoUtils {
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Tipoambiente.class
-                    .getName()).log(Level.SEVERE, null, ex);
+                        .getName()).log(Level.SEVERE, null, ex);
 
         } catch (ParserConfigurationException e) {
             Logger.getLogger(Tipoambiente.class
-                    .getName()).log(Level.SEVERE, null, e);
+                        .getName()).log(Level.SEVERE, null, e);
 
         } catch (TransformerConfigurationException ex) {
             Logger.getLogger(Tipoambiente.class
-                    .getName()).log(Level.SEVERE, null, ex);
+                        .getName()).log(Level.SEVERE, null, ex);
 
         } catch (TransformerException ex) {
             Logger.getLogger(Tipoambiente.class
-                    .getName()).log(Level.SEVERE, null, ex);
+                        .getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
             Logger.getLogger(ArchivoUtils.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -390,12 +390,12 @@ public class ArchivoUtils {
         return "";
     }
 
-    public static void reporteGeneralPdfMail(String pathPDF, Integer numeroFactura, String tipo) throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
+    public static void reporteGeneralPdfMail(String pathPDF, Integer numeroFactura, String tipo, Tipoambiente amb) throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
         EntityManager emf = HelperPersistencia.getEMF();
         Connection con = null;
         try {
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = "";
             emf.getTransaction().begin();
             con = emf.unwrap(Connection.class);
@@ -413,7 +413,7 @@ public class ArchivoUtils {
 
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", numeroFactura);
-
+            parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
             }
@@ -518,12 +518,12 @@ public class ArchivoUtils {
 
     /*CREAR LA CLAVE DE ACCESO*/
     public static String generaClave(Date fechaEmision,
-            String tipoComprobante,
-            String ruc,
-            String ambiente,
-            String serie,
-            String numeroComprobante,
-            String codigoNumerico, String tipoEmision) {
+                String tipoComprobante,
+                String ruc,
+                String ambiente,
+                String serie,
+                String numeroComprobante,
+                String codigoNumerico, String tipoEmision) {
         String claveGenerada = "";
         int verificador = 0;
 
@@ -605,7 +605,7 @@ public class ArchivoUtils {
         resultado = (divide.add(BigDecimal.valueOf(parteEntera))).doubleValue();
         return BigDecimal.valueOf(resultado);
     }
-    
+
     public static AduanaJson obtenerdatoAduana(String cedulaParam) {
 //        final String url = "http://www.ecuadorlegalonline.com/apijson/aduana.api.php";
         //final String url = cont.getString(R.string.host) + "validacliente/";

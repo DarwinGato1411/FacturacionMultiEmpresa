@@ -183,28 +183,43 @@ public class NuevoProducto {
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidad() {
-        BigDecimal precioventasobrereferen = producto.getPordCostoVentaFinal().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
-        BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
-        BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
-        producto.setProdUtilidadNormal(utilidad);
+        if (producto.getPordCostoVentaRef() != null) {
+            BigDecimal precioventasobrereferen = producto.getPordCostoVentaFinal().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
+            BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
+            BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
+            producto.setProdUtilidadNormal(utilidad);
+        } else {
+            Clients.showNotification("Debe ingresar un valor de compra ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+        }
     }
 
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidadUno() {
-        BigDecimal precioventasobrereferen = producto.getProdCostoPreferencial().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
-        BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
-        BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
-        producto.setProdUtilidadPreferencial(utilidad);
+
+        if (producto.getPordCostoVentaRef() != null) {
+            BigDecimal precioventasobrereferen = producto.getProdCostoPreferencial().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
+            BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
+            BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
+            producto.setProdUtilidadPreferencial(utilidad);
+
+        } else {
+            Clients.showNotification("Debe ingresar un valor de compra ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+        }
     }
 
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidadDos() {
-        BigDecimal precioventasobrereferen = producto.getProdCostoPreferencialDos().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
-        BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
-        BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
-        producto.setProdUtilidadDos(utilidad);
+
+        if (producto.getPordCostoVentaRef() != null) {
+            BigDecimal precioventasobrereferen = producto.getProdCostoPreferencialDos().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
+            BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
+            BigDecimal utilidad = precioventasobrereferenporcien.subtract(BigDecimal.valueOf(100));
+            producto.setProdUtilidadDos(utilidad);
+        } else {
+            Clients.showNotification("Debe ingresar un valor de compra ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+        }
     }
 
     @Command
