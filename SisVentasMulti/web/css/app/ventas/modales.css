@@ -206,6 +206,14 @@ body {
   margin-right: 0.5em;
 }
 
+.icon_signature {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: #1247b9;
+  cursor: pointer;
+}
+
 @media only screen and (min-width: 632px) {
   .container_modal {
     width: 1200px;

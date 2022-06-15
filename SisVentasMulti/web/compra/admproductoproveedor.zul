@@ -25,13 +25,7 @@
                 <button  label="Registrar producto al proveedor"  onClick="@command('registrarProducto')" sclass="botonLista"  tooltiptext="Nuevo cliente"/>
             </auxheader>
         </auxhead>       
-<!--        <auxhead>
-            <auxheader colspan="7" >  
-                <label value="Producto: "/>
-                <textbox width="10%" value="@bind(vm.buscarProductoProveedorCostos)" onChanging="@command('buscarProductoByNombre',valor=event.value)" />
-                
-            </auxheader>
-        </auxhead>       -->
+        
         <listhead> 
             <listheader width="90%"  label="PRODUCTO" />     
             <listheader width="10%"  label="COSTO" /> 

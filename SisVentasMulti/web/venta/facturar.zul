@@ -191,25 +191,31 @@
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Emisión:</span>
+                                    
                                     <datebox 
-                                        compact="true" 
+                                        compact="true"  
+                                        value="@bind(vm.fechafacturacion)" 
                                         readonly="true" 
                                         buttonVisible="true" 
-                                        class="input_date"
                                         lenient="true" 
                                         format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
+                                        constraint="no empty: Ingrese la fecha "
+                                        class="input_date"
                                     />
                                     <div class="fa-solid fa-calendar icon" />
+
+                                   
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Cobro:</span>
-                                    <datebox compact="true"  
-                                        readonly="true"
+                                    <datebox 
+                                        compact="true" 
+                                        value="@bind(vm.facFechaCobro)" 
+                                        readonly="true" 
                                         buttonVisible="true" 
-                                        class="input_date"
                                         lenient="true" 
                                         format="dd/MM/yyyy" 
+                                        class="input_date"
                                         constraint="no empty: Ingrese la fecha "
                                     />
                                     <div class="fa-solid fa-calendar icon" />
