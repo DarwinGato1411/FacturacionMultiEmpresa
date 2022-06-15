@@ -368,6 +368,30 @@ body {
   background-color: transparent !important;
 }
 
+.logo_defact {
+  display: block;
+  object-fit: cover;
+  width: 150px;
+  position: relative;
+  z-index: 100;
+}
+
+.icon_exit span * {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.icon_exit::before {
+  content: "";
+  font-family: "Font Awesome 6 Free" !important;
+  margin-right: 0.5em;
+  font-size: 14px;
+  margin: 0 0.5em;
+  cursor: pointer;
+}
+
 @media only screen and (min-width: 1070px) {
   .factura_header {
     flex-direction: row;
