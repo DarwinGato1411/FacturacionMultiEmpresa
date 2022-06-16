@@ -207,12 +207,16 @@
                                         <div class="wrapper_input">
                                             <span>Nombre:</span>
                                             <textbox  
-                                                readonly="true" 
+                                                  readonly="true" 
                                                 placeholder="Nombre proveedor"
                                                 class="input" 
-                                                value="@bind(vm.proveedorSeleccionado.provNombre)"  
+                                                onDoubleClick="@command('buscarProveedorEnLista')" 
+                                                   value="@bind(vm.proveedorSeleccionado.provCedula)"  
                                             />
-                                            <div class="fa-solid fa-user icon"></div>
+                                            <div 
+                                             onClick="@command('buscarProveedorEnLista')"  
+                                             class="fa-solid fa-magnifying-glass icon">
+                                            </div>
                                         </div>
                                         
                                         <div class="wrapper_input">

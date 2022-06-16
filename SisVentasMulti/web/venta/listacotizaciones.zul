@@ -20,36 +20,7 @@
                 <tabpanel  height="98%" width="99%" class="factura" >     
                                    
                     <div class="row container-fluid">
-                        <!-- <div class="input-group  mb-6 col-6 col-sm-12 col-md-2 col-lg-2">
-                                    
-                            <textbox   class="form-control form-control-sm"
-                                                   style="font-size:10px;background-color:trasnsparent;
-                                                           font-weight:bold;height:25px"    
-                                                   onChange="self.setValue(self.getValue().toUpperCase());"                                              
-                                                   placeholder="Buscar"
-                                                   value="@bind(vm.buscarCliente)"                                                   
-                                                   onOK="@command('buscarLikeCliente')"                                               
-                                                   maxlength="100"  />
-                        
-                            <div class="input-group-append" >
-                                <button   image="/imagenes/buscar1.png" 
-                                                      style="font-size:10px;background-color:trasnsparent;font-weight:bold"
-                                                      onClick="@command('buscarLikeCliente')"  
-                                                      tooltiptext="Buscar "
-                                                      class="btn  btn-primary btn-sm "/>
-                               
-                               
-                            </div>
-                        </div> -->
-
-                        <!--                        <div class="row  col-12 col-sm-12 col-md-2 col-lg-2">
-                            <textbox value="@bind(vm.buscarCliente)"  
-                                     class="form-control form-control-sm"
-                                     tooltiptext="Buscar"
-                                     placeholder=""
-                                     onOK="@command('buscarLikeCliente')"
-                                     onChange="self.setValue(self.getValue().toUpperCase());" />
-                        </div>--> 
+                    
 
                         <div class="factura_header paint_all_row">
                             <div class="fact_row fact_only_row_wrap">
@@ -81,22 +52,22 @@
                                 <listhead> 
                                     <listheader width="5%"  label="N° Fact" /> 
                                     <listheader width="10%"  label="RUC/CI" />    
-                                    <listheader width="15%" label="Nobre comercial"  >
+                                    <listheader width="18%" label="Nobre comercial"  >
                                
                                 
                                 
                                     </listheader> 
-                                    <listheader width="15%"  label="Razon Social" /> 
+                                    <listheader width="18%"  label="Razon Social" /> 
                                     <listheader width="10%"  label="Movil" /> 
                                     <listheader width="10%"  label="Fecha" /> 
-                                    <listheader width="8%"  label="Total "  /> 
+                                    <listheader width="8%"  label="Total " align="center"  /> 
                                     <listheader width="5%"  label="Estado " align="rigth" /> 
                                     <listheader width="6%"  label="Abono "  /> 
                                     <listheader width="6%"  label="Saldo "  />        
-                                    <listheader width="5%"  label=" " align="center" />        
-                                    <listheader width="5%"  label=" " align="center" />        
-                                    <listheader width="5%"  label=" " align="center" />        
-                                    <listheader width="5%"  label="" align="center" />        
+                                    <listheader width="3%"  label=" " align="center" />        
+                                    <listheader width="3%"  label=" " align="center" />        
+                                    <listheader width="3%"  label=" " align="center" />        
+                                    <listheader width="3%"  label="" align="center" />        
                                 </listhead>  
                         
                     
@@ -131,6 +102,7 @@
                                         <listcell zclass = "mycss-listcell">
                                             <decimalbox format="###.####" 
                                                         readonly="true" 
+                                                         width="100%"
                                                         value="@bind(each.facTotal)" />
                                         </listcell>
                                         <zk if="${each.facEstado=='PE'}" > 

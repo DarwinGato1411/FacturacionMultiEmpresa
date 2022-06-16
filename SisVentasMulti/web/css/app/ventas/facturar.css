@@ -491,8 +491,15 @@ body {
   gap: 1em;
 }
 
+
 .kardex_wrapper_item {
-  width: 50%;
+  width: 35%;
+  background-color: #eee;
+  padding: 1em;
+  border-radius: 10px;
+}
+.kardex_wrapper_item_detalle {
+  width: 75%;
   background-color: #eee;
   padding: 1em;
   border-radius: 10px;

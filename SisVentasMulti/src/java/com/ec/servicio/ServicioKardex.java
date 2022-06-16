@@ -206,13 +206,15 @@ public class ServicioKardex {
             em.getTransaction().begin();
             String SQL = "SELECT a from Kardex a ";
             String WHERE = "";
-            String TIPO_AMBIENTE = "a.idProducto.codTipoambiente=:codTipoambiente";
+            String TIPO_AMBIENTE = " a.idProducto.codTipoambiente=:codTipoambiente";
             String ORDERBY = " ORDER BY a.idProducto.prodNombre ASC";
 
             if (estado.equals("MEM")) {
-                WHERE = "WHERE a.idProducto.prodCantMinima >= a.karTotal";
+                WHERE = " WHERE a.idProducto.prodCantMinima >= a.karTotal AND";
             } else if (estado.equals("MAM")) {
-                WHERE = "WHERE a.idProducto.prodCantMinima < a.karTotal";
+                WHERE = " WHERE a.idProducto.prodCantMinima < a.karTotal AND";
+            }else{
+            WHERE = " WHERE ";
             }
             SQL = SQL + WHERE + TIPO_AMBIENTE + ORDERBY;
             Query query = em.createQuery(SQL);

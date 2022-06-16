@@ -80,7 +80,7 @@ public class ListaCompras {
     Connection con = null;
 
     public ListaCompras() {
-        findByBetweenFecha();
+       
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -89,6 +89,7 @@ public class ListaCompras {
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
+         findByBetweenFecha();
     }
 
     private void buscarLikeNombre() {

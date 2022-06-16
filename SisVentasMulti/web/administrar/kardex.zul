@@ -11,7 +11,7 @@
 <zk  contentStyle="overflow:auto" with="100%" >
     <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" id="idHbox"
           viewModel="@id('vm') @init('com.ec.controlador.AdmKardex')" width="100%">
-<!--        <style>
+        <!--        <style>
             .form-control {
             display: block;
             width: 100%;
@@ -46,9 +46,9 @@
                 <div class="kardex_wrapper_item">
                     <div class="kardex_list">
                         <listbox model="@load(vm.listaProductos)" 
-                                nonselectableTags=""  
-                                mold="paging"
-                                pageSize="17"  >
+                                 nonselectableTags=""  
+                                 mold="paging"
+                                 pageSize="17"  >
                             <custom-attributes org.zkoss.zul.listbox.rod="true"/>
         
                         
@@ -56,19 +56,19 @@
                                     
                                 <listheader width="25%"  >
                                     <textbox value="@bind(vm.buscarProductoCodigo) "  
-                                            class="form-control form-control-sm"
-                                            tooltiptext="Codigo"
-                                            placeholder="Codigo"
-                                            onOK="@command('buscarProductoLikeCodigo')"
-                                            onChange="self.setValue(self.getValue().toUpperCase());" />
+                                             class="form-control form-control-sm"
+                                             tooltiptext="Codigo"
+                                             placeholder="Codigo"
+                                             onOK="@command('buscarProductoLikeCodigo')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());" />
                                 </listheader> 
                                 <listheader width="75%"  >
                                     <textbox value="@bind(vm.buscarProducto)"  
-                                            class="form-control form-control-sm"
-                                            tooltiptext="Nombre del producto"
-                                            placeholder="Nombre del producto"
-                                            onOK="@command('buscarLikeNombreProd')"
-                                            onChange="self.setValue(self.getValue().toUpperCase());" />
+                                             class="form-control form-control-sm"
+                                             tooltiptext="Nombre del producto"
+                                             placeholder="Nombre del producto"
+                                             onOK="@command('buscarLikeNombreProd')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());" />
                                 </listheader> 
                                     
                                 
@@ -78,21 +78,21 @@
                                 <listitem>
                                         
                                     <listcell onClick="@command('seleccionarProductoLista',valor=each)"
-                                            style="font-size:11px;background-color:#d6eefd"  
-                                            zclass = "mycss-listcell">
+                                              style="font-size:11px;background-color:#d6eefd"  
+                                              zclass = "mycss-listcell">
                                         <textbox value="@bind(each.prodCodigo)" width="96%" 
-                                                class="form-control form-control-sm"
-                                                style="font-size:10px;background-color:#d6eefd"
-                                                readonly="true"
-                                                onClick="@command('seleccionarProductoLista',valor=each)" />
+                                                 class="form-control form-control-sm"
+                                                 style="font-size:10px;background-color:#d6eefd"
+                                                 readonly="true"
+                                                 onClick="@command('seleccionarProductoLista',valor=each)" />
                                     </listcell>
                                     <listcell onClick="@command('seleccionarProductoLista',valor=each)" 
-                                            zclass = "mycss-listcell">
-                                        <textbox value="@bind(each.prodNombre)" width="99%" 
-                                                class="form-control form-control-sm"
-                                                style="font-size:10px;background-color:#d6eefd"
-                                                readonly="true"
-                                                onClick="@command('seleccionarProductoLista',valor=each)" />
+                                              zclass = "mycss-listcell">
+                                        <textbox value="@bind(each.prodNombre)" width="100%" 
+                                                 class="form-control form-control-sm"
+                                                 style="font-size:10px;background-color:#d6eefd"
+                                                 readonly="true"
+                                                 onClick="@command('seleccionarProductoLista',valor=each)" />
                                     </listcell>
                                 </listitem>
                             </template>
@@ -100,122 +100,129 @@
                     </div>
                 </div>
             
-                <div class="kardex_wrapper_item">
-                    <div class="kardex_item">
-                        <div class="kardex_wrapper_input">
-                            <span class="form-control form-control-sm">Producto seleccionado</span>
-                            <textbox 
-                                readonly="true" 
-                                class="form-control form-control-sm"
-                                value="@bind(vm.kardex.idProducto.prodNombre)" 
-                                style="text-align:center;font-size:1em;color:blue"
-                            />
-                        </div>
-                        <div class="kardex_wrapper_input">
-                            <span class="form-control form-control-sm">Stock</span>
-                            <textbox 
-                                readonly="true" 
-                                class="form-control form-control-sm"
-                                value="@bind(vm.kardex.karTotal)" 
-                                style="text-align:center;font-size:1em;color:blue"
-                            />
+                <div class="kardex_wrapper_item_detalle">
+                    <div class="fact_row">
+                        <div class="wrapper_data">
+                            <div class="wrapper_input">
+                                <span class="form-control form-control-sm">Seleccionado:</span>
+                                <textbox 
+                                    readonly="true" 
+                                    class="form-control form-control-sm"
+                                    value="@bind(vm.kardex.idProducto.prodNombre)" 
+                                    style="text-align:center;font-size:1em;color:blue"
+                                />
+
+                                   
+                            </div>
+                            <div class="kardex_wrapper_input">
+                           
+                            </div>
+                            <div class="wrapper_input">
+                                <span class="form-control form-control-sm">Stock:</span>
+                                <textbox 
+                                    readonly="true" 
+                                    class="form-control form-control-sm"
+                                    value="@bind(vm.kardex.karTotal)" 
+                                    style="text-align:center;font-size:1em;color:blue"
+                                />
+                            </div>
                         </div>
                     </div>
 
                     <div class="kardex_list">
                         <listbox model="@load(vm.listaDetalleKardex)" 
-                                    nonselectableTags="*"                                       
-                                    mold="paging"
-                                    height="400px" autopaging="true" 
-                                    pageSize="10"  >
-                                <custom-attributes org.zkoss.zul.listbox.rod="true"/>
+                                 nonselectableTags="*"                                       
+                                 mold="paging"
+                                 height="400px" autopaging="true" 
+                                 pageSize="10"  >
+                            <custom-attributes org.zkoss.zul.listbox.rod="true"/>
     
                     
-                                <listhead> 
+                            <listhead> 
                                 
-                                    <listheader width="10%" label="Fecha kardex" sort="auto(detkFechakardex)" />
-                                    <listheader width="10%" label="Cantidad" sort="auto(detkCantidad)" />
-                                    <listheader width="10%" label="Unidad" sort="auto(detkCantidad)" />
-                                    <listheader width="35%" label="Detalle" sort="auto(detkDetalles)" />
-                                    <listheader width="10%" label="Fecha registro" sort="auto(detkFechacreacion)" />
-                                    <listheader width="10%" label="Tipo" sort="auto(idTipokardex.tipkDescripcion)" />
-                                    <listheader width="10%" label="Kardex Manual" sort="auto(detkKardexmanual)" />
-                                    <listheader width="15%" label="Nº Documento"  />
+                                <listheader width="10%" label="Fecha kardex" sort="auto(detkFechakardex)" />
+                                <listheader width="10%" label="Cantidad" sort="auto(detkCantidad)" />
+                                <listheader width="10%" label="Unidad" sort="auto(detkCantidad)" />
+                                <listheader width="35%" label="Detalle" sort="auto(detkDetalles)" />
+                                <listheader width="10%" label="Fecha registro" sort="auto(detkFechacreacion)" />
+                                <listheader width="10%" label="Tipo" sort="auto(idTipokardex.tipkDescripcion)" />
+                                <listheader width="10%" label="Kardex Manual" sort="auto(detkKardexmanual)" />
+                                <listheader width="15%" label="Nº Documento"  />
                                     
                                 
                             
-                                </listhead>  
+                            </listhead>  
                     
-                                <template name="model">                                                            
-                                    <listitem>
+                            <template name="model">                                                            
+                                <listitem>
                                     
-                                        <listcell zclass = "mycss-listcell">
-                                            <datebox compact="true" value="@bind(each.detkFechakardex)" 
-                                                    buttonVisible="false" lenient="true" readonly="true"
-                                                    format="medium" width="98%"  />
-                                        </listcell>
-                                        <listcell  zclass = "mycss-listcell">
-                                            <decimalbox format="###.####" 
+                                    <listcell zclass = "mycss-listcell">
+                                        <datebox compact="true" value="@bind(each.detkFechakardex)" 
+                                                     buttonVisible="false" lenient="true" readonly="true"
+                                                     format="medium" width="98%"  />
+                                    </listcell>
+                                    <listcell  zclass = "mycss-listcell">
+                                        <decimalbox format="###.####" 
                                                         readonly="true" 
                                                         value="@bind(each.detkCantidad)" width="100%"/>
-                                        </listcell>
-                                        <listcell  zclass = "mycss-listcell">
-                                            <label value="@bind(each.detkUnidadFin)"
-                                                class="form-control form-control-sm"
-                                                style="font-size:10px;background-color:#d6eefd"       
-                                                width="100%"/>
-                                        </listcell>
+                                    </listcell>
+                                    <listcell  zclass = "mycss-listcell">
+                                        <label value="@bind(each.detkUnidadFin)"
+                                                   class="form-control form-control-sm"
+                                                   style="font-size:10px;background-color:#d6eefd"       
+                                                   width="100%"/>
+                                    </listcell>
+                                    <listcell zclass = "mycss-listcell" >
+                                        <label value="@bind(each.detkDetalles)" width="100%"
+                                                   class="form-control form-control-sm"
+                                                   style="font-size:10px;background-color:#d6eefd"/>
+                                    </listcell>
+                                    <listcell zclass = "mycss-listcell">
+                                        <datebox compact="true" value="@bind(each.detkFechacreacion)" 
+                                                     buttonVisible="false" lenient="true" readonly="true"
+                                                     format="medium" width="98%"  />
+                                    </listcell>
+                                    <listcell  zclass = "mycss-listcell">
+                                        <label value="@bind(each.idTipokardex.tipkDescripcion)" width="96%"
+                                                   class="form-control form-control-sm"
+                                                   style="font-size:10px;background-color:#d6eefd"/>
+                                    </listcell>
+                                    <zk if="${each.detkKardexmanual}" > 
                                         <listcell zclass = "mycss-listcell" >
-                                            <label value="@bind(each.detkDetalles)" width="100%"
-                                                class="form-control form-control-sm"
-                                                style="font-size:10px;background-color:#d6eefd"/>
+                                            <label value="MANUAL" width="96%"
+                                                       class="form-control form-control-sm"
+                                                       style="font-size:10px;background-color:#d6eefd"/>
                                         </listcell>
-                                        <listcell zclass = "mycss-listcell">
-                                            <datebox compact="true" value="@bind(each.detkFechacreacion)" 
-                                                    buttonVisible="false" lenient="true" readonly="true"
-                                                    format="medium" width="98%"  />
-                                        </listcell>
+                                    </zk>
+                                    <zk if="${each.detkKardexmanual=='FALSE'}" > 
                                         <listcell  zclass = "mycss-listcell">
-                                            <label value="@bind(each.idTipokardex.tipkDescripcion)" width="96%"
-                                                class="form-control form-control-sm"
-                                                style="font-size:10px;background-color:#d6eefd"/>
+                                            <label value="Transaccion" width="96%"
+                                                       class="form-control form-control-sm"
+                                                       style="font-size:10px;background-color:#d6eefd"/>
                                         </listcell>
-                                        <zk if="${each.detkKardexmanual}" > 
-                                            <listcell zclass = "mycss-listcell" >
-                                                <label value="MANUAL" width="96%"
-                                                    class="form-control form-control-sm"
-                                                    style="font-size:10px;background-color:#d6eefd"/>
-                                            </listcell>
-                                        </zk>
-                                        <zk if="${each.detkKardexmanual=='FALSE'}" > 
-                                            <listcell  zclass = "mycss-listcell">
-                                                <label value="Transaccion" width="96%"
-                                                    class="form-control form-control-sm"
-                                                    style="font-size:10px;background-color:#d6eefd"/>
-                                            </listcell>
-                                        </zk>
-                                        <zk if="${each.idCompra != NULL}" > 
-                                            <listcell  zclass = "mycss-listcell">
-                                                <label value="@bind(each.idCompra.cabNumFactura ne null ? 'COM-'.concat(each.idCompra.cabNumFactura) : '')" width="96%"
-                                                    class="form-control form-control-sm"
-                                                    style="font-size:10px;background-color:#d6eefd"/>
-                                            </listcell>
-                                        </zk>
-                                        <zk if="${each.idFactura != NULL}" > 
-                                            <listcell  zclass = "mycss-listcell">
-                                                <label value="@bind(each.idFactura.facNumeroText ne null ? 'FACT-'.concat(each.idFactura.facNumeroText) : '')" width="96%"
-                                                    class="form-control form-control-sm"
-                                                    style="font-size:10px;background-color:#d6eefd"/>
-                                            </listcell>
-                                        </zk>
-                                        <zk if="${each.idFactura eq NULL and each.idCompra == NULL }" > 
-                                            <listcell zclass = "mycss-listcell" style="font-size:10px;background-color:#d6eefd" >
-                                                AJUSTE
-                                            </listcell>
-                                        </zk>
-                                    </listitem>
-                                </template>
-                            </listbox> 
+                                    </zk>
+                                    <zk if="${each.idCompra != NULL}" > 
+                                        <listcell  zclass = "mycss-listcell">
+                                            <label value="@bind(each.idCompra.cabNumFactura ne null ? 'COM-'.concat(each.idCompra.cabNumFactura) : '')" width="96%"
+                                                       class="form-control form-control-sm"
+                                                       style="font-size:10px;background-color:#d6eefd"/>
+                                        </listcell>
+                                    </zk>
+                                    <zk if="${each.idFactura != NULL}" > 
+                                        <listcell  zclass = "mycss-listcell">
+                                            <label value="@bind(each.idFactura.facNumeroText ne null ? 'FACT-'.concat(each.idFactura.facNumeroText) : '')" width="96%"
+                                                       class="form-control form-control-sm"
+                                                       style="font-size:10px;background-color:#d6eefd"/>
+                                        </listcell>
+                                    </zk>
+                                    <zk if="${each.idFactura eq NULL and each.idCompra == NULL }" > 
+                                        <listcell zclass = "mycss-listcell" style="font-size:10px;background-color:#d6eefd" >
+                                            AJUSTE
+                                        </listcell>
+                                    </zk>
+                                </listitem>
+                            </template>
+                        </listbox> 
                     </div>
                 </div>
             </div>

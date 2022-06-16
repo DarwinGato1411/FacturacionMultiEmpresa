@@ -21,33 +21,7 @@
                 
                 <tabpanel  width="99%" class="factura" >                    
                     
-                    <!-- 
-                    <div class="row">
-                       
-                        <div class=" input-group col-12 col-sm-12 col-md-4 col-lg-4 ">
-
-                            <label value="Inicio: " style="font-weight: bold;padding: 5px;"   />
-                            <datebox compact="true" value="@bind(vm.fechainicio)" 
-                                     style="font-weight:bold;" 
-                                     buttonVisible="true" 
-                                     lenient="true" format="dd/MM/yyyy" 
-                                     constraint="no empty: Ingrese la fecha "/>
-                            <label value="Fin: "  style="font-weight: bold;padding: 5px;"   />
-                            <datebox compact="true" value="@bind(vm.fechafin)" 
-                                     style="font-weight:bold;"                                               
-                                     buttonVisible="true" 
-                                     lenient="true" format="dd/MM/yyyy" 
-                                     constraint="no empty: Ingrese la fecha "/>
-                            <div class="input-group-append">
-                                <button   image="/imagenes/buscar1.png"  
-                                          onClick="@command('buscarFechas')"  
-                                          class="btn btn-primary btn-sm  "
-                                          tooltiptext="Buscar facturas por fecha"/>                                     
-                            </div>         
-                        </div>
-                       
-                    </div> -->
-
+                
 
 
                      <div class="factura_header paint_all_row">
@@ -116,7 +90,7 @@
                                             onChange="self.setValue(self.getValue().toUpperCase());" />
                                     
                                 </listheader>    
-                                <listheader width="25%"  >
+                                <listheader width="28%"  >
                                     <textbox value="@bind(vm.buscarCliente)"  
                                             class="form-control form-control-sm"
                                             tooltiptext="Nombre del cliente"
@@ -129,9 +103,9 @@
                                 <listheader width="8%"  label="Estado SRI" align="rigth" /> 
                                 <listheader width="8%"  label="Fecha Aut." align="rigth" /> 
                                 <listheader width="40%"  label="Clave Autorizacion"  />                                   
-                                <listheader width="5%"  label="" align="center" />        
-                                <listheader width="5%"  label="" align="center" />        
-                                <listheader width="5%"  label="" align="center" />               
+                                <listheader width="3%"  label="" align="center" />        
+                                <listheader width="3%"  label="" align="center" />        
+                                <listheader width="3%"  label="" align="center" />               
                             </listhead>  
                             
                         
@@ -152,6 +126,7 @@
                                 <listcell zclass = "mycss-listcell">
                                         <datebox compact="true" value="@bind(each.facFecha)" 
                                                 buttonVisible="false" lenient="true" readonly="true"
+                                                width="100%"
                                                 format="medium"   />
                                     </listcell>
                                 <listcell  zclass = "mycss-listcell" >
@@ -165,6 +140,7 @@
                                                 buttonVisible="false" lenient="true" 
                                                 tooltiptext="@bind(each.mensajesri)"
                                                 readonly="true"
+                                                 width="100%"
                                                 format="medium"   />
                                     </listcell>
                 

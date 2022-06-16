@@ -20,95 +20,7 @@
             <tabpanels >
                 
                 <tabpanel  width="99%" class="factura" >                    
-                    <!-- <div class="row">
-                        <div class="  col-12 col-sm-12 col-md-5 col-lg-5  ">
-
-                            <label value="Estado:" tooltiptext="Estado de la factura" style="font-weight: bold;padding: 5px;"   />
-                            <combobox  selectedItem="@bind(vm.estadoBusqueda)"                                      
-                                       style="width:100px"  readonly="true"  >
-                                <comboitem label="TODO" value="TODO" />
-                                <comboitem label="PENDIENTE" value="PE" />
-                                <comboitem label="PAGADO" value="PA" />
-                            </combobox>
-                            
-                                <button   image="/imagenes/buscar1.png"  
-                                          onClick="@command('buscarEstado')"  
-                                          class="btn btn-primary btn-sm  "
-                                          tooltiptext="Buscar facturas por estado"/>                                     
-                                    
-                        
-                                          <div class="btn-group" >
-                            <label value="Inicio: " style="font-weight: bold;padding: 5px;"   />
-                            <datebox compact="true" value="@bind(vm.fechainicio)" 
-                                     style="font-weight:bold;width:100px"
-                                      
-                                     buttonVisible="true" 
-                                     lenient="true" format="dd/MM/yyyy" 
-                                     constraint="no empty: Ingrese la fecha "/>
-                            <label value="Fin: "  style="font-weight: bold;padding: 5px;"   />
-                            <datebox compact="true" value="@bind(vm.fechafin)" 
-                                     style="font-weight:bold;width:100px"                                               
-                                     buttonVisible="true" 
-                                     lenient="true" format="dd/MM/yyyy" 
-                                     constraint="no empty: Ingrese la fecha "/>
-                            
-                                <button   image="/imagenes/buscar1.png"  
-                                          onClick="@command('buscarFechas')"  
-                                          class="btn btn-primary btn-sm  "
-                                          tooltiptext="Buscar facturas por fecha"/>                                     
-                          
-                            </div>        
-                        </div>
-
-                        <div class="col-12 col-sm-12 col-md-7 col-lg-7" align="start" >
-                            <button  image="/imagenes/buscar1.png" 
-                                     label="PEN-SRI"
-                                     class="btn btn btn-secondary btn-sm grow"
-                                     onClick="@command('buscarPendientesEnvSRI')" 
-                                     tooltiptext="Buscar facturas pendientes para enviar al SRI"/>
-                        
-                            <button  image="/iconos/sri24x24.png" 
-                                     label="AUT-LOTE"
-                                     class="btn btn btn-secondary btn-sm grow"
-                                     onClick="@command('autorizarEnLote')" 
-                                     tooltiptext="Autorizar facturas en lote"/>
-                       
-                            <button  image="/imagenes/buscar1.png" 
-                                     label="DEV-SRI-REEN"
-                                     style="background:#FCFE74"
-                                     class="btn  btn-sm grow"
-                                     onClick="@command('buscarDevueltaSRIReenvio')" 
-                                     tooltiptext="Buscar facturas pendientes para enviar al SRI"/>
-                        
-                            <button  image="/iconos/sri24x24.png" 
-                                     label="REEN-LOTE"
-                                  class="btn  btn-sm grow"
-                                     onClick="@command('reenviarEnLote')" 
-                                     tooltiptext="Autorizar facturas en lote"/>
-                        
-                            <button  image="/imagenes/buscar1.png" 
-                                     label="DEV-CORREGIR"
-                                     style="background:#FCFE74"
-                                     class="btn  btn-sm grow"
-                                     onClick="@command('buscarDevueltaSRIPorCorregir')" 
-                                     tooltiptext="Buscar facturas pendientes para enviar al SRI"/>
-                        
-                        
-                       
-                                <label value="Saldo total por cobrar:"   visible="false"/>    
-                                <decimalbox format="###.##" 
-                                visible="false"
-                                            style="font-size:medium;color:blue"
-                                            value="@bind(vm.porCobrar)"
-                                            readonly="true"     />   
-                           
-                            <button   image="/imagenes/excel.png"  
-                                      onClick="@command('exportListboxToExcel')"  
-                                      class="btn btn-primary btn-sm "
-                                      tooltiptext="Descargar"/>
-
-                        </div>
-                    </div> -->
+                 
 
                      <div class="factura_header">
                         <div class="fact_row">
@@ -268,7 +180,7 @@
                                 <listheader width="8%"  label="Estado SRI" align="rigth" /> 
                                 <listheader width="8%"  label="Fecha Aut." align="rigth" /> 
                                 <!--<listheader width="20%"  label="Clave Autorizacion"  />-->                                   
-                                <listheader width="10%"  label="Responsable/cuenta"  />                                   
+                                <listheader width="10%"  label="Responsable / Cuenta"  />                                   
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        

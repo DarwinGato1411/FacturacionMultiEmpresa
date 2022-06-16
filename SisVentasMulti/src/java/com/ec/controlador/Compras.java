@@ -544,9 +544,13 @@ public class Compras {
         if (!proveedorSeleccionado.getProvCedula().equals("")
                     && !numeroFactura.equals("")) {
             guardarCompra();
+              Clients.showNotification("Compra registrada correctamente",
+                            Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
 
         } else {
-            Messagebox.show("Verifique el proveedor, numero de factura, numero de autorizacion", "Atención", Messagebox.OK, Messagebox.ERROR);
+             Clients.showNotification("Verifique el proveedor, numero de factura, numero de autorizacion, proveedor",
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+//            Messagebox.show("", "Atención", Messagebox.OK, Messagebox.ERROR);
         }
     }
 

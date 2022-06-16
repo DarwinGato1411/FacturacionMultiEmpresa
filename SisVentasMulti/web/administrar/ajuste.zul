@@ -28,28 +28,6 @@
                     
                     <div class="container-fluid " >
                         
-                                
-                                <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-8 " align="start">
-                                    <textbox   class="form-control form-control-sm"
-                                               onChange="self.setValue(self.getValue().toUpperCase())"
-                                               style="font-size:12px;background-color:trasnsparent;font-weight:bold"
-                                               ctrlKeys="^A" onCtrlKey="@command('buscarClienteEnLista')" 
-                                               placeholder="Motivo del ajuste............"
-                                               value="@bind(vm.motivoAjuste)"                                                                                                      
-                                               maxlength="150"  />
-                              
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-3 " align="start">
-                                    <label  style="font-weight:bold" 
-                                            value="Tipo de Ajuste"  />
-                                    <radiogroup  selectedItem="@bind(vm.tipoAjuste)"   >
-                                        <space bar="true"  /> 
-                                        <radio label="ENTRADA" value="ING" />  
-                                        <space bar="true"  />                                                                        
-                                        <radio  label="SALIDA" value="SAL"/>     
-                                                                                  
-                                    </radiogroup>
-                                </div> -->
                               
                                 <div class="factura_header paint_all_row">
                                     <div class="fact_row ">
@@ -165,10 +143,14 @@
                                                     </listcell>
                                                 
                     
-                                                    <listcell zclass = "mycss-listcell">   
-                                                        <image  src="/iconos/Forward.png" 
-                                                                onClick="@command('agregarItemLista',valor=each.idProducto)" 
-                                                                tooltiptext="Asigar producto"/> 
+                                                    <listcell zclass = "mycss-listcell">  
+                                                        <div 
+                                                class="fa-solid fa-chevron-right"
+                                                style="font-size:16px; padding:0.5em; cursor:pointer;font-weight: bold"
+                                                onClick="@command('agregarItemLista',valor=each.idProducto)" 
+                                                tooltiptext="Asignar producto"
+                                            />
+
                                                     
                                                     </listcell>
                                                 </listitem>
