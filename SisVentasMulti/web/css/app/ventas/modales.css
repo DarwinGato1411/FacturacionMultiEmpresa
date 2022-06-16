@@ -215,8 +215,18 @@ body {
 }
 
 .input_select_custom {
-  border: solid red 1px;
   width: 100%;
+}
+.btn_modal {
+  font-family: Poppins, sans-serif !important;
+}
+
+.btn_modal::before {
+  content: "";
+  margin-right: 1em;
+  transition: ease 0.3s;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
 }
 
 @media only screen and (min-width: 632px) {
