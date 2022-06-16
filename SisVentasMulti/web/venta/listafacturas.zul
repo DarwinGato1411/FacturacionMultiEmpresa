@@ -28,7 +28,8 @@
                                 <div class="wrapper_input">
                                     <span>Estado:</span>
                                     <combobox  
-                                        class="input_select"
+                                         width="100%"         
+                                       class="  textoFechaDateBox"      
                                         selectedItem="@bind(vm.estadoBusqueda)"     
                                         readonly="true"  
                                     >
@@ -36,7 +37,7 @@
                                         <comboitem label="PENDIENTE" value="PE" />
                                         <comboitem label="PAGADO" value="PA" />
                                     </combobox>
-                                    <div class="fa-solid fa-chevron-down icon"></div>
+                                    <!--<div class="fa-solid fa-chevron-down icon"></div>-->
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Inicio:</span>

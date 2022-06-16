@@ -4,8 +4,12 @@
  */
 package com.ec.controlador.vistas;
 
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.VistaFacturasPorCobrar;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioFacturaPorCobrar;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ArchivoUtils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +33,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 
 /**
@@ -38,14 +44,21 @@ import org.zkoss.zul.Filedownload;
 public class FacturasPorCobrarVm {
 
     ServicioFacturaPorCobrar servicioFacturaPorCobrar = new ServicioFacturaPorCobrar();
-    private String nombre="";
+    private String nombre = "";
     private Boolean groupby = Boolean.FALSE;
     private List<VistaFacturasPorCobrar> listaFacturas = new ArrayList<VistaFacturasPorCobrar>();
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
     /*DIARIA*/
     public FacturasPorCobrarVm() {
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
 
-        
         buscarfacturas();
     }
 
@@ -58,10 +71,9 @@ public class FacturasPorCobrarVm {
     }
 
     private void buscarfacturas() {
-        
-        listaFacturas = servicioFacturaPorCobrar.findPorCobrar(nombre, groupby);
 
-      
+        listaFacturas = servicioFacturaPorCobrar.findPorCobrar(nombre, groupby,amb);
+
     }
 
     public String getNombre() {
@@ -88,7 +100,6 @@ public class FacturasPorCobrarVm {
         this.listaFacturas = listaFacturas;
     }
 
-   
     //exportar informacion por dia
     @Command
     public void exportExcel() throws Exception {
@@ -153,11 +164,10 @@ public class FacturasPorCobrarVm {
             chfe1.setCellValue(new HSSFRichTextString("Cedula"));
             chfe1.setCellStyle(estiloCelda);
 
-            HSSFCell chfe111= r.createCell(j++);
+            HSSFCell chfe111 = r.createCell(j++);
             chfe111.setCellValue(new HSSFRichTextString("Nombre"));
             chfe111.setCellStyle(estiloCelda);
-            
-            
+
             HSSFCell chfe11 = r.createCell(j++);
             chfe11.setCellValue(new HSSFRichTextString("Deuda"));
             chfe11.setCellStyle(estiloCelda);
@@ -172,7 +182,7 @@ public class FacturasPorCobrarVm {
             BigDecimal total = BigDecimal.ZERO;
             BigDecimal Fecha = BigDecimal.ZERO;
 
-            for (VistaFacturasPorCobrar item :listaFacturas ) {
+            for (VistaFacturasPorCobrar item : listaFacturas) {
                 i = 0;
 
                 r = s.createRow(rownum);
@@ -189,8 +199,7 @@ public class FacturasPorCobrarVm {
                 HSSFCell c0 = r.createCell(i++);
                 c0.setCellValue(new HSSFRichTextString(ArchivoUtils.redondearDecimales(item.getFacSaldoAmortizado(), 2).toString()));
 
-                
-                  HSSFCell c2 = r.createCell(i++);
+                HSSFCell c2 = r.createCell(i++);
                 c2.setCellValue(new HSSFRichTextString(item.getDias().toString()));
 
                 /*autemta la siguiente fila*/

@@ -4,6 +4,7 @@
  */
 package com.ec.servicio;
 
+import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.VistaFacturasPorCobrar;
 import com.ec.entidad.VistaVentaDiaria;
 import java.util.ArrayList;
@@ -28,21 +29,23 @@ public class ServicioFacturaPorCobrar {
         this.em = em;
     }
 
-    public List<VistaFacturasPorCobrar> findPorCobrar(String nombre, Boolean group) {
+    public List<VistaFacturasPorCobrar> findPorCobrar(String nombre, Boolean group,Tipoambiente codTipoambiente) {
 
         List<VistaFacturasPorCobrar> lista = new ArrayList<VistaFacturasPorCobrar>();
         try {
             String SQL = "SELECT a FROM VistaFacturasPorCobrar a  ";
-            String WHERE = " WHERE a.cliNombres LIKE :nomnre";
+            String WHERE = " WHERE a.cliNombres LIKE :nomnre AND a.codTipoambiente=:codTipoambiente";
             String GROUPBY = " ";
             if (group) {
                 SQL = "SELECT new com.ec.entidad.VistaFacturasPorCobrar( max(a.id),max(a.facNumeroText),max(a.cliCedula),max(a.cliNombres),max(a.fac_total),sum(a.facSaldoAmortizado),max(a.dias),max(a.facFecha)) FROM VistaFacturasPorCobrar a  ";
                 GROUPBY = GROUPBY + "  GROUP BY a.cliCedula ";
             }
+            
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             Query query = em.createQuery(SQL + WHERE + GROUPBY);
             query.setParameter("nomnre", "%" + nombre + "%");
+            query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
             lista = (List<VistaFacturasPorCobrar>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

@@ -167,6 +167,9 @@ public class Tipoambiente implements Serializable {
     @Column(name = "am_ripme")
     private Boolean amRimpe;
 
+    @Column(name = "am_general")
+    private Boolean amGeneral;
+
     @OneToMany(mappedBy = "codTipoambiente")
     private Collection<Producto> productoCollection;
 
@@ -193,6 +196,8 @@ public class Tipoambiente implements Serializable {
     private Integer amSecGuia;
     @Column(name = "am_valor_iva")
     private BigDecimal amValorIva;
+    @OneToMany(mappedBy = "codTipoambiente")
+    private Collection<HistorialDeclaraciones> historialDeclaracionesCollection;
 
     public Tipoambiente() {
     }
@@ -570,6 +575,14 @@ public class Tipoambiente implements Serializable {
         this.amRimpe = amRimpe;
     }
 
+    public Boolean getAmGeneral() {
+        return amGeneral == null ? Boolean.FALSE : amGeneral;
+    }
+
+    public void setAmGeneral(Boolean amGeneral) {
+        this.amGeneral = amGeneral;
+    }
+
     public Collection<Producto> getProductoCollection() {
         return productoCollection;
     }
@@ -648,6 +661,14 @@ public class Tipoambiente implements Serializable {
 
     public void setAmSecNotaCredito(Integer amSecNotaCredito) {
         this.amSecNotaCredito = amSecNotaCredito;
+    }
+
+    public Collection<HistorialDeclaraciones> getHistorialDeclaracionesCollection() {
+        return historialDeclaracionesCollection;
+    }
+
+    public void setHistorialDeclaracionesCollection(Collection<HistorialDeclaraciones> historialDeclaracionesCollection) {
+        this.historialDeclaracionesCollection = historialDeclaracionesCollection;
     }
 
     @Override

@@ -46,6 +46,8 @@ public class VistaFacturasPorCobrar implements Serializable {
     private Date facFecha;
     @Column(name = "id_usuario")
     private Integer idUsuario;
+    @Column(name = "cod_tipoambiente")
+    private Integer codTipoambiente;
 
     public VistaFacturasPorCobrar(Long id, String facNumeroText, String cliCedula, String cliNombres, BigDecimal fac_total, BigDecimal facSaldoAmortizado, Integer dias, Date facFecha) {
         this.id = id;
@@ -131,6 +133,14 @@ public class VistaFacturasPorCobrar implements Serializable {
 
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public Integer getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Integer codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
 
 }

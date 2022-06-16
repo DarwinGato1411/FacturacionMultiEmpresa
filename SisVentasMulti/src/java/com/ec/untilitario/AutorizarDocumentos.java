@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -166,7 +166,7 @@ public class AutorizarDocumentos {
 
     }
 
-    public RespuestaComprobante autorizarComprobante(String claveDeAcceso,Tipoambiente amb) throws RespuestaAutorizacionException {
+    public RespuestaComprobante autorizarComprobante(String claveDeAcceso, Tipoambiente amb) throws RespuestaAutorizacionException {
 
         try {
             RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
@@ -333,7 +333,7 @@ public class AutorizarDocumentos {
                             //+ "            <descripcion>" + removeCaracteres(item.getIdProducto().getProdNombre()) + "</descripcion>\n"
                             + "            <cantidad>" + item.getDetCantidad().setScale(2, RoundingMode.FLOOR) + "</cantidad>\n"
                             + "            <precioUnitario>" + ArchivoUtils.redondearDecimales(item.getDetSubtotal(), 5) + "</precioUnitario>\n"
-                            +                    (item.getIdProducto().getProdTieneSubsidio().equals("S") ? subsidio : "")
+                            + (item.getIdProducto().getProdTieneSubsidio().equals("S") ? subsidio : "")
                             + "            <descuento>" + ArchivoUtils.redondearDecimales(item.getDetCantpordescuento(), 2) + "</descuento>\n"
                             + "            <precioTotalSinImpuesto>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento().multiply(item.getDetCantidad()), 2) + "</precioTotalSinImpuesto>\n"
                             + "            <impuestos>\n"
@@ -364,7 +364,8 @@ public class AutorizarDocumentos {
                         + "<campoAdicional nombre=\"PLAZO\"> DIAS</campoAdicional>\n"
                         + (valor.getFacPlazo().toString().length() > 0 ? "<campoAdicional nombre=\"DIAS\">" + valor.getFacPlazo().setScale(0) + "</campoAdicional>\n" : " ")
                         + (valor.getFacPorcentajeIva().length() > 0 ? "<campoAdicional nombre=\"TARIFAIMP\">" + valor.getFacPorcentajeIva() + "</campoAdicional>\n" : " ")
-                       + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n")
+                        + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
+                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                         // + (amb.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
                         + "   </infoAdicional>\n"
                         + "</factura>\n");
@@ -503,8 +504,8 @@ public class AutorizarDocumentos {
             linea = ("    <infoAdicional>\n"
                         //                    + (valor.getIdCliente().getCliDireccion().length() > 0 ? "<campoAdicional nombre=\"TELEFONO\">" + removeCaracteres(valor.getIdCliente().getCliMovil()) + "</campoAdicional>\n" : " ")
                         + (valor.getIdFactura().getIdCliente().getCliCorreo().length() > 0 ? "<campoAdicional nombre=\"E-MAIL\">" + removeCaracteres(valor.getIdFactura().getIdCliente().getCliCorreo()) + "</campoAdicional>\n" : " ")
-                        + (amb.getAmMicroEmp() ? "<campoAdicional nombre=\"Contribuyente Regimen Microempresas\">Contribuyente Regimen Microempresas</campoAdicional>\n" : "")
-                        + (amb.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
+                        + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
+                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                         + "   </infoAdicional>\n"
                         + "</nota" + tipoDocumento + ">");
             build.append(linea);
@@ -615,9 +616,8 @@ public class AutorizarDocumentos {
                         + ("        <campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getIdCliente().getCliDireccion()) + "</campoAdicional>\n")
                         + ("        <campoAdicional nombre=\"TELEFONO\">" + valor.getIdCliente().getCliTelefono() + "</campoAdicional>\n")
                         + ("        <campoAdicional nombre=\"CIUDAD\">" + valor.getIdCliente().getCiudad() + "</campoAdicional>\n"
-                        + (amb.getAmMicroEmp() ? "<campoAdicional nombre=\"Contribuyente Regimen Microempresas\">Contribuyente Regimen Microempresas</campoAdicional>\n" : "")
-                        + (amb.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
-                   + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n")
+                        + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
+                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                         + "    </infoAdicional>\n"
                         + "</guiaRemision>");
             build.append(linea);
@@ -712,9 +712,9 @@ public class AutorizarDocumentos {
             linea = ("</impuestos>\n"
                         + " <infoAdicional>\n"
                         + ("<campoAdicional nombre=\"SUMA\">" + suma.toString() + "</campoAdicional>\n")
-                        + (amb.getAmMicroEmp() ? "<campoAdicional nombre=\"Contribuyente Regimen Microempresas\">Contribuyente Regimen Microempresas</campoAdicional>\n" : "")
                         + (amb.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
-                     + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n")
+                        + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
+                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                         + "    </infoAdicional>\n"
                         + "</comprobanteRetencion>");
             build.append(linea);

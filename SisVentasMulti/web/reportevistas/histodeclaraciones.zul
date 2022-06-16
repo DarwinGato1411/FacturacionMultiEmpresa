@@ -13,7 +13,7 @@
 
 <zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
     <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.vistas.ListaVentasAnioMes')" >
+          viewModel="@id('vm') @init('com.ec.controlador.ListaHistorialDeclaraciones')" >
         <tabbox id="tboxPrincipal"  width="100%" >
             <tabs >
                 <tab label="Historial de Declaraciones" sclass="menutabs" /> 
@@ -54,7 +54,7 @@
                     </div> -->
                     
 
-                    <div class="factura_header paint_all_row">
+<!--                    <div class="factura_header paint_all_row">
                         <div class="fact_row fact_only_row">
                             <div class="wrapper_data" style="max-width:300px">
 
@@ -110,16 +110,16 @@
 
                             </div>                            
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="factura_body factura_content">
                         <div class="factura_item">
-                            <listbox 
-                                    nonselectableTags=""  mold="paging" pageSize="20"  >
+                            <listbox model="@load(vm.listaDatos)"
+                                     nonselectableTags=""  mold="paging" pageSize="20"  >
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                             
                                 <listhead sizable="false">
-                                    <listheader label="Archivo Declaraciones "  align="left" hflex="3"></listheader>
+                                    <listheader label="Descripcion"  align="left" hflex="3"></listheader>
                                     <listheader label=""  align="left" width="33px"></listheader>
                                     <listheader label=""  align="left" width="33px"></listheader>
                                 </listhead>
@@ -129,26 +129,26 @@
                                     <listitem  >
                                         <listcell zclass = "mycss-listcell">
                                             <label sclass="letraLisbox" 
-                                                        value="" style="font-weight:bold" 
-                                                        width="100%"/>
+                                                   value="@bind(each.hisDescripcion)" style="font-weight:bold" 
+                                                   width="100%"/>
                                         </listcell>  
                                                                             
                                         <listcell zclass = "mycss-listcell">
                                                             
                                             <button    style="width:30px;height:30px; background: green" iconSclass="z-icon-search"
                                         
-                                                            class="btn btn-primary btn-xs"
-                                                            onClick="@command('',valor=each)" 
-                                                            tooltiptext="Ver"/> 
+                                                       class="btn btn-primary btn-xs"
+                                                       onClick="@command('',valor=each)" 
+                                                       tooltiptext="Ver"/> 
                                             
                                         </listcell>                                
                                         <listcell zclass = "mycss-listcell">
                                                             
                                             <button    style="width:30px;height:30px; background: red" iconSclass="z-icon-times"
                                         
-                                                            class="btn btn-primary btn-xs"
-                                                            onClick="@command('',valor=each)" 
-                                                            tooltiptext="Eliminar"/> 
+                                                       class="btn btn-primary btn-xs"
+                                                       onClick="@command('',valor=each)" 
+                                                       tooltiptext="Eliminar"/> 
                                             
                                         </listcell>                                
                                     </listitem>
