@@ -205,10 +205,10 @@
                                 <div class="container_data_custom">
                                     <div class="wrapper_data">
                                         <div class="wrapper_input">
-                                            <span>Nombre:</span>
+                                            <span>Cedula:</span>
                                             <textbox  
                                                   readonly="true" 
-                                                placeholder="Nombre proveedor"
+                                                placeholder="Cedula"
                                                 class="input" 
                                                 onDoubleClick="@command('buscarProveedorEnLista')" 
                                                    value="@bind(vm.proveedorSeleccionado.provCedula)"  

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  id="windowRetencionCom"  position="top,center" width="75%" closable="true"  
+<window  id="windowRetencionCom"  position="center" closable="true"  
          apply="org.zkoss.bind.BindComposer" contentStyle="overflow:auto">
     
     <caption label="Retencion de Compras" style="font-weight:bold"
@@ -12,7 +12,7 @@
             </tabs>
             <tabpanels >
                 <tabpanel  height="100%" width="98%"  >
-                    <div class="container-fluid">
+                    <!-- <div class="container-fluid">
                         <div class="row " align="center">
                             
                             <div class="col-12 col-sm-12 col-md-1 col-lg-1 " align="start">
@@ -199,8 +199,185 @@
                             </div>
                         
                         </div>
+                    </div> -->
+                <div class="container_modal">
+
+                    <div class="body">
+                            <div class="container_row_input">
+                                <div class="wrapper_input_mod">
+                                    <span>Fecha Retención: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-address-card icon"></div>
+                                        <datebox 
+                                            compact="true" 
+                                            value="@bind(vm.retencionCompra.rcoFecha)" 
+                                            readonly="true" 
+                                            buttonVisible="true" 
+                                            lenient="true" 
+                                            format="dd/MM/yyyy" 
+                                            constraint="no empty: Ingrese su fecha "
+                                            class="input_date"    
+                                        />
+                                        <div class="fa-solid fa-calendar icon"/>
+                                    </div>
+                                </div>
+                                <div class="wrapper_input_mod">
+                                    <span>Secuencial: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-user icon"></div>
+                                        <textbox  
+                                            maxlength="100" 
+                                            onChange="self.setValue(self.getValue().toUpperCase())"
+                                            value="@bind(vm.numeroRetencion)" 
+                                            class="input_text"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="wrapper_input_mod">
+                                    <span>Descuento: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-user icon"></div>
+                                        <combobox  
+                                            model="@load(vm.listaTipoivaretencion)"                                             
+                                            selectedItem="@bind(vm.tipoivaretencion)"
+                                            readonly="true"
+                                            class="input_select" 
+                                        >
+                                                        
+                                            <template name="model">
+                                                <comboitem  label="@bind(each.tipivaretDescripcion.concat('%'))"/>
+                                            </template>                                      
+                                        </combobox>
+                                         <div 
+                                            class="fa-solid fa-chevron-down"
+                                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container_row_input">
+                                <div class="wrapper_input_mod">
+                                    <span>Base Imponible: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-address-card icon"></div>
+                                        <decimalbox 
+                                            readonly="false" 
+                                            format="###.#####"
+                                            class="input_text"
+                                            value="@bind(each.drcBaseImponible)"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="wrapper_input_mod" style="flex:auto">
+                                    <div style="width:110px !important; margin:0 0.5em">
+                                        <span style="">Autorizacion </span>
+                                    </div>
+                                    <div class="wrapper_input_text" style="width:100%">
+                                        <div class="fa-solid fa-dollar-sign icon"></div>
+                                        <textbox  
+                                            maxlength="100" 
+                                            value="@bind(vm.retencionCompra.rcoAutorizacion)" 
+                                            class="input_text" 
+                                        />
+                                    </div>
+                                </div>
+
+                                
+
+
+                            </div>
                     </div>
-               
+
+                    <div class="body">
+                            <div class="container_row_input">
+                                <div class="wrapper_input_mod">
+                                    <span>Subtotal: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-dollar-sign icon"></div>
+                                        <decimalbox 
+                                            format="###.##"  
+                                            readonly="true" 
+                                            class="input_text"
+                                            value="@bind(vm.cabeceraCompra.cabSubTotal)" 
+                                        />
+                                    </div>
+                                </div>
+                                <div class="wrapper_input_mod">
+                                    <span>IVA: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-dollar-sign icon"></div>
+                                        <decimalbox 
+                                            format="###.###"  
+                                            readonly="true" 
+                                            class="input_text"
+                                            value="@bind(vm.cabeceraCompra.cabIva)" 
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="wrapper_input_mod">
+                                    <span>Total: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-dollar-sign icon"></div>
+                                        <decimalbox 
+                                            format="###.##"  
+                                            readonly="true" 
+                                            class="input_text"
+                                            value="@bind(vm.cabeceraCompra.cabTotal)" 
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                    </div>
+
+                    <div class="body">
+                            <div class="container_row_input">
+                                <div class="wrapper_input_mod">
+                                    <span></span>
+                                    <div class="wrapper_input_text">
+                                        <radiogroup  
+                                            selectedItem="@bind(vm.codImpuestoAsignado)" 
+                                            onCheck="@command('visualizarIvaFuente')" 
+                                            class="radio_group"
+                                            style="width:100%;display:flex; gap:1em"
+                                        >
+                                            <radio label="IVA" value="2"/>
+                                            <separator/>
+                                            <radio label="RENTA" value="1"/>     
+                                        </radiogroup>
+                                    </div>
+                                </div>
+                                 <div style="display:flex;justify-content:flex-end;">
+                                    <button 
+                                        class="fa-solid fa-plus btn_modal" 
+                                        style="width:300px" 
+                                        onClick="@command('agregarRegistro')"   
+                                        tooltiptext="Agregar item"
+                                    >
+                                        Agregar
+                                    </button>
+                                </div>
+
+                                <div style="display:flex;justify-content:flex-end;">
+                                    <button 
+                                        class="fa-solid fa-save btn_modal" 
+                                        style="width:300px" 
+                                        onClick="@command('guardar')"
+                                    >
+                                        Guardar
+                                    </button>
+                                </div>
+
+                            </div>
+
+                           
+                    </div>
+                </div>
+                    
                 </tabpanel>
             </tabpanels>
         </tabbox>    
