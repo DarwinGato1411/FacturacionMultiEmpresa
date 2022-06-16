@@ -8,7 +8,9 @@
             class="fa-solid fa-plus-circle fa-2x icon"
             onClick="@command('nuevo')"
             tooltiptext="Nuevo conductor"
-        />
+        >
+            <span>Nuevo conductor</span>
+    </div>
     </div>
     
     <div class="cont_body">

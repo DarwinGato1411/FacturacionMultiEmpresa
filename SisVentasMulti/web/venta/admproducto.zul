@@ -64,23 +64,31 @@
             class="fa-solid fa-plus-circle fa-2x icon"
             onClick="@command('nuevoCliente')"
             tooltiptext="Nuevo producto"
-        />
+        >
+             <span>Nuevo producto </span>
+        </div>
        
         <div 
             class="fa-solid fa-list-check fa-2x icon"
             onClick="@command('inicializarKardex')"
             tooltiptext="Iniciar inventario de productos anteriores"
-        />
+        >
+          <span>Iniciar inventario </span>
+        </div>
         <div 
             class="fa-solid fa-barcode fa-2x icon"
             onClick="@command('crearCodigoBarras')"
             tooltiptext="Generar codigos de barras"
-        />
+        >
+        <span>Crear codigos de barras</span>
+        </div>
         <div 
             class="fa-solid fa-file-excel fa-2x icon"
             onClick="@command('exportListboxToExcelTodo')"
             tooltiptext="Descargar todos los productos"
-        />
+        >
+        <span>Exportar</span>
+        </div>
          <div class="wrapper_input_head">
             <span>Cant. cod barras</span>
             <intbox 

@@ -65,19 +65,20 @@
                     </menupopup>
                 </menu> 
                 
-                <menu label="Gestion de guias"  id="menuGuias" class="menu_child">
-                    <menupopup class="submenu">                        
-                        <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision" class="fa-solid fa-paper-plane menu_item" />
-                        <menuitem label="Guias de remision emitidas" id="btnGuiaRemision" class="fa-solid fa-ticket menu_item" />
-                        
-                    </menupopup>
-                </menu> 
+               
                 <menu label="Gestion de compras" id="menuCompras" class="menu_child">
                     <menupopup class="submenu">                     
                 
                         <menuitem label="Ingreso de mercaderia" id="btnIngresoCompras" class="fa-solid fa-paper-plane menu_item" />                                
                         <menuitem label="Mercaderia ingresada" id="btnListaCompras" class="fa-solid fa-list menu_item" />                                                          
                         <menuitem label="Retenciones" id="btnRetenciones" class="fa-solid fa-list menu_item" />
+                        
+                    </menupopup>
+                </menu> 
+                 <menu label="Gestion de guias"  id="menuGuias" class="menu_child">
+                    <menupopup class="submenu">                        
+                        <menuitem label="Emitir Guias de remision" id="btnEmitirGuiaRemision" class="fa-solid fa-paper-plane menu_item" />
+                        <menuitem label="Guias de remision emitidas" id="btnGuiaRemision" class="fa-solid fa-ticket menu_item" />
                         
                     </menupopup>
                 </menu>          
@@ -97,7 +98,7 @@
                         <menuitem label="Rotacion Productos" id="btnRotacionProducto" class="fa-solid fa-gear menu_item"/>
                     </menupopup>
                 </menu>
-                <menuitem label="H. Declaraciones" id="btnHisDeclaraciones" class="menu_child" />
+                <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" class="menu_child" />
                 <menuitem label="Catalogos" id="btnAdministarVenta" class="menu_child" />
             </menubar> 
 

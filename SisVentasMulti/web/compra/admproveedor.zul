@@ -21,7 +21,9 @@
             class="fa-solid fa-plus-circle fa-2x icon"
             onClick="@command('nuevoProvedor')"
             tooltiptext="Nuevo proveedor"
-        />
+        >
+            <span>Nuevo proveedor</span>
+    </div>
     </div>
 
 

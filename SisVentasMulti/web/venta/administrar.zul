@@ -41,13 +41,17 @@
                         class="fa-solid fa-plus-circle fa-2x icon"
                         onClick="@command('nuevoCliente')"
                         tooltiptext="Nuevo cliente"
-                    />
+                    >
+                    <span>Nuevo cliente</span>
+                    </div>
 
                     <div 
                         class="fa-solid fa-file-excel fa-2x icon"
                         onClick="@command('exportListboxToExcel')"
                         tooltiptext="Descargar productos"
-                    />
+                    >
+                <span>Exportar</span>
+                    </div>
                 </div>
 
 
@@ -173,7 +177,9 @@
                             class="fa-solid fa-plus-circle fa-2x icon"
                             onClick="@command('agregarUsario')"
                             tooltiptext="Nuevo usuario"
-                        />
+                        >
+                            <span>Nuevo usuario</span>
+                    </div>
                     </div>
 
                     <div class="cont_body">
@@ -213,27 +219,27 @@
                                     <listitem width="100%" > 
                                         <listcell  zclass = "mycss-listcell">
                                             <textbox readonly="true" value="@bind(each.usuNombre)"  style="font-size:12px;background:#EBF5FB"
-                                                class="form-control form-control-sm" />
+                                                     class="form-control form-control-sm" />
                                         </listcell>  
                                         <listcell  zclass = "mycss-listcell">
                                             <textbox readonly="true" value="@bind(each.usuLogin)"  style="font-size:12px;background:#EBF5FB"
-                                                class="form-control form-control-sm" />
+                                                     class="form-control form-control-sm" />
                                         </listcell>   
                                         <listcell  zclass = "mycss-listcell">      
                                             <textbox readonly="true" value="@bind(each.usuPassword)" 
-                                                    class="form-control form-control-sm"
-                                                    style="font-size:12px;background:#EBF5FB"
-                                                    type="password" />
+                                                     class="form-control form-control-sm"
+                                                     style="font-size:12px;background:#EBF5FB"
+                                                     type="password" />
                                         </listcell>  
                                         <listcell  zclass = "mycss-listcell">                          
                                             <textbox readonly="true" value="@bind(each.usuTipoUsuario)"  style="font-size:12px;background:#EBF5FB"
-                                                class="form-control form-control-sm"  />
+                                                     class="form-control form-control-sm"  />
                                         </listcell>                  
                                         <listcell  zclass = "mycss-listcell">
                                             <image src="/iconos/editar.png"
-                                                class="grow"
-                                                onClick="@command('modificarUsario',valor=each)" 
-                                                tooltiptext="Editar usuario"/> 
+                                                   class="grow"
+                                                   onClick="@command('modificarUsario',valor=each)" 
+                                                   tooltiptext="Editar usuario"/> 
                                             
                                         </listcell>     
                                     

@@ -395,7 +395,7 @@
                 <div class="body">
                     <div class="container_row_input">
                         <div class="wrapper_input_mod">
-                            <span>Num. Contribuyente: </span>
+                            <span># Contribuyente Esp: </span>
                             <div class="wrapper_input_text">
                                 <div class="fa-solid fa-user-pen icon"></div>
                                 <textbox 
@@ -517,175 +517,177 @@
                                     tooltiptext="Subir archivos"
                                 />
                             </div>
-                            </div>
-                            <div class="wrapper_input_mod" style="flex:auto;">
-                                <span style="margin:0 0.5em;">Dir. Establecimiento </span>
-                                <div class="wrapper_input_text" style="width:86%;">
-                                    <div class="fa-solid fa-location-dot icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amDireccionSucursal)" 
-                                        placeholder="Direccion establecimiento sucursal"
-                                        class="input_text"
-                                        style="width:100%;"
-                                    />
-                                </div>
+                        </div>
+                        <div class="wrapper_input_mod" style="flex:auto;">
+                            <span style="margin:0 0.5em;">Dir. Establecimiento </span>
+                            <div class="wrapper_input_text" style="width:86%;">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amDireccionSucursal)" 
+                                    placeholder="Direccion establecimiento sucursal"
+                                    class="input_text"
+                                    style="width:100%;"
+                                />
                             </div>
                         </div>
                     </div>
-
-                    <div class="body">
-                        <div class="container_row_input">
-                            <div class="wrapper_input_mod">
-                                <span>SMTP: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-anchor icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amProtocol)" 
-                                        placeholder="protocolo: smtp"
-                                        class="input_text"
-                                        tooltiptext="Puerto SMTP" 
-                                    />
-                                </div>
-                            </div>
-                            <div class="wrapper_input_mod">
-                                <span>Puerto: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-location-dot icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amPort)" 
-                                        placeholder="puerto: 587"
-                                        onOK="@command('buscarCatastro')"
-                                        class="input_text"
-                                        tooltiptext="Puerto"
-                                    />
-                                </div>
-                            </div>
-                    
-                            <div class="wrapper_input_mod">
-                                <span>Host: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-location-dot icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amHost)" 
-                                        placeholder="smtp.gmail.com"
-                                        onOK="@command('buscarCatastro')"
-                                        class="input_text"
-                                        tooltiptext="Host"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="container_row_input">
-                    
-                            <div class="wrapper_input_mod">
-                                <span>Correo: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-envelope icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amUsuarioSmpt)" 
-                                        placeholder="deckxelec@gmail.com"
-                                        class="input_text"
-                                        tooltiptext="Correo" 
-                                    />
-                                </div>
-                            </div>
-                    
-
-                        </div>
-
-                        <div class="container_row_input">
-                    
-                            <div class="wrapper_input_mod">
-                                <span>Contraseña: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-key icon"></div>
-                                    <textbox 
-                                        type="password"
-                                        value="@bind(vm.tipoambiente.amPassword)"                            
-                                        placeholder="Password123"
-                                        class="input_text"
-                                    />
-                                </div>
-                            </div>
-                    
-
-                        </div>
-
-                
-                    </div>
-            
-                    <div class="body">
-                        <div class="container_row_input">
-                            <div class="wrapper_input_mod">
-                                <span>Sec Factura: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-anchor icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amSecFactura)" 
-                                        placeholder="123"
-                                        class="input_text"
-                                        tooltiptext="Secuencial factura" 
-                                    />
-                                </div>
-                            </div>
-                            <div class="wrapper_input_mod">
-                                <span>Sec Retencion: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-location-dot icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amSecRetencion)" 
-                                        placeholder="123"
-                                        onOK="@command('buscarCatastro')"
-                                        class="input_text"
-                                        tooltiptext="Secuencial retencion"
-                                    />
-                                </div>
-                            </div>
-                    
-                            <div class="wrapper_input_mod">
-                                <span>Sec. Nota credito: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-location-dot icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amSecNotaCredito)" 
-                                        placeholder="123"
-                                        class="input_text"
-                                        tooltiptext="Secuencial nora de credito"
-                                    />
-                                </div>
-                            </div>
-                            <div class="wrapper_input_mod">
-                                <span>Sec. Guias: </span>
-                                <div class="wrapper_input_text">
-                                    <div class="fa-solid fa-location-dot icon"></div>
-                                    <textbox 
-                                        value="@bind(vm.tipoambiente.amSecGuia)" 
-                                        placeholder="123"
-                              
-                                        class="input_text"
-                                        tooltiptext="Secuencial guia"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                
-                
-                    </div>
-
-                    <div style="display:flex;justify-content:flex-end;">
-                        <button class="btn_modal" style="width:300px" onClick="@command('guardar')" tooltiptext="Guardar informacion">
-                            Guardar
-                        </button>
-                    </div>
-        
                 </div>
 
+                <div class="body">
+                    <div class="container_row_input">
+                        <div class="wrapper_input_mod">
+                            <span>SMTP: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-anchor icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amProtocol)" 
+                                    placeholder="protocolo: smtp"
+                                    class="input_text"
+                                    tooltiptext="Puerto SMTP" 
+                                />
+                            </div>
+                        </div>
+                        <div class="wrapper_input_mod">
+                            <span>Puerto: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amPort)" 
+                                    placeholder="puerto: 587"
+                                    onOK="@command('buscarCatastro')"
+                                    class="input_text"
+                                    tooltiptext="Puerto"
+                                />
+                            </div>
+                        </div>
+                    
+                        <div class="wrapper_input_mod">
+                            <span>Host: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amHost)" 
+                                    placeholder="smtp.gmail.com"
+                                    onOK="@command('buscarCatastro')"
+                                    class="input_text"
+                                    tooltiptext="Host"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container_row_input">
+                    
+                        <div class="wrapper_input_mod">
+                            <span>Correo: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-envelope icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amUsuarioSmpt)" 
+                                    placeholder="deckxelec@gmail.com"
+                                    class="input_text"
+                                    tooltiptext="Correo" 
+                                />
+                            </div>
+                        </div>
+                        <div class="wrapper_input_mod">
+                            <span>Contraseña: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-key icon"></div>
+                                <textbox 
+                                    type="password"
+                                    value="@bind(vm.tipoambiente.amPassword)"                            
+                                    placeholder="Password123"
+                                    class="input_text"
+                                />
+                            </div>
+                        </div>
+                        <div class="wrapper_input_mod">
+                            <span> </span>
+                            <div class="wrapper_input_text">
+                                <div ></div>
+                                    
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    
+
+                
+                </div>
+            
+                <div class="body">
+                    <div class="container_row_input">
+                        <div class="wrapper_input_mod">
+                            <span>Sec Factura: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-anchor icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amSecFactura)" 
+                                    placeholder="123"
+                                    class="input_text"
+                                    tooltiptext="Secuencial factura" 
+                                />
+                            </div>
+                        </div>
+                        <div class="wrapper_input_mod">
+                            <span>Sec Retencion: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amSecRetencion)" 
+                                    placeholder="123"
+                                    onOK="@command('buscarCatastro')"
+                                    class="input_text"
+                                    tooltiptext="Secuencial retencion"
+                                />
+                            </div>
+                        </div>
+                    
+                        <div class="wrapper_input_mod">
+                            <span>Sec. Nota credito: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amSecNotaCredito)" 
+                                    placeholder="123"
+                                    class="input_text"
+                                    tooltiptext="Secuencial nora de credito"
+                                />
+                            </div>
+                        </div>
+                        <div class="wrapper_input_mod">
+                            <span>Sec. Guias: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amSecGuia)" 
+                                    placeholder="123"
+                              
+                                    class="input_text"
+                                    tooltiptext="Secuencial guia"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                
+                
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;">
+                    <button class="btn_modal" style="width:300px" onClick="@command('guardar')" tooltiptext="Guardar informacion">
+                        Guardar
+                    </button>
+                </div>
+        
             </div>
+
+        </div>
 
 
         
-        </div>
+    </div>
 </zk>
 
