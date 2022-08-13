@@ -62,7 +62,7 @@ public class RecuperarClave {
             if (usuarioSistema != null) {
 
                 Usuario usuario = servicioUsuario.findRecuperaPassword(usuRuc, usuCorreo);
-                Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuRuc);
+                Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuario);
 
                 if (usuario != null) {
                     try {

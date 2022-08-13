@@ -72,11 +72,13 @@ public class NuevoConductor {
 
     public NuevoConductor() {
 
+       
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-//        credential = cre;
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+
     }
 
     private void cargarTipoIdentificacion() {

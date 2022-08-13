@@ -152,10 +152,13 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
     }
 
     public OrdenTrabajoVm() {
-       Session sess = Sessions.getCurrent();
+       
+
+        Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+
     }
 
     private void numeroFacturaTexto() {

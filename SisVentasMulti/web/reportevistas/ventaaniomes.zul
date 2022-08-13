@@ -122,10 +122,10 @@
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                             
                                 <listhead> 
-                                    <listheader width="25%"  label="Total con facturas" />                            
-                                    <listheader width="25%"  label="Total con Notas Venta" />                                                        
-                                    <listheader width="25%"  label="Total" align="rigth" /> 
-                                    <listheader width="25%"  label="Fecha" align="lefth" />                             
+                                    <listheader width="70%"  label="Total con facturas" />                            
+                                    <!--<listheader width="25%"  label="Total con Notas Venta" />-->                                                        
+                                    <listheader width="15%"  label="Total" align="rigth" /> 
+                                    <listheader width="15%"  label="Fecha" align="lefth" />                             
                                 </listhead>  
                                 
                             
@@ -135,10 +135,10 @@
                                             <decimalbox readonly="true" format="###.##" 
                                                         value="@bind(each.facTotal)" width="100%" />
                                         </listcell>
-                                        <listcell zclass = "mycss-listcell">
+<!--                                        <listcell zclass = "mycss-listcell">
                                             <decimalbox readonly="true" format="###.##" 
                                                         value="@bind(each.totalntv)" width="100%" />
-                                        </listcell>
+                                        </listcell>-->
                                         <listcell zclass = "mycss-listcell">
                                             <decimalbox readonly="true" format="###.##" 
                                                         value="@bind(each.totalacumulado)" width="100%" />
@@ -264,8 +264,8 @@
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                             
                                 <listhead> 
-                                    <listheader width="20%"  label="Ventas con facturas" />                            
-                                    <listheader width="20%"  label="Ventas con Notas Venta" />                                                        
+                                    <listheader width="40%"  label="Ventas con facturas" />                            
+                                    <!--<listheader width="20%"  label="Ventas con Notas Venta" />-->                                                        
                                     <listheader width="20%"  label="Total" align="rigth" /> 
                                     <listheader width="20%"  label="Mes" align="center"  /> 
                                     <listheader width="20%"  label="Año" align="center" /> 
@@ -279,10 +279,10 @@
                                             <decimalbox readonly="true" format="###.##" 
                                                         value="@bind(each.facTotal)" width="100%" />
                                         </listcell>
-                                        <listcell zclass = "mycss-listcell">
+<!--                                        <listcell zclass = "mycss-listcell">
                                             <decimalbox readonly="true" format="###.##" 
                                                         value="@bind(each.totalntv)" width="100%" />
-                                        </listcell>
+                                        </listcell>-->
                                         <listcell zclass = "mycss-listcell">
                                             <decimalbox readonly="true" format="###.##" 
                                                         value="@bind(each.totalacumulado)" width="100%" />

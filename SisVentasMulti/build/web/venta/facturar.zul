@@ -104,7 +104,7 @@
                                         selectedItem="@bind(vm.formaPagoSelected)" 
                                         readonly="true" 
                                         width="100%"
-                                        class="  textoFechaDateBox">
+                                        class="textoFechaDateBox">
                                         <template name="model">
                                             <comboitem  label="@bind(each.forNombre)"/>
                                         </template>                                      
@@ -194,6 +194,7 @@
                                         class="input" 
                                     />
                                 </div>
+                                
                             </div>
                             <div class="wrapper_data">
                                 <div class="wrapper_input">
@@ -202,6 +203,16 @@
                                         format="###.##"  
                                         value="@bind(vm.ivaCotizacion)"
                                         readonly="true" 
+                                        class="input" 
+                                    />
+                                </div>
+                                <div class="wrapper_input">
+                                    <span>ICE :</span>
+                                    <decimalbox  
+                                        format="###.##"   
+                                        value="@bind(vm.valorIce)" 
+                                        readonly="true"
+                                        onChange="self.setValue(self.getValue().toUpperCase().trim());" 
                                         class="input" 
                                     />
                                 </div>

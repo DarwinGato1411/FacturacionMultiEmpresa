@@ -58,6 +58,7 @@ public class NuevoProducto {
     Textbox txtIvaRec;
 
     private String conIva = "S";
+    private String conICE = "N";
     private String esProducto = "P";
     UserCredential credential = new UserCredential();
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
@@ -75,6 +76,7 @@ public class NuevoProducto {
             } else {
                 conIva = "N";
             }
+            conICE = producto.getProdGrabaIce() ? "S" : "N";
 
             if (producto.getProdEsproducto()) {
                 esProducto = "P";
@@ -112,10 +114,13 @@ public class NuevoProducto {
     }
 
     public NuevoProducto() {
+         
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+
     }
 
     @Command
@@ -274,6 +279,11 @@ public class NuevoProducto {
             } else {
                 producto.setProdEsproducto(Boolean.FALSE);
             }
+            if (conICE.equals("S")) {
+                producto.setProdGrabaIce(Boolean.TRUE);
+            } else {
+                producto.setProdGrabaIce(Boolean.FALSE);
+            }
             if (accion.equals("create")) {
                 if (servicioProducto.findByProdCodigo(producto.getProdCodigo(), amb) != null) {
                     Clients.showNotification("El codigo del prodcuto ya se encuentra registrado",
@@ -282,7 +292,7 @@ public class NuevoProducto {
                 }
 
                 servicioProducto.crear(producto);
-                if (servicioKardex.FindALlKardexs(producto) == null && producto.getProdEsproducto()) {
+                if (servicioKardex.FindALlKardexs(producto) == null) {
                     kardex = new Kardex();
                     DetalleKardex detalleKardex = new DetalleKardex();
                     kardex.setIdProducto(producto);
@@ -294,7 +304,12 @@ public class NuevoProducto {
                     detalleKardex.setIdKardex(kardex);
                     detalleKardex.setDetkFechacreacion(new Date());
                     detalleKardex.setDetkFechakardex(new Date());
-                    detalleKardex.setDetkCantidad(producto.getProdCantidadInicial());
+                    if (!producto.getProdEsproducto()) {
+                        detalleKardex.setDetkCantidad(BigDecimal.valueOf(999999));
+                    } else {
+                        detalleKardex.setDetkCantidad(producto.getProdCantidadInicial());
+                    }
+
                     detalleKardex.setDetkDetalles("Aumenta INICIO DE INVETARIO ");
                     detalleKardex.setDetkKardexmanual(Boolean.FALSE);
                     detalleKardex.setIdTipokardex(servicioTipoKardex.findByTipkSigla("ING"));
@@ -304,7 +319,7 @@ public class NuevoProducto {
                 windowCliente.detach();
             } else {
                 servicioProducto.modificar(producto);
-                if (servicioKardex.FindALlKardexs(producto) == null && producto.getProdEsproducto()) {
+                if (servicioKardex.FindALlKardexs(producto) == null) {
                     kardex = new Kardex();
                     DetalleKardex detalleKardex = new DetalleKardex();
                     kardex.setIdProducto(producto);
@@ -316,7 +331,11 @@ public class NuevoProducto {
                     detalleKardex.setIdKardex(kardex);
                     detalleKardex.setDetkFechacreacion(new Date());
                     detalleKardex.setDetkFechakardex(new Date());
-                    detalleKardex.setDetkCantidad(producto.getProdCantidadInicial());
+                    if (!producto.getProdEsproducto()) {
+                        detalleKardex.setDetkCantidad(BigDecimal.valueOf(999999));
+                    } else {
+                        detalleKardex.setDetkCantidad(producto.getProdCantidadInicial());
+                    }
                     detalleKardex.setDetkDetalles("Aumenta INICIO DE INVETARIO ");
                     detalleKardex.setDetkKardexmanual(Boolean.FALSE);
                     detalleKardex.setIdTipokardex(servicioTipoKardex.findByTipkSigla("ING"));
@@ -361,6 +380,14 @@ public class NuevoProducto {
 
     public void setEsProducto(String esProducto) {
         this.esProducto = esProducto;
+    }
+
+    public String getConICE() {
+        return conICE;
+    }
+
+    public void setConICE(String conICE) {
+        this.conICE = conICE;
     }
 
 }

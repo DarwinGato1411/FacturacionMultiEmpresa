@@ -50,10 +50,11 @@ public class UtilitarioAutorizarSRI {
     public void autorizarSRI(Factura valor)
                 throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-      Session sess = Sessions.getCurrent();
-       credential= (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
@@ -134,7 +135,7 @@ public class UtilitarioAutorizarSRI {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos, amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -146,7 +147,7 @@ public class UtilitarioAutorizarSRI {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -182,7 +183,7 @@ public class UtilitarioAutorizarSRI {
                         /*PARA EL CASO QUE NO AUTORIZA NO ENVIA EL COREEO*/
                         if (!archivoEnvioCliente.equals("")) {
 
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT",amb);
+                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
                             ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
 
                             valor.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -205,7 +206,7 @@ public class UtilitarioAutorizarSRI {
                                             valor.getFacClaveAcceso(),
                                             valor.getFacNumeroText(),
                                             valor.getFacTotal(),
-                                            valor.getIdCliente().getCliNombre(),amb);
+                                            valor.getIdCliente().getCliNombre(), amb);
                             }
                         }
                     }
@@ -226,7 +227,7 @@ public class UtilitarioAutorizarSRI {
     public void enviarNotaCreditoSRI(NotaCreditoDebito valor)
                 throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         /*CAMPOS DE NOTA DE */
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
 
@@ -313,7 +314,7 @@ public class UtilitarioAutorizarSRI {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos, amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -325,7 +326,7 @@ public class UtilitarioAutorizarSRI {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -356,7 +357,7 @@ public class UtilitarioAutorizarSRI {
                         }
 
                         System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                        ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "NCRE",amb);
+                        ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "NCRE", amb);
                         ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                         /*GUARDA EL PATH PDF CREADO*/
                         valor.setFacPath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -379,7 +380,7 @@ public class UtilitarioAutorizarSRI {
                                         valor.getFacClaveAcceso(),
                                         valor.getFacNumeroText(),
                                         valor.getFacTotal(),
-                                        valor.getIdFactura().getIdCliente().getCliNombre(),amb);
+                                        valor.getIdFactura().getIdCliente().getCliNombre(), amb);
                         }
 
                     }

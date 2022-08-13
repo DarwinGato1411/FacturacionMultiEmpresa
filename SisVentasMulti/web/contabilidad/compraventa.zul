@@ -187,10 +187,10 @@
                                     </auxhead>       
                                     
                                     <listhead> 
-                                        <listheader width="15%"  label="Fecha" /> 
+                                        <listheader width="25%"  label="Fecha" /> 
                                         <listheader width="25%"  label="Factura" /> 
-                                        <listheader width="30%"  label="Subtotal" />    
-                                        <listheader width="30%"  label="Total" />                                                                 
+                                        <listheader width="25%"  label="Subtotal" />    
+                                        <listheader width="25%"  label="Total" />                                                                 
                                     </listhead>  
                         
                     
@@ -203,7 +203,7 @@
                                                          format="medium" width="98%"  />
                                             </listcell>
                                             <listcell>
-                                                <label value="@bind(each.facNumero)" width="96%" />
+                                                <label value="@bind(each.facNumeroText)" width="96%" />
                                             </listcell>
                                             <listcell>
                                                 <decimalbox format="###.##" 
@@ -241,10 +241,10 @@
                                     </auxhead>       
                                     
                                     <listhead> 
-                                        <listheader width="15%"  label="Fecha" /> 
+                                        <listheader width="25%"  label="Fecha" /> 
                                         <listheader width="25%"  label="Factura" /> 
-                                        <listheader width="30%"  label="Subtotal" />    
-                                        <listheader width="30%"  label="Total" />                                                                 
+                                        <listheader width="25%"  label="Subtotal" />    
+                                        <listheader width="25%"  label="Total" />                                                                 
                                     </listhead>  
                         
                     

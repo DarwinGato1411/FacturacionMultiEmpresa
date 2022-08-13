@@ -183,6 +183,7 @@ public class Facturar extends SelectorComposer<Component> {
     private BigDecimal subTotalBaseCero = BigDecimal.ZERO;
     private BigDecimal ivaCotizacion = BigDecimal.ZERO;
     private BigDecimal totalDescuento = BigDecimal.ZERO;
+    private BigDecimal valorIce = BigDecimal.ZERO;
     //Cabecera de la factura
     private String estdoFactura = "PA";
     private String tipoVentaAnterior = "FACT";
@@ -376,11 +377,11 @@ public class Facturar extends SelectorComposer<Component> {
 
     public Facturar() {
 
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-//        credential = cre;
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
 //      amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(accion);
         getDetallefactura();
         parametrizar = servicioParametrizar.FindALlParametrizar();
@@ -586,7 +587,7 @@ public class Facturar extends SelectorComposer<Component> {
 
     /*AGREGAMOS DESDE LA LSITA */
     @Command
-    @NotifyChange({"listaDetalleFacturaDAOMOdel", "subTotalCotizacion", "ivaCotizacion", "valorTotalCotizacion", "totalDescuento", "buscarNombreProd", "valorTotalInicialVent", "descuentoValorFinal", "subTotalBaseCero", "listaProducto", "totalItems"})
+    @NotifyChange({"listaDetalleFacturaDAOMOdel", "subTotalCotizacion", "ivaCotizacion", "valorTotalCotizacion", "totalDescuento", "buscarNombreProd", "valorTotalInicialVent", "descuentoValorFinal", "subTotalBaseCero", "listaProducto", "totalItems", "valorIce"})
     public void agregarItemLista(@BindingParam("valor") Producto producto) {
 
         if (parametrizar.getParNumRegistrosFactura().intValue() <= listaDetalleFacturaDAOMOdel.size()) {
@@ -599,6 +600,9 @@ public class Facturar extends SelectorComposer<Component> {
 /*calcula con el iva para todo el 12%*/
         BigDecimal factorIva = (producto.getProdIva().divide(BigDecimal.valueOf(100.0)));
         BigDecimal factorSacarSubtotal = (factorIva.add(BigDecimal.ONE));
+
+        BigDecimal factorice = producto.getProdGrabaIce() ? (producto.getProdPorcentajeIce().divide(BigDecimal.valueOf(100.0))) : BigDecimal.ZERO;
+        BigDecimal factorSacarSubtotalIce = (factorice.add(BigDecimal.ONE));
 
         List<DetalleFacturaDAO> listaPedido = listaDetalleFacturaDAOMOdel.getInnerList();
 
@@ -656,15 +660,29 @@ public class Facturar extends SelectorComposer<Component> {
                 BigDecimal subTotal = costVentaTipoCliente.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
                 valor.setSubTotal(subTotal);
                 //valor unitario sin iva con descuento
+
+                /*Calculo del ICE*/
                 BigDecimal subTotalDescuento = valorTotalIvaDesc.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
-                valor.setSubTotalDescuento(subTotalDescuento);
+                /*Calculamos el Subtotal ICE*/
+                BigDecimal valorICE = subTotalDescuento.divide(factorSacarSubtotalIce, 5, RoundingMode.FLOOR);
+                BigDecimal IcePorProducto = subTotalDescuento.subtract(valorICE);
+                IcePorProducto = ArchivoUtils.redondearDecimales(IcePorProducto, 3);
+
+                valor.setValorIce(IcePorProducto);
+                valorICE = ArchivoUtils.redondearDecimales(valorICE, 3);
+//                 /*base imponible para sacar el ICE*/
+//                valor.setValorBaseIce(subTotalDescuento);
+//                valor.setSubTotalDescuento(subTotalDescuento);
+                valor.setSubTotalDescuento(valorICE);
                 //valor del descuento
-                BigDecimal valorDescuento = valor.getSubTotal().subtract(valor.getSubTotalDescuento()).setScale(5, RoundingMode.FLOOR);
+                BigDecimal valorDescuento = subTotal.subtract(subTotalDescuento).setScale(5, RoundingMode.FLOOR);
                 valor.setDetValdescuento(valorDescuento);
                 BigDecimal valorIva = subTotal.multiply(factorIva).multiply(valor.getCantidad());
 //                valor.setDetIva(valorIva);
                 //valor del iva con descuento
+
                 BigDecimal valorIvaDesc = subTotalDescuento.multiply(factorIva).multiply(valor.getCantidad());
+                valorIvaDesc = ArchivoUtils.redondearDecimales(valorIvaDesc, 3);
                 valor.setDetIva(valorIvaDesc);
                 //valor total sin decuento y con iva
                 valor.setTotal(valorTotalIvaDesc.setScale(5, RoundingMode.FLOOR));
@@ -1109,7 +1127,7 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     @Command
-    @NotifyChange({"listaDetalleFacturaDAOMOdel", "subTotalCotizacion", "ivaCotizacion", "valorTotalCotizacion", "totalDescuento", "valorTotalInicialVent", "descuentoValorFinal", "subTotalBaseCero"})
+    @NotifyChange({"listaDetalleFacturaDAOMOdel", "subTotalCotizacion", "ivaCotizacion", "valorTotalCotizacion", "totalDescuento", "valorTotalInicialVent", "descuentoValorFinal", "subTotalBaseCero","valorIce"})
     public void calcularValoresDesCantidad(@BindingParam("valor") DetalleFacturaDAO valor) {
         try {
 
@@ -1131,6 +1149,11 @@ public class Facturar extends SelectorComposer<Component> {
             }
             BigDecimal factorIva = (valor.getProducto().getProdIva().divide(BigDecimal.valueOf(100.0)));
             BigDecimal factorSacarSubtotal = (factorIva.add(BigDecimal.ONE));
+            
+            
+        BigDecimal factorice = valor.getProducto().getProdGrabaIce() ? (valor.getProducto().getProdPorcentajeIce().divide(BigDecimal.valueOf(100.0))) : BigDecimal.ZERO;
+        BigDecimal factorSacarSubtotalIce = (factorice.add(BigDecimal.ONE));
+
 
             if (valor.getCantidad().doubleValue() > 0) {
                 /*CALCULO DEL PORCENTAJE DE DESCUENTO*/
@@ -1152,7 +1175,22 @@ public class Facturar extends SelectorComposer<Component> {
                 //valor unitario sin iva con descuento
                 BigDecimal subTotalDescuento = valorTotalIvaDesc.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
 
-                valor.setSubTotalDescuento(subTotalDescuento);
+//                valor.setSubTotalDescuento(subTotalDescuento);
+                
+                /*Calculo del ICE*/
+//                BigDecimal subTotalDescuento = valorTotalIvaDesc.divide(factorSacarSubtotal, 5, RoundingMode.FLOOR);
+                /*Calculamos el Subtotal ICE*/
+                BigDecimal valorICE = subTotalDescuento.divide(factorSacarSubtotalIce, 5, RoundingMode.FLOOR);
+                BigDecimal IcePorProducto = subTotalDescuento.subtract(valorICE);
+                IcePorProducto = ArchivoUtils.redondearDecimales(IcePorProducto, 3);
+
+                valor.setValorIce(IcePorProducto);
+                valorICE = ArchivoUtils.redondearDecimales(valorICE, 3);
+//                valor.setSubTotalDescuento(subTotalDescuento);
+                valor.setSubTotalDescuento(valorICE);
+                
+                
+                
                 //valor del descuento
                 BigDecimal valorDescuento = BigDecimal.ZERO;
                 if (!valor.getEsProducto()) {
@@ -1748,13 +1786,20 @@ public class Facturar extends SelectorComposer<Component> {
         BigDecimal baseCero = BigDecimal.ZERO;
         BigDecimal sumaSubsidio = BigDecimal.ZERO;
         BigDecimal sumaDeItems = BigDecimal.ZERO;
+        BigDecimal valorTotalIce = BigDecimal.ZERO;
+        BigDecimal valorTotalIcePorProducto = BigDecimal.ZERO;
 
-        List<DetalleFacturaDAO> listaPedido = listaDetalleFacturaDAOMOdel.getInnerList();
+         List<DetalleFacturaDAO> listaPedido = listaDetalleFacturaDAOMOdel.getInnerList();
         if (listaPedido.size() > 0) {
             for (DetalleFacturaDAO item : listaPedido) {
                 sumaDeItems = sumaDeItems.add(BigDecimal.ONE);
                 if (item.getProducto() != null) {
                     valorTotal = valorTotal.add(item.getProducto().getProdGrabaIva() ? item.getSubTotalDescuento().multiply(item.getCantidad()) : BigDecimal.ZERO);
+
+                    /*productos que graban ICE*/
+                    valorTotalIcePorProducto = item.getValorIce();
+                    valorTotalIce = valorTotalIcePorProducto.add(valorTotalIce);
+
                     valorIva = valorIva.add(item.getDetIva());
 //                    valorTotalConIva = valorTotalConIva.add(item.getDetTotalconivadescuento());
                     valorDescuento = valorDescuento.add(item.getDetCantpordescuento());
@@ -1776,16 +1821,18 @@ public class Facturar extends SelectorComposer<Component> {
             //valorTotal.setScale(5, RoundingMode.UP);
             try {
                 subsidioTotal = sumaSubsidio;
-                subTotalCotizacion = ArchivoUtils.redondearDecimales(valorTotal, 2);
+                subTotalCotizacion = ArchivoUtils.redondearDecimales(valorTotal, 3);
                 // subTotalCotizacion.setScale(5, RoundingMode.UP);
-                subTotalBaseCero = ArchivoUtils.redondearDecimales(baseCero, 2);
+                subTotalBaseCero = ArchivoUtils.redondearDecimales(baseCero, 3);
                 /*Obtiene el porcentaje del IVA*/
 //                BigDecimal valorIva = subTotalCotizacion.multiply(parametrizar.getParIva());
 
-                ivaCotizacion = ArchivoUtils.redondearDecimales(valorIva, 2);
+                ivaCotizacion = ArchivoUtils.redondearDecimales(valorIva, 3);
+
+                valorIce = ArchivoUtils.redondearDecimales(valorTotalIce, 3);
 
                 // ivaCotizacion.setScale(5, RoundingMode.UP);
-                valorTotalCotizacion = subTotalCotizacion.add(subTotalBaseCero.add(ivaCotizacion));
+                valorTotalCotizacion = subTotalCotizacion.add(subTotalBaseCero.add(ivaCotizacion).add(valorIce));
                 // valorTotalCotizacion.setScale(5, RoundingMode.UP);
 
                 valorTotalInicialVent = valorTotalInicial;
@@ -1937,7 +1984,7 @@ public class Facturar extends SelectorComposer<Component> {
             //guarda con o sin guia de remision 
             facConSinGuia = valor;
 
-            Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+            Tipoambiente amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
             //armar la cabecera de la factura
 //Coloca la fecha para el cobro de la totalidad de la factura
             Calendar calendar = Calendar.getInstance(); //obtiene la fecha de hoy 
@@ -1962,6 +2009,7 @@ public class Facturar extends SelectorComposer<Component> {
             factura.setFacHija(facHija);
             factura.setFacDestino(facDestino);
             factura.setIdReferencia(referenciaSelected);
+            factura.setFacValorIce(valorIce);
             /*PARA MECANICAS*/
 //            factura.setFacPlaca(facPlaca);
 //            factura.setFacMarca(facMarca);
@@ -2381,7 +2429,7 @@ public class Facturar extends SelectorComposer<Component> {
         EntityManager emf = HelperPersistencia.getEMF();
 
         try {
-            String reporte = parametrizar.getParImprimeFactura().trim();
+            String reporte = amb.getAmComprobanteImprime().trim();
             emf.getTransaction().begin();
             /*CONEXION A LA BASE DE DATOS*/
             con = emf.unwrap(Connection.class);
@@ -2413,7 +2461,7 @@ public class Facturar extends SelectorComposer<Component> {
 
                 //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
                 parametros.put("numfactura", numeroFactura);
-              parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
+                parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
                 if (con != null) {
                     System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -3222,6 +3270,14 @@ public class Facturar extends SelectorComposer<Component> {
 
     public void setReferenciaSelected(Referencia referenciaSelected) {
         this.referenciaSelected = referenciaSelected;
+    }
+
+    public BigDecimal getValorIce() {
+        return valorIce;
+    }
+
+    public void setValorIce(BigDecimal valorIce) {
+        this.valorIce = valorIce;
     }
 
 }

@@ -69,10 +69,14 @@ public class AdministrarVenta {
     private Boolean esVisisible = Boolean.FALSE;
 
     public AdministrarVenta() {
+//        Session sess = Sessions.getCurrent();
+//        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+//        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         FindClienteLikeNombre();
         consultarMail();
         cosultarUsuarios("");

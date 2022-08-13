@@ -542,4 +542,8 @@ body {
   .factura_body_content > .factura_body_item {
     width: 50%;
   }
+  
+   .factura_body_content > .factura_body_item_lefth {
+    width: 60%;
+  }
 }

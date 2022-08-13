@@ -109,15 +109,16 @@ public class ServicioUsuario {
         try {
             System.out.println("Entra a consultar usuarios ");
 
-            String SELECT = "SELECT u FROM Usuario u  WHERE u.usuNombre like :usuNombre";
+            String SELECT = "SELECT u FROM Usuario u  WHERE u.usuNombre like :usuNombre ";
             String WHERE = "";
+            String ORDERBY = " ORDER BY u.usuNombre ";
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             if (usuario.getUsuNivel() != 1) {
                 WHERE = "  AND u.usuRuc=:usuRuc";
             }
-            Query query = em.createQuery(SELECT + WHERE);
+            Query query = em.createQuery(SELECT + WHERE+ORDERBY);
             query.setParameter("usuNombre", "%" + nombre + "%");
             if (usuario.getUsuNivel() != 1) {
                 query.setParameter("usuRuc", usuario.getUsuRuc());

@@ -138,6 +138,7 @@ public class Producto implements Serializable {
     private Boolean prodImprimeCodbar;
     @Column(name = "prod_esproducto")
     private Boolean prodEsproducto;
+
     @Column(name = "prod_unidad_medida")
     private String prodUnidadMedida;
     @Column(name = "prod_unidad_conversion")
@@ -156,6 +157,12 @@ public class Producto implements Serializable {
     @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
     @ManyToOne
     private Tipoambiente codTipoambiente;
+
+    @Column(name = "prod_graba_ice")
+    private Boolean prodGrabaIce;
+    
+    @Column(name = "prod_porcentaje_ice")
+    private BigDecimal prodPorcentajeIce;
 
     public Producto() {
     }
@@ -523,6 +530,22 @@ public class Producto implements Serializable {
 
     public void setCodTipoambiente(Tipoambiente codTipoambiente) {
         this.codTipoambiente = codTipoambiente;
+    }
+
+    public Boolean getProdGrabaIce() {
+        return prodGrabaIce==null?Boolean.FALSE:prodGrabaIce;
+    }
+
+    public void setProdGrabaIce(Boolean prodGrabaIce) {
+        this.prodGrabaIce = prodGrabaIce;
+    }
+
+    public BigDecimal getProdPorcentajeIce() {
+        return prodPorcentajeIce==null?BigDecimal.ZERO:prodPorcentajeIce;
+    }
+
+    public void setProdPorcentajeIce(BigDecimal prodPorcentajeIce) {
+        this.prodPorcentajeIce = prodPorcentajeIce;
     }
 
     @Override

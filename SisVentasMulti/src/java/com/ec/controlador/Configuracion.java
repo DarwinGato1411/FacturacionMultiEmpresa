@@ -64,18 +64,13 @@ public class Configuracion extends SelectorComposer<Component> {
     ServicioSriCatastro servicioSriCatastro = new ServicioSriCatastro();
     UserCredential credential = new UserCredential();
     private String amRuc = "";
+    private String grabaICE = "";
 
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
-
-    }
-
-    public Configuracion() {
-        Session sess = Sessions.getCurrent();
-        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
         amRuc = credential.getUsuarioSistema().getUsuRuc();
-        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amCodigo, amRuc);
+        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amRuc);
         if (tipoambiente != null) {
             amCodigo = tipoambiente.getAmCodigo();
             if (tipoambiente.getLlevarContabilidad().equals("NO")) {
@@ -83,11 +78,18 @@ public class Configuracion extends SelectorComposer<Component> {
             } else {
                 llevaContabilidad = "SI";
             }
+            grabaICE = tipoambiente.getAmGrabaIce() ? "S" : "N";
 
         }
+    }
+
+    public Configuracion() {
+        listaDiscos();
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+
 
         /*LISTA LAS UNIDADES DEL DISCO PRESENTES EN EL SISTEMA OPERATIVO*/
-        listaDiscos();
     }
 
     @Command
@@ -130,8 +132,9 @@ public class Configuracion extends SelectorComposer<Component> {
     public void ambienteCodigo() {
         /*COLOCA EL ANTERIOR EN FALSO*/
         tipoambiente.setAmEstado(Boolean.FALSE);
+
         servicioTipoAmbiente.modificar(tipoambiente);
-        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amCodigo, amRuc);
+        tipoambiente = servicioTipoAmbiente.findByAmCodigo(amRuc, amCodigo);
         /*COLOCA EL NUEVO AMBIENTE EN ACTIVO*/
         tipoambiente.setAmEstado(Boolean.TRUE);
         servicioTipoAmbiente.modificar(tipoambiente);
@@ -167,12 +170,10 @@ public class Configuracion extends SelectorComposer<Component> {
             if (!baseDir.exists()) {
                 baseDir.mkdirs();
             }
-        
+
             Files.copy(new File(filePath + media.getName()),
                         media.getStreamData());
             tipoambiente.setAmDirFirma(nombre);
-
-        
 
         }
     }
@@ -226,7 +227,9 @@ public class Configuracion extends SelectorComposer<Component> {
         tipoambiente.setAmNoAutorizados("NOAUTORIZADOS");
         tipoambiente.setAmTipoEmision("1");
         tipoambiente.setAmEnviocliente("ENVIARCLIENTE");
+        tipoambiente.setAmGrabaIce(grabaICE.equals("S") ? Boolean.TRUE : Boolean.FALSE);
         servicioTipoAmbiente.modificar(tipoambiente);
+
         Clients.showNotification("Información registrada exitosamente",
                     Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
 
@@ -291,5 +294,15 @@ public class Configuracion extends SelectorComposer<Component> {
         }
 
     }
+
+    public String getGrabaICE() {
+        return grabaICE;
+    }
+
+    public void setGrabaICE(String grabaICE) {
+        this.grabaICE = grabaICE;
+    }
+    
+    
 
 }

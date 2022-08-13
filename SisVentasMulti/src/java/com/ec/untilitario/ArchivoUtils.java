@@ -645,15 +645,21 @@ public class ArchivoUtils {
             br.close();
 
             //JSONObject outlineArray = new JSONObject(contenido);
-            JSONObject appObject = new JSONObject(contenido);
+            if (contenido != null) {
+                JSONObject appObject = new JSONObject(contenido);
 
-            String cedula = appObject.getString("cedula");
-            String nombre = appObject.getString("nombre");
-            String mensaje = appObject.getString("mensaje");
+                String cedula = appObject.getString("cedula");
+                String nombre = appObject.getString("nombre");
+                String mensaje = appObject.getString("mensaje");
 
-            respuesta.setCedula(cedula);
-            respuesta.setNombre(nombre);
-            respuesta.setMensaje(mensaje);
+                respuesta.setCedula(cedula);
+                respuesta.setNombre(nombre);
+                respuesta.setMensaje(mensaje);
+            } else {
+                respuesta.setCedula("");
+                respuesta.setNombre("");
+                respuesta.setMensaje("");
+            }
 
         } catch (IOException e) {
 //                Log.e("ERROR", e.getMessage());
@@ -667,5 +673,29 @@ public class ArchivoUtils {
             respuesta.setMensaje("");
         }
         return respuesta;
+    }
+
+    public static byte[] Imagen_A_Bytes(String pathImagen) throws FileNotFoundException {
+        String reportPath = "";
+        reportPath = pathImagen;
+        File file = new File(reportPath);
+
+        FileInputStream fis = new FileInputStream(file);
+        //create FileInputStream which obtains input bytes from a file in a file system
+        //FileInputStream is meant for reading streams of raw bytes such as image data. For reading streams of characters, consider using FileReader.
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        try {
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                //Writes to this byte array output stream
+                bos.write(buf, 0, readNum);
+                System.out.println("read " + readNum + " bytes,");
+            }
+        } catch (IOException ex) {
+        }
+
+        byte[] bytes = bos.toByteArray();
+        return bytes;
     }
 }

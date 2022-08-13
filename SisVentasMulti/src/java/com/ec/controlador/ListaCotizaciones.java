@@ -5,8 +5,12 @@
 package com.ec.controlador;
 
 import com.ec.entidad.Factura;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioFactura;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ParamFactura;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -49,6 +53,8 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Messagebox;
 
 /**
@@ -72,12 +78,25 @@ public class ListaCotizaciones {
     String pathSalidaMes = "";
     private AImage reporteMes;
 
+    private String amRuc = "";
+    UserCredential credential = new UserCredential();
+    private Tipoambiente amb = new Tipoambiente();
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+
     public ListaCotizaciones() {
+
+        Session sess = Sessions.getCurrent();
+        credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+        
+        //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
+
         consultarFactura();
     }
 
     private void consultarFactura() {
-        lstFacturas = servicioFactura.findAllProformas();
+        lstFacturas = servicioFactura.findAllProformas(amb);
     }
 
     public List<Factura> getLstFacturas() {
@@ -139,7 +158,7 @@ public class ListaCotizaciones {
             param.setBusqueda("ninguna");
             map.put("valor", param);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/modificar/factura.zul", null, map);
+                        "/modificar/factura.zul", null, map);
             window.doModal();
 //            window.detach();
             consultarFacturas();
@@ -155,7 +174,7 @@ public class ListaCotizaciones {
             emf.getTransaction().begin();
             con = emf.unwrap(Connection.class);
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                    .getRealPath("/reportes");
+                        .getRealPath("/reportes");
             String reportPath = "";
             if (consindet.equals("DET")) {
                 reportPath = reportFile + File.separator + "proforma.jasper";
@@ -170,6 +189,7 @@ public class ListaCotizaciones {
 
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", numeroFactura);
+            parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -185,7 +205,7 @@ public class ListaCotizaciones {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/contenedorReporte.zul", null, map);
+                        "/venta/contenedorReporte.zul", null, map);
             window.doModal();
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException " + e.getMessage());
@@ -210,7 +230,7 @@ public class ListaCotizaciones {
     }
 
     private void consultarFacturas() {
-        lstFacturas = servicioFactura.findLikeProformaCliente(buscarCliente);
+        lstFacturas = servicioFactura.findLikeProformaCliente(buscarCliente,amb);
     }
 
     @Command
@@ -227,8 +247,6 @@ public class ListaCotizaciones {
             porCobrar = porCobrar.add(factura.getFacSaldo());
         }
     }
-
-    
 
     public AMedia getFileContent() {
         return fileContent;

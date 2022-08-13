@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proforma" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.100000000000001"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.1435888100000042"/>
+	<property name="ireport.x" value="160"/>
+	<property name="ireport.y" value="126"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -25,15 +25,66 @@
 	</style>
 	<subDataset name="detalle">
 		<parameter name="numfactura" class="java.lang.Integer"/>
+		<parameter name="codTipoAmbiente" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
 		<queryString>
 			<![CDATA[SELECT
 *
-FROM
+FROM tipoambiente,
 factura
 INNER JOIN detalle_factura ON detalle_factura.id_factura = factura.id_factura
 INNER JOIN producto ON detalle_factura.id_producto = producto.id_producto
-where factura.fac_num_proforma= $P{numfactura};]]>
+where factura.fac_num_proforma= $P{numfactura} and
+factura.cod_tipoambiente = tipoambiente.cod_tipoambiente and tipoambiente.cod_tipoambiente=$P{codTipoAmbiente};]]>
 		</queryString>
+		<field name="cod_tipoambiente" class="java.lang.Integer"/>
+		<field name="am_codigo" class="java.lang.String"/>
+		<field name="am_descripcion" class="java.lang.String"/>
+		<field name="am_estado" class="java.lang.Boolean"/>
+		<field name="am_id_empresa" class="java.lang.Integer"/>
+		<field name="am_usuariosri" class="java.lang.String"/>
+		<field name="am_urlsri" class="java.lang.String"/>
+		<field name="am_dir_reportes" class="java.lang.String"/>
+		<field name="am_dir_firma" class="java.lang.String"/>
+		<field name="am_dir_base_archivos" class="java.lang.String"/>
+		<field name="am_dir_xml" class="java.lang.String"/>
+		<field name="am_firmados" class="java.lang.String"/>
+		<field name="am_trasmitidos" class="java.lang.String"/>
+		<field name="am_devueltos" class="java.lang.String"/>
+		<field name="am_autorizados" class="java.lang.String"/>
+		<field name="am_no_autorizados" class="java.lang.String"/>
+		<field name="am_clave_acceso_sri" class="java.lang.String"/>
+		<field name="am_generados" class="java.lang.String"/>
+		<field name="am_razon_social" class="java.lang.String"/>
+		<field name="am_nombre_comercial" class="java.lang.String"/>
+		<field name="am_ruc" class="java.lang.String"/>
+		<field name="am_tipo_emision" class="java.lang.String"/>
+		<field name="am_direccion_matriz" class="java.lang.String"/>
+		<field name="llevar_contabilidad" class="java.lang.String"/>
+		<field name="am_estab" class="java.lang.String"/>
+		<field name="am_ptoemi" class="java.lang.String"/>
+		<field name="am_nro_contribuyente" class="java.lang.String"/>
+		<field name="am_enviocliente" class="java.lang.String"/>
+		<field name="am_unidad_disco" class="java.lang.String"/>
+		<field name="am_folder_firma" class="java.lang.String"/>
+		<field name="am_dir_ats" class="java.lang.String"/>
+		<field name="am_telefono" class="java.lang.String"/>
+		<field name="am_dir_img_punto_venta" class="java.lang.String"/>
+		<field name="am_ciudad" class="java.lang.String"/>
+		<field name="am_host" class="java.lang.String"/>
+		<field name="am_port" class="java.lang.String"/>
+		<field name="am_protocol" class="java.lang.String"/>
+		<field name="am_usuario_smpt" class="java.lang.String"/>
+		<field name="am_password" class="java.lang.String"/>
+		<field name="am_imagenes" class="java.lang.String"/>
+		<field name="am_numero_consult_public" class="java.math.BigDecimal"/>
+		<field name="am_direccion_sucursal" class="java.lang.String"/>
+		<field name="am_micro_emp" class="java.lang.Boolean"/>
+		<field name="am_age_ret" class="java.lang.Boolean"/>
+		<field name="am_contr_esp" class="java.lang.Boolean"/>
+		<field name="am_exp" class="java.lang.Boolean"/>
+		<field name="am_ripme" class="java.lang.Boolean"/>
 		<field name="id_factura" class="java.lang.Integer"/>
 		<field name="id_estado" class="java.lang.Integer"/>
 		<field name="id_usuario" class="java.lang.Integer"/>
@@ -69,7 +120,6 @@ where factura.fac_num_proforma= $P{numfactura};]]>
 		<field name="mensajesri" class="java.lang.String"/>
 		<field name="fac_fecha_autorizacion" class="java.sql.Date"/>
 		<field name="fac_clave_acceso" class="java.lang.String"/>
-		<field name="cod_tipoambiente" class="java.lang.Integer"/>
 		<field name="fac_clave_autorizacion" class="java.lang.String"/>
 		<field name="fac_path" class="java.lang.String"/>
 		<field name="tipodocumentomod" class="java.lang.String"/>
@@ -94,6 +144,18 @@ where factura.fac_num_proforma= $P{numfactura};]]>
 		<field name="fac_propina" class="java.math.BigDecimal"/>
 		<field name="fac_mesa" class="java.lang.Integer"/>
 		<field name="fac_mesa_historial" class="java.lang.Integer"/>
+		<field name="id_orden_trabajo" class="java.lang.Integer"/>
+		<field name="fac_fecha_cobro" class="java.sql.Date"/>
+		<field name="fac_placa" class="java.lang.String"/>
+		<field name="fac_marca" class="java.lang.String"/>
+		<field name="fac_anio" class="java.lang.Integer"/>
+		<field name="fac_cilindraje" class="java.lang.String"/>
+		<field name="fac_kilometraje" class="java.lang.String"/>
+		<field name="fac_chasis" class="java.lang.String"/>
+		<field name="fac_madre" class="java.lang.String"/>
+		<field name="fac_hija" class="java.lang.String"/>
+		<field name="fac_destino" class="java.lang.String"/>
+		<field name="id_referencia" class="java.lang.Integer"/>
 		<field name="id_detalle" class="java.lang.Integer"/>
 		<field name="id_producto" class="java.lang.Integer"/>
 		<field name="det_cantidad" class="java.math.BigDecimal"/>
@@ -164,6 +226,11 @@ where factura.fac_num_proforma= $P{numfactura};]]>
 		<field name="prod_servlet_url" class="java.lang.String"/>
 		<field name="prod_espropina" class="java.lang.String"/>
 		<field name="pord_costo_promedio_compra" class="java.math.BigDecimal"/>
+		<field name="prod_fecha_registro" class="java.sql.Date"/>
+		<field name="prod_factor_conversion" class="java.math.BigDecimal"/>
+		<field name="prod_unidad_medida" class="java.lang.String"/>
+		<field name="prod_unidad_conversion" class="java.lang.String"/>
+		<field name="prod_esreceta" class="java.lang.Boolean"/>
 	</subDataset>
 	<parameter name="numfactura" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -433,8 +500,8 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 				</textElement>
 				<text><![CDATA[R.U.C/C.I]]></text>
 			</staticText>
-			<image>
-				<reportElement x="15" y="6" width="165" height="66"/>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="15" y="6" width="181" height="75"/>
 				<imageExpression class="java.lang.String"><![CDATA[$F{am_dir_img_punto_venta}]]></imageExpression>
 			</image>
 			<staticText>
@@ -461,6 +528,9 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 					<datasetRun subDataset="detalle">
 						<datasetParameter name="numfactura">
 							<datasetParameterExpression><![CDATA[$P{numfactura}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="codTipoAmbiente">
+							<datasetParameterExpression><![CDATA[$P{codTipoAmbiente}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -554,7 +624,7 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 								<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 									<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 								</textElement>
-								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{det_subtotaldescuento}]]></textFieldExpression>
+								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{det_total}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -588,7 +658,7 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 								<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 									<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 								</textElement>
-								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{det_subtotaldescuentoporcantidad}]]></textFieldExpression>
+								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{det_totaldescuentoiva}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -597,10 +667,10 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 		</band>
 		<band height="202">
 			<rectangle radius="10">
-				<reportElement positionType="Float" x="428" y="2" width="127" height="57"/>
+				<reportElement positionType="Float" x="428" y="2" width="127" height="108"/>
 			</rectangle>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
-				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="504" y="37" width="47" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="504" y="50" width="50" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -614,7 +684,7 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="436" y="37" width="69" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="436" y="50" width="69" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -660,14 +730,14 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_ruc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00">
-				<reportElement x="504" y="11" width="48" height="13"/>
+				<reportElement x="504" y="11" width="50" height="13"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_subtotal}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="435" y="11" width="69" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="435" y="11" width="70" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -681,14 +751,14 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00">
-				<reportElement x="504" y="24" width="47" height="13"/>
+				<reportElement x="504" y="37" width="50" height="13"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_iva}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="436" y="24" width="69" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="436" y="37" width="69" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -701,6 +771,27 @@ and  factura.fac_num_proforma=$P{numfactura};]]>
 				</textElement>
 				<text><![CDATA[IVA]]></text>
 			</staticText>
+			<staticText>
+				<reportElement style="table_TD" positionType="Float" mode="Transparent" x="436" y="24" width="69" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Descuento]]></text>
+			</staticText>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="504" y="24" width="50" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_descuento}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

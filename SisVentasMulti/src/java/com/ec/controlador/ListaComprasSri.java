@@ -175,10 +175,12 @@ public class ListaComprasSri extends SelectorComposer<Component> {
         calendar.add(Calendar.DATE, -7); //el -3 indica que se le restaran 3 dias 
         inicio = calendar.getTime();
 
+  
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+        
 
         parametrizar = servicioParametrizar.FindALlParametrizar();
         findByBetweenFecha();

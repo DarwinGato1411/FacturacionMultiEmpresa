@@ -5,7 +5,6 @@
 package com.ec.controlador;
 
 import com.ec.entidad.NumeroDocumentosEmitidos;
-import com.ec.entidad.Parametrizar;
 import com.ec.seguridad.AutentificadorLogeo;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.GrupoUsuarioEnum;
@@ -22,9 +21,7 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 public class LoginController extends SelectorComposer<Component> {
 
@@ -51,67 +48,51 @@ public class LoginController extends SelectorComposer<Component> {
         Date actual = new Date();
         Date caduca = new Date();
 
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        String dateString = format.format(new Date());
-        //            inicio = format.parse("2020-02-01");
-//            caduca = format.parse("2030-02-21");
-        Parametrizar param = servicioParametrizar.FindALlParametrizar();
-        NumeroDocumentosEmitidos emitidos = servicioNumeroDocumentosEmitidos.findByMes(caduca.getMonth() + 1);
-//        NumeroDocumentosEmitidos emitidos = listaDocum != null ? listaDocum : null;
-        caduca = param.getParCaduca();
-        if (param.getParPlanBasico()) {
-            System.out.println("emitidos " + emitidos);
-            numeroDocumentos = emitidos.getNumero() == null ? 0 : emitidos.getNumero().intValue();
-            System.out.println("numeroDocumentos " + numeroDocumentos);
-            if (numeroDocumentos > param.getParNumeroFactura()) {
-                System.out.println("caduco  " + actual + " vigente hasta " + caduca);
-                
-                Clients.showNotification("Usted cuenta con un plan basico y sobre paso el limite de " + param.getParNumeroFactura() + " documentos ¡contactese con el administrador!",
-                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+        AutentificadorLogeo servicioAuth = new AutentificadorLogeo();
+        if (servicioAuth.login(account.getValue(), password.getValue())) {
+            Session sess = Sessions.getCurrent();
+            UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
 
-             
+            if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.USUARIO.getCodigo()) {
+                NumeroDocumentosEmitidos emitidos = servicioNumeroDocumentosEmitidos.findByEmpresa(cre.getTipoambiente().getCodTipoambiente());
 
-                // Messagebox.show("Usted cuenta con un plan basico y sobre paso el limite de " + param.getParNumeroFactura() + " documentos ¡contactese con el administrador!", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
-                return;
-            }
-        }
-        System.out.println("actual " + actual);
-        if (actual.after(caduca) && param.getParIlimitadoArriendo()) {
-            System.out.println("caduco  " + actual + " vigente hasta " + caduca);
-            
-             Clients.showNotification("Usted cuenta con un plan ilimitado mensual, pero su sistema caduco ¡contactese con el administrador!",
-                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
-            
-//            Messagebox.show("Usted cuenta con un plan ilimitado mensual, pero su sistema caduco ¡contactese con el administrador!", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
-        } else {
-            System.out.println("vigente  " + actual + " vegente hasta " + caduca);
-            AutentificadorLogeo servicioAuth = new AutentificadorLogeo();
-            if (servicioAuth.login(account.getValue(), password.getValue())) {
-                Session sess = Sessions.getCurrent();
-                UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-                if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.USUARIO.getCodigo()) {
-                    Executions.sendRedirect("/venta/facturar.zul");
-                } else if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.ADMINISTRADOR.getCodigo()) {
-                    Executions.sendRedirect("/venta/facturar.zul");
+                numeroDocumentos = emitidos == null ? 0 : emitidos.getNumero().intValue();
+
+                if (cre.getUsuarioSistema().getUsuIlimitado()) {
+                    if (cre.getUsuarioSistema().getUsuFechaPago().after(actual)) {
+                        Executions.sendRedirect("/venta/facturar.zul");
+                    } else {
+                        Clients.showNotification("Su plan ilimitado no ha sido renovado contactese con el administrador.",
+                                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                    }
+
+                } else {
+                    if (cre.getUsuarioSistema().getUsuTotalContratado() > numeroDocumentos) {
+                        Executions.sendRedirect("/venta/facturar.zul");
+
+                    } else {
+                        Clients.showNotification("El numero de documentos emitidos supera al numero de documentos contratado.",
+                                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                        
+                    }
+
                 }
-            } else {
-                  Clients.showNotification("Usuario o Contraseña incorrecto. \n Contactese con el administrador.",
-                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
 
-       
-                
-//                Messagebox.show("Usuario o Contraseña incorrecto. \n Contactese con el administrador.", "Atención", Messagebox.OK, Messagebox.EXCLAMATION);
-
+            } else if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.ADMINISTRADOR.getCodigo()) {
+                Executions.sendRedirect("/administrar/gestionusuarios.zul");
             }
+
+        } else {
+            Clients.showNotification("Usuario o Contraseña incorrecto. \n Contactese con el administrador.",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+
         }
 
     }
 
-  
-
     @Listen("onClick= #linkOlvideContrasena")
     public void linkOlvideContrasena() {
-      org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+        org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/nuevo/olvidemiclave.zul", null, null);
         window.doModal();
     }
@@ -125,14 +106,12 @@ public class LoginController extends SelectorComposer<Component> {
     public void buttonConsultar() {
         Executions.sendRedirect("/consultas.zul");
     }
-    
-  
-    
-      @Listen("onClick = #btnRegistra")
+
+    @Listen("onClick = #btnRegistra")
     public void btnRegistra() {
-         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+        org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/nuevo/registrousuario.zul", null, null);
         window.doModal();
-      
+
     }
 }

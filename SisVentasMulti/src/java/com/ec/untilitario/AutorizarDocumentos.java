@@ -28,6 +28,7 @@ import ec.gob.sri.comprobantes.ws.aut.RespuestaComprobante;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -253,6 +254,15 @@ public class AutorizarDocumentos {
                             + " <ambiente>" + tipoAmbiente + "</ambiente>\n");
             }
             build.append(linea);
+//            BigDecimal valorICe = (valor.getFacTotalBaseGravaba().multiply(amb.getAmValorIce())).divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR);
+
+            String ICE = "            <totalImpuesto>\n"
+                        + "                <codigo>3</codigo>\n"
+                        + "                <codigoPorcentaje>" + amb.getAmCodigoIce().trim() + "</codigoPorcentaje>\n"
+                        + "                <baseImponible>" + (valor.getFacValorIce().doubleValue() > 0 ? valor.getFacTotalBaseGravaba().setScale(2, RoundingMode.FLOOR) : BigDecimal.ZERO) + "</baseImponible>\n"
+                        + "                <tarifa>" + (valor.getFacValorIce().doubleValue() > 0 ? amb.getAmValorIce() : BigDecimal.ZERO) + "</tarifa>\n"
+                        + "                <valor>" + valor.getFacValorIce() + "</valor>\n"
+                        + "             </totalImpuesto>\n";
             linea = ("<infoTributaria>\n"
                         + "        <ambiente>" + amb.getAmCodigo() + "</ambiente>\n"
                         + "        <tipoEmision>1</tipoEmision>\n"
@@ -289,6 +299,7 @@ public class AutorizarDocumentos {
                         + "                <tarifa>0</tarifa>\n"
                         + "                <valor>0.00</valor>\n"
                         + "             </totalImpuesto>\n"
+                        + (amb.getAmGrabaIce() ? valor.getFacValorIce().doubleValue() > 0 ? ICE : "" : "")
                         + "             <totalImpuesto>\n"
                         /*CODIGO DEL IVA 2, ICE 3 IRBPNR 6*/
                         + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
@@ -299,7 +310,7 @@ public class AutorizarDocumentos {
                     No Objeto de Impuesto -->6 
                     EXENTO DE IVA 7   */
                         + "                 <codigoPorcentaje>" + valor.getCodigoPorcentaje() + "</codigoPorcentaje>\n"
-                        + "                 <baseImponible>" + valor.getFacTotalBaseGravaba().setScale(2, RoundingMode.FLOOR) + "</baseImponible>\n"
+                        + "                 <baseImponible>" + valor.getFacTotalBaseGravaba().add(valor.getFacValorIce()).setScale(2, RoundingMode.FLOOR) + "</baseImponible>\n"
                         + "                 <tarifa>" + valor.getFacPorcentajeIva() + "</tarifa>\n"
                         + "                 <valor>" + valor.getFacIva().setScale(2, RoundingMode.FLOOR) + "</valor>\n"
                         + "              </totalImpuesto>\n"
@@ -326,6 +337,14 @@ public class AutorizarDocumentos {
             for (DetalleFactura item : listaDetalle) {
 
                 String subsidio = "            <precioSinSubsidio>" + item.getIdProducto().getProdPrecioSinSubsidio() + "</precioSinSubsidio>\n";
+                BigDecimal valorICeProd = (item.getDetSubtotaldescuento().multiply(item.getDetCantidad()).multiply(amb.getAmValorIce())).divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR);
+                String ICEIMPUESTO = "                <impuesto>\n"
+                            + "                    <codigo>3</codigo>\n"
+                            + "                    <codigoPorcentaje>" + amb.getAmCodigoIce() + "</codigoPorcentaje>\n"
+                            + "                    <tarifa>" + amb.getAmValorIce() + "</tarifa>\n"
+                            + "                    <baseImponible>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento().multiply(item.getDetCantidad()), 2) + "</baseImponible>\n"
+                            + "                    <valor>" + valorICeProd + "</valor>\n"
+                            + "                </impuesto>\n";
 
                 linea = ("        <detalle>\n"
                             + "            <codigoPrincipal>" + removeCaracteres(item.getIdProducto().getProdCodigo()) + "</codigoPrincipal>\n"
@@ -341,9 +360,10 @@ public class AutorizarDocumentos {
                             + "                    <codigo>" + item.getDetCodIva() + "</codigo>\n"
                             + "                    <codigoPorcentaje>" + item.getDetCodPorcentaje() + "</codigoPorcentaje>\n"
                             + "                    <tarifa>" + item.getDetTarifa() + "</tarifa>\n"
-                            + "                    <baseImponible>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento().multiply(item.getDetCantidad()), 2) + "</baseImponible>\n"
+                            + "                    <baseImponible>" + ArchivoUtils.redondearDecimales((item.getDetSubtotaldescuento().add(item.getDetValorIce())).multiply(item.getDetCantidad()), 2) + "</baseImponible>\n"
                             + "                    <valor>" + item.getDetIva().setScale(2, RoundingMode.FLOOR) + "</valor>\n"
                             + "                </impuesto>\n"
+                            + (amb.getAmGrabaIce() ? valor.getFacValorIce().doubleValue() > 0 ? ICEIMPUESTO : "" : "")
                             + "            </impuestos>\n"
                             + "        </detalle>\n");
                 build.append(linea);

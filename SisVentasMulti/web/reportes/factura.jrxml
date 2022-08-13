@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.2100000000000002"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="28"/>
+	<property name="ireport.zoom" value="1.9487171000000019"/>
+	<property name="ireport.x" value="118"/>
+	<property name="ireport.y" value="530"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -235,6 +235,11 @@ where tipoambiente.cod_tipoambiente=$P{codTipoAmbiente} and  factura.fac_numero=
 	<field name="am_sec_nota_credito" class="java.lang.Integer"/>
 	<field name="am_sec_guia" class="java.lang.Integer"/>
 	<field name="am_valor_iva" class="java.math.BigDecimal"/>
+	<field name="am_general" class="java.lang.Boolean"/>
+	<field name="am_graba_ice" class="java.lang.Boolean"/>
+	<field name="am_valor_ice" class="java.math.BigDecimal"/>
+	<field name="am_comprobante_imprime" class="java.lang.String"/>
+	<field name="am_codigo_ice" class="java.lang.String"/>
 	<field name="id_factura" class="java.lang.Integer"/>
 	<field name="id_estado" class="java.lang.Integer"/>
 	<field name="id_usuario" class="java.lang.Integer"/>
@@ -306,6 +311,8 @@ where tipoambiente.cod_tipoambiente=$P{codTipoAmbiente} and  factura.fac_numero=
 	<field name="fac_hija" class="java.lang.String"/>
 	<field name="fac_destino" class="java.lang.String"/>
 	<field name="id_referencia" class="java.lang.Integer"/>
+	<field name="fac_valor_ice" class="java.math.BigDecimal"/>
+	<field name="fac_base_ice" class="java.math.BigDecimal"/>
 	<field name="cli_cedula" class="java.lang.String"/>
 	<field name="cli_nombre" class="java.lang.String"/>
 	<field name="cli_razon_social" class="java.lang.String"/>
@@ -494,21 +501,21 @@ where tipoambiente.cod_tipoambiente=$P{codTipoAmbiente} and  factura.fac_numero=
 				<text><![CDATA[Contribuyente Especial Nro]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="189" y="279" width="211" height="20"/>
+				<reportElement x="189" y="279" width="361" height="20"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_nombres}+" "+$F{cli_apellidos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="400" y="279" width="75" height="20"/>
+				<reportElement x="302" y="303" width="75" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Identificación:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="475" y="279" width="80" height="20"/>
+				<reportElement x="377" y="303" width="173" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_cedula}]]></textFieldExpression>
 			</textField>
@@ -518,13 +525,6 @@ where tipoambiente.cod_tipoambiente=$P{codTipoAmbiente} and  factura.fac_numero=
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha de emisión: ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="378" y="303" width="97" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Guia Remisión:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="11" y="327" width="65" height="20"/>
@@ -1008,20 +1008,6 @@ where tipoambiente.cod_tipoambiente=$P{codTipoAmbiente} and  factura.fac_numero=
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{for_nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="507" y="82" width="47" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-				</textElement>
-				<text><![CDATA[0.00]]></text>
-			</staticText>
-			<staticText>
 				<reportElement mode="Opaque" x="507" y="106" width="47" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -1095,6 +1081,20 @@ where tipoambiente.cod_tipoambiente=$P{codTipoAmbiente} and  factura.fac_numero=
 Se recuerda que el envio de los comprobantes de retenciones debe realizarse dentro de los 5 dias habiles a la emisión de la factura de acuerdo del Art. 50
 (Obligación de los agentes de retención ) reformado en el Art. 103 numeral 1,2,3 y 6 de la ley s/n RO 242-35, 29-1-2007]]></text>
 			</staticText>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="507" y="82" width="47" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_valor_ice}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

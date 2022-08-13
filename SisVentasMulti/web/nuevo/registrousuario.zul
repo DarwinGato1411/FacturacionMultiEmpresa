@@ -30,6 +30,17 @@
                 </div>
             </div>
             <div class="col_base">
+               
+                <span>Celular (WhatsApp)</span>
+                <div class="wrapper_input">
+                    <div class="fa-solid fa-phone icon"></div>
+                    <textbox  maxlength="12"   
+                              value="@bind(vm.usuarioSistema.usuWhatsapp)" 
+                              class="input" 
+                    />
+                </div>
+            </div>
+            <div class="col_base">
                 <span>Responsable de la cuenta</span>
                 <div class="wrapper_input"> 
                     <div class="fa-solid fa-user-group icon"></div>

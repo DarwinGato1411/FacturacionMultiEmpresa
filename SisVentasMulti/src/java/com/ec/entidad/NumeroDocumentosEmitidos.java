@@ -30,6 +30,8 @@ public class NumeroDocumentosEmitidos implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "numero")
     private Long numero;
+    @Column(name = "cod_tipoambiente")
+    private Integer codTipoambiente;
 
     public NumeroDocumentosEmitidos() {
     }
@@ -57,11 +59,21 @@ public class NumeroDocumentosEmitidos implements Serializable {
     }
 
     public Long getNumero() {
-        return numero;
+        return numero==null?0:numero;
     }
 
     public void setNumero(Long numero) {
         this.numero = numero;
     }
+
+    public Integer getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Integer codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
+    }
+    
+    
 
 }

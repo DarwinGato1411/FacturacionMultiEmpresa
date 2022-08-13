@@ -79,6 +79,7 @@ public class ServicioFactura {
                 detalleFactura.setDetCodIva("2");
                 detalleFactura.setDetCodPorcentaje(item.getProducto().getProdGrabaIva() ? "2" : "0");
                 detalleFactura.setDetTarifa(item.getProducto().getProdIva());
+                detalleFactura.setDetValorIce(item.getValorIce());
 
                 /*para las motocicletas o vehiculos*/
                 detalleFactura.setTipoIdentificacionPropietario(item.getTipoIdentificacionPropietario());
@@ -405,18 +406,19 @@ public class ServicioFactura {
         return listaFacturas;
     }
 
-    public List<Factura> findLikeProformaCliente(String cliente) {
+    public List<Factura> findLikeProformaCliente(String cliente, Tipoambiente codTipoambiente) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE (f.idCliente.cliNombres LIKE :cliente OR f.idCliente.cliRazonSocial like :razon OR CAST(f.facNumProforma as string ) like :numero ) AND f.facTipo='PROF' ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE (f.idCliente.cliNombres LIKE :cliente OR f.idCliente.cliRazonSocial like :razon ) AND f.facTipo='PROF' and f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("cliente", "%" + cliente + "%");
             query.setParameter("razon", "%" + cliente + "%");
-            query.setParameter("numero", "%" + cliente + "%");
+//            query.setParameter("numero", "%" + cliente + "%");
+            query.setParameter("codTipoambiente", codTipoambiente);
 
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
@@ -462,6 +464,28 @@ public class ServicioFactura {
             Query query = em.createQuery("SELECT f FROM Factura f WHERE  f.facTipo='PROF' ORDER BY f.facFecha DESC");
             query.setMaxResults(400);
 //           query.setParameter("codigoUsuario", factura);
+            listaFacturas = (List<Factura>) query.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta factura");
+        } finally {
+            em.close();
+        }
+
+        return listaFacturas;
+    }
+    
+    public List<Factura> findAllProformas(Tipoambiente codTipoAmbiente) {
+
+        List<Factura> listaFacturas = new ArrayList<Factura>();
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE  f.facTipo='PROF' AND f.cod_tipoambiente=:codTipoAmbiente ORDER BY f.facFecha DESC");
+           query.setParameter("codTipoAmbiente", codTipoAmbiente);
+            query.setMaxResults(400);
+      
             listaFacturas = (List<Factura>) query.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -667,7 +691,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumero DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.estadosri <> 'ANULADA' AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumero DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setParameter("tipoambiente", tipoambiente);

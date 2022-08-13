@@ -32,6 +32,11 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import com.ec.entidad.HistorialDeclaraciones;
+import com.ec.untilitario.ArchivoUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
 
 /**
  *
@@ -52,10 +57,12 @@ public class ListaHistorialDeclaraciones {
     private static String PATH_BASE = "";
 
     public ListaHistorialDeclaraciones() {
+   
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+        
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
@@ -65,9 +72,6 @@ public class ListaHistorialDeclaraciones {
     private void consultarHistorial() {
         listaDatos = servicioHistorialDeclaraciones.findByTipoAmbiente(amb);
     }
-
-   
-    
 
     public void reporteGeneral(Integer numeroFactura) throws JRException, IOException, NamingException, SQLException {
         EntityManager emf = HelperPersistencia.getEMF();
@@ -123,5 +127,34 @@ public class ListaHistorialDeclaraciones {
         this.listaDatos = listaDatos;
     }
 
-   
+    @Command
+    public void verDeclaraciones(@BindingParam("valor") HistorialDeclaraciones valor) {
+        try {
+            fileContent = new AMedia("Visor", "pdf", "application/pdf", ArchivoUtils.Imagen_A_Bytes(valor.getHisPathDeclaracion()));
+            final HashMap<String, AMedia> map = new HashMap<String, AMedia>();
+//para pasar al visor
+            map.put("pdf", fileContent);
+            org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+                        "/venta/contenedorReporte.zul", null, map);
+            window.doModal();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(HistorialDeclaraciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Command
+    public void verPago(@BindingParam("valor") HistorialDeclaraciones valor) {
+        try {
+            fileContent = new AMedia("Visor", "pdf", "application/pdf", ArchivoUtils.Imagen_A_Bytes(valor.getHisPathPago()));
+            final HashMap<String, AMedia> map = new HashMap<String, AMedia>();
+//para pasar al visor
+            map.put("pdf", fileContent);
+            org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+                        "/venta/contenedorReporte.zul", null, map);
+            window.doModal();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(HistorialDeclaraciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

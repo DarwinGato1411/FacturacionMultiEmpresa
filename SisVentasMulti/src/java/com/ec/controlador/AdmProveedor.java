@@ -39,10 +39,10 @@ public class AdmProveedor {
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
     public AdmProveedor() {
-        Session sess = Sessions.getCurrent();
+         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         findLikeNombre();
 
     }

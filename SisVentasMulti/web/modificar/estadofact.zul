@@ -47,7 +47,7 @@
                     <combobox 
                         readonly="true"                                        
                         selectedItem="@bind(vm.facturar.estadosri)"
-                        class="input_select"
+                      
                         style="width: 100%;"
                     >
                         <comboitem label="ANULADA" value="ANULADA" />                    
@@ -69,6 +69,12 @@
                         style="width: 100%;"
                     />
                 </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;">
+                <button class="btn_modal" style="width:300px" 
+                        onClick="@command('guardar')">
+                    Guardar
+                </button>
             </div>
         </div>
 

@@ -84,10 +84,13 @@ public class NuevoCliente {
 
     public NuevoCliente() {
 
+       
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+
     }
 
     @Command
@@ -102,6 +105,15 @@ public class NuevoCliente {
                     cedulaBuscar = cliente.getCliCedula();
                 }
                 AduanaJson aduana = ArchivoUtils.obtenerdatoAduana(cedulaBuscar);
+                if (aduana.getNombre().equals("")) {
+                    cliente.setCliApellidos("");
+                    cliente.setCliNombres("");
+                    cliente.setCliNombre("");
+                    cliente.setCliRazonSocial("" );
+                    Clients.showNotification("Cliente no encontrado ingreselo manualmente...!! ",
+                                Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
+                    return;
+                }
                 if (aduana != null) {
 
                     String nombreApellido[] = aduana.getNombre().split(" ");
@@ -110,7 +122,7 @@ public class NuevoCliente {
                     switch (nombreApellido.length) {
                         case 1:
                             apellidoPersona = nombreApellido[0];
-                            nombrePersona = "A";
+                            nombrePersona = "";
                             break;
                         case 2:
                             apellidoPersona = nombreApellido[0];

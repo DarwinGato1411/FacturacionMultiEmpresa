@@ -4,7 +4,6 @@
  */
 package com.ec.controlador;
 
-import com.ec.dao.DetalleFacturaDAO;
 import com.ec.entidad.Producto;
 import com.ec.entidad.ProductoProveedor;
 import com.ec.entidad.ProductoProveedorPK;
@@ -63,10 +62,10 @@ public class AdmProductoProveedor {
 
     public AdmProductoProveedor() {
         
-         Session sess = Sessions.getCurrent();
+        Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         
         
         findProveedorByNombre();

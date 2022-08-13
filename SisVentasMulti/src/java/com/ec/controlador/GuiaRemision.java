@@ -123,11 +123,11 @@ public class GuiaRemision {
     }
 
     public GuiaRemision() {
+
         Session sess = Sessions.getCurrent();
-        sess.setMaxInactiveInterval(10000);
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
 //        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
     }
 

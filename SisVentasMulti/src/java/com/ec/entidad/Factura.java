@@ -172,6 +172,10 @@ public class Factura implements Serializable {
     private Date facFechaCobroPlazo;
     @Column(name = "fac_valor_sin_subsidio")
     private BigDecimal facValorSinSubsidio;
+    @Column(name = "fac_valor_ice")
+    private BigDecimal facValorIce;
+    @Column(name = "fac_base_ice")
+    private BigDecimal facBaseIce;
 
     @Column(name = "fac_fecha_cobro")
     @Temporal(TemporalType.DATE)
@@ -786,6 +790,22 @@ public class Factura implements Serializable {
     @Override
     public String toString() {
         return "com.ec.entidad.Factura[ idFactura=" + idFactura + " ]";
+    }
+
+    public BigDecimal getFacValorIce() {
+        return facValorIce==null?BigDecimal.ZERO:facValorIce;
+    }
+
+    public void setFacValorIce(BigDecimal facValorIce) {
+        this.facValorIce = facValorIce;
+    }
+
+    public BigDecimal getFacBaseIce() {
+        return facBaseIce==null?BigDecimal.ZERO:facBaseIce;
+    }
+
+    public void setFacBaseIce(BigDecimal facBaseIce) {
+        this.facBaseIce = facBaseIce;
     }
 
 }

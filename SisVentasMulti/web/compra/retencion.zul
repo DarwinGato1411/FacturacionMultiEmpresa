@@ -234,27 +234,7 @@
                                     </div>
                                 </div>
 
-                                <div class="wrapper_input_mod">
-                                    <span>Descuento: </span>
-                                    <div class="wrapper_input_text">
-                                        <div class="fa-solid fa-user icon"></div>
-                                        <combobox  
-                                            model="@load(vm.listaTipoivaretencion)"                                             
-                                            selectedItem="@bind(vm.tipoivaretencion)"
-                                            readonly="true"
-                                            class="input_select" 
-                                        >
-                                                        
-                                            <template name="model">
-                                                <comboitem  label="@bind(each.tipivaretDescripcion.concat('%'))"/>
-                                            </template>                                      
-                                        </combobox>
-                                         <div 
-                                            class="fa-solid fa-chevron-down"
-                                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
-                                        />
-                                    </div>
-                                </div>
+                                
                             </div>
 
                             <div class="container_row_input">
@@ -266,7 +246,7 @@
                                             readonly="false" 
                                             format="###.#####"
                                             class="input_text"
-                                            value="@bind(each.drcBaseImponible)"
+                                           value="@bind(vm.baseImponible)"
                                         />
                                     </div>
                                 </div>
@@ -278,7 +258,7 @@
                                         <div class="fa-solid fa-dollar-sign icon"></div>
                                         <textbox  
                                             maxlength="100" 
-                                            value="@bind(vm.retencionCompra.rcoAutorizacion)" 
+                                            value="@bind(vm.retencionCompra.rcoAutorizacion)"  
                                             class="input_text" 
                                         />
                                     </div>
@@ -340,8 +320,7 @@
                                     <span></span>
                                     <div class="wrapper_input_text">
                                         <radiogroup  
-                                            selectedItem="@bind(vm.codImpuestoAsignado)" 
-                                            onCheck="@command('visualizarIvaFuente')" 
+                                            selectedItem="@bind(vm.codImpuestoAsignado)" onCheck="@command('visualizarIvaFuente')" 
                                             class="radio_group"
                                             style="width:100%;display:flex; gap:1em"
                                         >
@@ -351,10 +330,65 @@
                                         </radiogroup>
                                     </div>
                                 </div>
+                                <div class="wrapper_input_mod" visible="@load(!vm.activaIvaRenta)">
+                                    <span>% Retencion: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-user icon"></div>
+                                        <combobox  
+                                            model="@load(vm.listaTipoRetencion)"                                             
+                                            selectedItem="@bind(vm.tipoRetencionSelected)"
+                                            readonly="true"
+                                            class="input_select" 
+                                        >
+                                                        
+                                            <template name="model">
+                                                <comboitem  label="@bind(each.tireNombre)"
+                                                    description="@bind(each.tireCodigo ne null ? 'Codigo SRI:  '.concat(each.tireCodigo) : ''))"/>
+                                            </template>                                      
+                                        </combobox>
+                                        
+<!--                                        <combobox  model="@load(vm.listaTipoRetencion)"                                             
+                                           selectedItem="@bind(vm.tipoRetencionSelected)" width="60%"
+                                           readonly="true" >
+                                          
+                                    <template name="model">
+                                        <comboitem  label="@bind(each.tireNombre)"
+                                                    description="@bind(each.tireCodigo ne null ? 'Codigo SRI:  '.concat(each.tireCodigo) : ''))"/>
+                                    </template>                                      
+                                </combobox>-->
+                                         <div 
+                                            class="fa-solid fa-chevron-down"
+                                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                                        />
+                                    </div>
+                                </div>
+                               
+                                <div class="wrapper_input_mod" visible="@load(vm.activaIvaRenta)">
+                                    <span>% Retencion: </span>
+                                    <div class="wrapper_input_text">
+                                        <div class="fa-solid fa-user icon"></div>
+                                        <combobox  
+                                            model="@load(vm.listaTipoivaretencion)"                                             
+                                            selectedItem="@bind(vm.tipoivaretencion)"
+                                            readonly="true"
+                                            class="input_select" 
+                                        >
+                                                        
+                                            <template name="model">
+                                                <comboitem  label="@bind(each.tipivaretDescripcion.concat('%'))"/>
+                                            </template>                                      
+                                        </combobox>
+                                         <div 
+                                            class="fa-solid fa-chevron-down"
+                                            style="position: absolute; right: 7px; top: 7px; color: #1247b9;font-size: 13px" 
+                                        />
+                                    </div>
+                                </div>
+                                
                                  <div style="display:flex;justify-content:flex-end;">
                                     <button 
                                         class="fa-solid fa-plus btn_modal" 
-                                        style="width:300px" 
+                                        style="width:200px" 
                                         onClick="@command('agregarRegistro')"   
                                         tooltiptext="Agregar item"
                                     >
@@ -365,7 +399,7 @@
                                 <div style="display:flex;justify-content:flex-end;">
                                     <button 
                                         class="fa-solid fa-save btn_modal" 
-                                        style="width:300px" 
+                                        style="width:200px" 
                                         onClick="@command('guardar')"
                                     >
                                         Guardar
@@ -374,7 +408,67 @@
 
                             </div>
 
-                           
+                           <div class="col-12 col-sm-12 col-md-12 col-lg-12" align="start">
+                                <listbox id="DescripcionPedidoPrePost" 
+                                         model="@load(vm.listaDetalleRetencionCompraModel)"
+                                         nonselectableTags="*" 
+                                         checkmark="true"  
+                                         multiple="true" 
+                                         onSelect="@command('seleccionarRegistros')" >
+                                    <custom-attributes org.zkoss.zul.listbox.rod="true"/>
+                                              
+                                        
+                                    <listhead>
+                                        <listheader width="10%"  label="" align="left" >
+                                            <button label="" src="/iconos/eliminar.png"  
+                                                    onClick="@command('eliminarRegistros')"  
+                                                    class="btn btn btn-secondary btn-sm "
+                                                    tooltiptext="Eliminar registros seleccionados"/>
+                                        </listheader>
+                                        <listheader width="15%"  label="Base Imponible" align="left" />
+                                        <listheader width="34%"  label="Descripcion" align="left"  /> 
+                                        <listheader width="10%"  label="IVA/FUENTE" align="left"  /> 
+                                        <listheader width="15%"  label="Porcentaje" align="left" />
+                                        <listheader width="15%"  label="Valor retenido" align="left" /> 
+                                                                                                                            
+                                    </listhead>
+                    
+                                    <template name="model">                                                            
+                                        <listitem>
+                                            <listcell>
+                                                    
+                                            </listcell>
+                                            <listcell >
+                                                <decimalbox readonly="true" format="###.#####"
+                                                            class="form-control form-control-sm"
+                                                            value="@bind(each.drcBaseImponible)"  width="99%" />
+                                            </listcell>                                     
+                                            <listcell>
+                                                <label  value="@bind(each.tireCodigo.tireNombre)" width="99%"
+                                                        if="${each.codImpuestoAsignado == '1'}"/>
+                                                <label  value="Retencion IVA" width="99%" 
+                                                          if="${each.codImpuestoAsignado == '2'}"/>
+                                            </listcell>
+                                            <listcell>
+                                                <label  value="@bind(each.drcDescripcion)" width="99%" />
+                                              
+                                            </listcell>
+                                            <listcell>
+                                                <decimalbox readonly="true" format="###.#####"
+                                                            class="form-control form-control-sm"
+                                                            value="@bind(each.drcPorcentaje)"  width="99%" />
+                                            </listcell>
+                                            <listcell>
+                                                <decimalbox readonly="true" format="###.#####" 
+                                                            class="form-control form-control-sm"
+                                                            value="@bind(each.drcValorRetenido)"  width="99%" />
+                                            </listcell>
+                                            
+                                        </listitem>
+                                    </template>
+
+                                </listbox>
+                            </div>
                     </div>
                 </div>
                     

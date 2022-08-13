@@ -79,7 +79,7 @@ public class ServicioHistorialDeclaraciones {
         try {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM HistorialDeclaraciones a WHERE a.codTipoambiente=:codTipoambiente");
+            Query query = em.createQuery("SELECT a FROM HistorialDeclaraciones a WHERE a.codTipoambiente=:codTipoambiente ORDER BY a.hisAnio,a.hisMes");
             query.setParameter("codTipoambiente", codTipoambiente);
             listaHistorialDeclaracioness = (List<HistorialDeclaraciones>) query.getResultList();
             em.getTransaction().commit();

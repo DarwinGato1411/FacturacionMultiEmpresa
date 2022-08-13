@@ -5,7 +5,11 @@
  */
 package com.ec.entidad;
 
+import com.ec.untilitario.ModeloMeses;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +21,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -50,7 +57,36 @@ public class HistorialDeclaraciones implements Serializable {
     @ManyToOne
     private Tipoambiente codTipoambiente;
 
+    @Column(name = "his_fecha")
+    @Temporal(TemporalType.DATE)
+    private Date hisFecha;
+    @Column(name = "his_mes")
+    private Integer hisMes;
+    @Column(name = "his_anio")
+    private Integer hisAnio;
+    @Transient
+    private static List<ModeloMeses> listaMeses;
+    @Transient
+    private ModeloMeses mesActual;
+
     public HistorialDeclaraciones() {
+    }
+
+    static {
+        listaMeses = new ArrayList<ModeloMeses>();
+        listaMeses.add(new ModeloMeses(1, "ENERO"));
+        listaMeses.add(new ModeloMeses(2, "FEBRERO"));
+        listaMeses.add(new ModeloMeses(3, "MARZO"));
+        listaMeses.add(new ModeloMeses(4, "ABRIL"));
+        listaMeses.add(new ModeloMeses(5, "MAYO"));
+        listaMeses.add(new ModeloMeses(6, "JUNIO"));
+        listaMeses.add(new ModeloMeses(7, "JULIO"));
+        listaMeses.add(new ModeloMeses(8, "AGOSTO"));
+        listaMeses.add(new ModeloMeses(9, "SEPTIEMBRE"));
+        listaMeses.add(new ModeloMeses(10, "OCTUBRE"));
+        listaMeses.add(new ModeloMeses(11, "NOVIEMBRE"));
+        listaMeses.add(new ModeloMeses(12, "DICIEMBRE"));
+
     }
 
     public HistorialDeclaraciones(Integer idHistorial) {
@@ -97,6 +133,41 @@ public class HistorialDeclaraciones implements Serializable {
         this.codTipoambiente = codTipoambiente;
     }
 
+    public Date getHisFecha() {
+        return hisFecha;
+    }
+
+    public void setHisFecha(Date hisFecha) {
+        this.hisFecha = hisFecha;
+    }
+
+    public Integer getHisMes() {
+        return hisMes;
+    }
+
+    public void setHisMes(Integer hisMes) {
+        this.hisMes = hisMes;
+    }
+
+    public Integer getHisAnio() {
+        return hisAnio;
+    }
+
+    public void setHisAnio(Integer hisAnio) {
+        this.hisAnio = hisAnio;
+    }
+
+    public ModeloMeses getMesActual() {
+        Integer numeroMes = new Date().getMonth() + 1;
+        for (ModeloMeses listaMese : listaMeses) {
+            if (listaMese.getNumero() == hisMes) {
+                mesActual = listaMese;
+                return mesActual;
+            }
+        }
+        return mesActual;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -121,5 +192,5 @@ public class HistorialDeclaraciones implements Serializable {
     public String toString() {
         return "com.ec.entidad.HistorialDeclaraciones[ idHistorial=" + idHistorial + " ]";
     }
-    
+
 }

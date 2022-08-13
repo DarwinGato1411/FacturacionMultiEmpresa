@@ -5,11 +5,8 @@
 package com.ec.controlador;
 
 import com.ec.dao.DetalleFacturaDAO;
-import com.ec.entidad.Producto;
-import com.ec.entidad.Usuario;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
-import java.util.HashMap;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Component;
@@ -19,8 +16,6 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menuitem;
 
@@ -30,34 +25,34 @@ import org.zkoss.zul.Menuitem;
  */
 public class MenuOpciones extends SelectorComposer<Component> {
 
-//    @Wire("#btnAdministrar")
-//    Button btnAdministrar;
-//    @Wire("#btnCotizar")
-//    Button btnCotizar;
-//    @Wire("#btnCompaginado")
-//    Button btnCompaginado;
-//    @Wire("#btnGiganto")
-//    Button btnGiganto;
-//    @Wire("#btnDigital")
-//    Button btnDigital;
-//    @Wire("#btnUsuarios")
-//    Button btnUsuarios;
-//    @Wire("#btnIngresoCompras")
-//    Button btnIngresoCompras;
-    @Wire("#btnFacturar")
-    Menuitem btnFacturar;
+    @Wire("#menuEmitirfact")
+    Menu menuEmitirfact;
     @Wire("#menuVentas")
     Menu menuVentas;
     @Wire("#menuCompras")
     Menu menuCompras;
+    @Wire("#menuGuias")
+    Menu menuGuias;
     @Wire("#menuKardex")
     Menu menuKardex;
     @Wire("#menuReportes")
     Menu menuReportes;
+
     @Wire("#btnAdministarVenta")
     Menuitem btnAdministarVenta;
+    @Wire("#muenGestionUsu")
+    Menuitem muenGestionUsu;
+    @Wire("#muenGestionEmpresas")
+    Menuitem muenGestionEmpresas;
     @Wire("#btnHisDeclaraciones")
     Menuitem btnHisDeclaraciones;
+    @Wire("#btnGestionFactura")
+    Menuitem btnGestionFactura;
+    @Wire("#btnOrden")
+    Menuitem btnOrden;
+    @Wire("#btnlistaOrden")
+    Menuitem btnlistaOrden;
+            
     UserCredential credential = new UserCredential();
     private String acceso = "";
 
@@ -70,24 +65,24 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-//        if (credential.getUsuarioSistema() != null) {
-//
-//            if (credential.getUsuarioSistema().getUsuNivel() == 1) {
-//                btnFacturar.setVisible(Boolean.TRUE);
-//                menuVentas.setVisible(Boolean.TRUE);
-//                menuCompras.setVisible(Boolean.TRUE);
-//                menuKardex.setVisible(Boolean.TRUE);
-//                menuReportes.setVisible(Boolean.TRUE);
-//                btnAdministarVenta.setVisible(Boolean.TRUE);
-//            } else {
-//                btnFacturar.setVisible(Boolean.TRUE);
-//                menuVentas.setVisible(Boolean.FALSE);
-//                menuCompras.setVisible(Boolean.FALSE);
-//                menuKardex.setVisible(Boolean.FALSE);
-//                menuReportes.setVisible(Boolean.FALSE);
-//                btnAdministarVenta.setVisible(Boolean.FALSE);
-//            }
-//        }
+        if (credential.getUsuarioSistema() != null) {
+
+            if (credential.getUsuarioSistema().getUsuNivel() == 1) {
+                menuEmitirfact.setVisible(Boolean.FALSE);
+                menuVentas.setVisible(Boolean.FALSE);
+                menuCompras.setVisible(Boolean.FALSE);
+                menuGuias.setVisible(Boolean.FALSE);
+                menuKardex.setVisible(Boolean.FALSE);
+                menuReportes.setVisible(Boolean.FALSE);
+                btnAdministarVenta.setVisible(Boolean.FALSE);
+                btnHisDeclaraciones.setVisible(Boolean.FALSE);
+
+            } else {
+                muenGestionUsu.setVisible(Boolean.FALSE);
+                muenGestionEmpresas.setVisible(Boolean.FALSE);
+                btnGestionFactura.setVisible(Boolean.FALSE);
+            }
+        }
     }
 
     @Listen("onClick = #buttonConsultar")
@@ -289,6 +284,15 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void btnfactCobra() {
         Executions.sendRedirect("/venta/facturasporcobrar.zul");
     }
+    @Listen("onClick = #btnOrden")
+    public void btnOrden() {
+        Executions.sendRedirect("/venta/ordentrabajo.zul");
+    }
+    
+    @Listen("onClick = #btnlistaOrden")
+    public void btnlistaOrden() {
+        Executions.sendRedirect("/venta/listaorden.zul");
+    }
 
     @Command
     public void facturar(@BindingParam("valor") DetalleFacturaDAO valor) {
@@ -299,7 +303,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void btnCierreCaja() {
 //        if (credential.getUsuarioSistema().getUsuNivel() != 1) {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/cierrecaja.zul", null, null);
+                    "/nuevo/cierrecaja.zul", null, null);
         window.doModal();
 //        } else {
 //            Clients.showNotification("El usuario administrador no puede cerrar una caja",
@@ -312,7 +316,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void nuevoProducto() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/producto.zul", null, null);
+                    "/nuevo/producto.zul", null, null);
         window.doModal();
 
     }
@@ -321,7 +325,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void nuevoCliente() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/nuevo/cliente.zul", null, null);
+                    "/nuevo/cliente.zul", null, null);
         window.doModal();
 
     }
@@ -342,4 +346,19 @@ public class MenuOpciones extends SelectorComposer<Component> {
         this.acceso = acceso;
     }
 
+    /*gestion administrativa*/
+    @Listen("onClick = #muenGestionUsu")
+    public void muenGestionUsu() {
+        Executions.sendRedirect("/administrar/gestionusuarios.zul");
+    }
+
+    @Listen("onClick = #muenGestionEmpresas")
+    public void muenGestionEmpresas() {
+        Executions.sendRedirect("/administrar/empresas.zul");
+    }
+
+    @Listen("onClick = #btnGestionFactura")
+    public void btnGestionFactura() {
+        Executions.sendRedirect("/administrar/gestionfactura.zul");
+    }
 }

@@ -80,6 +80,8 @@ public class DetalleFactura implements Serializable {
     private String detCodPorcentaje;
     @Column(name = "det_subtotaldescuentoporcantidad")
     private BigDecimal detSubtotaldescuentoporcantidad;
+    @Column(name = "det_valor_ice")
+    private BigDecimal detValorIce;
     @Size(max = 100)
     @Column(name = "det_tipo_venta")
     private String detTipoVenta;
@@ -129,11 +131,11 @@ public class DetalleFactura implements Serializable {
     }
 
     public DetalleFactura(BigDecimal detCantidad,
-            String detDescripcion,
-            BigDecimal detSubtotal,
-            BigDecimal detTotal,
-            Producto idProducto,
-            Factura idFactura) {
+                String detDescripcion,
+                BigDecimal detSubtotal,
+                BigDecimal detTotal,
+                Producto idProducto,
+                Factura idFactura) {
         this.detCantidad = detCantidad;
         this.detDescripcion = detDescripcion;
         this.detSubtotal = detSubtotal;
@@ -143,11 +145,11 @@ public class DetalleFactura implements Serializable {
     }
 
     public DetalleFactura(BigDecimal detCantidad,
-            String detDescripcion,
-            BigDecimal detSubtotal,
-            BigDecimal detTotal,
-            Producto idProducto,
-            Factura idFactura, String detTipoVenta) {
+                String detDescripcion,
+                BigDecimal detSubtotal,
+                BigDecimal detTotal,
+                Producto idProducto,
+                Factura idFactura, String detTipoVenta) {
         this.detCantidad = detCantidad;
         this.detDescripcion = detDescripcion;
         this.detSubtotal = detSubtotal;
@@ -419,6 +421,14 @@ public class DetalleFactura implements Serializable {
 
     public void setCodigoCantonMatriculacion(String codigoCantonMatriculacion) {
         this.codigoCantonMatriculacion = codigoCantonMatriculacion;
+    }
+
+    public BigDecimal getDetValorIce() {
+        return detValorIce==null?BigDecimal.ZERO:detValorIce;
+    }
+
+    public void setDetValorIce(BigDecimal detValorIce) {
+        this.detValorIce = detValorIce;
     }
 
     @Override

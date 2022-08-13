@@ -39,7 +39,7 @@ public class ServicioGeneral {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
 
-            Query query = em.createQuery("SELECT new com.ec.untilitario.SumaTotales(SUM(f.facSubtotal),SUM(f.facTotal))FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:tipoambiente ");
+            Query query = em.createQuery("SELECT new com.ec.untilitario.SumaTotales(SUM(f.facSubtotal),SUM(f.facTotal))FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.estadosri<>'ANULADA' AND f.cod_tipoambiente=:tipoambiente ");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setParameter("tipoambiente", tipoambiente);

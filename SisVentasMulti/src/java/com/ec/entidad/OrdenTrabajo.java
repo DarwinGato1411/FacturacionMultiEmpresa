@@ -81,6 +81,15 @@ public class OrdenTrabajo implements Serializable {
     private String ordNumText;
     @Column(name = "ord_observacion")
     private String ordObservacion;
+    @Column(name = "ord_modelo")
+    private String ordModelo;
+    @Column(name = "ord_marca")
+    private String ordMarca;
+    @Column(name = "ord_presupuesto")
+    private Boolean ordPresupuesto;
+    @Column(name = "ord_garantia")
+    private Boolean ordGarantia;
+    
     @Column(name = "ord_num_proforma")
     private Integer ordNumProforma;
     @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
@@ -243,6 +252,40 @@ public class OrdenTrabajo implements Serializable {
     public void setOrdObservacion(String ordObservacion) {
         this.ordObservacion = ordObservacion;
     }
+
+    public String getOrdModelo() {
+        return ordModelo;
+    }
+
+    public void setOrdModelo(String ordModelo) {
+        this.ordModelo = ordModelo;
+    }
+
+    public String getOrdMarca() {
+        return ordMarca;
+    }
+
+    public void setOrdMarca(String ordMarca) {
+        this.ordMarca = ordMarca;
+    }
+
+    public Boolean getOrdPresupuesto() {
+        return ordPresupuesto;
+    }
+
+    public void setOrdPresupuesto(Boolean ordPresupuesto) {
+        this.ordPresupuesto = ordPresupuesto;
+    }
+
+    public Boolean getOrdGarantia() {
+        return ordGarantia;
+    }
+
+    public void setOrdGarantia(Boolean ordGarantia) {
+        this.ordGarantia = ordGarantia;
+    }
+    
+    
 
     @Override
     public int hashCode() {

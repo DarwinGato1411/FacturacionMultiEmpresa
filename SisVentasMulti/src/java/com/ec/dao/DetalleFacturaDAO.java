@@ -56,6 +56,12 @@ public class DetalleFacturaDAO {
     private String numerotel = "";
     private String codigoCantonMatriculacion = "21702";
 
+    
+    
+    private BigDecimal valorIce = BigDecimal.ZERO;
+    private BigDecimal valorBaseIce = BigDecimal.ZERO;
+    
+    
     public DetalleFacturaDAO() {
     }
 
@@ -345,6 +351,22 @@ public class DetalleFacturaDAO {
 
     public void setCodigoCantonMatriculacion(String codigoCantonMatriculacion) {
         this.codigoCantonMatriculacion = codigoCantonMatriculacion;
+    }
+
+    public BigDecimal getValorIce() {
+        return valorIce;
+    }
+
+    public void setValorIce(BigDecimal valorIce) {
+        this.valorIce = valorIce;
+    }
+
+    public BigDecimal getValorBaseIce() {
+        return valorBaseIce;
+    }
+
+    public void setValorBaseIce(BigDecimal valorBaseIce) {
+        this.valorBaseIce = valorBaseIce;
     }
     
 

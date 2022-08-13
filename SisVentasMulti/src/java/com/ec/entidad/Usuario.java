@@ -129,6 +129,20 @@ public class Usuario implements Serializable {
     private Integer usuNivel;
     @Column(name = "usu_ruc")
     private String usuRuc;
+
+    @Column(name = "usu_ilimitado")
+    private Boolean usuIlimitado;
+    @Column(name = "usu_num_documentos")
+    private Integer usuNumDocumentos;
+    @Column(name = "usu_total_contratado")
+    private Integer usuTotalContratado;
+    @Column(name = "usu_fecha_registro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date usuFechaRegistro;
+    @Column(name = "usu_fecha_pago")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date usuFechaPago;
+
     @Size(max = 100)
     @Column(name = "usu_tipo_usuario")
     private String usuTipoUsuario;
@@ -142,6 +156,9 @@ public class Usuario implements Serializable {
     private Collection<CabeceraCompraSri> cabeceraCompraSriCollection;
     @OneToMany(mappedBy = "idUsuario")
     private Collection<OrdenTrabajo> ordenTrabajoCollection;
+
+    @OneToMany(mappedBy = "idUsuario")
+    private Collection<Tipoambiente> tipoambienteCollection;
 
     public Usuario() {
     }
@@ -205,7 +222,6 @@ public class Usuario implements Serializable {
 //    public void setUsuFoto(byte[] usuFoto) {
 //        this.usuFoto = usuFoto;
 //    }
-
     public String getUsuTipoUsuario() {
         return usuTipoUsuario;
     }
@@ -449,6 +465,53 @@ public class Usuario implements Serializable {
     public void setUsuRuc(String usuRuc) {
         this.usuRuc = usuRuc;
     }
-    
-    
+
+    public Boolean getUsuIlimitado() {
+        return usuIlimitado == null ? Boolean.FALSE : usuIlimitado;
+    }
+
+    public void setUsuIlimitado(Boolean usuIlimitado) {
+        this.usuIlimitado = usuIlimitado;
+    }
+
+    public Integer getUsuNumDocumentos() {
+        return usuNumDocumentos == null ? 0 : usuNumDocumentos;
+    }
+
+    public void setUsuNumDocumentos(Integer usuNumDocumentos) {
+        this.usuNumDocumentos = usuNumDocumentos;
+    }
+
+    public Integer getUsuTotalContratado() {
+        return usuTotalContratado == null ? 0 : usuTotalContratado;
+    }
+
+    public void setUsuTotalContratado(Integer usuTotalContratado) {
+        this.usuTotalContratado = usuTotalContratado;
+    }
+
+    public Date getUsuFechaRegistro() {
+        return usuFechaRegistro;
+    }
+
+    public void setUsuFechaRegistro(Date usuFechaRegistro) {
+        this.usuFechaRegistro = usuFechaRegistro;
+    }
+
+    public Date getUsuFechaPago() {
+        return usuFechaPago;
+    }
+
+    public void setUsuFechaPago(Date usuFechaPago) {
+        this.usuFechaPago = usuFechaPago;
+    }
+
+    public Collection<Tipoambiente> getTipoambienteCollection() {
+        return tipoambienteCollection;
+    }
+
+    public void setTipoambienteCollection(Collection<Tipoambiente> tipoambienteCollection) {
+        this.tipoambienteCollection = tipoambienteCollection;
+    }
+
 }

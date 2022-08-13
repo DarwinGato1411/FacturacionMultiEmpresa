@@ -53,5 +53,30 @@ public class ServicioNumeroDocumentosEmitidos {
 
         return dato;
     }
+    
+       public NumeroDocumentosEmitidos findByEmpresa(Integer codTipoambiente) {
+
+        NumeroDocumentosEmitidos dato = null;
+        try {
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT new com.ec.entidad.NumeroDocumentosEmitidos(max(a.id),max(a.mes),sum(a.numero)) FROM NumeroDocumentosEmitidos a WHERE a.codTipoambiente=:codTipoambiente ");
+            query.setParameter("codTipoambiente", codTipoambiente);
+            List<NumeroDocumentosEmitidos> listado = (List<NumeroDocumentosEmitidos>) query.getResultList();
+           System.out.println("listado "+listado.size());
+            if (!listado.isEmpty()) {
+                dato = listado.get(0);
+            } else {
+                dato = null;
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta CantVentProductos " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return dato;
+    }
 
 }

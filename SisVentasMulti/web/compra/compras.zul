@@ -15,7 +15,7 @@
         
         <tabbox  width="100%"  tabscroll="true" >
             <tabs >
-                <tab label="Ingreso de mercaeria" sclass="menutabs"/>
+                <tab label="Factura de compra" sclass="menutabs"/>
             </tabs>
             <tabpanels >
                 <tabpanel  height="100%" width="98%" class="factura" >

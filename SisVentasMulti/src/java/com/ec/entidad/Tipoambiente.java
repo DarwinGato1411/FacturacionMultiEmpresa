@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -185,6 +187,10 @@ public class Tipoambiente implements Serializable {
     @OneToMany(mappedBy = "codTipoambiente")
     private Collection<Transportista> transportistaCollection;
 
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @ManyToOne
+    private Usuario idUsuario;
+
     /*informacion para cada empresa*/
     @Column(name = "am_sec_factura")
     private Integer amSecFactura;
@@ -198,6 +204,15 @@ public class Tipoambiente implements Serializable {
     private BigDecimal amValorIva;
     @OneToMany(mappedBy = "codTipoambiente")
     private Collection<HistorialDeclaraciones> historialDeclaracionesCollection;
+
+    @Column(name = "am_graba_ice")
+    private Boolean amGrabaIce;
+    @Column(name = "am_valor_ice")
+    private BigDecimal amValorIce;
+    @Column(name = "am_codigo_ice")
+    private String amCodigoIce;
+    @Column(name = "am_comprobante_imprime")
+    private String amComprobanteImprime;
 
     public Tipoambiente() {
     }
@@ -694,6 +709,46 @@ public class Tipoambiente implements Serializable {
     @Override
     public String toString() {
         return "com.ec.entidad.Tipoambiente[ codTipoambiente=" + codTipoambiente + " ]";
+    }
+
+    public Boolean getAmGrabaIce() {
+        return amGrabaIce == null ? Boolean.FALSE : amGrabaIce;
+    }
+
+    public void setAmGrabaIce(Boolean amGrabaIce) {
+        this.amGrabaIce = amGrabaIce;
+    }
+
+    public BigDecimal getAmValorIce() {
+        return amValorIce == null ? BigDecimal.ZERO : amValorIce;
+    }
+
+    public void setAmValorIce(BigDecimal amValorIce) {
+        this.amValorIce = amValorIce;
+    }
+
+    public String getAmCodigoIce() {
+        return amCodigoIce;
+    }
+
+    public void setAmCodigoIce(String amCodigoIce) {
+        this.amCodigoIce = amCodigoIce;
+    }
+
+    public String getAmComprobanteImprime() {
+        return amComprobanteImprime == null ? "factura.jasper" : amComprobanteImprime;
+    }
+
+    public void setAmComprobanteImprime(String amComprobanteImprime) {
+        this.amComprobanteImprime = amComprobanteImprime;
+    }
+
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
 }

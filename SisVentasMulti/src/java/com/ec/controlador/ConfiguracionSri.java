@@ -43,8 +43,8 @@ public class ConfiguracionSri {
     public ConfiguracionSri() {
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
 
 //        tipoambiente = servicioTipoAmbiente.FindALlTipoambiente();
@@ -68,7 +68,7 @@ public class ConfiguracionSri {
         /*COLOCA EL ANTERIOR EN FALSO*/
         tipoambiente.setAmEstado(Boolean.FALSE);
         servicioTipoAmbiente.modificar(tipoambiente);
-        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+        tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         /*COLOCA EL NUEVO AMBIENTE EN ACTIVO*/
         tipoambiente.setAmEstado(Boolean.TRUE);
         servicioTipoAmbiente.modificar(tipoambiente);

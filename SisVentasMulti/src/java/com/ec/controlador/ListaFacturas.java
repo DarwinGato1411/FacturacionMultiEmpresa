@@ -97,10 +97,12 @@ public class ListaFacturas {
 
     public ListaFacturas() {
 
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+        
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
@@ -486,6 +488,8 @@ public class ListaFacturas {
     }
 
     private void autorizarFacturasSRI(Factura valor) throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+        SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
                     + File.separator + new Date().getYear()
                     + File.separator + new Date().getMonth();
@@ -589,7 +593,7 @@ public class ListaFacturas {
 
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
-                                 Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
                                 reenviarFactura(valor);
                             } else {
                                 String texto = "Sin Identificar el error";
@@ -612,8 +616,13 @@ public class ListaFacturas {
 
                             valor.setFacClaveAutorizacion(claveAccesoComprobante);
                             valor.setEstadosri(autorizacion.getEstado());
-                            valor.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-
+                            try {
+                                String fechaForm= sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+                               valor.setFacFechaAutorizacion(sm.parse(fechaForm));
+                            } catch (java.text.ParseException ex) {
+                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            System.out.println("autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime() " + autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                             /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                             archivoEnvioCliente = aut.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
 //                            XAdESBESSignature.firmar(archivoEnvioCliente,
@@ -671,7 +680,7 @@ public class ListaFacturas {
     }
 
     private void reenviarFactura(Factura valor) throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-
+        SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
                     + File.separator + new Date().getYear()
                     + File.separator + new Date().getMonth();
@@ -784,7 +793,13 @@ public class ListaFacturas {
 
                     valor.setFacClaveAutorizacion(claveAccesoComprobante);
                     valor.setEstadosri(autorizacion.getEstado());
-                    valor.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+                    System.out.println("autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime().toGMTString() " + autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime().toGMTString());
+                    try {
+                        String fechaForm= sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+                               valor.setFacFechaAutorizacion(sm.parse(fechaForm));
+                    } catch (java.text.ParseException ex) {
+                        Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());

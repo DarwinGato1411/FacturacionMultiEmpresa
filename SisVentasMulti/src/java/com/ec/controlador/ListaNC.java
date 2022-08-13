@@ -80,14 +80,17 @@ public class ListaNC {
     UserCredential credential = new UserCredential();
 
     public ListaNC() {
-        consultarFactura();
+
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-        amRuc = credential.getUsuarioSistema().getUsuRuc();
-        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(amRuc);
+//        amRuc = credential.getUsuarioSistema().getUsuRuc();
+        amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
+
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
                     + amb.getAmDirXml();
+
+        consultarFactura();
     }
 
     private void consultarFactura() {
@@ -368,7 +371,7 @@ public class ListaNC {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos, amb);
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -380,7 +383,7 @@ public class ListaNC {
 //                }
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -418,7 +421,7 @@ public class ListaNC {
                             fEnvio = new File(archivoEnvioCliente);
 
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT",amb);
+                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
 
@@ -441,7 +444,7 @@ public class ListaNC {
                                             valor.getFacClaveAcceso(),
                                             valor.getFacNumeroText(),
                                             valor.getFacTotal(),
-                                            valor.getIdFactura().getIdCliente().getCliNombre(),amb);
+                                            valor.getIdFactura().getIdCliente().getCliNombre(), amb);
 
                             }
                         }
@@ -561,7 +564,7 @@ public class ListaNC {
         }
         try {
 
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 
@@ -601,7 +604,7 @@ public class ListaNC {
                 }
 
                 System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT",amb);
+                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                 /*GUARDA EL PATH PDF CREADO*/
 
@@ -624,7 +627,7 @@ public class ListaNC {
                                 valor.getFacClaveAcceso(),
                                 valor.getFacNumeroText(),
                                 valor.getFacTotal(),
-                                valor.getIdFactura().getIdCliente().getCliNombre(),amb);
+                                valor.getIdFactura().getIdCliente().getCliNombre(), amb);
 
                 }
 
