@@ -23,7 +23,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -73,6 +72,16 @@ import org.w3c.dom.Text;
 import org.w3c.dom.DOMException;
 
 import org.xml.sax.SAXException;
+
+import java.net.URL;
+import java.net.*;
+import javax.xml.xpath.*;
+import org.apache.http.*;
+import org.apache.http.client.*;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.*;
+import org.apache.http.impl.client.*;
+import org.apache.http.util.*;
 
 public class ArchivoUtils {
 
@@ -672,6 +681,57 @@ public class ArchivoUtils {
             respuesta.setNombre("");
             respuesta.setMensaje("");
         }
+        return respuesta;
+    }
+
+    public static AduanaJson obteberDatos(String cedulaParam) throws URISyntaxException, IOException, XPathExpressionException, JSONException {
+        AduanaJson respuesta = new AduanaJson();
+        String stubsApiBaseUri = "https://srienlinea.sri.gob.ec/movil-servicios/api/v1.0/deudas/porIdentificacion/" + cedulaParam;
+
+        HttpClient client = HttpClients.createDefault();
+
+        URIBuilder builder = new URIBuilder(stubsApiBaseUri);
+
+        String listStubsUri = builder.build().toString();
+        HttpGet getStubMethod = new HttpGet(listStubsUri);
+        HttpResponse getStubResponse = client.execute(getStubMethod);
+        int getStubStatusCode = getStubResponse.getStatusLine()
+                    .getStatusCode();
+        if (getStubStatusCode < 200 || getStubStatusCode >= 300) {
+            // Handle non-2xx status code
+            respuesta.setCedula("");
+            respuesta.setNombre("");
+            respuesta.setMensaje("");
+        }
+        String contenido = EntityUtils
+                    .toString(getStubResponse.getEntity());
+
+        System.out.println(contenido);
+
+        //JSONObject outlineArray = new JSONObject(contenido);
+        try {
+             if (!contenido.equals("")) {
+            JSONObject appObject = new JSONObject(contenido);
+
+            JSONObject appObjectInf = appObject.getJSONObject("contribuyente");
+            String nombre = appObjectInf.getString("nombreComercial");
+            String mensaje = appObjectInf.getString("clase");
+            String cedula = appObjectInf.getString("identificacion");
+
+            respuesta.setCedula(cedula);
+            respuesta.setNombre(nombre);
+            respuesta.setMensaje(mensaje);
+        } else {
+            respuesta.setCedula("");
+            respuesta.setNombre("");
+            respuesta.setMensaje("");
+        }
+        } catch (JSONException e) {
+            respuesta.setCedula("");
+            respuesta.setNombre("");
+            respuesta.setMensaje("");
+        }
+
         return respuesta;
     }
 

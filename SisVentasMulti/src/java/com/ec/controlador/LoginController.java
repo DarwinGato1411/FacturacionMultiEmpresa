@@ -72,7 +72,7 @@ public class LoginController extends SelectorComposer<Component> {
 
                     } else {
                         Clients.showNotification("El numero de documentos emitidos supera al numero de documentos contratado.",
-                                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
                         
                     }
 
@@ -84,7 +84,7 @@ public class LoginController extends SelectorComposer<Component> {
 
         } else {
             Clients.showNotification("Usuario o Contraseña incorrecto. \n Contactese con el administrador.",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
 
         }
 

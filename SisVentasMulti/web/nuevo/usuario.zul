@@ -161,6 +161,22 @@
                     </div>
                 </div>
             </div>
+            <div class="container_row_input">
+                
+                <div class="wrapper_input_mod">
+                    <span>WhatsApp </span>
+                    <div class="wrapper_input_text">
+                        <div class="fa-solid fa-clipboard-user icon"></div>
+                        <textbox  
+                            maxlength="20" 
+                            onChange="self.setValue(self.getValue().toUpperCase())"
+                            value="@bind(vm.usuarioSistema.usuWhatsapp)" 
+                            class="input_text" 
+                        />
+                    </div>
+                </div>
+                
+            </div>
 
         </div>
         

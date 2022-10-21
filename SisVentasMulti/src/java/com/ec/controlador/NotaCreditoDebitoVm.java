@@ -791,6 +791,9 @@ public class NotaCreditoDebitoVm {
             creditoDebito.setPuntoemision(amb.getAmPtoemi());
             creditoDebito.setTipodocumento("04");
             creditoDebito.setTipodocumentomod("01");
+            
+            
+            
 
             servicioNotaCredito.guardarNotaCreditoDebito(detalleFactura, creditoDebito);
 

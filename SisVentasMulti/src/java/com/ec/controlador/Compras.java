@@ -571,6 +571,7 @@ public class Compras {
                 cabeceraCompra.setIdUsuario(credential.getUsuarioSistema());
                 cabeceraCompra.setCabSubTotal(subTotalFactura);
                 cabeceraCompra.setCabIva(ivaFactura);
+                
                 cabeceraCompra.setCabTotal(valorTotalFactura);
                 cabeceraCompra.setDrcCodigoSustento("01");
                 cabeceraCompra.setCabSubTotalCero(subTotalFacturaCero);
@@ -594,6 +595,7 @@ public class Compras {
                                 actualizaPrecio.setPordCostoCompra(item.getSubtotal());
                                 actualizaPrecio.setPordCostoVentaRef(item.getSubtotal());
                             }
+                           
                             servicioProducto.modificar(actualizaPrecio);
                             detalleCompra.add(item);
                         }

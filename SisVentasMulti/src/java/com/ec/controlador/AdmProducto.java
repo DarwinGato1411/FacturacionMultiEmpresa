@@ -5,7 +5,6 @@
 package com.ec.controlador;
 
 import com.ec.entidad.DetalleKardex;
-import com.ec.entidad.FacturasActorizadaSri;
 import com.ec.entidad.Kardex;
 import com.ec.entidad.Producto;
 import com.ec.entidad.Tipoambiente;
@@ -13,6 +12,7 @@ import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioDetalleKardex;
+import com.ec.servicio.ServicioGeneral;
 import com.ec.servicio.ServicioKardex;
 import com.ec.servicio.ServicioProducto;
 import com.ec.servicio.ServicioTipoAmbiente;
@@ -20,13 +20,10 @@ import com.ec.servicio.ServicioTipoKardex;
 import com.ec.untilitario.CodigoQR;
 import com.ec.untilitario.ConexionReportes;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -64,6 +61,13 @@ import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import org.zkoss.io.Files;
+import org.zkoss.zul.Fileupload;
+
 /**
  *
  * @author gato
@@ -94,9 +98,10 @@ public class AdmProducto {
     UserCredential credential = new UserCredential();
     private String amRuc = "";
     private Tipoambiente amb = null;
+    ServicioGeneral servicioGeneral = new ServicioGeneral();
 
     public AdmProducto() {
-         Session sess = Sessions.getCurrent();
+        Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
 //        amRuc = credential.getUsuarioSistema().getUsuRuc();
         amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
@@ -289,7 +294,7 @@ public class AdmProducto {
     public void inicializarKardex() {
         if (Messagebox.show("¿Seguro que desea inicializar el Kardex?", "Atención", Messagebox.YES | Messagebox.NO, Messagebox.INFORMATION) == Messagebox.YES) {
             Kardex kardex;
-            List<Producto> listaKardex = servicioProducto.FindALlProducto();
+            List<Producto> listaKardex = servicioProducto.findALlProductoCodTipoAmbiente(amb);
             for (Producto producto : listaKardex) {
                 if (servicioKardex.FindALlKardexs(producto) == null) {
                     kardex = new Kardex();
@@ -582,7 +587,7 @@ public class AdmProducto {
     @Command
     public void exportListboxToExcelTodo() throws Exception {
         try {
-            List<Producto> listarTodo = servicioProducto.FindALlProducto();
+            List<Producto> listarTodo = servicioProducto.findALlProductoCodTipoAmbiente(amb);
             File dosfile = new File(exportarExcelTodo(listarTodo));
             if (dosfile.exists()) {
                 FileInputStream inputStream = new FileInputStream(dosfile);
@@ -648,16 +653,19 @@ public class AdmProducto {
             ch2.setCellStyle(estiloCelda);
 
             HSSFCell ch21 = r.createCell(j++);
-            ch21.setCellValue(new HSSFRichTextString("% Util"));
+            ch21.setCellValue(new HSSFRichTextString("Precio 1"));
             ch21.setCellStyle(estiloCelda);
 
             HSSFCell ch3 = r.createCell(j++);
-            ch3.setCellValue(new HSSFRichTextString("P Venta"));
+            ch3.setCellValue(new HSSFRichTextString("Precio 2"));
             ch3.setCellStyle(estiloCelda);
-
             HSSFCell ch4 = r.createCell(j++);
-            ch4.setCellValue(new HSSFRichTextString("Grava Iva"));
+            ch4.setCellValue(new HSSFRichTextString("Precio 3"));
             ch4.setCellStyle(estiloCelda);
+
+            HSSFCell ch5 = r.createCell(j++);
+            ch5.setCellValue(new HSSFRichTextString("Grava Iva (SI=1; NO=0)"));
+            ch5.setCellStyle(estiloCelda);
 
             int rownum = 1;
             int i = 0;
@@ -677,13 +685,16 @@ public class AdmProducto {
                 c1.setCellValue(new HSSFRichTextString(item.getPordCostoCompra().toString()));
 
                 HSSFCell c11 = r.createCell(i++);
-                c11.setCellValue(new HSSFRichTextString(item.getProdUtilidadNormal().toString()));
+                c11.setCellValue(new HSSFRichTextString(item.getPordCostoVentaFinal().toString()));
 
                 HSSFCell c2 = r.createCell(i++);
-                c2.setCellValue(new HSSFRichTextString(item.getPordCostoVentaFinal().toString()));
+                c2.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencial().toString()));
 
                 HSSFCell c3 = r.createCell(i++);
-                c3.setCellValue(new HSSFRichTextString(item.getProdGrabaIva().toString()));
+                c3.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencialDos().toString()));
+
+                HSSFCell c4 = r.createCell(i++);
+                c4.setCellValue(new HSSFRichTextString(item.getProdGrabaIva() ? "1" : "0"));
                 /*autemta la siguiente fila*/
                 rownum += 1;
 
@@ -698,6 +709,95 @@ public class AdmProducto {
             System.out.println("error " + e.getMessage());
         }
         return pathSalida;
+
+    }
+
+    @Command
+    @NotifyChange({"listaProductosModel", "buscarNombre"})
+    public void cargarProducto() {
+
+        try {
+            org.zkoss.util.media.Media media = Fileupload.get();
+            if (media instanceof org.zkoss.util.media.AMedia) {
+                String nombre = media.getName();
+
+                if (!nombre.contains("xls")) {
+                    Clients.showNotification("Su documento debe ser un archivo excel",
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+
+                    return;
+                }
+
+                System.out.println("media " + nombre);
+                Files.copy(new File(PATH_BASE + File.separator + "CARGAR" + File.separator + nombre),
+                            new ByteArrayInputStream(media.getByteData()));
+
+                String rutaArchivo = PATH_BASE + File.separator + "CARGAR" + File.separator + nombre;
+
+                InputStream myFile = new FileInputStream(new File(rutaArchivo));
+                HSSFWorkbook wb = new HSSFWorkbook(myFile);
+                HSSFSheet sheet = wb.getSheetAt(0);
+
+                HSSFCell cell;
+                HSSFRow row;
+
+                System.out.println("Apunto de entrar a loops");
+
+                System.out.println("" + sheet.getLastRowNum());
+                Producto prod = new Producto();
+                for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                    row = sheet.getRow(i);
+//                    for (int j = 0; j < row.getLastCellNum(); j++) {
+                    for (int j = 0; j < 6; j++) {
+
+                        if (servicioProducto.findLikeProdNombre(String.valueOf(row.getCell(1)), amb).isEmpty()) {
+                            cell = row.getCell(j);
+                            prod = new Producto();
+                            prod.setProdCodigo(String.valueOf(row.getCell(0)));
+                            prod.setProdNombre(String.valueOf(row.getCell(1)));
+                            prod.setPordCostoVentaRef(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2)))));
+                            prod.setPordCostoVentaFinal(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(3)))));
+                            prod.setProdCostoPreferencial(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(4)))));
+                            prod.setProdCostoPreferencialDos(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(5)))));
+                            prod.setProdCostoPreferencialTres(BigDecimal.ZERO);
+                            prod.setCodTipoambiente(amb);
+                            prod.setProdCantMinima(BigDecimal.ONE);
+                            prod.setProdFechaRegistro(new Date());
+
+                            if (row.getCell(5) != null) {
+                                prod.setProdGrabaIva(String.valueOf(row.getCell(5)).equals("1") ? Boolean.TRUE : Boolean.FALSE);
+                                BigDecimal precioIva = BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2))));
+                                BigDecimal precioCompra = precioIva.divide(BigDecimal.valueOf(1.12), 3, RoundingMode.FLOOR);
+                                prod.setPordCostoCompra(precioCompra);
+                                prod.setProdIva(BigDecimal.valueOf(12));
+                            } else {
+                                prod.setProdGrabaIva(Boolean.FALSE);
+                                prod.setPordCostoCompra(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2)))));
+                                prod.setProdIva(BigDecimal.ZERO);
+                            }
+                            prod.setProdCantidadInicial(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(6)))));
+                            servicioProducto.crear(prod);
+                            System.out.println("Valor: " + cell.toString());
+                        } else {
+                            System.out.println("El producto existe " + String.valueOf(row.getCell(1)));
+                        }
+
+                    }
+                }
+                System.out.println("Finalizado");
+
+                servicioGeneral.corregirProductos();
+                inicializarKardex();
+                getProductosModel();
+                Clients.showNotification("Productos cargados correctamente",
+                            Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
+            }
+        } catch (Exception e) {
+            Clients.showNotification("Verifique le archivo para cargar",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+            e.printStackTrace();
+            Messagebox.show("Upload failed");
+        }
 
     }
 

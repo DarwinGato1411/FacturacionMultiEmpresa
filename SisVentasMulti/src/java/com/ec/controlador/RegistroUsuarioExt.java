@@ -90,6 +90,10 @@ public class RegistroUsuarioExt {
     public void guardar() {
         if (usuarioSistema != null && !usuarioSistema.getUsuNombre().equals("")
                     && !usuarioSistema.getUsuLogin().equals("")
+                    && !usuarioSistema.getUsuCorreo().equals("")
+                    && !usuarioSistema.getUsuWhatsapp().equals("")
+                    && !usuarioSistema.getUsuPassword().equals("")
+                    && !usuarioSistema.getUsuRuc().equals("")
                     && !tipoUSuario.equals("")) {
             usuarioSistema.setUsuNivel(Integer.valueOf(tipoUSuario));
             /*verifica si tiene tipo ambiente*/
@@ -231,23 +235,8 @@ public class RegistroUsuarioExt {
 
                 servicioTipoAmbiente.crear(tipoambienteProd);
 
-                Parametrizar parametrizar = new Parametrizar();
-                parametrizar.setParContactoEmpresa(tipoambiente.getAmRazonSocial());
-                parametrizar.setParEmpresa(tipoambiente.getAmNombreComercial());
-                parametrizar.setParRucEmpresa(tipoambiente.getAmRuc());
-                parametrizar.setParIva(BigDecimal.valueOf(12));
-                parametrizar.setParUtilidad(BigDecimal.ZERO);
-                parametrizar.setParUtilidadPreferencial(BigDecimal.TEN);
-                parametrizar.setParUtilidadPreferencialDos(BigDecimal.ZERO);
-                parametrizar.setParEstado(Boolean.FALSE);
-                parametrizar.setIsprincipal(Boolean.TRUE);
-                parametrizar.setParDescuentoGeneral(BigDecimal.ZERO);
-                parametrizar.setParCodigoIva("2");
-                parametrizar.setParIvaActual(BigDecimal.valueOf(12));
-                servicioParametrizar.crear(parametrizar);
             }
 
-//            usuarioSistema = new Usuario();
             try {
                 tipoAmbienteRecup = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuarioSistema);
                 MailerClassSistema mail = new MailerClassSistema();

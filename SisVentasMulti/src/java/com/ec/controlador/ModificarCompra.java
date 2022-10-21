@@ -107,7 +107,7 @@ public class ModificarCompra {
     ServicioTipoKardex servicioTipoKardex = new ServicioTipoKardex();
 
     private List<Kardex> listaKardexProducto = new ArrayList<Kardex>();
-    
+
     private Tipoambiente amb = new Tipoambiente();
     private String amRuc = "";
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
@@ -143,6 +143,7 @@ public class ModificarCompra {
             nuevoRegistro.setFactor(item.getDetFactor() != null ? item.getDetFactor() : BigDecimal.ZERO);
             nuevoRegistro.setCantidad(item.getDetValorInicial() != null ? item.getDetValorInicial() : BigDecimal.ZERO);
             nuevoRegistro.setTotalTRanformado(item.getIprodCantidad());
+
             if (item.getIdProducto() != null) {
                 nuevoRegistro.setCodigo(item.getIdProducto().getProdCodigo());
             }
@@ -153,12 +154,10 @@ public class ModificarCompra {
     }
 
     private void buscarProveedoresLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre("",amb);
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre("", amb);
     }
 
     public ModificarCompra() {
-
-       
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -368,9 +367,9 @@ public class ModificarCompra {
         final HashMap<String, String> map = new HashMap<String, String>();
         map.put("valor", "proveedor");
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/compra/buscarproveedor.zul", null, map);
+                    "/compra/buscarproveedor.zul", null, map);
         window.doModal();
-        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor,amb);
+        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor, amb);
     }
 
     @Command
@@ -399,9 +398,9 @@ public class ModificarCompra {
         final HashMap<String, String> map = new HashMap<String, String>();
         map.put("valor", "producto");
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                "/compra/buscarproducto.zul", null, map);
+                    "/compra/buscarproducto.zul", null, map);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda, amb);
         if (productoBuscado != null) {
             valor.setProducto(productoBuscado);
             valor.setCodigo(productoBuscado.getProdCodigo());
@@ -420,7 +419,7 @@ public class ModificarCompra {
 
                 //calcularValoresTotales();
                 //nuevo registro
-                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
+                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
                 if (buscadoPorCodigo != null) {
                     valor.setDescripcion(buscadoPorCodigo.getProdNombre());
 //                    valor.setSubtotal(buscadoPorCodigo.getPordCostoVentaRef());
@@ -499,11 +498,11 @@ public class ModificarCompra {
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd, amb);
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
     }
 //proveedor
 
@@ -528,11 +527,11 @@ public class ModificarCompra {
 //    }
 
     private void findProveedorLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre,amb);
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre, amb);
     }
 
     private void findProveedorCedula() {
-        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula,amb);
+        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula, amb);
     }
 
     //para buscar karder y mostrar en productos
@@ -551,11 +550,11 @@ public class ModificarCompra {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd,amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd,amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
     }
 
     //guardar la factura
@@ -563,7 +562,7 @@ public class ModificarCompra {
     @NotifyChange({"listaCompraProductosMOdel", "subTotalCotizacion", "ivaCotizacion", "valorTotalCotizacion"})
     public void Guardar() {
         if (!proveedorSeleccionado.getProvCedula().equals("")
-                && !numeroFactura.equals("")) {
+                    && !numeroFactura.equals("")) {
             guardarCompra();
 
         } else {
@@ -721,6 +720,7 @@ public class ModificarCompra {
             valor.setCodigo(productoBuscado.getProdCodigo());
             valor.setSubtotal(productoBuscado.getPordCostoVentaRef());
             valor.setTotal(valor.getSubtotal().multiply(valor.getCantidad()));
+            valor.setFactor(productoBuscado.getProdFactorConversion() != null ? productoBuscado.getProdFactorConversion() : BigDecimal.ONE);
         }
 
         ((ListModelList<DetalleCompraUtil>) listaCompraProductosMOdel).add(valor);

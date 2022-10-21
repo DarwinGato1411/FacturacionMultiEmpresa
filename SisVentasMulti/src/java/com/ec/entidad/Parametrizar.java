@@ -133,6 +133,19 @@ public class Parametrizar implements Serializable {
     @Column(name = "par_ilimitado_permanente")
     private Boolean parIlimitadoPermanente;
 
+    
+    
+    @Column(name = "par_smtp")
+    private String parSmtp;
+    @Column(name = "par_correo")
+    private String parCorreo;
+    @Column(name = "par_password_correo")
+    private String parPasswordCorreo;     
+    @Column(name = "par_puerto")
+    private String parPuerto;
+          
+   
+
     public Parametrizar() {
     }
 
@@ -372,7 +385,7 @@ public class Parametrizar implements Serializable {
     }
 
     public Integer getParNumeroFactura() {
-        return parNumeroFactura==null?0:parNumeroFactura;
+        return parNumeroFactura == null ? 0 : parNumeroFactura;
     }
 
     public void setParNumeroFactura(Integer parNumeroFactura) {
@@ -429,5 +442,39 @@ public class Parametrizar implements Serializable {
     public String toString() {
         return "com.ec.entidad.Parametrizar[ codParametrizar=" + codParametrizar + " ]";
     }
+
+    public String getParSmtp() {
+        return parSmtp;
+    }
+
+    public void setParSmtp(String parSmtp) {
+        this.parSmtp = parSmtp;
+    }
+
+    public String getParCorreo() {
+        return parCorreo;
+    }
+
+    public void setParCorreo(String parCorreo) {
+        this.parCorreo = parCorreo;
+    }
+
+    public String getParPasswordCorreo() {
+        return parPasswordCorreo;
+    }
+
+    public void setParPasswordCorreo(String parPasswordCorreo) {
+        this.parPasswordCorreo = parPasswordCorreo;
+    }
+
+    public String getParPuerto() {
+        return parPuerto;
+    }
+
+    public void setParPuerto(String parPuerto) {
+        this.parPuerto = parPuerto;
+    }
+    
+    
 
 }

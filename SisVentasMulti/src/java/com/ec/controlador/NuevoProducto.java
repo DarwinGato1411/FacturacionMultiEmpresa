@@ -64,6 +64,7 @@ public class NuevoProducto {
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
     private Tipoambiente amb = new Tipoambiente();
     private String amRuc = "";
+    private Boolean esUnProdcuto = Boolean.TRUE;
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") Producto producto, @ContextParam(ContextType.VIEW) Component view) {
@@ -90,6 +91,7 @@ public class NuevoProducto {
         } else {
             this.producto = new Producto(0, Boolean.FALSE);
             this.producto.setProdIva(parametrizar.getParIva());
+            this.producto.setPordCostoVentaRef(BigDecimal.ZERO);
             this.producto.setProdManoObra(BigDecimal.ZERO);
             this.producto.setProdCantidadInicial(BigDecimal.ZERO);
             this.producto.setProdTrasnporte(BigDecimal.ZERO);
@@ -110,11 +112,10 @@ public class NuevoProducto {
 
             accion = "create";
         }
-
+        verificarTipoProducto();
     }
 
     public NuevoProducto() {
-         
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -188,6 +189,7 @@ public class NuevoProducto {
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidad() {
+        calcularValores();
         if (producto.getPordCostoVentaRef() != null) {
             BigDecimal precioventasobrereferen = producto.getPordCostoVentaFinal().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
             BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
@@ -201,7 +203,7 @@ public class NuevoProducto {
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidadUno() {
-
+        calcularValores();
         if (producto.getPordCostoVentaRef() != null) {
             BigDecimal precioventasobrereferen = producto.getProdCostoPreferencial().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
             BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
@@ -216,7 +218,7 @@ public class NuevoProducto {
     @Command
     @NotifyChange({"producto"})
     public void calculoutilidadDos() {
-
+        calcularValores();
         if (producto.getPordCostoVentaRef() != null) {
             BigDecimal precioventasobrereferen = producto.getProdCostoPreferencialDos().divide(producto.getPordCostoVentaRef(), 3, RoundingMode.FLOOR);
             BigDecimal precioventasobrereferenporcien = precioventasobrereferen.multiply(BigDecimal.valueOf(100));
@@ -247,6 +249,10 @@ public class NuevoProducto {
             producto.setPordCostoVentaRef(compraMasIva);
             /*PRECIO FINAL*/
 
+        } else {
+            producto.setPordCostoCompra(BigDecimal.ONE);
+            BigDecimal compraMasIva = ArchivoUtils.redondearDecimales(producto.getPordCostoCompra().multiply(porcenIva), 3);
+            producto.setPordCostoVentaRef(compraMasIva);
         }
 
 
@@ -388,6 +394,31 @@ public class NuevoProducto {
 
     public void setConICE(String conICE) {
         this.conICE = conICE;
+    }
+
+    /*valida producto servicio*/
+    @Command
+    @NotifyChange({"esUnProdcuto"})
+    public void verificarTipoProducto() {
+
+        if (esProducto.equals("P")) {
+            esUnProdcuto = Boolean.TRUE;
+        } else {
+            esUnProdcuto = Boolean.FALSE;
+            if (accion.equals("create")) {
+                this.producto.setPordCostoVentaFinal(BigDecimal.ONE);
+            }
+
+        }
+        calculopreciofinal();
+    }
+
+    public Boolean getEsUnProdcuto() {
+        return esUnProdcuto;
+    }
+
+    public void setEsUnProdcuto(Boolean esUnProdcuto) {
+        this.esUnProdcuto = esUnProdcuto;
     }
 
 }

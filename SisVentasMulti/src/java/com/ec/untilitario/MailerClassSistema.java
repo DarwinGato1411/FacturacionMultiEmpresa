@@ -4,8 +4,9 @@
  */
 package com.ec.untilitario;
 
+import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Tipoambiente;
-import com.ec.servicio.ServicioTipoAmbiente;
+import com.ec.servicio.ServicioParametrizar;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -29,8 +30,8 @@ import javax.mail.internet.MimeUtility;
  */
 public class MailerClassSistema {
 
-    private Tipoambiente amb = new Tipoambiente();
-    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
+    private Parametrizar parametrizar = new Parametrizar();
+    ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
 
     /**
      * Recupera el nombre del catálogo descrito en la enumeración
@@ -54,8 +55,6 @@ public class MailerClassSistema {
      * @return
      * @throws java.rmi.RemoteException
      */
-   
-
     class SmtpAuthenticator extends Authenticator {
 
         public SmtpAuthenticator() {
@@ -68,14 +67,13 @@ public class MailerClassSistema {
 //            amb = servicioTipoAmbiente.FindALlTipoambiente();
 //            String username = amb.getAmUsuarioSmpt().trim();
 //            String password = amb.getAmPassword().trim();
-            String username = "defact@deckxel.com";
-            String password = "Dereckandre02!";
+            String username = "no-reply@defactec.com";
+            String password = "1h@t3Pap3r";
             return new PasswordAuthentication(username, password);
 
         }
     }
 
-   
     /*MAIL RECUPERA CONTRASEÑA*/
     public boolean sendMailRecuperarPassword(String address,
                 String asuntoInf, String usuarioRecup,
@@ -86,14 +84,19 @@ public class MailerClassSistema {
 //                        String usuarioSmpt = "deckxelec@gmail.com";
 //            String password = "metalicas366";
 
-            amb = ambiente;
+            parametrizar = servicioParametrizar.FindALlParametrizar();
 
             String asunto = asuntoInf;
-            String host = "mail.deckxel.com";
-            String port = "26";
+            String host = parametrizar.getParSmtp();
+            String port = parametrizar.getParPuerto();
             String protocol = "smtp";
-            String usuarioSmpt = "defact@deckxel.com";
-            String password = "Dereckandre02!";
+            String usuarioSmpt = parametrizar.getParCorreo();
+            String password = parametrizar.getParPasswordCorreo();
+//            String host = "smtp.office365.com";
+//            String port = "587";
+//            String protocol = "smtp";
+//            String usuarioSmpt = "no-reply@defactec.com";
+//            String password = "1h@t3Pap3r!";
 //            String asunto = asuntoInf;
 //            String host = amb.getAmHost();
 //            String port = amb.getAmPort();
@@ -143,7 +146,7 @@ public class MailerClassSistema {
                         + "                                 overflow: hidden;\n"
                         + "                                 line-height: 32px;\">\n"
                         + "        <div style=\"color:#00000;font-size:18px\"><strong>\n"
-                        + "		 USUARIO DEFACT : " + amb.getAmNombreComercial().toUpperCase() + "</strong></div>\n"
+                        + "		 USUARIO DEFACT : " + ambiente.getAmNombreComercial().toUpperCase() + "</strong></div>\n"
                         + "		<div style=\"color:#00000;font-size:11px\"><strong>\n"
                         + "		SISTEMA DE FACTURACION ELECTRONICA DEFACT  </strong></div>\n"
                         + "    </div>\n"
@@ -154,7 +157,7 @@ public class MailerClassSistema {
                         + "                                  padding: 15px 15px 20px;\">\n"
                         + "        <div class=\"tips\" style=\"padding:15px;\">\n"
                         + "            <p style=\" list-style: 160%; margin: 10px 0;\">Estimado cliente,</p>\n"
-                        + "            <p style=\" list-style: 160%; margin: 10px 0;\">" + amb.getAmRazonSocial() + "</p>\n"
+                        + "            <p style=\" list-style: 160%; margin: 10px 0;\">" + ambiente.getAmRazonSocial() + "</p>\n"
                         + "			<p style=\" list-style: 160%; margin: 10px 0;\">Su acceso a la plataforma ha sido generado correctamente </p>\n"
                         + "			<p style=\" list-style: 160%; margin: 10px 0;\">Usuario:"
                         + "                 <strong style=\"color:#010e07\"> " + usuarioRecup + "</strong></p>\n"
@@ -228,6 +231,5 @@ public class MailerClassSistema {
             return false;
         }
     }
-    
 
 }

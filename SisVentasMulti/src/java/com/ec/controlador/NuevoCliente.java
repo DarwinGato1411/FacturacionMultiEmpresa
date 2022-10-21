@@ -16,10 +16,14 @@ import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoIdentificacion;
 import com.ec.untilitario.AduanaJson;
 import com.ec.untilitario.ArchivoUtils;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.xml.xpath.XPathExpressionException;
+import org.json.JSONException;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -95,7 +99,7 @@ public class NuevoCliente {
 
     @Command
     @NotifyChange({"cliente"})
-    public void buscarAduana() {
+    public void buscarAduana() throws URISyntaxException, IOException, XPathExpressionException, JSONException {
         if (cliente.getCliCedula() != null) {
             if (!cliente.getCliCedula().equals("")) {
                 String cedulaBuscar = "";
@@ -104,7 +108,7 @@ public class NuevoCliente {
                 } else {
                     cedulaBuscar = cliente.getCliCedula();
                 }
-                AduanaJson aduana = ArchivoUtils.obtenerdatoAduana(cedulaBuscar);
+                AduanaJson aduana = ArchivoUtils.obteberDatos(cedulaBuscar);
                 if (aduana.getNombre().equals("")) {
                     cliente.setCliApellidos("");
                     cliente.setCliNombres("");
@@ -157,9 +161,7 @@ public class NuevoCliente {
     @Command
     public void guardar() {
         /*getCliNombre es el nombre comercial*/
-        if (cliente.getCliCedula() != null
-                    && cliente.getCliNombres() != null
-                    && cliente.getCliApellidos() != null
+        if (cliente.getCliCedula() != null                   
                     && cliente.getCliNombre() != null
                     && cliente.getCliDireccion() != null
                     && cliente.getCliTelefono() != null
