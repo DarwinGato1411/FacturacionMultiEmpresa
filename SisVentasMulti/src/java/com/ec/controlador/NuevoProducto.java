@@ -410,7 +410,7 @@ public class NuevoProducto {
             }
 
         }
-        calculopreciofinal();
+//        calculopreciofinal();
     }
 
     public Boolean getEsUnProdcuto() {
