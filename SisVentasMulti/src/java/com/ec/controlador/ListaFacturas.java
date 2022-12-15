@@ -437,7 +437,7 @@ public class ListaFacturas {
         attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
         MailerClass mail = new MailerClass();
         if (valor.getIdCliente().getCliCorreo() != null) {
-            if ( mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
+            if (mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
                         attachFiles,
                         "FACTURA ELECTRONICA",
                         valor.getFacClaveAcceso(),
@@ -445,8 +445,8 @@ public class ListaFacturas {
                         valor.getFacTotal(),
                         valor.getIdCliente().getCliNombre(), amb)) {
                 System.out.println("ENVIO CORRECTO");
-            }else{
-             System.out.println("CORREO NO ENVIADO");
+            } else {
+                System.out.println("CORREO NO ENVIADO");
             }
         }
 
@@ -536,7 +536,7 @@ public class ListaFacturas {
 
     private void autorizarFacturasSRI(Factura valor) throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        SimpleDateFormat smA = new SimpleDateFormat("yyy-MM-dd");
+        SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
                     + File.separator + new Date().getYear()
@@ -665,9 +665,16 @@ public class ListaFacturas {
                             valor.setFacClaveAutorizacion(claveAccesoComprobante);
                             valor.setEstadosri(autorizacion.getEstado());
 //                            String fechaForm = autorizacion.getFechaAutorizacion().toGregorianCalendar().toZonedDateTime().toString();
-                            Instant instant = autorizacion.getFechaAutorizacion().toGregorianCalendar().toZonedDateTime().toInstant();
-                            Date date = Date.from(instant);
-                            valor.setFacFechaAutorizacion(date);
+//                            Instant instant = autorizacion.getFechaAutorizacion().toGregorianCalendar().toZonedDateTime().toInstant();
+//                            Date date = Date.from(instant);
+//                            valor.setFacFechaAutorizacion(date);
+                            
+                            try {
+                                String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+                                valor.setFacFechaAutorizacion(sm.parse(fechaForm));
+                            } catch (java.text.ParseException ex) {
+                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 //                            System.out.println("autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime() " + autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                             /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                             archivoEnvioCliente = aut.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());

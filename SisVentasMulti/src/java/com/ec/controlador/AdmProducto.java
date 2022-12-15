@@ -712,7 +712,7 @@ public class AdmProducto {
 
     }
 
-    @Command
+     @Command
     @NotifyChange({"listaProductosModel", "buscarNombre"})
     public void cargarProducto() {
 
@@ -764,16 +764,21 @@ public class AdmProducto {
                             prod.setProdCantMinima(BigDecimal.ONE);
                             prod.setProdFechaRegistro(new Date());
 
-                            if (row.getCell(5) != null) {
-                                prod.setProdGrabaIva(String.valueOf(row.getCell(5)).equals("1") ? Boolean.TRUE : Boolean.FALSE);
-                                BigDecimal precioIva = BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2))));
-                                BigDecimal precioCompra = precioIva.divide(BigDecimal.valueOf(1.12), 3, RoundingMode.FLOOR);
-                                prod.setPordCostoCompra(precioCompra);
-                                prod.setProdIva(BigDecimal.valueOf(12));
+                            if (row.getCell(6) != null) {
+                                String valor =String.valueOf(row.getCell(6));
+                                prod.setProdGrabaIva(String.valueOf(row.getCell(6)).contains("1") ? Boolean.TRUE : Boolean.FALSE);
+
+                                if (prod.getProdGrabaIva()) {
+                                    BigDecimal precioIva = BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2))));
+                                    BigDecimal precioCompra = precioIva.divide(BigDecimal.valueOf(1.12), 4, RoundingMode.FLOOR);
+                                    prod.setPordCostoCompra(precioCompra);
+                                } else {
+                                    prod.setPordCostoCompra(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2)))));
+                                }
+
                             } else {
                                 prod.setProdGrabaIva(Boolean.FALSE);
                                 prod.setPordCostoCompra(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2)))));
-                                prod.setProdIva(BigDecimal.ZERO);
                             }
                             prod.setProdCantidadInicial(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(6)))));
                             servicioProducto.crear(prod);
@@ -792,11 +797,11 @@ public class AdmProducto {
                 Clients.showNotification("Productos cargados correctamente",
                             Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
             }
-        } catch (Exception e) {
+        } catch (IOException | NumberFormatException e) {
             Clients.showNotification("Verifique le archivo para cargar",
                         Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
             e.printStackTrace();
-            Messagebox.show("Upload failed");
+//            Messagebox.show("Upload failed");
         }
 
     }

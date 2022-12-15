@@ -204,6 +204,8 @@ public class Factura implements Serializable {
     private String facHija;
     @Column(name = "fac_destino")
     private String facDestino;
+     @Column(name = "fac_observacion")
+    private String facObservacion;
 
     @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
     @ManyToOne
@@ -806,6 +808,14 @@ public class Factura implements Serializable {
 
     public void setFacBaseIce(BigDecimal facBaseIce) {
         this.facBaseIce = facBaseIce;
+    }
+
+    public String getFacObservacion() {
+        return facObservacion;
+    }
+
+    public void setFacObservacion(String facObservacion) {
+        this.facObservacion = facObservacion;
     }
 
 }

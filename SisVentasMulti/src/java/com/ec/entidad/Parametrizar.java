@@ -133,18 +133,16 @@ public class Parametrizar implements Serializable {
     @Column(name = "par_ilimitado_permanente")
     private Boolean parIlimitadoPermanente;
 
-    
-    
     @Column(name = "par_smtp")
     private String parSmtp;
     @Column(name = "par_correo")
     private String parCorreo;
     @Column(name = "par_password_correo")
-    private String parPasswordCorreo;     
+    private String parPasswordCorreo;
     @Column(name = "par_puerto")
     private String parPuerto;
-          
-   
+    @Column(name = "par_contratado")
+    private BigDecimal parContratado;
 
     public Parametrizar() {
     }
@@ -474,7 +472,13 @@ public class Parametrizar implements Serializable {
     public void setParPuerto(String parPuerto) {
         this.parPuerto = parPuerto;
     }
-    
-    
+
+    public BigDecimal getParContratado() {
+        return parContratado == null ? BigDecimal.valueOf(500) : parContratado;
+    }
+
+    public void setParContratado(BigDecimal parContratado) {
+        this.parContratado = parContratado;
+    }
 
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window  id="windowEstFact"  position="center" closable="true"  
+         apply="org.zkoss.bind.BindComposer" 
+         viewModel="@id('vm') @init('com.ec.controlador.CambioEstadoNc')">
+    
+    <caption label="Estado de la factura" style="font-weight:bold"/> 
+  
+    <div class="container_modal">
+
+        <div class="body">
+            <div class="container_row_input">
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span>Estado: </span>
+                    <combobox 
+                        readonly="true"                                        
+                        selectedItem="@bind(vm.notaCreditoDebito.estadosri)"
+                      
+                        style="width: 100%;"
+                    >
+                        <comboitem label="ANULADA" value="ANULADA" />                    
+                        <comboitem label="AUTORIZADO" value="AUTORIZADO" />
+                        <!--<comboitem label="DEVUELTA" value="DEVUELTA" />-->
+                        <!--<comboitem label="NO AUTORIZADO" value="NO AUTORIZADO" />-->
+                    </combobox>
+                </div>
+                
+            </div>
+
+            <div class="container_row_input">
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span>Descripcion: </span>
+                    <textbox 
+                        maxlength="150" 
+                        value="@bind(vm.notaCreditoDebito.mensajesri)"
+                        class="input_text" 
+                        style="width: 100%;"
+                    />
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;">
+                <button class="btn_modal" style="width:300px" 
+                        onClick="@command('guardar')">
+                    Guardar
+                </button>
+            </div>
+        </div>
+
+    </div>
+                  
+
+                    
+                  
+</window>

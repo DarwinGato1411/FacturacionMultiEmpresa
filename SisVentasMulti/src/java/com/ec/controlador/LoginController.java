@@ -52,8 +52,11 @@ public class LoginController extends SelectorComposer<Component> {
         if (servicioAuth.login(account.getValue(), password.getValue())) {
             Session sess = Sessions.getCurrent();
             UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-
+            if (cre.getUsuarioSistema().getUsuLogin().toUpperCase().contains("SUPER")) {
+                Executions.sendRedirect("/superadmin/consumo.zul");
+            }
             if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.USUARIO.getCodigo()) {
+
                 NumeroDocumentosEmitidos emitidos = servicioNumeroDocumentosEmitidos.findByEmpresa(cre.getTipoambiente().getCodTipoambiente());
 
                 numeroDocumentos = emitidos == null ? 0 : emitidos.getNumero().intValue();
@@ -73,7 +76,7 @@ public class LoginController extends SelectorComposer<Component> {
                     } else {
                         Clients.showNotification("El numero de documentos emitidos supera al numero de documentos contratado.",
                                     Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
-                        
+
                     }
 
                 }

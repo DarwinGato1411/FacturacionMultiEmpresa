@@ -276,7 +276,7 @@ public class AutorizarDocumentos {
                         + "        <ptoEmi>" + amb.getAmPtoemi() + "</ptoEmi>\n"
                         + "        <secuencial>" + valor.getFacNumeroText() + "</secuencial>\n"
                         + "        <dirMatriz>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirMatriz>\n"
-                        + (amb.getAmMicroEmp() ? "     <regimenMicroempresas>CONTRIBUYENTE R\u00c9GIMEN MICROEMPRESAS</regimenMicroempresas>\n" : "")
+                        + (!amb.getAmGeneral() ? ((amb.getAmRimpe() ? "<contribuyenteRimpe>CONTRIBUYENTE R\u00c9GIMEN RIMPE</contribuyenteRimpe>\n" : "")) : "")
                         + (amb.getAmAgeRet() ? "<agenteRetencion>1</agenteRetencion>\n" : "")
                         //  + "        <agenteRetencion>12345678</agenteRetencion>\n"
                         + "</infoTributaria>\n"
@@ -384,9 +384,9 @@ public class AutorizarDocumentos {
                         + "<campoAdicional nombre=\"PLAZO\"> DIAS</campoAdicional>\n"
                         + (valor.getFacPlazo().toString().length() > 0 ? "<campoAdicional nombre=\"DIAS\">" + valor.getFacPlazo().setScale(0) + "</campoAdicional>\n" : " ")
                         + (valor.getFacPorcentajeIva().length() > 0 ? "<campoAdicional nombre=\"TARIFAIMP\">" + valor.getFacPorcentajeIva() + "</campoAdicional>\n" : " ")
-                        + (!amb.getAmGeneral() ? ((amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE NEGOCIO POPULAR REGIMEN RIMPE </campoAdicional>\n")) : "")
+                        //                        + (!amb.getAmGeneral() ? ((amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE NEGOCIO POPULAR REGIMEN RIMPE </campoAdicional>\n")) : "")
                         + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
-                        // + (amb.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
+                        + (valor.getFacObservacion() != null ? (valor.getFacObservacion().length() > 0 ? "<campoAdicional nombre=\"Observacion\">" + valor.getFacObservacion() + "</campoAdicional>\n" : "") : "")
                         + "   </infoAdicional>\n"
                         + "</factura>\n");
             build.append(linea);

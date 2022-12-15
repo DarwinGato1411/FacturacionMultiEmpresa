@@ -75,20 +75,18 @@ public class NuevoCliente {
             accion = "update";
         } else {
             this.cliente = new Cliente();
-            this.cliente.setCiudad(parametrizar.getParCiudad() != null ? parametrizar.getParCiudad() : "");
-            this.cliente.setCliDireccion(parametrizar.getParCiudad() != null ? parametrizar.getParCiudad() : "");
+            this.cliente.setCiudad(parametrizar.getParCiudad() != null ? parametrizar.getParCiudad() : " ");
+            this.cliente.setCliDireccion(parametrizar.getParCiudad() != null ? parametrizar.getParCiudad() : " ");
             this.cliente.setCliMontoAsignado(BigDecimal.valueOf(999999));
-            this.cliente.setCliMovil("0999999999");
-            this.cliente.setCliTelefono("099999999");
-            this.cliente.setCliCorreo(parametrizar.getParCorreoDefecto() != null ? parametrizar.getParCorreoDefecto() : "");
+            this.cliente.setCliMovil(" ");
+            this.cliente.setCliTelefono(" ");
+            this.cliente.setCliCorreo(parametrizar.getParCorreoDefecto() != null ? parametrizar.getParCorreoDefecto() : " ");
             accion = "create";
         }
 
     }
 
     public NuevoCliente() {
-
-       
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -110,10 +108,7 @@ public class NuevoCliente {
                 }
                 AduanaJson aduana = ArchivoUtils.obteberDatos(cedulaBuscar);
                 if (aduana.getNombre().equals("")) {
-                    cliente.setCliApellidos("");
-                    cliente.setCliNombres("");
                     cliente.setCliNombre("");
-                    cliente.setCliRazonSocial("" );
                     Clients.showNotification("Cliente no encontrado ingreselo manualmente...!! ",
                                 Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
                     return;
@@ -123,30 +118,30 @@ public class NuevoCliente {
                     String nombreApellido[] = aduana.getNombre().split(" ");
                     String nombrePersona = "";
                     String apellidoPersona = "";
-                    switch (nombreApellido.length) {
-                        case 1:
-                            apellidoPersona = nombreApellido[0];
-                            nombrePersona = "";
-                            break;
-                        case 2:
-                            apellidoPersona = nombreApellido[0];
-                            nombrePersona = nombreApellido[1];
-                            break;
-                        case 3:
-                            apellidoPersona = nombreApellido[0] + " " + nombreApellido[1];
-                            nombrePersona = nombreApellido[2];
-                            break;
-                        case 4:
-                            apellidoPersona = nombreApellido[0] + " " + nombreApellido[1];
-                            nombrePersona = nombreApellido[2] + " " + nombreApellido[3];
-                            break;
-                        default:
-                            break;
-                    }
-                    cliente.setCliApellidos(apellidoPersona);
-                    cliente.setCliNombres(nombrePersona);
-                    cliente.setCliNombre(nombrePersona + " " + apellidoPersona);
-                    cliente.setCliRazonSocial(nombrePersona + " " + apellidoPersona);
+//                    switch (nombreApellido.length) {
+//                        case 1:
+//                            apellidoPersona = nombreApellido[0];
+//                            nombrePersona = "";
+//                            break;
+//                        case 2:
+//                            apellidoPersona = nombreApellido[0];
+//                            nombrePersona = nombreApellido[1];
+//                            break;
+//                        case 3:
+//                            apellidoPersona = nombreApellido[0] + " " + nombreApellido[1];
+//                            nombrePersona = nombreApellido[2];
+//                            break;
+//                        case 4:
+//                            apellidoPersona = nombreApellido[0] + " " + nombreApellido[1];
+//                            nombrePersona = nombreApellido[2] + " " + nombreApellido[3];
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    cliente.setCliApellidos(aduana.getNombre());
+                    cliente.setCliNombres(aduana.getNombre());
+                    cliente.setCliNombre(aduana.getNombre());
+                    cliente.setCliRazonSocial(aduana.getNombre());
                 }
             }
         }
@@ -161,7 +156,7 @@ public class NuevoCliente {
     @Command
     public void guardar() {
         /*getCliNombre es el nombre comercial*/
-        if (cliente.getCliCedula() != null                   
+        if (cliente.getCliCedula() != null
                     && cliente.getCliNombre() != null
                     && cliente.getCliDireccion() != null
                     && cliente.getCliTelefono() != null
@@ -186,8 +181,8 @@ public class NuevoCliente {
             cliente.setCliRazonSocial(cliente.getCliNombre());
             cliente.setCodTipoambiente(amb);
             if (accion.equals("create")) {
-
-                if (servicioCliente.FindClienteForCedula(cliente.getCliCedula(),amb) == null) {
+                Cliente cliBusca = servicioCliente.FindClienteForCedula(cliente.getCliCedula(), amb);
+                if ((cliBusca == null) || (!cliBusca.getCliDireccion().equals(cliente.getCliDireccion()))) {
                     cliente.setClietipo(Integer.valueOf(clietipo));
                     cliente.setClieFechaRegistro(fechaReg);
                     cliente.setIdTipoIdentificacion(tipoadentificacion);

@@ -8,13 +8,16 @@ package com.ec.controlador;
 import com.ec.dao.DetalleFacturaDAO;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.DetalleFactura;
+import com.ec.entidad.DetalleKardex;
 import com.ec.entidad.Factura;
 import com.ec.entidad.FormaPago;
+import com.ec.entidad.Kardex;
 import com.ec.entidad.NotaCreditoDebito;
 import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Producto;
 import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Tipocomprobante;
+import com.ec.entidad.Tipokardex;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.HelperPersistencia;
@@ -32,7 +35,9 @@ import com.ec.servicio.ServicioProducto;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoKardex;
 import com.ec.untilitario.ArchivoUtils;
+import com.ec.untilitario.DetalleCompraUtil;
 import com.ec.untilitario.ParamFactura;
+import com.ec.untilitario.TotalKardex;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -796,6 +801,48 @@ public class NotaCreditoDebitoVm {
             
 
             servicioNotaCredito.guardarNotaCreditoDebito(detalleFactura, creditoDebito);
+            
+               /*INGRESAMOS LO MOVIMIENTOS AL KARDEX*/
+                    Kardex kardex = null;
+                    DetalleKardex detalleKardex = null;
+
+                    for (DetalleFacturaDAO item : detalleFactura) {
+                        if (item.getProducto() != null) {
+
+                            Tipokardex tipokardex = servicioTipoKardex.findByTipkSigla("ING");
+                            if (servicioKardex.FindALlKardexs(item.getProducto()) == null) {
+                                kardex = new Kardex();
+                                kardex.setIdProducto(item.getProducto());
+                                kardex.setKarDetalle("Inicio de inventario desde la facturacion para el producto: " + item.getProducto().getProdNombre());
+                                kardex.setKarFecha(new Date());
+                                kardex.setKarFechaKardex(new Date());
+                                kardex.setKarTotal(BigDecimal.ZERO);
+                                servicioKardex.crear(kardex);
+                            }
+                            detalleKardex = new DetalleKardex();
+                            kardex = servicioKardex.FindALlKardexs(item.getProducto());
+                            detalleKardex.setIdKardex(kardex);
+                            detalleKardex.setDetkFechakardex(fechafacturacion);
+                            detalleKardex.setDetkFechacreacion(new Date());
+                            detalleKardex.setIdTipokardex(tipokardex);
+                            detalleKardex.setDetkKardexmanual(Boolean.FALSE);
+                            detalleKardex.setDetkDetalles("Aumenta al kardex Nota de Credito con: NC-" + creditoDebito.getFacNumeroText());
+
+                            detalleKardex.setDetkIngresoCantidadSinTransformar(item.getCantidad());
+                            detalleKardex.setDetkUnidadOrigen(item.getProducto().getProdUnidadMedida() != null ? item.getProducto().getProdUnidadMedida() : "S/U");
+                            detalleKardex.setDetkUnidadFin(item.getProducto().getProdUnidadConversion() != null ? item.getProducto().getProdUnidadConversion() : "S/U");
+                            //se cambia a la conversion 
+                            //detalleKardex.setDetkCantidad(item.getCantidad());
+//                            detalleKardex.setDetkCantidad(item.getTotalTRanformado());
+                            servicioDetalleKardex.crear(detalleKardex);
+                            TotalKardex totales = servicioKardex.totalesForKardex(kardex);
+                            BigDecimal total = totales.getTotalKardex();
+                            kardex.setKarTotal(total);
+                            servicioKardex.modificar(kardex);
+                        }
+
+                    }
+            
 
             reporteGeneral();
             if (accion.equals("create")) {

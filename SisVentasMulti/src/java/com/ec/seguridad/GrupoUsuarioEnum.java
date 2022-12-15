@@ -9,14 +9,14 @@ package com.ec.seguridad;
  * @author Personal
  */
 public enum GrupoUsuarioEnum {
-    USUARIO ("usuario",Integer.valueOf("2")),
-   ADMINISTRADOR("administrador",Integer.valueOf("1"));
-    
+    USUARIO("usuario", Integer.valueOf("2")),
+    ADMINISTRADOR("administrador", Integer.valueOf("1")),
+    SUPERADMIN("superadmin", Integer.valueOf("3"));
+
     private String descripcion;
     private Integer codigo;
-    
-    GrupoUsuarioEnum(String descripcion, Integer codigo)
-    {
+
+    GrupoUsuarioEnum(String descripcion, Integer codigo) {
         this.setDescripcion(descripcion);
         this.setCodigo(codigo);
     }
@@ -42,6 +42,5 @@ public enum GrupoUsuarioEnum {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-
 
 }

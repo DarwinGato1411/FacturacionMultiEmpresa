@@ -100,17 +100,17 @@ public class ListaRetenciones {
     }
 
     private void buscarPorFechas() {
-        listaRetencionCompras = servicioRetencionCompra.findByFecha(inicio, fin);
+        listaRetencionCompras = servicioRetencionCompra.findByFecha(inicio, fin, amb);
 
     }
 
     private void buscarFacturaCompra() {
-        listaRetencionCompras = servicioRetencionCompra.findByNumeroFactura(buscarNumFac);
+        listaRetencionCompras = servicioRetencionCompra.findByNumeroFactura(buscarNumFac,amb);
 
     }
 
     private void buscarPorSecuencialRetencion() {
-        listaRetencionCompras = servicioRetencionCompra.findBySecuencialRet(buscarSecuencial);
+        listaRetencionCompras = servicioRetencionCompra.findBySecuencialRet(buscarSecuencial,amb);
     }
 
     @Command

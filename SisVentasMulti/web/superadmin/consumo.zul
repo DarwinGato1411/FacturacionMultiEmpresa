@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+
+<?init class="com.ec.seguridad.Autentificador"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+
+
+<zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
+    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.superadmin.ConsultaConsumo')" >
+        <tabbox id="tboxPrincipal"  width="100%" >
+            <tabs >
+                <tab label="Verificar consumo " sclass="menutabs" /> 
+            </tabs>
+            <tabpanels >
+                
+                <tabpanel  width="99%" class="factura" >                    
+                    
+                
+                    <div  class="container-fluid" >
+    
+
+                        <div class="container_modal">
+   
+
+                            <div class="body">
+                                <div class="container_row_input">
+                                    <div class="" >
+                                        <span >
+                                            <label  style="color:#002695;font-size:30px "
+                                                    value="@bind(vm.consumoIlimitado.detalleCobroPlanContratado)"  >
+                                                
+                                            </label>
+                                        </span>
+                                        <textbox   
+                                            style="margin-left: 240px;background:#8FFFC9;color:#002695;font-size:30px "
+                                            readonly="true"
+                                            value="@bind(vm.consumoIlimitado.documentos)" 
+                                            class="input_text" 
+                                        />
+                                    </div>
+                                </div>
+                                <div class="container_row_input">
+                                    <div class="">
+                                        <span>
+                                            <label 
+                                                style="color:#002695;font-size:30px "
+                                                value="@bind(vm.consumoDocumentos.detalleCobroPlanContratado)"  >
+                                                
+                                            </label>
+                                        </span>
+                                        <textbox  
+                                            style="margin-left: 200px; background:#8FFFC9;color:#002695;font-size:30px "
+                                            readonly="true"
+                                            value="@bind(vm.consumoDocumentos.documentos)"
+                                            class="input_text" 
+                                        />
+                                    </div>
+                                </div>
+                                <div class="container_row_input">
+                                    <div class="">
+                                        <span>
+                                            <label style="color:#002695;font-size:30px "
+                                                   value="CONTRATADO"  >
+                                                
+                                            </label>
+                                        </span>
+                                        <textbox  
+                                            style="margin-left: 350px ;background:#8FFFC9;color:#002695;font-size:30px "
+                                            readonly="true"
+                                            value="@bind(vm.parametrizar.parContratado)"
+                                            class="input_text" 
+                                        />
+                                    </div>
+                                    
+                                </div>
+
+                               
+            
+
+                            
+                            </div>
+   
+                        </div>
+                    </div>
+                </tabpanel>
+                
+
+            </tabpanels>
+            
+        </tabbox>
+    </hbox>
+
+
+</zk>

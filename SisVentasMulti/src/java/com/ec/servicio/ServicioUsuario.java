@@ -116,12 +116,12 @@ public class ServicioUsuario {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             if (usuario.getUsuNivel() != 1) {
-                WHERE = "  AND u.usuRuc=:usuRuc";
+                WHERE = "  AND u.idUsuario=:idUsuario";
             }
             Query query = em.createQuery(SELECT + WHERE+ORDERBY);
             query.setParameter("usuNombre", "%" + nombre + "%");
             if (usuario.getUsuNivel() != 1) {
-                query.setParameter("usuRuc", usuario.getUsuRuc());
+                query.setParameter("idUsuario", usuario.getIdUsuario());
             }
 
             listaUsuarios = (List<Usuario>) query.getResultList();
@@ -166,5 +166,39 @@ public class ServicioUsuario {
         }
 
         return usuarioObtenido;
+    }
+    
+    
+    public List<Usuario> FindALlUsuarioPorLikeNombreAdm(String nombre, Usuario usuario,String amCodigo) {
+
+//        Usuario usuarioLogeado = new Usuario();
+        List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+        try {
+            System.out.println("Entra a consultar usuarios ");
+
+            String SELECT = "SELECT u FROM Usuario u  WHERE u.usuNombre like :usuNombre AND u. ";
+            String WHERE = "";
+            String ORDERBY = " ORDER BY u.usuNombre ";
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            if (usuario.getUsuNivel() != 1) {
+                WHERE = "  AND u.idUsuario=:idUsuario";
+            }
+            Query query = em.createQuery(SELECT + WHERE+ORDERBY);
+            query.setParameter("usuNombre", "%" + nombre + "%");
+            if (usuario.getUsuNivel() != 1) {
+                query.setParameter("idUsuario", usuario.getIdUsuario());
+            }
+
+            listaUsuarios = (List<Usuario>) query.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta usuarios " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return listaUsuarios;
     }
 }

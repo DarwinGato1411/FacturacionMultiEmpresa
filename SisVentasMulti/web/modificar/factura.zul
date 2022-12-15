@@ -64,17 +64,20 @@
                                 </div>
                                 <div class="wrapper_input">
                                     <span>Emisión:</span>
+                                    
                                     <datebox 
-                                        compact="true" 
+
+                                        compact="true"  
                                         value="@bind(vm.fechafacturacion)" 
-                                        readonly="true"
-                                        buttonVisible="false" 
+                                        readonly="true" 
+                                        buttonVisible="true" 
                                         lenient="true" 
-                                        class="input_date"
                                         format="dd/MM/yyyy" 
                                         constraint="no empty: Ingrese la fecha "
+                                        class="input_date"
                                     />
                                     <div class="fa-solid fa-calendar icon" />
+
                                 </div>
                                 <div class="wrapper_input">
                                     <span>T. Ven:</span>
