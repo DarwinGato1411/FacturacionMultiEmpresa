@@ -125,13 +125,11 @@ public class RetencionCompraVm {
     }
 
     public RetencionCompraVm() {
-       
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
 //        amRuc = credential.getUsuarioSistema().getUsuRuc();
         amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
-
 
     }
 
@@ -169,7 +167,7 @@ public class RetencionCompraVm {
     }
 
     private int numeroRetencion() {
-        RetencionCompra recuperada = servicioRetencionCompra.findUtlimaRetencion();
+        RetencionCompra recuperada = servicioRetencionCompra.findUtlimaRetencion(amb);
         if (recuperada != null) {
             // System.out.println("numero de factura " + recuperada);
             numeroRetencion = recuperada.getRcoSecuencial() + 1;

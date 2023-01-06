@@ -40,8 +40,7 @@
                                             onCtrlKey="@command('buscarClienteEnLista')" 
                                             placeholder="Cedula"
                                             value="@bind(vm.clienteBuscado.cliCedula)" 
-                                            onDoubleClick="@command('buscarClienteEnLista')"
-                                            onOK="@command('buscarClienteDni',valor=self.getValue())"                                                  
+                                            onDoubleClick="@command('buscarClienteEnLista')"                                                
                                             maxlength="13" 
                                         />
 

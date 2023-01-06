@@ -104,27 +104,15 @@
                         <menuitem label="Rotacion Productos" id="btnRotacionProducto" class="fa-solid fa-gear menu_item"/>
                     </menupopup>
                 </menu>
-                <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" class="menu_child" />
+                <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" visible="false" class="menu_child" />
                 <menuitem label="Gestion de usuarios " id="muenGestionUsu" class="menu_child" />
                 <menuitem label="Gestion de empresas " id="muenGestionEmpresas" class="menu_child" />
                 <menuitem label="Catalogos" id="btnAdministarVenta" class="menu_child" />
                 <menuitem label="Gestion facturas" id="btnGestionFactura" class="menu_child" />
+                <menuitem label="Codigos de retencion" id="btnCodigoretencion" class="menu_child" />
             </menubar> 
 
-            <!-- <div class="menu_nav">
-                <div class="menu_ul">
-                    <div class="menu_li"><span>One</span></div>
-                    <div class="menu_li"><span>Two</span>
-                    <div class="dropdown menu_ul">
-                        <div class="menu_li"><span>Sub-1</span></div>
-                        <div class="menu_li"><span>Sub-2</span></div>
-                        <div class="menu_li"><span>Sub-3</span></div>
-                    </div>
-                    </div>
-                    <div class="menu_li"><span>Three</span></div>
-                </div>
-            </div> -->
-
+          
 
                     
             </div>
@@ -143,19 +131,7 @@
                         </menupopup>
                     </menu>    
                 </menubar>
-
-
-                      <!-- <menubar id="menubarEmpresa" orient="horizontal"  autodrop="true">   
-                         <menu label="Empresa" id="menuInformacion" image="/iconos/info.png" >
-                            <menupopup >                                                                         
-                                <menuitem label="RUC: ${sessionScope.usuario.tipoambiente.amRuc} "  image="/iconos/infor.png"  />                              
-                                <menuitem label="RAZÓN SOCIAL: ${sessionScope.usuario.tipoambiente.amRazonSocial}" image="/iconos/infor.png" />
-                                <menuitem label="Modificar usuario" image="/iconos/Boss.png" onClick="@command('modificarUsuario')" />
-                                <menuitem label="Salir"  image="/iconos/logout-24.png"  id="logoutMenu" />
-                               
-                            </menupopup>
-                        </menu>
-                    </menubar>  -->   
+   
                        </div>              
                 </div>
                 

@@ -58,11 +58,11 @@ public class ServicioRetencionCompra {
             DetalleRetencionCompra compra = null;
             for (DetalleRetencionCompraDao item : compraDao) {
                 compra = new DetalleRetencionCompra(
-                        item.getDrcBaseImponible(),
-                        item.getDrcPorcentaje(),
-                        item.getDrcValorRetenido(),
-                        item.getTireCodigo(),
-                        retencionCompra);
+                            item.getDrcBaseImponible(),
+                            item.getDrcPorcentaje(),
+                            item.getDrcValorRetenido(),
+                            item.getTireCodigo(),
+                            retencionCompra);
                 compra.setIdTipoivaretencion(item.getTipoivaretencion());
                 compra.setDrcDescripcion(item.getDrcDescripcion());
                 compra.setDrcCodImpuestoAsignado(item.getCodImpuestoAsignado());
@@ -88,11 +88,11 @@ public class ServicioRetencionCompra {
             DetalleRetencionCompra compra = null;
             for (DetalleRetencionCompraDao item : compraDao) {
                 compra = new DetalleRetencionCompra(
-                        item.getDrcBaseImponible(),
-                        item.getDrcPorcentaje(),
-                        item.getDrcValorRetenido(),
-                        item.getTireCodigo(),
-                        retencionCompra);
+                            item.getDrcBaseImponible(),
+                            item.getDrcPorcentaje(),
+                            item.getDrcValorRetenido(),
+                            item.getTireCodigo(),
+                            retencionCompra);
 
                 if (item.getRcoCodigo() != null) {
                     compra.setDrcCodigo(item.getDrcCodigo());
@@ -212,6 +212,30 @@ public class ServicioRetencionCompra {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             Query query = em.createQuery("SELECT a FROM RetencionCompra a ORDER BY a.rcoSecuencial DESC ");
+            listaRetencionCompras = (List<RetencionCompra>) query.getResultList();
+            if (listaRetencionCompras.size() > 0) {
+                retencionCompra = listaRetencionCompras.get(0);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta retencionCompra " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return retencionCompra;
+    }
+
+    public RetencionCompra findUtlimaRetencion(Tipoambiente codTipoambiente) {
+        RetencionCompra retencionCompra = null;
+        List<RetencionCompra> listaRetencionCompras = new ArrayList<RetencionCompra>();
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT a FROM RetencionCompra a WHERE a.codTipoambiente=:codTipoambiente ORDER BY a.rcoSecuencial DESC ");
+            query.setParameter("codTipoambiente", codTipoambiente);
+            query.setMaxResults(2);
             listaRetencionCompras = (List<RetencionCompra>) query.getResultList();
             if (listaRetencionCompras.size() > 0) {
                 retencionCompra = listaRetencionCompras.get(0);

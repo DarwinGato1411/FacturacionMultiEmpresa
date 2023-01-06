@@ -61,6 +61,11 @@ public class AutorizarDocumentos {
 
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
 
+    public AutorizarDocumentos() {
+    }
+
+    
+    
     public static String removeCaracteres(String input) {
         // Cadena de caracteres original a sustituir.
         String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ$&¨\"";
@@ -244,7 +249,7 @@ public class AutorizarDocumentos {
                 tipoAmbiente = "PRODUCCION";
             }
             linea = ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
-                        + "<factura id=\"comprobante\" version=\"1.1.0\">\n");
+                    + "<factura id=\"comprobante\" version=\"1.1.0\">\n");
             build.append(linea);
             linea = "";
             if (autorizada) {
@@ -372,6 +377,14 @@ public class AutorizarDocumentos {
 //            build.append(linea);
             linea = ("    </detalles>\n");
             build.append(linea);
+//            linea = ("<otrosRubrosTerceros>\n"
+//                        + " <rubro>\n"
+//                        + "     <concepto>OTRO</concepto>\n"
+//                        + "     <total>0</total>\n"
+//                        + " </rubro>\n"
+//                        + " </otrosRubrosTerceros>\n");
+//
+//            build.append(linea);
             linea = ("    <infoAdicional>\n"
                         + (valor.getIdCliente().getCliDireccion().length() > 0 ? "<campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getIdCliente().getCliDireccion()) + "</campoAdicional>\n" : " ")
                         //                    + (valor.getIdCliente().getCliCorreo().length() > 0 ? "<campoAdicional nombre=\"E-MAIL\">" + removeCaracteres(valor.getIdCliente().getCliCorreo()) + "</campoAdicional>\n" : " ")

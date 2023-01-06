@@ -181,8 +181,8 @@ public class NuevoCliente {
             cliente.setCliRazonSocial(cliente.getCliNombre());
             cliente.setCodTipoambiente(amb);
             if (accion.equals("create")) {
-                Cliente cliBusca = servicioCliente.FindClienteForCedula(cliente.getCliCedula(), amb);
-                if ((cliBusca == null) || (!cliBusca.getCliDireccion().equals(cliente.getCliDireccion()))) {
+//                Cliente cliBusca = servicioCliente.FindClienteForCedula(cliente.getCliCedula(), amb);
+//                if ((cliBusca == null) || (!cliBusca.getCliDireccion().equals(cliente.getCliDireccion()))) {
                     cliente.setClietipo(Integer.valueOf(clietipo));
                     cliente.setClieFechaRegistro(fechaReg);
                     cliente.setIdTipoIdentificacion(tipoadentificacion);
@@ -190,11 +190,11 @@ public class NuevoCliente {
                     servicioCliente.crear(cliente);
 
                     windowCliente.detach();
-                } else {
-
-                    Clients.showNotification("El número de documento (CI / RUC) ya se encuentra registrado ",
-                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
-                }
+//                } else {
+//
+//                    Clients.showNotification("El número de documento (CI / RUC) ya se encuentra registrado ",
+//                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+//                }
 
             } else {
                 if (cliente.getCliClave() == null) {

@@ -45,6 +45,7 @@
   z-index: 50;
 }
 
+
 .info_wrapper {
   margin-top: 8em !important;
   padding: 2em;
@@ -208,4 +209,14 @@
   .foot {
     height: 300px !important;
   }
+}
+.login_container
+.wrapper_login
+.container_signin
+.wrapper_all_inputs
+.wrapper_input
+.icon_eye {
+    position: absolute;
+    left: unset;
+    right: 10px !important;
 }

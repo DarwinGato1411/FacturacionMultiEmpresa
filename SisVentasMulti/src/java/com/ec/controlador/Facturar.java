@@ -161,6 +161,7 @@ public class Facturar extends SelectorComposer<Component> {
     private String buscarRazonSocial = "";
     private String buscarCedula = "";
     public static String buscarCliente = "";
+    public static Cliente buscarClienteSelected;
     //busacar producto
     ServicioProducto servicioProducto = new ServicioProducto();
     private List<Producto> listaProducto = new ArrayList<Producto>();
@@ -1153,6 +1154,15 @@ public class Facturar extends SelectorComposer<Component> {
 
                 valor.setTotalInicial(valor.getTotal());
             }
+            
+            if (valor.getEsProducto()) {
+                if (valor.getTotalInicial().doubleValue() < valor.getTotal().doubleValue()) {
+
+                    Clients.showNotification("En el producto no puede colocar un precio superior al registrado, \n Modifique a servicio para colocar un precio superior",
+                                Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 5000, true);
+                    return;
+                }
+            }
             if (valor.getEsProducto() && valor.getTotalInicial().doubleValue() < valor.getTotal().doubleValue()) {
                 valor.setTotalInicial(valor.getTotal());
                 BigDecimal subTotal = valor.getTotal().divide(factorSacarSubtotal, 6, RoundingMode.FLOOR);
@@ -1577,9 +1587,10 @@ public class Facturar extends SelectorComposer<Component> {
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
         clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente, amb);
-        if (clienteBuscado == null) {
-            clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
-        }
+        clienteBuscado=buscarClienteSelected;
+//        if (clienteBuscado == null) {
+//            clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
+//        }
         List<Factura> listaFacturasPendientes = servicioFactura.findEstadoCliente("PE", clienteBuscado);
 //        saldoFacturas = BigDecimal.ZERO;
 //        BigDecimal sumaPendientes = BigDecimal.ZERO;
@@ -1711,6 +1722,7 @@ public class Facturar extends SelectorComposer<Component> {
     public void seleccionarClienteLista(@BindingParam("cliente") Cliente valor) {
         System.out.println("cliente seleccionado " + valor.getCliCedula());
         buscarCliente = valor.getCliCedula();
+        buscarClienteSelected=valor;
         windowClienteBuscar.detach();
 
     }
@@ -2174,7 +2186,7 @@ public class Facturar extends SelectorComposer<Component> {
                     factura.setIdCliente(clienteBuscado);
                     /*GENERAMOS LA CLAVE DE ACCESO PARA ENVIAR LA FACTURA DIRECTAMENTE ASI NO ESTE 
                     AUTORIZADA*/
-                    String claveAcceso = ArchivoUtils.generaClave(factura.getFacFecha(), "01", amb.getAmRuc(), amb.getAmCodigo(), "001001", factura.getFacNumeroText(), "12345678", "1");
+                    String claveAcceso = ArchivoUtils.generaClave(factura.getFacFecha(), "01", amb.getAmRuc(), amb.getAmCodigo(), amb.getAmEstab()+amb.getAmPtoemi(), factura.getFacNumeroText(), "12345678", "1");
                     factura.setFacClaveAcceso(claveAcceso);
                     factura.setFacClaveAutorizacion(claveAcceso);
 
@@ -2211,7 +2223,7 @@ public class Facturar extends SelectorComposer<Component> {
                         guiaremision.setPuntoemision(factura.getPuntoemision());
                         guiaremision.setCodestablecimiento(factura.getCodestablecimiento());
                         guiaremision.setEstadosri("PENDIENTE");
-                        String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(), "001001", guiaremision.getFacNumeroText(), "12345678", "1");
+                        String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(),  amb.getAmEstab()+amb.getAmPtoemi(), guiaremision.getFacNumeroText(), "12345678", "1");
                         guiaremision.setFacClaveAcceso(claveAccesoGuia);
                         guiaremision.setFacClaveAutorizacion(claveAccesoGuia);
                         guiaremision.setCodTipoambiente(factura.getCod_tipoambiente().getCodTipoambiente());
