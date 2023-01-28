@@ -290,8 +290,7 @@
             
                                     <listhead> 
                                         <listheader width="20%" align="left" class="tableHeader" >
-                                            <textbox value="@bind(vm.buscarCodigoProd)"  
-                                    
+                                            <textbox value="@bind(vm.buscarCodigoProd)"                                      
                                                      class="form-control form-control-sm"
                                                      tooltiptext="Código"
                                                      placeholder="Código"
@@ -318,7 +317,7 @@
                                         <listitem  onOK="@command('agregarItemLista',valor=each.idProducto)">
                                             <listcell  style="font-size:11px;background-color:#d6eefd" zclass = "mycss-listcell" 
                                                       onDoubleClick="@command('agregarItemLista',valor=each.idProducto)">
-                                                <textbox value="@bind(each.idProducto.prodCodigo)"     onCreate="self.focus()"
+                                                <textbox value="@bind(each.idProducto.prodCodigo)"    
                                                          class="form-control form-control-sm"
                                                          style="font-size:11px;background-color:#d6eefd"
                                                          readonly="true"

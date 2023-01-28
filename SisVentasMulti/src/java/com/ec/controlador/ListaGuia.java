@@ -93,7 +93,7 @@ public class ListaGuia {
     }
 
     private void consultarFactura() {
-        lstGuiaRemision = servicioGuia.findBetweenFecha(fechainicio, fechafin);
+        lstGuiaRemision = servicioGuia.findBetweenFecha(fechainicio, fechafin,amb);
     }
 
     public List<Guiaremision> getLstGuiaRemision() {
@@ -197,7 +197,7 @@ public class ListaGuia {
     }
 
     private void consultarFacturas() {
-        lstGuiaRemision = servicioGuia.FindLikeCliente(buscarCliente);
+        lstGuiaRemision = servicioGuia.FindLikeCliente(buscarCliente,amb);
 
     }
 
@@ -211,7 +211,7 @@ public class ListaGuia {
     }
 
     private void consultarFacturasForCedula() {
-        lstGuiaRemision = servicioGuia.findLikeCedula(buscarCedula);
+        lstGuiaRemision = servicioGuia.findLikeCedula(buscarCedula,amb);
 
     }
 

@@ -719,7 +719,7 @@ public class NotaCreditoDebitoVm {
 //    }
 
     private void numeroFactura() {
-        NotaCreditoDebito recuperada = servicioNotaCredito.FindUltimaNotaCreditoDebito();
+        NotaCreditoDebito recuperada = servicioNotaCredito.FindUltimaNotaCreditoDebito(amb);
         if (recuperada != null) {
             // System.out.println("numero de factura " + recuperada);
             numeroFactura = recuperada.getFacNumero() + 1;

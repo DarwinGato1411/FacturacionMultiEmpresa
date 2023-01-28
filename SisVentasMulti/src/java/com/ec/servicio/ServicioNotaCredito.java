@@ -58,11 +58,11 @@ public class ServicioNotaCredito {
             DetalleNotaDebitoCredito detalleNotaCreditoDebito = null;
             for (DetalleFacturaDAO item : detalleNotaCreditoDebitoDAOs) {
                 detalleNotaCreditoDebito = new DetalleNotaDebitoCredito(item.getCantidad(),
-                        item.getDescripcion(),
-                        item.getSubTotal(),
-                        item.getTotal(),
-                        item.getProducto(),
-                        notaCreditoDebito, item.getTipoVenta());
+                            item.getDescripcion(),
+                            item.getSubTotal(),
+                            item.getTotal(),
+                            item.getProducto(),
+                            notaCreditoDebito, item.getTipoVenta());
                 detalleNotaCreditoDebito.setDetIva(item.getDetIva());
                 detalleNotaCreditoDebito.setDetTotalconiva(item.getDetTotalconiva());
 
@@ -137,7 +137,7 @@ public class ServicioNotaCredito {
         return listaNotaCreditoDebitos;
     }
 
-    public NotaCreditoDebito FindUltimaNotaCreditoDebito() {
+    public NotaCreditoDebito FindUltimaNotaCreditoDebito(Tipoambiente amb) {
 
         List<NotaCreditoDebito> listaNotaCreditoDebitos = new ArrayList<NotaCreditoDebito>();
         NotaCreditoDebito notaCreditoDebitos = new NotaCreditoDebito();
@@ -145,9 +145,10 @@ public class ServicioNotaCredito {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createNamedQuery("NotaCreditoDebito.findUltimaNC", NotaCreditoDebito.class);
+            Query query = em.createQuery("SELECT n FROM NotaCreditoDebito n WHERE n.codTipoambiente=:codTipoambiente and n.facNumero IS NOT NULL ORDER BY  n.facNumero DESC");
+            query.setParameter("codTipoambiente", amb.getCodTipoambiente());
             query.setMaxResults(2);
-//           query.setParameter("codigoUsuario", notaCreditoDebito);
+
             listaNotaCreditoDebitos = (List<NotaCreditoDebito>) query.getResultList();
             if (listaNotaCreditoDebitos.size() > 0) {
                 notaCreditoDebitos = listaNotaCreditoDebitos.get(0);
