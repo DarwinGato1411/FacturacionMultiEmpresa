@@ -1806,12 +1806,14 @@ public class Facturar extends SelectorComposer<Component> {
         BigDecimal sumaDeItems = BigDecimal.ZERO;
         BigDecimal valorTotalIce = BigDecimal.ZERO;
         BigDecimal valorTotalIcePorProducto = BigDecimal.ZERO;
+        BigDecimal totalCompleto = BigDecimal.ZERO;
 
         List<DetalleFacturaDAO> listaPedido = listaDetalleFacturaDAOMOdel.getInnerList();
         if (listaPedido.size() > 0) {
             for (DetalleFacturaDAO item : listaPedido) {
                 sumaDeItems = sumaDeItems.add(BigDecimal.ONE);
                 if (item.getProducto() != null) {
+                    totalCompleto=totalCompleto.add(item.getDetTotalconivadescuento());
                     valorTotal = valorTotal.add(item.getProducto().getProdGrabaIva() ? item.getSubTotalDescuento().multiply(item.getCantidad()) : BigDecimal.ZERO);
 
                     /*productos que graban ICE*/
@@ -1850,7 +1852,8 @@ public class Facturar extends SelectorComposer<Component> {
                 valorIce = ArchivoUtils.redondearDecimales(valorTotalIce, 3);
 
                 // ivaCotizacion.setScale(5, RoundingMode.UP);
-                valorTotalCotizacion = subTotalCotizacion.add(subTotalBaseCero.add(ivaCotizacion).add(valorIce));
+                valorTotalCotizacion = totalCompleto;
+//                valorTotalCotizacion = subTotalCotizacion.add(subTotalBaseCero.add(ivaCotizacion).add(valorIce));
                 // valorTotalCotizacion.setScale(5, RoundingMode.UP);
 
                 valorTotalInicialVent = valorTotalInicial;

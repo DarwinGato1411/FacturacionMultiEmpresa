@@ -66,7 +66,8 @@
                                     <listheader label="Contraseña"  align="left" width="20%"></listheader>
                                     <listheader label="Tipo usuario"  align="left" width="20%"></listheader>
                                     <listheader label="Fecha caduca"  align="left" width="20%"></listheader>
-                                    <listheader label="Modificar"  align="left" width="5%"></listheader>
+                                    <listheader label="Modificar"  align="center" width="5%"></listheader>
+                                    <listheader label=""  align="center" width="5%"></listheader>
                                 </listhead>
                         
                         
@@ -112,7 +113,15 @@
                                                    onClick="@command('modificarUsario',valor=each.idUsuario)" 
                                                    tooltiptext="Editar usuario"/> 
                                             
-                                        </listcell>     
+                                        </listcell>    
+                                        <listcell  zclass = "mycss-listcell">
+                                            <image src="/iconos/download.png"
+                                                   class="grow"
+                                                   height="25px"
+                                                   onClick="@command('descargarFirma',valor=each)" 
+                                                   tooltiptext="Editar usuario"/> 
+                                            
+                                        </listcell>   
                                     
                                     </listitem>
                                 </template>   

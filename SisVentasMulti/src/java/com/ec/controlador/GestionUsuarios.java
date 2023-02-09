@@ -10,15 +10,21 @@ import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioUsuario;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.activation.MimetypesFileTypeMap;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Filedownload;
 
 /**
  *
@@ -95,6 +101,25 @@ public class GestionUsuarios {
         cosultarUsuarios("");
     }
 
+    
+    @Command
+    public void descargarFirma(@BindingParam("valor") Tipoambiente amb) {
+
+        try {
+            String filePath = amb.getAmDirBaseArchivos() + File.separator + amb.getAmFolderFirma() + File.separator + amb.getAmDirFirma();
+            File dosfile = new File(filePath);
+            if (dosfile.exists()) {
+                FileInputStream inputStream = new FileInputStream(dosfile);
+                Filedownload.save(inputStream, new MimetypesFileTypeMap().getContentType(dosfile), dosfile.getName());
+            } else {
+                Clients.showNotification("La firma no fue cargada", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR AL DESCARGAR EL ARCHIVO" + e.getMessage());
+        }
+
+    }
+    
     public UserCredential getCredential() {
         return credential;
     }

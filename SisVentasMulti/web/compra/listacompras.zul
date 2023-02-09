@@ -25,41 +25,7 @@
                         <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                         <auxhead>
                             <auxheader colspan="12" >  
-                                <!-- <div class="row">
-                                  
-                                    <div  class="col-12 col-sm-12 col-md-2 col-lg-2 ">
-                                        <label value="Inicio: "   />
-                                        <datebox   value="@bind(vm.inicio)" 
-                                                   readonly="true" style="font-weight:bold;" 
-                                                   onCreate="self.value = new Date()"                                                    
-                                                   buttonVisible="true" 
-                                                   lenient="true"  format="dd/MM/yyyy" 
-                                                   constraint="no empty: Ingrese de inicio de la busqueda"/> 
-                                    </div>
-                                    <div  class="col-12 col-sm-12 col-md-3 col-lg-3 ">
-                                        <label value="Fin: "  />
-                                        <datebox   value="@bind(vm.fin)" 
-                                                   readonly="true" style="font-weight:bold;" 
-                                                   onCreate="self.value = new Date()"                                                   
-                                                   buttonVisible="true" 
-                                                   lenient="true"  format="dd/MM/yyyy" 
-                                                   constraint="no empty: IBuscar por fecha fin de la busqueda"/> 
-                                        <button   image="/imagenes/buscar1.png"  
-                                                  onClick="@command('buscarForFechas')"  
-                                                  class="btn btn-primary btn-sm "
-                                                  tooltiptext="Buscar"/>
-                       
-                                    </div>
-                                    <div  class="col-12 col-sm-12 col-md-3 col-lg-3 ">
-                                        <button   image="/imagenes/excel.png"  
-                                                  onClick="@command('exportListboxToExcel')"  
-                                                  class="btn btn-primary btn-sm "
-                                                  tooltiptext="Descargar"/>
-
-                                    </div>
-
-                                </div>  -->
-
+                            
                                 <div class="factura_header paint_all_row">
                                     <div class="fact_row fact_only_row">
                                         <div class="wrapper_data" style="max-width:300px">
@@ -145,6 +111,7 @@
                                          onChange="self.setValue(self.getValue().toUpperCase());"/>
                             </listheader>        
                             <listheader width="25%"  label="QUIEN INGRESO" />        
+                            <listheader width="3%"  label="" align="center" />        
                             <listheader width="3%"  label="" align="center" />        
                             <listheader width="3%"  label="" align="center" />        
                             <listheader width="3%"  label="" align="center" />        
@@ -236,7 +203,19 @@
                                            tooltiptext="No se puede autorizar por que se encuentra en estado autorizado"/> 
                                 </listcell>
                                 
-                                
+                                  <listcell zclass = "mycss-listcell" style="font-size:12px;background:#F8F9F9">
+                                    
+                                    <image if="${each.cabRetencionAutori=='S'}" 
+                                           src="/iconos/listo_uno.png"   
+                                           class=" grow"                                       
+                                           tooltiptext="No se puede autorizar por que se encuentra en estado autorizado"/> 
+                                    <image if="${each.cabRetencionAutori!='S'}"
+                                           src="/iconos/delete.png"
+                                           class=" grow"
+                                           onClick="@command('eliminarCompra',valor=each)" 
+                                           tooltiptext="Eliminar factura"/>
+                                    
+                                </listcell>
                                 
                             </listitem>
                         </template>

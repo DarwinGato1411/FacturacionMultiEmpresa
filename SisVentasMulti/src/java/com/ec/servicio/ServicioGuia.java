@@ -127,7 +127,7 @@ public class ServicioGuia {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Guiaremision a where a.codTipoambiente=:codTipoambiente  (a.facNumero<>'0' or a.facNumero IS NOT NULL) ORDER BY  a.facNumero DESC");
+            Query query = em.createQuery("SELECT a FROM Guiaremision a where a.codTipoambiente=:codTipoambiente  and (a.facNumero<>'0' or a.facNumero IS NOT NULL) ORDER BY  a.facNumero DESC");
             query.setParameter("codTipoambiente", amb.getCodTipoambiente());
             query.setMaxResults(2);
 
@@ -511,7 +511,7 @@ public class ServicioGuia {
         return listaGuiaremisions;
     }
 
-    public List<Guiaremision> findFacFecha(Date inicio, Date fin, String estado) {
+    public List<Guiaremision> findFacFecha(Date inicio, Date fin, String estado, Tipoambiente codTipoambiente) {
 
         List<Guiaremision> listaGuiaremisions = new ArrayList<Guiaremision>();
         try {
@@ -522,14 +522,16 @@ public class ServicioGuia {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             if (!estado.equals("TODO")) {
-                query = em.createQuery("SELECT f FROM Guiaremision f WHERE f.facFecha BETWEEN :inicio and :fin and f.tipoGuia='EMITIDA'  ORDER BY f.facNumero DESC");
+                query = em.createQuery("SELECT f FROM Guiaremision f WHERE f.codTipoambiente=:codTipoambiente and f.facFecha BETWEEN :inicio and :fin and f.tipoGuia='EMITIDA'  ORDER BY f.facNumero DESC");
                 query.setParameter("inicio", inicio);
                 query.setParameter("fin", fin);
+                query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
 //                query.setParameter("facEstado", estado);
             } else {
-                query = em.createQuery("SELECT f FROM Guiaremision f WHERE f.facFecha BETWEEN :inicio and :fin and f.tipoGuia='EMITIDA' ORDER BY f.facNumero  DESC");
+                query = em.createQuery("SELECT f FROM Guiaremision f WHERE f.codTipoambiente=:codTipoambiente and  f.facFecha BETWEEN :inicio and :fin and f.tipoGuia='EMITIDA' ORDER BY f.facNumero  DESC");
                 query.setParameter("inicio", inicio);
                 query.setParameter("fin", fin);
+                 query.setParameter("codTipoambiente", codTipoambiente.getCodTipoambiente());
             }
 
 //            query.setMaxResults(400);

@@ -134,7 +134,7 @@ public class Compras {
     }
 
     private void buscarProveedoresLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre("",amb);
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre("", amb);
     }
 
     public Compras() {
@@ -348,7 +348,7 @@ public class Compras {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/compra/buscarproveedor.zul", null, map);
         window.doModal();
-        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor,amb);
+        proveedorSeleccionado = servicioProveedor.findProvCedula(buscarCedulaProveedor, amb);
     }
 
     @Command
@@ -379,7 +379,7 @@ public class Compras {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/compra/buscarproducto.zul", null, map);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda, amb);
         if (productoBuscado != null) {
             valor.setProducto(productoBuscado);
             valor.setCodigo(productoBuscado.getProdCodigo());
@@ -398,7 +398,7 @@ public class Compras {
 
                 //calcularValoresTotales();
                 //nuevo registro
-                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
+                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
                 if (buscadoPorCodigo != null) {
                     valor.setDescripcion(buscadoPorCodigo.getProdNombre());
 //                    valor.setSubtotal(buscadoPorCodigo.getPordCostoVentaRef());
@@ -477,11 +477,11 @@ public class Compras {
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd, amb);
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
     }
 //proveedor
 
@@ -506,11 +506,11 @@ public class Compras {
 //    }
 
     private void findProveedorLikeNombre() {
-        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre,amb);
+        listaProveedoresAll = servicioProveedor.findLikeProvNombre(buscarProvNombre, amb);
     }
 
     private void findProveedorCedula() {
-        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula,amb);
+        listaProveedoresAll = servicioProveedor.findProveedorCedula(buscarProvCedula, amb);
     }
 
     //para buscar karder y mostrar en productos
@@ -542,13 +542,19 @@ public class Compras {
     public void Guardar() {
         if (!proveedorSeleccionado.getProvCedula().equals("")
                     && !numeroFactura.equals("")) {
-            guardarCompra();
-              Clients.showNotification("Compra registrada correctamente",
+            if (numeroFactura.length() == 9) {
+
+                guardarCompra();
+                Clients.showNotification("Compra registrada correctamente",
                             Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
+            } else {
+                Clients.showNotification("El número de factura debe tener 9 digitos",
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+            }
 
         } else {
-             Clients.showNotification("Verifique el proveedor, numero de factura, numero de autorizacion, proveedor",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+            Clients.showNotification("Verifique el proveedor, numero de factura, numero de autorizacion, proveedor",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
 //            Messagebox.show("", "Atención", Messagebox.OK, Messagebox.ERROR);
         }
     }
@@ -571,7 +577,7 @@ public class Compras {
                 cabeceraCompra.setIdUsuario(credential.getUsuarioSistema());
                 cabeceraCompra.setCabSubTotal(subTotalFactura);
                 cabeceraCompra.setCabIva(ivaFactura);
-                
+
                 cabeceraCompra.setCabTotal(valorTotalFactura);
                 cabeceraCompra.setDrcCodigoSustento("01");
                 cabeceraCompra.setCabSubTotalCero(subTotalFacturaCero);
@@ -595,7 +601,7 @@ public class Compras {
                                 actualizaPrecio.setPordCostoCompra(item.getSubtotal());
                                 actualizaPrecio.setPordCostoVentaRef(item.getSubtotal());
                             }
-                           
+
                             servicioProducto.modificar(actualizaPrecio);
                             detalleCompra.add(item);
                         }
