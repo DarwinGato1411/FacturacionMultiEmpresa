@@ -1,3 +1,14 @@
+
+:root {
+  --primary-color: #ac100d;
+  --secondary-color: #1247b9;
+  --background-color: #aaa9a9;
+  --alpha: 0.5;
+  --base-color: #fff;
+}
+
+
+
 .nav {
   width: 100%;
   padding: 2em !important;
@@ -5,6 +16,10 @@
 
 .logo_wrapper {
   width: 130px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  align-items: center;
+  gap:5px;
 }
 
 .logo_wrapper > .logo {
@@ -13,6 +28,10 @@
   width: inherit;
   filter: invert(-1);
   padding: 0.5em;
+}
+
+.logo_wrapper > .logo2 {
+  border-radius: 20px;
 }
 
 .logo_wrapper > .logo:hover {
@@ -99,7 +118,7 @@
 .wrapper_container_input > .wrapper_input > .icon {
   position: absolute;
   top: 12px;
-  color: #1247b9;
+  color: var(--primary-color);
 }
 
 .wrapper_input::after {
@@ -160,7 +179,7 @@
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  background-color: #1247b9;
+  background-color: var(--primary-color);
   border: none !important;
 }
 

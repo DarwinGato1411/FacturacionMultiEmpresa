@@ -573,7 +573,7 @@ div.z-listbox-header th.z-auxheader {
   border-color: #cfcfcf #cfcfcf #cfcfcf white;
   border-top: 0;
   padding: 0;
-  background: #77dd77 !important;
+  background: #1247b9 !important;
   font-weight: bold;
 }
 
@@ -625,11 +625,12 @@ div.z-listheader-cnt {
   margin: 0;
   padding: 0;
   font-family: arial, sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: normal;
-  color: black;
+  color: white;
   font-weight: bold;
   text-align: left;
+  text-align: center;
 }
 
 .z-window-embedded-tr,

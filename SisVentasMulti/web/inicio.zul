@@ -13,6 +13,7 @@
             <div class="nav">
                 <div class="logo_wrapper">
                     <image src="./imagenes/logo/2.png" class="logo"/>
+                    <image  src="./imagenes/logo/nexos1.png" class="logo logo2"/>
                 </div>
             </div>
             

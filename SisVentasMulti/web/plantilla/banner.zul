@@ -7,9 +7,10 @@
         <div class="row" >
 
 
-            <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start">
-                <image  src="/imagenes/logo/5.png" class="logo_defact" />
-                <!-- <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />  --> 
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5" style="display:flex; flex-direction:row;" align="start">
+                <image  src="/imagenes/logo/5.png" style="width:100px;" />
+                <image  src="/imagenes/logo/nexos1.png" style="width:100px; border-radius:10px;" class="logo_defact" />
+              
                 
                      
             </div>
