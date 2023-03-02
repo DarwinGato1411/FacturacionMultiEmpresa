@@ -124,7 +124,7 @@
                         />
                     </div>
                 </div>-->
-                <div class="wrapper_input_mod">
+<!--                <div class="wrapper_input_mod">
                     <span>Dirección. </span>
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-location-dot icon"></div>
@@ -134,12 +134,23 @@
                                  class="input_text" 
                         />
                     </div>
+                </div>-->
+                <div class="wrapper_input_mod" style="flex:auto;justify-content: normal">
+                    <span style="margin:0 0.5em">Direccion. </span>
+                    <div class="wrapper_input_text" style="margin:0 0em">
+                        <div class="fa-solid fa-envelope icon"></div>
+                        <textbox id="txtCorreo"
+                                 maxlength="100" 
+                                 value="@bind(vm.cliente.cliDireccion)"
+                                 class="input_text" 
+                        />
+                    </div>
                 </div>
                 <div class="wrapper_input_mod" style="flex:auto;justify-content: normal">
                     <span style="margin:0 0.5em">Correo electrónico. </span>
                     <div class="wrapper_input_text" style="margin:0 0em">
                         <div class="fa-solid fa-envelope icon"></div>
-                        <textbox id="txtCorreo"
+                        <textbox 
                                  maxlength="100" 
                                  value="@bind(vm.cliente.cliCorreo)"
                                  class="input_text" 

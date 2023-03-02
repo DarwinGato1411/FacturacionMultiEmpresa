@@ -14,6 +14,7 @@ import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoIdentificacionCompra;
 import com.ec.untilitario.AduanaJson;
 import com.ec.untilitario.ArchivoUtils;
+import com.ec.untilitario.InfoPersona;
 import java.util.ArrayList;
 import java.util.List;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -35,22 +36,22 @@ import org.zkoss.zul.Window;
  * @author gato
  */
 public class NuevoProveedor {
-
+    
     ServicioTipoIdentificacionCompra servicioTipoIdentificacionCompra = new ServicioTipoIdentificacionCompra();
     private List<TipoIdentificacionCompra> listaIdentificacionCompras = new ArrayList<TipoIdentificacionCompra>();
     private TipoIdentificacionCompra identificacionCompra = null;
-
+    
     private Proveedores proveedor = new Proveedores();
     ServicioProveedor servicioProveedor = new ServicioProveedor();
     private String accion = "create";
     @Wire
     Window windowCliente;
-
+    
     UserCredential credential = new UserCredential();
     private Tipoambiente amb = new Tipoambiente();
     private String amRuc = "";
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
-
+    
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") Proveedores proveedor, @ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -66,70 +67,46 @@ public class NuevoProveedor {
             identificacionCompra = null;
         }
         cargarTipoIdentificacion();
-
+        
     }
-
+    
     public NuevoProveedor() {
-       
-
+        
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
 //        amRuc = credential.getUsuarioSistema().getUsuRuc();
         amb = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
-
-
+        
     }
-
+    
     private void cargarTipoIdentificacion() {
         listaIdentificacionCompras = servicioTipoIdentificacionCompra.findALlTipoIdentificacionCompra();
     }
-
+    
     @Command
     @NotifyChange({"proveedor"})
     public void buscarAduana() {
-        if (proveedor.getProvCedula()!= null) {
+        InfoPersona aduana = new InfoPersona();
+        String nombre = "";
+        if (proveedor.getProvCedula() != null) {
             if (!proveedor.getProvCedula().equals("")) {
                 String cedulaBuscar = "";
-                if (proveedor.getProvCedula().length() > 10) {
-                    cedulaBuscar = proveedor.getProvCedula().substring(0, 10);
-                } else {
+                if (proveedor.getProvCedula().length() == 13) {
                     cedulaBuscar = proveedor.getProvCedula();
+                    nombre = ArchivoUtils.obtenerPorRuc(cedulaBuscar);
+                    proveedor.setProvNombre(nombre);
+                    proveedor.setProvNomComercial(nombre);
+                } else if (proveedor.getProvCedula().length() == 10) {
+                    cedulaBuscar = proveedor.getProvCedula();
+                    aduana = ArchivoUtils.obtenerPorCedula(cedulaBuscar);
+                    proveedor.setProvNombre(aduana.getNombre());
+                    proveedor.setProvNomComercial(aduana.getNombre());
+                    proveedor.setProvDireccion(aduana.getDireccion());
                 }
-                AduanaJson aduana = ArchivoUtils.obtenerdatoAduana(cedulaBuscar);
-                if (aduana != null) {
-
-                    String nombreApellido[] = aduana.getNombre().split(" ");
-                    String nombrePersona = "";
-                    String apellidoPersona = "";
-                    switch (nombreApellido.length) {
-                        case 1:
-                            apellidoPersona = nombreApellido[0];
-                            nombrePersona = "A";
-                            break;
-                        case 2:
-                            apellidoPersona = nombreApellido[0];
-                            nombrePersona = nombreApellido[1];
-                            break;
-                        case 3:
-                            apellidoPersona = nombreApellido[0] + " " + nombreApellido[1];
-                            nombrePersona = nombreApellido[2];
-                            break;
-                        case 4:
-                            apellidoPersona = nombreApellido[0] + " " + nombreApellido[1];
-                            nombrePersona = nombreApellido[2] + " " + nombreApellido[3];
-                            break;
-                        default:
-                            break;
-                    }
-                    proveedor.setProvNombre(nombrePersona+" "+apellidoPersona);
-                    proveedor.setProvNomComercial(nombrePersona+" "+apellidoPersona);
-                  
-                }
+                
             }
         }
-
     }
-    
     
     @Command
     public void guardar() {
@@ -151,42 +128,42 @@ public class NuevoProveedor {
 
                 windowCliente.detach();
             }
-
+            
         } else {
             Messagebox.show("Verifique la informacion requerida", "Atención", Messagebox.OK, Messagebox.ERROR);
         }
     }
-
+    
     public Proveedores getProveedor() {
         return proveedor;
     }
-
+    
     public void setProveedor(Proveedores proveedor) {
         this.proveedor = proveedor;
     }
-
+    
     public String getAccion() {
         return accion;
     }
-
+    
     public void setAccion(String accion) {
         this.accion = accion;
     }
-
+    
     public List<TipoIdentificacionCompra> getListaIdentificacionCompras() {
         return listaIdentificacionCompras;
     }
-
+    
     public void setListaIdentificacionCompras(List<TipoIdentificacionCompra> listaIdentificacionCompras) {
         this.listaIdentificacionCompras = listaIdentificacionCompras;
     }
-
+    
     public TipoIdentificacionCompra getIdentificacionCompra() {
         return identificacionCompra;
     }
-
+    
     public void setIdentificacionCompra(TipoIdentificacionCompra identificacionCompra) {
         this.identificacionCompra = identificacionCompra;
     }
-
+    
 }
