@@ -54,6 +54,8 @@ public class AgregarUsuario {
     ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
     private Boolean readOnly = true;
 
+    private Parametrizar parametrizar = new Parametrizar();
+
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("usuario") Usuario usuarioSistema, @ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -98,30 +100,30 @@ public class AgregarUsuario {
     @NotifyChange("usuarioSistema")
     public void guardar() {
         if (usuarioSistema != null && !usuarioSistema.getUsuNombre().equals("")
-                    && !usuarioSistema.getUsuLogin().equals("")
-                    && !usuarioSistema.getUsuCorreo().equals("")
-                    && !usuarioSistema.getUsuWhatsapp().equals("")
-                    && !usuarioSistema.getUsuPassword().equals("")
-                    && !usuarioSistema.getUsuRuc().equals("")
-                    && !tipoUSuario.equals("")) {
+                && !usuarioSistema.getUsuLogin().equals("")
+                && !usuarioSistema.getUsuCorreo().equals("")
+                && !usuarioSistema.getUsuWhatsapp().equals("")
+                && !usuarioSistema.getUsuPassword().equals("")
+                && !usuarioSistema.getUsuRuc().equals("")
+                && !tipoUSuario.equals("")) {
             usuarioSistema.setUsuNivel(Integer.valueOf(tipoUSuario));
             /*verifica si tiene tipo ambiente*/
 
             if (usuarioSistema.getUsuWhatsapp() == null) {
                 Clients.showNotification("Ingrese un numero de contacto..!!",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
                 return;
             }
             if (usuarioSistema.getUsuRuc().length() != 13) {
                 Clients.showNotification("Ingrese un RUC valido..!!",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
                 return;
             }
 
             Usuario usuariovalida = servicioUsuario.FindUsuarioPorNombre(usuarioSistema.getUsuLogin());
             if (usuariovalida != null) {
                 Clients.showNotification("El nombre de usuario ya se encuentra en uso..!!",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
                 return;
             }
             usuarioSistema.setUsuFechaRegistro(new Date());
@@ -150,6 +152,13 @@ public class AgregarUsuario {
             Tipoambiente tipoAmbienteRecup = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuarioSistema);
 
             if (tipoAmbienteRecup == null) {
+                //Tomar correo parametrizar
+                parametrizar = servicioParametrizar.FindALlParametrizar();
+                String correo = parametrizar.getParCorreo();
+                String password = parametrizar.getParPasswordCorreo();
+                String puerto = parametrizar.getParPuerto();
+                String smtp = parametrizar.getParSmtp();
+
                 // PRUEBAS
                 Tipoambiente tipoambiente = new Tipoambiente();
                 tipoambiente.setAmDirBaseArchivos("//DOCUMENTOSRI");
@@ -179,11 +188,12 @@ public class AgregarUsuario {
                 tipoambiente.setAmEstab("001");
                 tipoambiente.setAmPtoemi("001");
 
-                tipoambiente.setAmPort("26");
+                tipoambiente.setAmPort(puerto);
                 tipoambiente.setAmProtocol("smtp");
-                tipoambiente.setAmUsuarioSmpt("defact@deckxel.com");
-                tipoambiente.setAmPassword("Dereckandre02!");
-                tipoambiente.setAmHost("mail.deckxel.com");
+                tipoambiente.setAmUsuarioSmpt(correo);
+                tipoambiente.setAmPassword(password);
+                tipoambiente.setAmHost(smtp);
+
                 tipoambiente.setLlevarContabilidad("NO");
                 tipoambiente.setAmMicroEmp(Boolean.FALSE);
                 tipoambiente.setAmAgeRet(Boolean.FALSE);
@@ -226,11 +236,12 @@ public class AgregarUsuario {
                 tipoambienteProd.setAmDireccionMatriz("");
                 tipoambienteProd.setAmDireccionSucursal("");
                 tipoambienteProd.setLlevarContabilidad("NO");
-                tipoambienteProd.setAmPort("26");
+
+                tipoambienteProd.setAmPort(puerto);
                 tipoambienteProd.setAmProtocol("smtp");
-                tipoambienteProd.setAmUsuarioSmpt("defact@deckxel.com");
-                tipoambienteProd.setAmPassword("Dereckandre02!");
-                tipoambienteProd.setAmHost("mail.deckxel.com");
+                tipoambienteProd.setAmUsuarioSmpt(correo);
+                tipoambienteProd.setAmPassword(password);
+                tipoambienteProd.setAmHost(smtp);
 
                 tipoambienteProd.setAmMicroEmp(Boolean.FALSE);
                 tipoambienteProd.setAmAgeRet(Boolean.FALSE);
@@ -252,10 +263,10 @@ public class AgregarUsuario {
                 MailerClassSistema mail = new MailerClassSistema();
                 mail.sendMailRecuperarPassword(usuarioSistema.getUsuCorreo(), "Cuenta creada", usuarioSistema.getUsuLogin(), usuarioSistema.getUsuPassword(), tipoAmbienteRecup);
                 Clients.showNotification("Los accesos se enviaron al correo electrónico",
-                            Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 2000, true);
             } catch (RemoteException ex) {
                 Clients.showNotification("Ocurrio un error al recuperar su password",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 2000, true);
                 Logger.getLogger(RecuperarClave.class.getName()).log(Level.SEVERE, null, ex);
             }
             windowIdUsuario.detach();

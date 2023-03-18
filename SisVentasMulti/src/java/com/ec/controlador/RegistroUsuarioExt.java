@@ -42,6 +42,7 @@ public class RegistroUsuarioExt {
     private Usuario usuarioSistema = new Usuario();
     private String tipoUSuario = "2";
     private String accion = "create";
+    private Parametrizar parametrizar = new Parametrizar();
 
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 //    UserCredential credential = new UserCredential();
@@ -139,8 +140,15 @@ public class RegistroUsuarioExt {
             }
             // verifica si existe sino lo crea
             Tipoambiente tipoAmbienteRecup = servicioTipoAmbiente.findALlTipoambientePorUsuario(usuarioSistema);
-
+            
             if (tipoAmbienteRecup == null) {
+                //Tomar correo parametrizar
+                parametrizar = servicioParametrizar.FindALlParametrizar();
+                String correo=parametrizar.getParCorreo();
+                String password=parametrizar.getParPasswordCorreo();
+                String puerto=parametrizar.getParPuerto();
+                String smtp=parametrizar.getParSmtp();
+                
                 // PRUEBAS
                 Tipoambiente tipoambiente = new Tipoambiente();
                 tipoambiente.setAmDirBaseArchivos("//DOCUMENTOSRI");
@@ -170,11 +178,13 @@ public class RegistroUsuarioExt {
                 tipoambiente.setAmEstab("001");
                 tipoambiente.setAmPtoemi("001");
 
-                tipoambiente.setAmPort("587");
+                tipoambiente.setAmPort(puerto);
                 tipoambiente.setAmProtocol("smtp");
-                tipoambiente.setAmUsuarioSmpt("no-reply@defactec.com");
-                tipoambiente.setAmPassword("1h@t3Pap3r");
-                tipoambiente.setAmHost("smtp.office365.com");
+                tipoambiente.setAmUsuarioSmpt(correo);
+                tipoambiente.setAmPassword(password);
+                tipoambiente.setAmHost(smtp);
+                
+                
                 tipoambiente.setLlevarContabilidad("NO");
                 tipoambiente.setAmMicroEmp(Boolean.FALSE);
                 tipoambiente.setAmAgeRet(Boolean.FALSE);
@@ -217,11 +227,14 @@ public class RegistroUsuarioExt {
                 tipoambienteProd.setAmDireccionMatriz("");
                 tipoambienteProd.setAmDireccionSucursal("");
                 tipoambienteProd.setLlevarContabilidad("NO");
-                tipoambienteProd.setAmPort("587");
+                
+                
+                tipoambienteProd.setAmPort(puerto);
                 tipoambienteProd.setAmProtocol("smtp");
-                tipoambienteProd.setAmUsuarioSmpt("no-reply@defactec.com");
-                tipoambienteProd.setAmPassword("1h@t3Pap3r");
-                tipoambienteProd.setAmHost("smtp.office365.com");
+                tipoambienteProd.setAmUsuarioSmpt(correo);
+                tipoambienteProd.setAmPassword(password);
+                tipoambienteProd.setAmHost(smtp);
+              
 
                 tipoambienteProd.setAmMicroEmp(Boolean.FALSE);
                 tipoambienteProd.setAmAgeRet(Boolean.FALSE);
