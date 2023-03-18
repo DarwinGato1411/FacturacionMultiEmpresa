@@ -261,7 +261,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='PROF' AND f.facNumProforma IS NOT NULL AND f.cod_tipoambiente=:tipoambiente ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='PROF' AND f.facNumProforma IS NOT NULL AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumProforma DESC");
 
             query.setParameter("tipoambiente", tipoambiente);
             query.setMaxResults(2);
