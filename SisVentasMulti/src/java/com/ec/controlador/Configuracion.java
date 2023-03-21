@@ -297,7 +297,4 @@ public class Configuracion extends SelectorComposer<Component> {
     public void setGrabaICE(String grabaICE) {
         this.grabaICE = grabaICE;
     }
-    
-    
-
 }

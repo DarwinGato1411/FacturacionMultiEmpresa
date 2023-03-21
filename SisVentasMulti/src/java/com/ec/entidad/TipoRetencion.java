@@ -46,7 +46,7 @@ public class TipoRetencion implements Serializable {
     private String tireCodigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 1000)
     @Column(name = "tire_nombre")
     private String tireNombre;
 

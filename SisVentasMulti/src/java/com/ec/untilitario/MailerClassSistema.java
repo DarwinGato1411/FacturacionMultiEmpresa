@@ -32,6 +32,7 @@ public class MailerClassSistema {
 
     private Parametrizar parametrizar = new Parametrizar();
     ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
+    private Tipoambiente amb = new Tipoambiente();
 
     /**
      * Recupera el nombre del catálogo descrito en la enumeración
@@ -64,10 +65,8 @@ public class MailerClassSistema {
 
         @Override
         public PasswordAuthentication getPasswordAuthentication() {
-            parametrizar = servicioParametrizar.FindALlParametrizar();
-            String username = parametrizar.getParCorreo();
-            String password = parametrizar.getParPasswordCorreo();
-
+            String username = amb.getAmUsuarioSmpt().trim();
+            String password = amb.getAmPassword().trim();
             return new PasswordAuthentication(username, password);
 
         }
@@ -83,14 +82,14 @@ public class MailerClassSistema {
 //                        String usuarioSmpt = "deckxelec@gmail.com";
 //            String password = "metalicas366";
 
-            parametrizar = servicioParametrizar.FindALlParametrizar();
+            amb = ambiente;
 
             String asunto = asuntoInf;
-            String host = parametrizar.getParSmtp();
-            String port = parametrizar.getParPuerto();
-            String protocol = "smtp";
-            String usuarioSmpt = parametrizar.getParCorreo();
-            String password = parametrizar.getParPasswordCorreo();
+            String host = amb.getAmHost();
+            String port = amb.getAmPort();
+            String protocol = amb.getAmProtocol();
+            String usuarioSmpt = amb.getAmUsuarioSmpt().trim();
+            String password = amb.getAmPassword().trim();
 //            String host = "smtp.office365.com";
 //            String port = "587";
 //            String protocol = "smtp";
