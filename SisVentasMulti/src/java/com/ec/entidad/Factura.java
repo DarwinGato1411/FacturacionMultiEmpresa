@@ -4,6 +4,7 @@
  */
 package com.ec.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -204,38 +205,213 @@ public class Factura implements Serializable {
     private String facHija;
     @Column(name = "fac_destino")
     private String facDestino;
-     @Column(name = "fac_observacion")
+    @Column(name = "fac_observacion")
     private String facObservacion;
 
+    @JsonIgnore
     @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
     @ManyToOne
     private Cliente idCliente;
+    @JsonIgnore
     @JoinColumn(name = "id_estado", referencedColumnName = "id_estado")
     @ManyToOne
     private EstadoFacturas idEstado;
+    @JsonIgnore
     @JoinColumn(name = "id_forma_pago", referencedColumnName = "id_forma_pago")
     @ManyToOne
     private FormaPago idFormaPago;
+    @JsonIgnore
     @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
     @ManyToOne
     private Tipoambiente cod_tipoambiente;
+    @JsonIgnore
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario idUsuario;
+    @JsonIgnore
     @OneToMany(mappedBy = "idFactura")
     private Collection<DetalleFactura> detalleFacturaCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "idFactura")
     private Collection<DetalleKardex> detalleKardexCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "idFactura")
     private Collection<NotaCreditoDebito> notaCreditoDebitoCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "idFactura")
     private Collection<Guiaremision> guiaremisionCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "idFactura")
     private Collection<DetallePago> detallePagoCollection;
-
+    @JsonIgnore
     @JoinColumn(name = "id_referencia", referencedColumnName = "id_referencia")
     @ManyToOne
     private Referencia idReferencia;
+
+    /*campos adicionales*/
+    @Column(name = "graba_ice")
+    private Boolean grabaICE;
+    @Column(name = "codigo_ice")
+    private String codigoICE;
+    @Column(name = "tarifa_ice")
+    private BigDecimal facTarifaIce;
+    @Column(name = "direccion_matriz")
+    private String direccionMatriz;
+    @Column(name = "agente_retencion")
+    private Boolean agenteRetencion;
+    @Column(name = "regimen_popular")
+    private Boolean rimpePolpular;
+    @Column(name = "regimen_emprendedor")
+    private Boolean rimpeEmprendedor;
+    @Column(name = "regimen_general")
+    private Boolean regimenGeneral;
+    @Column(name = "obligado_llevar_conta")
+    private String obligadoLlevarContabilidad;
+
+    @Column(name = "tipo_identificacion_comp")
+    private String tipoIdentificacionComprador;
+    @Column(name = "razon_social_comp")
+    private String razonSocialComprador;
+    @Column(name = "identificacion_comp")
+    private String identificacionComprador;
+    @Column(name = "codigo_forma_pago")
+    private String codigoFormaPago;
+    @Column(name = "direccion_comprador")
+    private String direccionComprador;
+    @Column(name = "correo_comprador")
+     private String correoComprador;
+
+    public String getCodigoICE() {
+        return codigoICE;
+    }
+
+    public void setCodigoICE(String codigoICE) {
+        this.codigoICE = codigoICE;
+    }
+
+    public BigDecimal getFacTarifaIce() {
+        return facTarifaIce;
+    }
+
+    public void setFacTarifaIce(BigDecimal facTarifaIce) {
+        this.facTarifaIce = facTarifaIce;
+    }
+
+    public String getDireccionMatriz() {
+        return direccionMatriz;
+    }
+
+    public Boolean getAgenteRetencion() {
+        return agenteRetencion;
+    }
+
+    public void setAgenteRetencion(Boolean agenteRetencion) {
+        this.agenteRetencion = agenteRetencion;
+    }
+
+    public Boolean getRimpePolpular() {
+        return rimpePolpular;
+    }
+
+    public void setRimpePolpular(Boolean rimpePolpular) {
+        this.rimpePolpular = rimpePolpular;
+    }
+
+    public Boolean getRimpeEmprendedor() {
+        return rimpeEmprendedor;
+    }
+
+    public void setRimpeEmprendedor(Boolean rimpeEmprendedor) {
+        this.rimpeEmprendedor = rimpeEmprendedor;
+    }
+
+    public Boolean getRegimenGeneral() {
+        return regimenGeneral;
+    }
+
+    public void setRegimenGeneral(Boolean regimenGeneral) {
+        this.regimenGeneral = regimenGeneral;
+    }
+
+    public String getObligadoLlevarContabilidad() {
+        return obligadoLlevarContabilidad;
+    }
+
+    public void setObligadoLlevarContabilidad(String obligadoLlevarContabilidad) {
+        this.obligadoLlevarContabilidad = obligadoLlevarContabilidad;
+    }
+
+    public String getTipoIdentificacionComprador() {
+        return tipoIdentificacionComprador;
+    }
+
+    public void setTipoIdentificacionComprador(String tipoIdentificacionComprador) {
+        this.tipoIdentificacionComprador = tipoIdentificacionComprador;
+    }
+
+    public String getRazonSocialComprador() {
+        return razonSocialComprador;
+    }
+
+    public void setRazonSocialComprador(String razonSocialComprador) {
+        this.razonSocialComprador = razonSocialComprador;
+    }
+
+    public String getIdentificacionComprador() {
+        return identificacionComprador;
+    }
+
+    public void setIdentificacionComprador(String identificacionComprador) {
+        this.identificacionComprador = identificacionComprador;
+    }
+
+    public Boolean getGrabaICE() {
+        return grabaICE;
+    }
+
+    public void setGrabaICE(Boolean grabaICE) {
+        this.grabaICE = grabaICE;
+    }
+
+    public String getCodigoFormaPago() {
+        return codigoFormaPago;
+    }
+
+    public void setCodigoFormaPago(String codigoFormaPago) {
+        this.codigoFormaPago = codigoFormaPago;
+    }
+
+    public String getDireccionComprador() {
+        return direccionComprador;
+    }
+
+    public void setDireccionComprador(String direccionComprador) {
+        this.direccionComprador = direccionComprador;
+    }
+
+    public String getCorreoComprador() {
+        return correoComprador;
+    }
+
+    public void setCorreoComprador(String correoComprador) {
+        this.correoComprador = correoComprador;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public void setDireccionMatriz(String direccionMatriz) {
+        this.direccionMatriz = direccionMatriz;
+    }
 
     public Factura() {
     }
@@ -795,7 +971,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacValorIce() {
-        return facValorIce==null?BigDecimal.ZERO:facValorIce;
+        return facValorIce == null ? BigDecimal.ZERO : facValorIce;
     }
 
     public void setFacValorIce(BigDecimal facValorIce) {
@@ -803,7 +979,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacBaseIce() {
-        return facBaseIce==null?BigDecimal.ZERO:facBaseIce;
+        return facBaseIce == null ? BigDecimal.ZERO : facBaseIce;
     }
 
     public void setFacBaseIce(BigDecimal facBaseIce) {

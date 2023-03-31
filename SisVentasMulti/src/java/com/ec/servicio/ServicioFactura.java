@@ -307,6 +307,32 @@ public class ServicioFactura {
 
         return facturas;
     }
+    public Factura findByNumero(Integer numero) {
+
+        List<Factura> listaFacturas = new ArrayList<Factura>();
+        Factura facturas = new Factura();
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumero =:facNumero AND f.facNumero > 0 AND f.facTipo='FACT'");
+            query.setMaxResults(2);
+            query.setParameter("facNumero", numero);
+            listaFacturas = (List<Factura>) query.getResultList();
+            if (listaFacturas.size() > 0) {
+                facturas = listaFacturas.get(0);
+            } else {
+                facturas = null;
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta factura");
+        } finally {
+            em.close();
+        }
+
+        return facturas;
+    }
 
     public Factura findByIdCotizacion(Integer idFactura) {
 

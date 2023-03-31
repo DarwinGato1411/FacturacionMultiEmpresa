@@ -16,7 +16,6 @@ import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioGeneral;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ResultadoCompraVenta;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
