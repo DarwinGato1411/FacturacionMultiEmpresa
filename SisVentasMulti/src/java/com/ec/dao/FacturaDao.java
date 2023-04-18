@@ -7,6 +7,7 @@ package com.ec.dao;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 public class FacturaDao {
 
+    private String amCodigo;
     private Date facFecha;
     private Integer facNumero;
     private String facNumeroText;
@@ -41,10 +43,6 @@ public class FacturaDao {
     private String facCodIva;
     private BigDecimal facTotalBaseCero;
     private Boolean grabaICE;
-    
-    
-    
-    
     private String codigoPorcentaje;
     private BigDecimal facIva;
     private BigDecimal facTotal;
@@ -56,6 +54,10 @@ public class FacturaDao {
     private String correoComprador;
     private String observacion;
     private String facPorcentajeIva;
+    private String llevarContabilidad;
+    private List<DetFacturaDao> detFacturaDao;
+    private InfoAutoriza infoAutoriza;
+    private String xmlAutorizado;
 
     public Date getFacFecha() {
         return facFecha;
@@ -160,8 +162,6 @@ public class FacturaDao {
     public void setDireccionMatriz(String direccionMatriz) {
         this.direccionMatriz = direccionMatriz;
     }
-
-   
 
     public Boolean getAgenteRetencion() {
         return agenteRetencion;
@@ -355,14 +355,52 @@ public class FacturaDao {
         this.observacion = observacion;
     }
 
-    
-
     public String getFacPorcentajeIva() {
         return facPorcentajeIva;
     }
 
     public void setFacPorcentajeIva(String facPorcentajeIva) {
         this.facPorcentajeIva = facPorcentajeIva;
+    }
+
+    public List<DetFacturaDao> getDetFacturaDao() {
+        return detFacturaDao;
+    }
+
+    public void setDetFacturaDao(List<DetFacturaDao> detFacturaDao) {
+        this.detFacturaDao = detFacturaDao;
+    }
+
+    public String getAmCodigo() {
+        return amCodigo;
+    }
+
+    public void setAmCodigo(String amCodigo) {
+        this.amCodigo = amCodigo;
+    }
+
+    public String getLlevarContabilidad() {
+        return llevarContabilidad;
+    }
+
+    public void setLlevarContabilidad(String llevarContabilidad) {
+        this.llevarContabilidad = llevarContabilidad;
+    }
+
+    public InfoAutoriza getInfoAutoriza() {
+        return infoAutoriza;
+    }
+
+    public void setInfoAutoriza(InfoAutoriza infoAutoriza) {
+        this.infoAutoriza = infoAutoriza;
+    }
+
+    public String getXmlAutorizado() {
+        return xmlAutorizado;
+    }
+
+    public void setXmlAutorizado(String xmlAutorizado) {
+        this.xmlAutorizado = xmlAutorizado;
     }
 
 }

@@ -279,7 +279,7 @@ public class Factura implements Serializable {
     @Column(name = "direccion_comprador")
     private String direccionComprador;
     @Column(name = "correo_comprador")
-     private String correoComprador;
+    private String correoComprador;
 
     public String getCodigoICE() {
         return codigoICE;
@@ -397,18 +397,6 @@ public class Factura implements Serializable {
         this.correoComprador = correoComprador;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public void setDireccionMatriz(String direccionMatriz) {
         this.direccionMatriz = direccionMatriz;
     }

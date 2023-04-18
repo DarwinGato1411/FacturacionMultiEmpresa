@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -65,8 +65,6 @@ public class AutorizarDocumentosApi {
     public AutorizarDocumentosApi() {
     }
 
-    
-    
     public static String removeCaracteres(String input) {
         // Cadena de caracteres original a sustituir.
         String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ$&¨\"";
@@ -154,12 +152,12 @@ public class AutorizarDocumentosApi {
         return verificador;
     }
 
-    public RespuestaSolicitud validar(byte[] datos, Tipoambiente amb) {
+    public RespuestaSolicitud validar(byte[] datos, String amb) {
         try {
 
             //System.setProperty("https.protocols", "SSLv3");
             //System.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, Boolean.FALSE);
-            URL url = new URL("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl");
+            URL url = new URL("https://" + (amb.equals("PRUEBAS") ? "celcer.sri.gob.ec" : "cel.sri.gob.ec") + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl");
             QName qname = new QName("http://ec.gob.sri.ws.recepcion", "RecepcionComprobantesOfflineService");
             RecepcionComprobantesOfflineService service = new RecepcionComprobantesOfflineService(url, qname);
             RecepcionComprobantesOffline portRec = service.getRecepcionComprobantesOfflinePort();
@@ -173,10 +171,10 @@ public class AutorizarDocumentosApi {
 
     }
 
-    public RespuestaComprobante autorizarComprobante(String claveDeAcceso, Tipoambiente amb) throws RespuestaAutorizacionException {
+    public RespuestaComprobante autorizarComprobante(String claveDeAcceso, String amb) throws RespuestaAutorizacionException {
 
         try {
-            RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
+            RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + (amb.equals("PRUEBAS") ? "celcer.sri.gob.ec" : "cel.sri.gob.ec") + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
             return repuesta;
         } catch (Exception ex) {
             RespuestaComprobante response = new RespuestaComprobante();
@@ -185,7 +183,6 @@ public class AutorizarDocumentosApi {
         }
 
     }
-
 
     public void instalarCertificado() {
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
@@ -216,7 +213,7 @@ public class AutorizarDocumentosApi {
     }
 
     //<editor-fold defaultstate="collapsed" desc=" ARMAR FACTURA"> 
-    public String generaXMLFactura(FacturaDao valor, Tipoambiente amb, String folderDestino, String nombreArchivoXML, Boolean autorizada, Date fechaAutorizacion, List<DetFacturaDao> detalle) {
+    public String generaXMLFactura(FacturaDao valor, String folderDestino, String nombreArchivoXML, Boolean autorizada, Date fechaAutorizacion) {
         try {
             FileOutputStream out = null;
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -227,16 +224,16 @@ public class AutorizarDocumentosApi {
 
             //            String claveAcceso = generaClave(new Date(), "01", empresa.getRucempresa(), "1", serie, cabdoc.getSecuencialcar(), "12345678", "1");
             //fecha de emision, tipo comprobante, RUC,tipo ambiente, serie(001001)Estabecimiento 002 emision001,tipo de emision comprobante
-            String claveAcceso = generaClave(valor.getFacFecha(), "01", amb.getAmRuc(), amb.getAmCodigo(), amb.getAmEstab() + amb.getAmPtoemi(), valor.getFacNumeroText(), "12345678", "1");
+            String claveAcceso = generaClave(valor.getFacFecha(), "01", valor.getRucEmpresa(), valor.getAmCodigo(), valor.getEstablecimientoEmpresa() + valor.getPuntoEmisionEmpresa(), valor.getFacNumeroText(), "12345678", "1");
             String tipoAmbiente = "";
-            if (amb.getAmCodigo().equals("1")) {
+            if (valor.getAmCodigo().equals("1")) {
                 tipoAmbiente = "PRUEBAS";
 
             } else {
                 tipoAmbiente = "PRODUCCION";
             }
             linea = ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
-                    + "<factura id=\"comprobante\" version=\"1.1.0\">\n");
+                        + "<factura id=\"comprobante\" version=\"1.1.0\">\n");
             build.append(linea);
             linea = "";
             if (autorizada) {
@@ -250,34 +247,33 @@ public class AutorizarDocumentosApi {
 
             String ICE = "            <totalImpuesto>\n"
                         + "                <codigo>3</codigo>\n"
-                        + "                <codigoPorcentaje>" + amb.getAmCodigoIce().trim() + "</codigoPorcentaje>\n"
+                        + "                <codigoPorcentaje>0</codigoPorcentaje>\n"
                         + "                <baseImponible>" + (valor.getFacValorIce().doubleValue() > 0 ? valor.getFacTotalBaseGravada().setScale(2, RoundingMode.FLOOR) : BigDecimal.ZERO) + "</baseImponible>\n"
-                        + "                <tarifa>" + (valor.getFacValorIce().doubleValue() > 0 ? amb.getAmValorIce() : BigDecimal.ZERO) + "</tarifa>\n"
+                        + "                <tarifa>" + (valor.getFacValorIce().doubleValue() > 0 ? valor.getFacTarifaIce() : BigDecimal.ZERO) + "</tarifa>\n"
                         + "                <valor>" + valor.getFacValorIce() + "</valor>\n"
                         + "             </totalImpuesto>\n";
             linea = ("<infoTributaria>\n"
-                        + "        <ambiente>" + amb.getAmCodigo() + "</ambiente>\n"
+                        + "        <ambiente>" + valor.getAmCodigo() + "</ambiente>\n"
                         + "        <tipoEmision>1</tipoEmision>\n"
-                        + "        <razonSocial>" + removeCaracteres(amb.getAmRazonSocial()) + "</razonSocial>\n"
-                        + "        <nombreComercial>" + removeCaracteres(amb.getAmNombreComercial()) + "</nombreComercial>\n"
-                        + "        <ruc>" + amb.getAmRuc() + "</ruc>\n"
+                        + "        <razonSocial>" + removeCaracteres(valor.getRazonSocialEmpresa()) + "</razonSocial>\n"
+                        + "        <nombreComercial>" + removeCaracteres(valor.getNombreComercialEmpresa()) + "</nombreComercial>\n"
+                        + "        <ruc>" + valor.getRucEmpresa() + "</ruc>\n"
                         + "        <claveAcceso>" + claveAcceso + "</claveAcceso>\n"
                         + "        <codDoc>01</codDoc>\n"
                         /*001 estab y punto emision*/
-                        + "        <estab>" + amb.getAmEstab() + "</estab>\n"
-                        + "        <ptoEmi>" + amb.getAmPtoemi() + "</ptoEmi>\n"
+                        + "        <estab>" + valor.getEstablecimientoEmpresa() + "</estab>\n"
+                        + "        <ptoEmi>" + valor.getPuntoEmisionEmpresa() + "</ptoEmi>\n"
                         + "        <secuencial>" + valor.getFacNumeroText() + "</secuencial>\n"
-                        + "        <dirMatriz>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirMatriz>\n"
-                       
-                        + (amb.getAmAgeRet() ? "<agenteRetencion>1</agenteRetencion>\n" : "")
+                        + "        <dirMatriz>" + removeCaracteres(valor.getDireccionMatriz()) + "</dirMatriz>\n"
+                        + (valor.getAgenteRetencion() ? "<agenteRetencion>1</agenteRetencion>\n" : "")
                         //  + "        <agenteRetencion>12345678</agenteRetencion>\n"
-                          + (amb.getAmRimpe() ? "<contribuyenteRimpe>CONTRIBUYENTE R\u00c9GIMEN RIMPE</contribuyenteRimpe>\n" : amb.getAmRimpePopular()?" <contribuyenteRimpe>CONTRIBUYENTE NEGOCIO POPULAR - R\u00c9GIMEN RIMPE</contribuyenteRimpe>\n":"")
+                        + (valor.getRimpeEmprendedor() ? "<contribuyenteRimpe>CONTRIBUYENTE R\u00c9GIMEN RIMPE</contribuyenteRimpe>\n" : valor.getRimpePolpular() ? " <contribuyenteRimpe>CONTRIBUYENTE NEGOCIO POPULAR - R\u00c9GIMEN RIMPE</contribuyenteRimpe>\n" : "")
                         + "</infoTributaria>\n"
                         + "<infoFactura>\n"
                         + "        <fechaEmision>" + formato.format(valor.getFacFecha()) + "</fechaEmision>\n"
-                        + "        <dirEstablecimiento>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirEstablecimiento>\n"
+                        + "        <dirEstablecimiento>" + removeCaracteres(valor.getDireccionMatriz()) + "</dirEstablecimiento>\n"
                         //   + "        <contribuyenteEspecial>0047</contribuyenteEspecial>\n"
-                        + "        <obligadoContabilidad>" + amb.getLlevarContabilidad() + "</obligadoContabilidad>\n"
+                        + "        <obligadoContabilidad>" + valor.getLlevarContabilidad() + "</obligadoContabilidad>\n"
                         + "        <tipoIdentificacionComprador>" + valor.getTipoIdentificacionComprador() + "</tipoIdentificacionComprador>\n"
                         + "        <razonSocialComprador>" + removeCaracteres(valor.getRazonSocialComprador()) + "</razonSocialComprador>\n"
                         + "        <identificacionComprador>" + valor.getIdentificacionComprador() + "</identificacionComprador>\n"
@@ -292,7 +288,7 @@ public class AutorizarDocumentosApi {
                         + "                <tarifa>0</tarifa>\n"
                         + "                <valor>0.00</valor>\n"
                         + "             </totalImpuesto>\n"
-                        + (amb.getAmGrabaIce() ? valor.getFacValorIce().doubleValue() > 0 ? ICE : "" : "")
+                        + (valor.getGrabaICE() ? valor.getFacValorIce().doubleValue() > 0 ? ICE : "" : "")
                         + "             <totalImpuesto>\n"
                         /*CODIGO DEL IVA 2, ICE 3 IRBPNR 6*/
                         + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
@@ -326,15 +322,14 @@ public class AutorizarDocumentosApi {
             linea = ("     <detalles>\n");
             build.append(linea);
 
-            
-            for (DetFacturaDao item : detalle) {
+            for (DetFacturaDao item : valor.getDetFacturaDao()) {
 
                 String subsidio = "            <precioSinSubsidio>" + item.getPrecioProductoSinSubsidio() + "</precioSinSubsidio>\n";
-                BigDecimal valorICeProd = (item.getDetSubtotaldescuento().multiply(item.getDetCantidad()).multiply(amb.getAmValorIce())).divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR);
+                BigDecimal valorICeProd = (item.getDetSubtotaldescuento().multiply(item.getDetCantidad()).multiply(valor.getFacTarifaIce())).divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR);
                 String ICEIMPUESTO = "                <impuesto>\n"
                             + "                    <codigo>3</codigo>\n"
-                            + "                    <codigoPorcentaje>" + amb.getAmCodigoIce() + "</codigoPorcentaje>\n"
-                            + "                    <tarifa>" + amb.getAmValorIce() + "</tarifa>\n"
+                            + "                    <codigoPorcentaje>" + valor.getCodigoICE() + "</codigoPorcentaje>\n"
+                            + "                    <tarifa>" + valor.getFacValorIce() + "</tarifa>\n"
                             + "                    <baseImponible>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento().multiply(item.getDetCantidad()), 2) + "</baseImponible>\n"
                             + "                    <valor>" + valorICeProd + "</valor>\n"
                             + "                </impuesto>\n";
@@ -344,7 +339,7 @@ public class AutorizarDocumentosApi {
                             + "            <descripcion>" + removeCaracteres(item.getDescripcionProducto()) + "</descripcion>\n"
                             //+ "            <descripcion>" + removeCaracteres(item.getIdProducto().getProdNombre()) + "</descripcion>\n"
                             + "            <cantidad>" + item.getDetCantidad().setScale(2, RoundingMode.FLOOR) + "</cantidad>\n"
-                            + "            <precioUnitario>" + ArchivoUtils.redondearDecimales(item.getDetSubtotal(), 5) + "</precioUnitario>\n"
+                            + "            <precioUnitario>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento(), 5) + "</precioUnitario>\n"
                             + (item.getTieneSubsidio() ? subsidio : "")
                             + "            <descuento>" + ArchivoUtils.redondearDecimales(item.getDetCantpordescuento(), 2) + "</descuento>\n"
                             + "            <precioTotalSinImpuesto>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento().multiply(item.getDetCantidad()), 2) + "</precioTotalSinImpuesto>\n"
@@ -356,7 +351,7 @@ public class AutorizarDocumentosApi {
                             + "                    <baseImponible>" + ArchivoUtils.redondearDecimales((item.getDetSubtotaldescuento().add(item.getDetValorIce())).multiply(item.getDetCantidad()), 2) + "</baseImponible>\n"
                             + "                    <valor>" + item.getDetIva().setScale(2, RoundingMode.FLOOR) + "</valor>\n"
                             + "                </impuesto>\n"
-                            + (amb.getAmGrabaIce() ? valor.getFacValorIce().doubleValue() > 0 ? ICEIMPUESTO : "" : "")
+                            + (valor.getGrabaICE() ? valor.getFacValorIce().doubleValue() > 0 ? ICEIMPUESTO : "" : "")
                             + "            </impuestos>\n"
                             + "        </detalle>\n");
                 build.append(linea);
@@ -367,13 +362,11 @@ public class AutorizarDocumentosApi {
 
             linea = ("    <infoAdicional>\n"
                         + (valor.getDireccionComprador().length() > 0 ? "<campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getDireccionComprador()) + "</campoAdicional>\n" : " ")
-                      
                         + "<campoAdicional nombre=\"PLAZO\"> DIAS</campoAdicional>\n"
                         + (valor.getFacPlazo().toString().length() > 0 ? "<campoAdicional nombre=\"DIAS\">" + valor.getFacPlazo().setScale(0) + "</campoAdicional>\n" : " ")
                         + (valor.getFacPorcentajeIva().length() > 0 ? "<campoAdicional nombre=\"TARIFAIMP\">" + valor.getFacPorcentajeIva() + "</campoAdicional>\n" : " ")
-                      
-                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
-                        + (valor.getObservacion()!= null ? (valor.getObservacion().length() > 0 ? "<campoAdicional nombre=\"Observacion\">" + valor.getObservacion() + "</campoAdicional>\n" : "") : "")
+                        + (valor.getRegimenGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
+                        + (valor.getObservacion() != null ? (valor.getObservacion().length() > 0 ? "<campoAdicional nombre=\"Observacion\">" + valor.getObservacion() + "</campoAdicional>\n" : "") : "")
                         + "   </infoAdicional>\n"
                         + "</factura>\n");
             build.append(linea);
@@ -652,7 +645,6 @@ public class AutorizarDocumentosApi {
         return "";
     }
     //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc=" ARMAR RETENCION">
     public String generaXMLComprobanteRetencion(RetencionCompra retencion, Tipoambiente amb, String folderDestino, String nombreArchivoXML) {
         FileOutputStream out;

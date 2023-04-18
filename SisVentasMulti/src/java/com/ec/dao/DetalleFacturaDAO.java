@@ -55,9 +55,6 @@ public class DetalleFacturaDAO {
     private String provincia = "217";
     private String numerotel = "";
     private String codigoCantonMatriculacion = "21702";
-
-    
-    
     private BigDecimal valorIce = BigDecimal.ZERO;
     private BigDecimal valorBaseIce = BigDecimal.ZERO;
     

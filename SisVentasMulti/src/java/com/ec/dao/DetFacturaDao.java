@@ -25,7 +25,6 @@ public class DetFacturaDao {
     private String detCodPorcentaje;
     private BigDecimal detTarifa;
     private BigDecimal detValorIce;
-
     private BigDecimal detIva;
 
     public Boolean getTieneSubsidio() {

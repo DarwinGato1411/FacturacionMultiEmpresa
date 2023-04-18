@@ -122,7 +122,12 @@ public class DetalleFactura implements Serializable {
     @JoinColumn(name = "id_factura", referencedColumnName = "id_factura")
     @ManyToOne
     private Factura idFactura;
-
+    @Column(name = "tiene_subsidio")
+    private Boolean tieneSubsidio;
+    @Column(name = "codigo_producto")
+    private String codigoProducto;
+ @Column(name = "precio_producto_sin_subsidio")
+    private BigDecimal precioProductoSinSubsidio;
     public DetalleFactura() {
     }
 
@@ -424,11 +429,35 @@ public class DetalleFactura implements Serializable {
     }
 
     public BigDecimal getDetValorIce() {
-        return detValorIce==null?BigDecimal.ZERO:detValorIce;
+        return detValorIce == null ? BigDecimal.ZERO : detValorIce;
     }
 
     public void setDetValorIce(BigDecimal detValorIce) {
         this.detValorIce = detValorIce;
+    }
+
+    public Boolean getTieneSubsidio() {
+        return tieneSubsidio;
+    }
+
+    public void setTieneSubsidio(Boolean tieneSubsidio) {
+        this.tieneSubsidio = tieneSubsidio;
+    }
+
+    public String getCodigoProducto() {
+        return codigoProducto;
+    }
+
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto = codigoProducto;
+    }
+
+    public BigDecimal getPrecioProductoSinSubsidio() {
+        return precioProductoSinSubsidio;
+    }
+
+    public void setPrecioProductoSinSubsidio(BigDecimal precioProductoSinSubsidio) {
+        this.precioProductoSinSubsidio = precioProductoSinSubsidio;
     }
 
     @Override

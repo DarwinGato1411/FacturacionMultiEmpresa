@@ -51,6 +51,7 @@ public class FacturaMapper {
         respuesta.setCorreoComprador(valor.getCorreoComprador());
         respuesta.setFacObservacion(valor.getObservacion());
         respuesta.setFacPorcentajeIva(valor.getFacPorcentajeIva());
+        respuesta.setDireccionMatriz(valor.getDireccionMatriz());
 
         return respuesta;
 
