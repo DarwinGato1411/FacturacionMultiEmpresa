@@ -35,7 +35,6 @@ import com.ec.servicio.ServicioProducto;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoKardex;
 import com.ec.untilitario.ArchivoUtils;
-import com.ec.untilitario.DetalleCompraUtil;
 import com.ec.untilitario.ParamFactura;
 import com.ec.untilitario.TotalKardex;
 import java.io.ByteArrayInputStream;
@@ -182,7 +181,6 @@ public class NotaCreditoDebitoVm {
 //<editor-fold defaultstate="collapsed" desc="NOTA DE CREDITO">
 
     public NotaCreditoDebitoVm() {
-       
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -568,7 +566,7 @@ public class NotaCreditoDebitoVm {
                     "/venta/buscarcliente.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente, amb);
     }
 
     @Command
@@ -796,53 +794,49 @@ public class NotaCreditoDebitoVm {
             creditoDebito.setPuntoemision(amb.getAmPtoemi());
             creditoDebito.setTipodocumento("04");
             creditoDebito.setTipodocumentomod("01");
-            
-            
-            
 
             servicioNotaCredito.guardarNotaCreditoDebito(detalleFactura, creditoDebito);
-            
-               /*INGRESAMOS LO MOVIMIENTOS AL KARDEX*/
-                    Kardex kardex = null;
-                    DetalleKardex detalleKardex = null;
 
-                    for (DetalleFacturaDAO item : detalleFactura) {
-                        if (item.getProducto() != null) {
+            /*INGRESAMOS LO MOVIMIENTOS AL KARDEX*/
+            Kardex kardex = null;
+            DetalleKardex detalleKardex = null;
 
-                            Tipokardex tipokardex = servicioTipoKardex.findByTipkSigla("ING");
-                            if (servicioKardex.FindALlKardexs(item.getProducto()) == null) {
-                                kardex = new Kardex();
-                                kardex.setIdProducto(item.getProducto());
-                                kardex.setKarDetalle("Inicio de inventario desde la facturacion para el producto: " + item.getProducto().getProdNombre());
-                                kardex.setKarFecha(new Date());
-                                kardex.setKarFechaKardex(new Date());
-                                kardex.setKarTotal(BigDecimal.ZERO);
-                                servicioKardex.crear(kardex);
-                            }
-                            detalleKardex = new DetalleKardex();
-                            kardex = servicioKardex.FindALlKardexs(item.getProducto());
-                            detalleKardex.setIdKardex(kardex);
-                            detalleKardex.setDetkFechakardex(fechafacturacion);
-                            detalleKardex.setDetkFechacreacion(new Date());
-                            detalleKardex.setIdTipokardex(tipokardex);
-                            detalleKardex.setDetkKardexmanual(Boolean.FALSE);
-                            detalleKardex.setDetkDetalles("Aumenta al kardex Nota de Credito con: NC-" + creditoDebito.getFacNumeroText());
+            for (DetalleFacturaDAO item : detalleFactura) {
+                if (item.getProducto() != null) {
 
-                            detalleKardex.setDetkIngresoCantidadSinTransformar(item.getCantidad());
-                            detalleKardex.setDetkUnidadOrigen(item.getProducto().getProdUnidadMedida() != null ? item.getProducto().getProdUnidadMedida() : "S/U");
-                            detalleKardex.setDetkUnidadFin(item.getProducto().getProdUnidadConversion() != null ? item.getProducto().getProdUnidadConversion() : "S/U");
-                            //se cambia a la conversion 
-                            //detalleKardex.setDetkCantidad(item.getCantidad());
-//                            detalleKardex.setDetkCantidad(item.getTotalTRanformado());
-                            servicioDetalleKardex.crear(detalleKardex);
-                            TotalKardex totales = servicioKardex.totalesForKardex(kardex);
-                            BigDecimal total = totales.getTotalKardex();
-                            kardex.setKarTotal(total);
-                            servicioKardex.modificar(kardex);
-                        }
-
+                    Tipokardex tipokardex = servicioTipoKardex.findByTipkSigla("ING");
+                    if (servicioKardex.FindALlKardexs(item.getProducto()) == null) {
+                        kardex = new Kardex();
+                        kardex.setIdProducto(item.getProducto());
+                        kardex.setKarDetalle("Inicio de inventario desde la facturacion para el producto: " + item.getProducto().getProdNombre());
+                        kardex.setKarFecha(new Date());
+                        kardex.setKarFechaKardex(new Date());
+                        kardex.setKarTotal(BigDecimal.ZERO);
+                        servicioKardex.crear(kardex);
                     }
-            
+                    detalleKardex = new DetalleKardex();
+                    kardex = servicioKardex.FindALlKardexs(item.getProducto());
+                    detalleKardex.setIdKardex(kardex);
+                    detalleKardex.setDetkFechakardex(fechafacturacion);
+                    detalleKardex.setDetkFechacreacion(new Date());
+                    detalleKardex.setIdTipokardex(tipokardex);
+                    detalleKardex.setDetkKardexmanual(Boolean.FALSE);
+                    detalleKardex.setDetkDetalles("Aumenta al kardex Nota de Credito con: NC-" + creditoDebito.getFacNumeroText());
+
+                    detalleKardex.setDetkIngresoCantidadSinTransformar(item.getCantidad());
+                    detalleKardex.setDetkUnidadOrigen(item.getProducto().getProdUnidadMedida() != null ? item.getProducto().getProdUnidadMedida() : "S/U");
+                    detalleKardex.setDetkUnidadFin(item.getProducto().getProdUnidadConversion() != null ? item.getProducto().getProdUnidadConversion() : "S/U");
+                    //se cambia a la conversion 
+                    //detalleKardex.setDetkCantidad(item.getCantidad());
+//                            detalleKardex.setDetkCantidad(item.getTotalTRanformado());
+                    servicioDetalleKardex.crear(detalleKardex);
+                    TotalKardex totales = servicioKardex.totalesForKardex(kardex);
+                    BigDecimal total = totales.getTotalKardex();
+                    kardex.setKarTotal(total);
+                    servicioKardex.modificar(kardex);
+                }
+
+            }
 
             reporteGeneral();
             if (accion.equals("create")) {
@@ -912,7 +906,7 @@ public class NotaCreditoDebitoVm {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
     }
 
     public void reporteGeneral() throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
@@ -936,6 +930,7 @@ public class NotaCreditoDebitoVm {
 
                 //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
                 parametros.put("numfactura", numeroFactura);
+                parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
                 if (con != null) {
                     System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");

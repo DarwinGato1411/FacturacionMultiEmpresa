@@ -158,6 +158,7 @@ public class ListaNC {
 
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", numeroFactura);
+            parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -685,6 +686,7 @@ public class ListaNC {
 
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", valor.getFacNumero());
+            parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");

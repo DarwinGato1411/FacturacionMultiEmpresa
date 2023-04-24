@@ -5,9 +5,7 @@
 package com.ec.controlador;
 
 import com.ec.entidad.HistorialDeclaraciones;
-import com.ec.entidad.Producto;
 import com.ec.entidad.Tipoambiente;
-import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioHistorialDeclaraciones;
 import com.ec.servicio.ServicioTipoAmbiente;
@@ -26,8 +24,6 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Session;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.Clients;
 
 /**
