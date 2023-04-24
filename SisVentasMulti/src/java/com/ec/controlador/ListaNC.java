@@ -95,7 +95,7 @@ public class ListaNC {
     }
 
     private void consultarFactura() {
-        lstCreditoDebitos = servicioNotaCredito.findBetweenFecha(fechainicio, fechafin,amb);
+        lstCreditoDebitos = servicioNotaCredito.findBetweenFecha(fechainicio, fechafin, amb);
     }
 
     public List<NotaCreditoDebito> getLstCreditoDebitos() {
@@ -199,7 +199,7 @@ public class ListaNC {
     }
 
     private void consultarFacturas() {
-        lstCreditoDebitos = servicioNotaCredito.findLikeCliente(buscarCliente,amb);
+        lstCreditoDebitos = servicioNotaCredito.findLikeCliente(buscarCliente, amb);
 
     }
 
@@ -213,7 +213,7 @@ public class ListaNC {
     }
 
     private void consultarFacturasForCedula() {
-        lstCreditoDebitos = servicioNotaCredito.findLikeCedula(buscarCedula,amb);
+        lstCreditoDebitos = servicioNotaCredito.findLikeCedula(buscarCedula, amb);
 
     }
 
@@ -225,7 +225,7 @@ public class ListaNC {
     }
 
     private void consultarFacturaFecha() {
-        lstCreditoDebitos = servicioNotaCredito.findBetweenFecha(fechainicio, fechafin,amb);
+        lstCreditoDebitos = servicioNotaCredito.findBetweenFecha(fechainicio, fechafin, amb);
     }
     //GRAFICA POR UBICACION
     JFreeChart jfreechartMes;
@@ -685,7 +685,7 @@ public class ListaNC {
 
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", valor.getFacNumero());
-
+            parametros.put("tipoambiente", amb.getCodTipoambiente());
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
             }
