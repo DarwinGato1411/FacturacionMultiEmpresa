@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notacr" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000002"/>
+	<property name="ireport.x" value="58"/>
+	<property name="ireport.y" value="255"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -434,19 +434,19 @@ and nota_credito_debito.cod_tipoambiente=$P{codTipoAmbiente};]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="332" y="296" width="75" height="20"/>
+				<reportElement x="295" y="296" width="98" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Identificación:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="407" y="296" width="143" height="20"/>
+				<reportElement x="393" y="296" width="157" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_cedula}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="11" y="296" width="95" height="20"/>
+				<reportElement x="11" y="296" width="142" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -460,7 +460,7 @@ and nota_credito_debito.cod_tipoambiente=$P{codTipoAmbiente};]]>
 				<text><![CDATA[Comprobante que se modifica]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="106" y="296" width="189" height="20"/>
+				<reportElement x="153" y="296" width="142" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fac_fecha}]]></textFieldExpression>
 			</textField>
@@ -475,14 +475,14 @@ and nota_credito_debito.cod_tipoambiente=$P{codTipoAmbiente};]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_nro_contribuyente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="332" y="320" width="75" height="20"/>
+				<reportElement x="295" y="320" width="75" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FACTURA]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="407" y="320" width="143" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="370" y="319" width="180" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -496,7 +496,7 @@ and nota_credito_debito.cod_tipoambiente=$P{codTipoAmbiente};]]>
 				<text><![CDATA[Fecha emision (Comprobante a modificar)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="328" y="344" width="100" height="20"/>
+				<reportElement x="295" y="342" width="255" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fechafactura}]]></textFieldExpression>
 			</textField>
@@ -512,7 +512,7 @@ and nota_credito_debito.cod_tipoambiente=$P{codTipoAmbiente};]]>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[DEVOLUCION DE MERCADERIA]]></text>
+				<text><![CDATA[DEVOLUCION ]]></text>
 			</staticText>
 			<image onErrorType="Blank">
 				<reportElement x="26" y="14" width="219" height="70"/>
