@@ -838,6 +838,9 @@ public class ArchivoUtils {
         }
 
         try {
+            
+            
+            
             JSONObject json = readJsonFromUrl("https://srienlinea.sri.gob.ec/sri-catastro-sujeto-servicio-internet/rest/Persona/obtenerPersonaDesdeRucPorIdentificacion?numeroRuc=" + cedula);
             System.out.println(json.toString());
             System.out.println(json.get("nombreCompleto"));

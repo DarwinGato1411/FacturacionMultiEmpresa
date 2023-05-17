@@ -16,6 +16,7 @@ import com.ec.controlador.webservices.mapper.FacturaMapper;
 import com.ec.dao.DetFacturaDao;
 import com.ec.dao.FacturaDao;
 import com.ec.dao.InfoAutoriza;
+import com.ec.dao.response.FacturaResponse;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.Factura;
 import com.ec.servicio.ServicioDetalleFactura;
@@ -124,6 +125,7 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaDao getReenviarFacturas(@RequestBody FacturaDao prod) throws Exception {
 
+        FacturaResponse facturaResponse = new FacturaResponse();
         Factura recup = servicioFactura.findByNumero(prod.getFacNumero());
 //        System.out.println("valor "+recup.getEstadosri());
         FacturaDao dao = FacturaMapper.facturaToDao(recup);
@@ -165,7 +167,14 @@ public class ServiciosRest {
     @Path("/factura-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
-    public FacturaDao getEnviarFacturas(@RequestBody FacturaDao prod) throws Exception {
+    public FacturaResponse getEnviarFacturas(@RequestBody FacturaDao prod) throws Exception {
+
+        FacturaResponse facturaResponse = new FacturaResponse();
+        facturaResponse.setFacFecha(prod.getFacFecha());
+        facturaResponse.setFacNumeroText(prod.getFacNumeroText());
+        facturaResponse.setIdentificacionComprador(prod.getIdentificacionComprador());
+        facturaResponse.setRazonSocialComprador(prod.getRazonSocialComprador());
+
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
@@ -188,13 +197,14 @@ public class ServiciosRest {
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
 
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
+        facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
         /*PRUEBAS  
          PRODUCCION */
         RespuestaSolicitud resSolicitud = api.validar(datos, prod.getInfoAutoriza().getAmbiente());
 
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
-
+            facturaResponse.setEstadoSri(resSolicitud.getEstado());
             if (resSolicitud.getEstado().equals("RECIBIDA")) {
                 try {
                     System.out.println("RECIBIDA");
@@ -211,7 +221,7 @@ public class ServiciosRest {
 
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
-                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+//                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
 //                                reenviarFactura(valor);
                             } else {
                                 String texto = "Sin Identificar el error";
@@ -224,15 +234,21 @@ public class ServiciosRest {
                                     nuevo.write(smsInfo.getBytes());
                                 }
 
+                                facturaResponse.setEstadoSri(autorizacion.getEstado());
+                                facturaResponse.setMensajeError(texto);
+                                facturaResponse.setDetalleError(smsInfo);
+
                             }
                         } else {
+                            facturaResponse.setEstadoSri(autorizacion.getEstado());
 
-//                             try {
-//                                String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-////                                valor.setFacFechaAutorizacion(sm.parse(fechaForm));
-//                            } catch (java.text.ParseException ex) {
-//                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
+                            try {
+                                String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+                                facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
+
+                            } catch (java.text.ParseException ex) {
+                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 //                     
 //                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                             archivoEnvioCliente = api.generaXMLFactura(prod, archivoEnvioCliente, nombreArchivo, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
@@ -275,7 +291,7 @@ public class ServiciosRest {
 //                            }
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
-                            prod.setXmlAutorizado(autorizacion.getComprobante());
+                            facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
                         }
 
                     }
@@ -283,13 +299,17 @@ public class ServiciosRest {
                     Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
+                String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getTipo();
+                String detalle = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
                 System.out.println("NO RECIBIDA " + resSolicitud.getEstado());
                 System.out.println("Mensaje " + smsInfo);
 
+                facturaResponse.setMensajeError(smsInfo);
+                facturaResponse.setDetalleError(detalle);
+
             }
         }
-        return prod;
+        return facturaResponse;
     }
 
     @GET

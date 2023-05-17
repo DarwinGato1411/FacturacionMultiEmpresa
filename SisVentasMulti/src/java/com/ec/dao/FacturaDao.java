@@ -58,6 +58,7 @@ public class FacturaDao {
     private List<DetFacturaDao> detFacturaDao;
     private InfoAutoriza infoAutoriza;
     private String xmlAutorizado;
+  
 
     public Date getFacFecha() {
         return facFecha;
@@ -402,5 +403,7 @@ public class FacturaDao {
     public void setXmlAutorizado(String xmlAutorizado) {
         this.xmlAutorizado = xmlAutorizado;
     }
+
+
 
 }
