@@ -5,6 +5,13 @@ body {
   -webkit-font-smoothing: antialiased !important;
 }
 
+:root {
+    --primary-color: #e87c1d;
+    --secondary-color: #fbc620;
+    --background-color: #aaa9a9;
+    --alpha: 0.6;
+    --base-color: #fff;
+}
 .factura * {
   font-family: "Poppins", sans-serif;
 }
@@ -139,7 +146,7 @@ body {
 }
 
 .btn_primary {
-  background-color: #1247b9;
+  background-color: var(--primary-color);
   color: #fff;
 }
 

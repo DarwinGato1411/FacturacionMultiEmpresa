@@ -12,7 +12,7 @@
         <div class="wrapper">
             <div class="nav">
                 <div class="logo_wrapper">
-                    <image src="./imagenes/logo/2.png" class="logo"/>
+                    <image src="./imagenes/facturama.png" class="logo"/>
                 </div>
             </div>
             
