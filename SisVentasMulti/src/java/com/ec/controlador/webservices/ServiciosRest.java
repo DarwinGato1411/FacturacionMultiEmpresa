@@ -55,15 +55,15 @@ import org.zkoss.zk.ui.util.Clients;
 
 @Path("/autorizar")
 public class ServiciosRest {
-
+    
     ServicioFactura servicioFactura = new ServicioFactura();
     ServicioDetalleFactura servicioDetalleFactura = new ServicioDetalleFactura();
-
+    
     @GET
     @Path("/modelo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
     public FacturaDao getFacturas(@PathParam("codigo") Integer codigo) {
-
+        
         Factura recup = servicioFactura.findFirIdFact(codigo);
         FacturaDao facturaDao = new FacturaDao();
         facturaDao.setFacNumero(recup.getFacNumero());
@@ -97,9 +97,9 @@ public class ServiciosRest {
         facturaDao.setFacTarifaIce(BigDecimal.ZERO);
 //        System.out.println("valor "+recup.getEstadosri());
         return facturaDao;
-
+        
     }
-
+    
     @GET
     @Path("/factura-enviar/{codigo}/{numero}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,23 +108,23 @@ public class ServiciosRest {
         RespuestaDocumentos respuesta = new RespuestaDocumentos("PROCESO CORRECTO", "VALIDO");
         ProcesarDocumentos documentos = new ProcesarDocumentos(codigo, numero);
         try {
-
+            
             System.out.println("INGRESA LA SERVICIO DE FACTURAS");
             respuesta.setDescripcion(documentos.autorizarEnLote());
         } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
             respuesta.setDescripcion(e.getMessage());
             respuesta.setEstado("ERROR");
         }
-
+        
         return respuesta;
     }
-
+    
     @POST
     @Path("/factura/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaDao getReenviarFacturas(@RequestBody FacturaDao prod) throws Exception {
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         Factura recup = servicioFactura.findByNumero(prod.getFacNumero());
 //        System.out.println("valor "+recup.getEstadosri());
@@ -162,19 +162,22 @@ public class ServiciosRest {
         dao.setFacTarifaIce(BigDecimal.ZERO);
         return dao;
     }
-
+    
     @POST
     @Path("/factura-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getEnviarFacturas(@RequestBody FacturaDao prod) throws Exception {
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getFacNumeroText());
         facturaResponse.setIdentificacionComprador(prod.getIdentificacionComprador());
         facturaResponse.setRazonSocialComprador(prod.getRazonSocialComprador());
-
+        
+        //Rellenar de 0 el numero de factura
+        prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
+        
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
@@ -188,20 +191,20 @@ public class ServiciosRest {
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo, Boolean.FALSE, new Date());
         XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
-                    ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
+                ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
         File f = null;
         File fEnvio = null;
         byte[] datos = null;
         f = new File(folderFirmado + File.separator + nombreArchivo);
 //
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-
+        
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
         facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
         /*PRUEBAS  
          PRODUCCION */
         RespuestaSolicitud resSolicitud = api.validar(datos, prod.getInfoAutoriza().getAmbiente());
-
+        
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
             facturaResponse.setEstadoSri(resSolicitud.getEstado());
@@ -218,7 +221,7 @@ public class ServiciosRest {
                         if (autorizacion.getComprobante() != null) {
                             nuevo.write(autorizacion.getComprobante().getBytes());
                         }
-
+                        
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
 //                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
@@ -226,26 +229,26 @@ public class ServiciosRest {
                             } else {
                                 String texto = "Sin Identificar el error";
                                 String smsInfo = "Sin identificar el error";
-
+                                
                                 if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                                     texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     nuevo.write(smsInfo.getBytes());
                                     nuevo.write(smsInfo.getBytes());
                                 }
-
+                                
                                 facturaResponse.setEstadoSri(autorizacion.getEstado());
                                 facturaResponse.setMensajeError(texto);
                                 facturaResponse.setDetalleError(smsInfo);
-
+                                
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
-
+                            
                             try {
                                 String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
-
+                                
                             } catch (java.text.ParseException ex) {
                                 Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -260,7 +263,7 @@ public class ServiciosRest {
 //                            servicioFactura.modificar(valor);
 
                             fEnvio = new File(archivoEnvioCliente);
-
+                            
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
 //                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
@@ -293,7 +296,7 @@ public class ServiciosRest {
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
                         }
-
+                        
                     }
                 } catch (RespuestaAutorizacionException ex) {
                     Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
@@ -303,30 +306,30 @@ public class ServiciosRest {
                 String detalle = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
                 System.out.println("NO RECIBIDA " + resSolicitud.getEstado());
                 System.out.println("Mensaje " + smsInfo);
-
+                
                 facturaResponse.setMensajeError(smsInfo);
                 facturaResponse.setDetalleError(detalle);
-
+                
             }
         }
         return facturaResponse;
     }
-
+    
     @GET
     @Path("/factura-reenviar/{codigo}/{numero}")
     public RespuestaDocumentos getReenviarFacturas(@PathParam("codigo") Integer codigo, @PathParam("numero") Integer numero) {
-
+        
         RespuestaDocumentos respuesta = new RespuestaDocumentos("PROCESO CORRECTO", "VALIDO");
         ProcesarDocumentos documentos = new ProcesarDocumentos(codigo, numero);
         try {
-
+            
             System.out.println("INGRESA LA SERVICIO DE FACTURAS");
             respuesta.setDescripcion(documentos.reenviarEnLote());
         } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
             respuesta.setDescripcion(e.getMessage());
             respuesta.setEstado("ERROR");
         }
-
+        
         return respuesta;
     }
 
@@ -337,31 +340,71 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public String encrypted(@RequestBody InfoAutoriza info) throws Exception {
         final String secretKey = "AFSOTEC2023";
-
+        
         String originalString = info.getPasswordFirma();
         String encryptedString = ArchivoUtils.encrypt(originalString, secretKey);
         String decryptedString = ArchivoUtils.decrypt(encryptedString, secretKey);
-
+        
         System.out.println(originalString);
         System.out.println(encryptedString);
         System.out.println(decryptedString);
         return encryptedString;
     }
-
+    
     @POST
     @Path("/decrypted/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public String decrypted(@RequestBody InfoAutoriza info) throws Exception {
         final String secretKey = "AFSOTEC2023";
-
+        
         String originalString = info.getPasswordFirma();
 //        String encryptedString = ArchivoUtils.encrypt(originalString, secretKey);
         String decryptedString = ArchivoUtils.decrypt(originalString, secretKey);
-
+        
         System.out.println(originalString);
 //        System.out.println(encryptedString);
         System.out.println(decryptedString);
         return decryptedString;
+    }
+    
+    @POST
+    @Path("/notaventa-enviar/")
+    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public FacturaResponse getNotaVenta(@RequestBody FacturaDao prod) throws Exception {
+        
+        FacturaResponse facturaResponse = new FacturaResponse();
+        prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
+        Factura factura = FacturaMapper.daoToFactura(prod);
+        servicioFactura.crear(factura);
+        
+        DetalleFactura detalleFactura = new DetalleFactura();
+        
+        for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
+            detalleFactura = new DetalleFactura();
+            detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
+            detalleFactura.setIdFactura(factura);
+            servicioDetalleFactura.crear(detalleFactura);
+        }
+        return facturaResponse;
+    }
+    
+    public static String rellenarConCeros(int numero, int longitudDeseada) {
+        String numeroStr = String.valueOf(numero);
+        
+        if (numeroStr.length() >= longitudDeseada) {
+            return numeroStr;
+        }
+        
+        int cerosPorRellenar = longitudDeseada - numeroStr.length();
+        StringBuilder builder = new StringBuilder();
+        
+        for (int i = 0; i < cerosPorRellenar; i++) {
+            builder.append("0");
+        }
+        
+        builder.append(numeroStr);
+        return builder.toString();
     }
 }

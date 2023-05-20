@@ -33,6 +33,7 @@ public class FacturaDao {
     private Boolean rimpePolpular;
     private Boolean rimpeEmprendedor;
     private Boolean regimenGeneral;
+    private String facTipo;
     private String obligadoLlevarContabilidad;
     private String tipoIdentificacionComprador;
     private String razonSocialComprador;
@@ -58,8 +59,8 @@ public class FacturaDao {
     private List<DetFacturaDao> detFacturaDao;
     private InfoAutoriza infoAutoriza;
     private String xmlAutorizado;
-  
-
+   
+    
     public Date getFacFecha() {
         return facFecha;
     }
@@ -404,6 +405,12 @@ public class FacturaDao {
         this.xmlAutorizado = xmlAutorizado;
     }
 
+    public String getFacTipo() {
+        return facTipo;
+    }
 
+    public void setFacTipo(String facTipo) {
+        this.facTipo = facTipo;
+    }
 
 }

@@ -23,7 +23,8 @@ public class FacturaResponse {
     private String mensajeError;
     private String detalleError;
     private String claveAutorizacion;
-
+    
+    
     public FacturaResponse() {
     }
 

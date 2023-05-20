@@ -14,7 +14,7 @@ public class InfoAutoriza {
     private String rutaArchivo;
     private String rutaFirma;
     private String passwordFirma;
-      private String ambiente;
+    private String ambiente;
 
     public String getRutaArchivo() {
         return rutaArchivo;

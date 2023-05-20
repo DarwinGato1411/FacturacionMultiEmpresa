@@ -26,7 +26,7 @@ public class DetFacturaDao {
     private BigDecimal detTarifa;
     private BigDecimal detValorIce;
     private BigDecimal detIva;
-
+    
     public Boolean getTieneSubsidio() {
         return tieneSubsidio;
     }

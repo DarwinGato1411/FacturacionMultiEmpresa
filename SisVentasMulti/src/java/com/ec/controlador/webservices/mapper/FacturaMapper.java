@@ -52,7 +52,7 @@ public class FacturaMapper {
         respuesta.setFacObservacion(valor.getObservacion());
         respuesta.setFacPorcentajeIva(valor.getFacPorcentajeIva());
         respuesta.setDireccionMatriz(valor.getDireccionMatriz());
-
+        respuesta.setFacTipo(valor.getFacTipo());
         return respuesta;
 
     }
