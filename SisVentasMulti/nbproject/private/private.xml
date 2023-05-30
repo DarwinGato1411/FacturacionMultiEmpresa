@@ -5,10 +5,9 @@
         <group>
             <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/plantilla/banner.zul</file>
             <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/css/style.css</file>
-            <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/inicio.zul</file>
-            <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/css/app/landing/signin.css</file>
             <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/css/app/ventas/modales.css</file>
-            <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/conf/persistence.xml</file>
+            <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/css/app/landing/signin.css</file>
+            <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/inicio.zul</file>
             <file>file:/C:/Users/NanoDan/Documents/DEFACT/Facturas/FacturacionMultiEmpresa/SisVentasMulti/web/css/app/ventas/facturar.css</file>
         </group>
     </open-files>
