@@ -44,7 +44,7 @@
                                             maxlength="13" 
                                         />
 
-                                        <div 
+                                        <image src="/imagenes/find.png" 
                                             class="fa-solid fa-magnifying-glass icon"
                                             onClick="@command('buscarClienteEnLista')"  
                                             tooltiptext="Buscar"

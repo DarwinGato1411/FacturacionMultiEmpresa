@@ -99,6 +99,10 @@ public class NuevoCliente {
     @Command
     @NotifyChange({"cliente"})
     public void buscarAduana() throws URISyntaxException, IOException, XPathExpressionException, JSONException {
+        
+        
+        
+       String token=ArchivoUtils.token("");
         InfoPersona aduana = new InfoPersona();
         String nombre = "";
         if (cliente.getCliCedula() != null) {
