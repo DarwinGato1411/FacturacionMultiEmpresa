@@ -16,7 +16,7 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-12  form-group "  >
                 <label value="(*) " style="color:red;font-weight:bold"/>Descripcion:
                 
-                <textbox  maxlength="250" 
+                <textbox  maxlength="500" 
                           multiline="true" rows="2"                        
                           value="@bind(vm.entidad.tireNombre)" 
                           class="form-control" />

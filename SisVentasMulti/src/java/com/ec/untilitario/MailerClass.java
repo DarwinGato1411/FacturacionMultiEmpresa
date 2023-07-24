@@ -4,7 +4,9 @@
  */
 package com.ec.untilitario;
 
+import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Tipoambiente;
+import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,7 +35,9 @@ public class MailerClass {
 
     private Tipoambiente amb = new Tipoambiente();
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
-
+    private Parametrizar parametrizar = new Parametrizar();
+    ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
+    
     public String getConfiguracionCorreo(String categoria) {
 
         return null;
@@ -49,6 +53,7 @@ public class MailerClass {
         @Override
         public PasswordAuthentication getPasswordAuthentication() {
 //            amb = servicioTipoAmbiente.FindALlTipoambiente();
+            
             String username = amb.getAmUsuarioSmpt().trim();
             String password = amb.getAmPassword().trim();
             return new PasswordAuthentication(username, password);
