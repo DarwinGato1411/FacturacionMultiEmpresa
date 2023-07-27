@@ -180,6 +180,30 @@ public class ServicioTipoAmbiente {
 
         return tipoambiente;
     }
+    public Tipoambiente finActivo() {
+
+        List<Tipoambiente> listaTipoambientes = new ArrayList<Tipoambiente>();
+        Tipoambiente tipoambiente = null;
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT t FROM Tipoambiente t WHERE  t.amEstado =:amEstado");
+            query.setParameter("amEstado", Boolean.TRUE);
+        
+            listaTipoambientes = (List<Tipoambiente>) query.getResultList();
+            if (listaTipoambientes.size() > 0) {
+                tipoambiente = listaTipoambientes.get(0);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta tipoambiente " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return tipoambiente;
+    }
 
     public Tipoambiente findByAmCodigo(String amRuc, String amCodigo) {
 
