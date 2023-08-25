@@ -216,6 +216,9 @@ public class Tipoambiente implements Serializable {
     @Column(name = "am_rimpe_popular")
     private Boolean amRimpePopular;
 
+    @Column(name = "am_giro")
+    private String amGiro;
+
     public Tipoambiente() {
     }
 
@@ -759,6 +762,14 @@ public class Tipoambiente implements Serializable {
 
     public void setAmRimpePopular(Boolean amRimpePopular) {
         this.amRimpePopular = amRimpePopular;
+    }
+
+    public String getAmGiro() {
+        return amGiro;
+    }
+
+    public void setAmGiro(String amGiro) {
+        this.amGiro = amGiro;
     }
 
 }

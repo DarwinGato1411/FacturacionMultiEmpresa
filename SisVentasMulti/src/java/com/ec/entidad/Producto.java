@@ -160,9 +160,17 @@ public class Producto implements Serializable {
 
     @Column(name = "prod_graba_ice")
     private Boolean prodGrabaIce;
-    
+
     @Column(name = "prod_porcentaje_ice")
     private BigDecimal prodPorcentajeIce;
+
+    /*manejo aplicativo movil portal*/
+    @Column(name = "prod_imagen")
+    private String prodImagen;
+    @Column(name = "prod_servlet_url")
+    private String prodServletUrl;
+    @Column(name = "prod_publicado")
+    private Boolean prodPublicado;
 
     public Producto() {
     }
@@ -533,7 +541,7 @@ public class Producto implements Serializable {
     }
 
     public Boolean getProdGrabaIce() {
-        return prodGrabaIce==null?Boolean.FALSE:prodGrabaIce;
+        return prodGrabaIce == null ? Boolean.FALSE : prodGrabaIce;
     }
 
     public void setProdGrabaIce(Boolean prodGrabaIce) {
@@ -541,13 +549,39 @@ public class Producto implements Serializable {
     }
 
     public BigDecimal getProdPorcentajeIce() {
-        return prodPorcentajeIce==null?BigDecimal.ZERO:prodPorcentajeIce;
+        return prodPorcentajeIce == null ? BigDecimal.ZERO : prodPorcentajeIce;
     }
 
     public void setProdPorcentajeIce(BigDecimal prodPorcentajeIce) {
         this.prodPorcentajeIce = prodPorcentajeIce;
     }
 
+    public String getProdImagen() {
+        return prodImagen;
+    }
+
+    public void setProdImagen(String prodImagen) {
+        this.prodImagen = prodImagen;
+    }
+
+    public Boolean getProdPublicado() {
+        return prodPublicado;
+    }
+
+    public void setProdPublicado(Boolean prodPublicado) {
+        this.prodPublicado = prodPublicado;
+    }
+
+    public String getProdServletUrl() {
+        return prodServletUrl;
+    }
+
+    public void setProdServletUrl(String prodServletUrl) {
+        this.prodServletUrl = prodServletUrl;
+    }
+
+    
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

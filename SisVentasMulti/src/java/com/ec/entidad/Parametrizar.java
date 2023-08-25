@@ -144,6 +144,13 @@ public class Parametrizar implements Serializable {
     @Column(name = "par_contratado")
     private BigDecimal parContratado;
 
+    /*direccion publica*/
+    @Column(name = "par_servlet")
+    private String parServlet;
+    /*direccion interna*/
+    @Column(name = "par_path_recursos")
+    private String parPathRecursos;
+
     public Parametrizar() {
     }
 
@@ -480,5 +487,23 @@ public class Parametrizar implements Serializable {
     public void setParContratado(BigDecimal parContratado) {
         this.parContratado = parContratado;
     }
+
+    public String getParServlet() {
+        return parServlet;
+    }
+
+    public void setParServlet(String parServlet) {
+        this.parServlet = parServlet;
+    }
+
+    public String getParPathRecursos() {
+        return parPathRecursos;
+    }
+
+    public void setParPathRecursos(String parPathRecursos) {
+        this.parPathRecursos = parPathRecursos;
+    }
+    
+    
 
 }

@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?init class="com.ec.seguridad.Autentificador"?>
-<zk class="border border-primary">
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+<zk contentStyle="overflow:auto"  >
+<hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" align="center"
+          viewModel="@id('vm') @init('com.ec.controlador.Configuracion')">
 
-    <div  apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.Configuracion')" >
-       
-        <div style="width: 100%; display:grid;place-content: center; ">
-            <div class="container_modal">
+  
+    <div class="container_headers" style="margin-bottom:1em;width:3%"> </div>
+                <div style="width: 100%; display:grid;place-content: center; ">
+            <div class="container_modal" style="width: 100%; display:grid;place-content: center; ">
 
                 <div class="body">
                     <div class="container_row_input">
@@ -246,6 +251,34 @@
                                 <textbox 
                                     value="@bind(vm.tipoambiente.amDireccionMatriz)" 
                                     placeholder="Direccion Matriz"
+                                    class="input_text"
+                                    style="width:100%;"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    
+                     <div class="container_row_input">
+                        <div class="wrapper_input_mod">
+                            <span>Ciudad: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-user icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amCiudad)" 
+                                    placeholder="QUITO"
+                                    class="input_text"
+                                    tooltiptext="Ingrese la ciudad de su negocio" 
+                                />
+                            </div>
+                        </div>
+                    
+                        <div class="wrapper_input_mod" style="flex:auto;">
+                            <span style="margin:0 0.5em;">Giro negocio </span>
+                            <div class="wrapper_input_text" style="width:86%;">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amGiro)" 
+                                    placeholder="Ferreteria"
                                     class="input_text"
                                     style="width:100%;"
                                 />
@@ -499,10 +532,7 @@
         
             </div>
 
-        </div>
-
-
-        
-    </div>
+        </div>       
+      
+    </hbox>
 </zk>
-

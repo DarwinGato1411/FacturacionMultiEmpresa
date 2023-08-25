@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  id="windowCliente"  position="center" closable="true"  
+<window  id="windowCliente"  position="center top" closable="true"  
          apply="org.zkoss.bind.BindComposer" 
          viewModel="@id('vm') @init('com.ec.controlador.NuevoProducto')">
     
@@ -8,6 +8,17 @@
        
     <div class="container_modal">
         <div class="header">
+            <div class="inputGroupImg" >
+                    <image   content="@bind(vm.fotoGeneral)" width="200px" />
+                    <button 
+                        class="btnSubirImg"
+                        onClick="@command('subirImagen')" 
+                        
+                        tooltiptext="Buscar">
+                        Subir Imagen
+                    </button>                               
+                </div>
+            
             <div class="wrapper_input_mod">
                 <span>Tipo: </span>
                 <radiogroup   onCheck="@command('verificarTipoProducto')"
@@ -41,10 +52,10 @@
                     format="dd/MM/yyyy" 
                     class="input_date"
                 />
-                <div 
+<!--                <div 
                     class="fa-solid fa-calendar"
                     style="position: absolute; left: 35%; top: 10px;color:  #1247b9;font-size: 12px"
-                />
+                />-->
             </div>
 
         </div>
@@ -126,6 +137,7 @@
                         <div class="fa-solid fa-dollar-sign icon"></div>
                         <textbox  
                             maxlength="100" 
+                             onChange="self.setValue(self.getValue().toUpperCase().trim());" 
                             value="@bind(vm.producto.prodNombre)"
                             class="input_text" 
                         />

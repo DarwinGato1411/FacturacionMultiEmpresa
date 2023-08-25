@@ -160,6 +160,9 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "idUsuario")
     private Collection<Tipoambiente> tipoambienteCollection;
 
+    @OneToMany(mappedBy = "idUsuario")
+    private Collection<Postulaciones> postulacionesCollection;
+
     public Usuario() {
     }
 
@@ -512,6 +515,14 @@ public class Usuario implements Serializable {
 
     public void setTipoambienteCollection(Collection<Tipoambiente> tipoambienteCollection) {
         this.tipoambienteCollection = tipoambienteCollection;
+    }
+
+    public Collection<Postulaciones> getPostulacionesCollection() {
+        return postulacionesCollection;
+    }
+
+    public void setPostulacionesCollection(Collection<Postulaciones> postulacionesCollection) {
+        this.postulacionesCollection = postulacionesCollection;
     }
 
 }

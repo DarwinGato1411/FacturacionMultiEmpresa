@@ -806,4 +806,9 @@ public class AdmProducto {
 
     }
 
+     @Command
+    @NotifyChange({"listaProductosModel", "buscarNombre"})
+    public void activarDesactivar(@BindingParam("valor") Producto valor) {      
+                servicioProducto.modificar(valor);
+    }
 }

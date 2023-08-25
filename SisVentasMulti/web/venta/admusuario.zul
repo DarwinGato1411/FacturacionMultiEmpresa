@@ -1,0 +1,69 @@
+<?init class="com.ec.seguridad.Autentificador"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+<zk contentStyle="overflow:auto"  >
+    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.AdministrarVenta')">
+
+<!--        <div class="container_headers" style="margin-bottom:1em;width:200px">
+
+        
+        </div>-->
+
+        <div class="cont_body">
+            <div class="cont_body_item">
+                <listbox width="100%" model="@load(vm.listaUsuarios)" nonselectableTags="*"  mold="paging" pageSize="9">
+                         
+                                
+                                            
+                                    
+                    <listhead sizable="true">
+                        <listheader label="Nombre de la cuenta"  align="left" width="35%"></listheader>
+                        <listheader label="Usuario"  align="left" width="20%"></listheader>
+                        <listheader label="Contraseña"  align="left" width="20%"></listheader>
+                        <listheader label="Tipo Usuario"  align="left" width="20%"></listheader>
+                        <listheader label="Modificar"  align="left" width="5%"></listheader>
+                    </listhead>
+                        
+                        
+                    <template name="model">
+                        <listitem width="100%" > 
+                            <listcell  zclass = "mycss-listcell">
+                                <textbox readonly="true" value="@bind(each.usuNombre)"  style="font-size:12px;background:#EBF5FB"
+                                                     class="form-control form-control-sm" />
+                            </listcell>  
+                            <listcell  zclass = "mycss-listcell">
+                                <textbox readonly="true" value="@bind(each.usuLogin)"  style="font-size:12px;background:#EBF5FB"
+                                                     class="form-control form-control-sm" />
+                            </listcell>   
+                            <listcell  zclass = "mycss-listcell">      
+                                <textbox readonly="true" value="@bind(each.usuPassword)" 
+                                                     class="form-control form-control-sm"
+                                                     style="font-size:12px;background:#EBF5FB"
+                                                     type="password" />
+                            </listcell>  
+                            <listcell  zclass = "mycss-listcell">                          
+                                <textbox readonly="true" value="@bind(each.usuTipoUsuario)"  style="font-size:12px;background:#EBF5FB"
+                                                     class="form-control form-control-sm"  />
+                            </listcell>                  
+                            <listcell  zclass = "mycss-listcell">
+                                <image src="/iconos/editar.png"
+                                                   class="grow"
+                                                   onClick="@command('modificarUsario',valor=each)" 
+                                                   tooltiptext="Editar usuario"/> 
+                                            
+                            </listcell>     
+                                    
+                        </listitem>
+                    </template>   
+                            
+                </listbox>    
+            </div>
+        </div>
+    </hbox>
+</zk>

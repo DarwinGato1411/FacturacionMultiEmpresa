@@ -8,8 +8,8 @@
 
 
             <div class="col-12 col-sm-12 col-md-5 col-lg-5  " align="start">
-                <image  src="/imagenes/logo/5.png" class="logo_defact" />
-                <!-- <label value="Sistema de facturacion - DEFACT" sclass="banner-head labelNuevo" />  --> 
+                <!--<image  src="/imagenes/logohsinf.png" class="logo_defact" />-->
+                 <label value="BUSKKO" sclass="banner-head labelNuevo" />   
                 
                      
             </div>
@@ -106,10 +106,22 @@
                 </menu>
                 <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" visible="false" class="menu_child" />
                 <menuitem label="Gestion de usuarios " id="muenGestionUsu" class="menu_child" />
-                <menuitem label="Gestion de empresas " id="muenGestionEmpresas" class="menu_child" />
-                <menuitem label="Catalogos" id="btnAdministarVenta" class="menu_child" />
+                <menuitem label="Gestion de empresas " id="muenGestionEmpresas" class="menu_child" visible="false" />
+                <!--<menuitem label="Catalogos" id="btnAdministarVenta" class="menu_child" />-->
+                <menu label="Catalogos" id="btnAdministarVenta" class="menu_child">
+                    <menupopup class="submenu">                                                                         
+                        <!--<menuitem label="Facturas autorizadas SRI" id="btnFactAutori" class="fa-solid fa-gear menu_item" />-->                              
+                        <menuitem label="Productos" id="btnProducto" class="fa-solid fa-gear menu_item" />
+                        <menuitem label="Clientes" id="btnCliente" class="fa-solid fa-gear menu_item"/>
+                        <menuitem label="Proveedores" id="btnProveedor" class="fa-solid fa-gear menu_item"/>
+                        <menuitem label="Conductores" id="btnConductor" class="fa-solid fa-gear menu_item"/>
+                        <menuitem label="Usuario" id="btnUsuarioAdm" class="fa-solid fa-gear menu_item"/>
+                        <menuitem label="Configuraciones" id="btnConfiguracion" class="fa-solid fa-gear menu_item"/>
+                         <menuitem label="Codigos de retencion" id="btnCodigoretencion" class="fa-solid fa-gear menu_item"  />
+                    </menupopup>
+                </menu>
                 <menuitem label="Gestion facturas" id="btnGestionFactura" class="menu_child" />
-                <menuitem label="Codigos de retencion" id="btnCodigoretencion" class="menu_child" />
+               
             </menubar> 
 
           

@@ -375,7 +375,7 @@ element.style {
   cursor: pointer;
 }
 .labelNuevo {
-  font-size: 1em;
+  font-size: 1.5em;
   color: #07317d;
   text-align: center;
   height: auto;
@@ -573,7 +573,7 @@ div.z-listbox-header th.z-auxheader {
   border-color: #cfcfcf #cfcfcf #cfcfcf white;
   border-top: 0;
   padding: 0;
-  background: #77dd77 !important;
+  background: #0275d840  !important;
   font-weight: bold;
 }
 
@@ -3276,3 +3276,13 @@ textarea {
   box-shadow: 1px 1px 3px rgb(0 0 0 / 35%);
 }
 
+.fa, .fa-brands, .fa-classic, .fa-regular, .fa-sharp, .fa-solid, .fab, .far, .fas {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: #014459;
+}
