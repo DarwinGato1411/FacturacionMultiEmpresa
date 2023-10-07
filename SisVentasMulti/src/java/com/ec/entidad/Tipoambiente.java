@@ -216,8 +216,13 @@ public class Tipoambiente implements Serializable {
     @Column(name = "am_rimpe_popular")
     private Boolean amRimpePopular;
 
+    @Column(name = "am_activo")
+    private Boolean amActivo;
+
     @Column(name = "am_giro")
     private String amGiro;
+    @Column(name = "am_servelet_img")
+    private String amServeletImg;
 
     public Tipoambiente() {
     }
@@ -772,4 +777,21 @@ public class Tipoambiente implements Serializable {
         this.amGiro = amGiro;
     }
 
+    public String getAmServeletImg() {
+        return amServeletImg;
+    }
+
+    public void setAmServeletImg(String amServeletImg) {
+        this.amServeletImg = amServeletImg;
+    }
+
+    public Boolean getAmActivo() {
+        return amActivo;
+    }
+
+    public void setAmActivo(Boolean amActivo) {
+        this.amActivo = amActivo;
+    }
+    
+    
 }

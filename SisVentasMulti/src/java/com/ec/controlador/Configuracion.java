@@ -5,9 +5,11 @@
  */
 package com.ec.controlador;
 
+import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
+import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.vista.servicios.ServicioSriCatastro;
 import java.io.File;
@@ -61,10 +63,14 @@ public class Configuracion extends SelectorComposer<Component> {
     private String amRuc = "";
     private String grabaICE = "";
 
+    private Parametrizar parametrizar = new Parametrizar();
+    ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
+
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
         amRuc = credential.getUsuarioSistema().getUsuRuc();
+        parametrizar = servicioParametrizar.FindALlParametrizar();
         tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         if (tipoambiente != null) {
             amCodigo = tipoambiente.getAmCodigo();
@@ -149,14 +155,14 @@ public class Configuracion extends SelectorComposer<Component> {
 
             if (!nombre.contains("p12")) {
                 Clients.showNotification("Su firma electronica debe ser tipo archivo con extension .p12 ",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
 
                 return;
             }
             if (media.getByteData().length > 10 * 1024 * 1024) {
 
                 Clients.showNotification("El arhivo seleccionado sobrepasa el tamaño de 10Mb.\n Por favor seleccione un archivo más pequeño. ",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                 return;
             }
             filePath = tipoambiente.getAmDirBaseArchivos() + File.separator + tipoambiente.getAmFolderFirma() + File.separator;
@@ -167,7 +173,7 @@ public class Configuracion extends SelectorComposer<Component> {
             }
 
             Files.copy(new File(filePath + media.getName()),
-                        media.getStreamData());
+                    media.getStreamData());
             tipoambiente.setAmDirFirma(nombre);
 
         }
@@ -193,15 +199,17 @@ public class Configuracion extends SelectorComposer<Component> {
 
                     return;
                 }
-                filePathImg = tipoambiente.getAmDirBaseArchivos() + File.separator + tipoambiente.getAmFolderFirma() + File.separator;
+                filePathImg =  parametrizar.getParPathRecursos() + File.separator + "img" + File.separator;
 
                 File baseDir = new File(filePathImg);
                 if (!baseDir.exists()) {
                     baseDir.mkdirs();
                 }
-                Files.copy(new File(filePathImg + media.getName()),
-                            media.getStreamData());
-                tipoambiente.setAm_DirImgPuntoVenta(filePathImg + File.separator + nombre);
+                Files.copy(new File(filePathImg + media.getName().toLowerCase()),
+                        media.getStreamData());
+
+                tipoambiente.setAmServeletImg(parametrizar.getParServlet() + "/img/" + media.getName().toLowerCase());
+                tipoambiente.setAm_DirImgPuntoVenta(filePathImg + File.separator + nombre.toLowerCase());
             }
 
         }
@@ -226,7 +234,7 @@ public class Configuracion extends SelectorComposer<Component> {
         servicioTipoAmbiente.modificar(tipoambiente);
 
         Clients.showNotification("Información registrada exitosamente",
-                    Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
+                Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
 
     }
 
