@@ -6,7 +6,7 @@
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 
 <?init class="com.ec.seguridad.Autentificador"?>
-<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantillasuper/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
 
 
