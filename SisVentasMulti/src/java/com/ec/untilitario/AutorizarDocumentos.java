@@ -637,7 +637,7 @@ public class AutorizarDocumentos {
             for (DetalleGuiaremision detalle : det) {
                 linea = ("                <detalle>\n"
                             + "                    <codigoInterno>" + removeCaracteres(detalle.getIdProducto().getProdCodigo()) + "</codigoInterno>\n"
-                            + "                    <descripcion>" + removeCaracteres(detalle.getIdProducto().getProdNombre()) + "</descripcion>\n"
+                            + "                    <descripcion>" + removeCaracteres(detalle.getDetDescripcion()) + "</descripcion>\n"
                             + "                    <cantidad>" + detalle.getDetCantidad().setScale(2, RoundingMode.FLOOR) + "</cantidad>\n"
                             + "                </detalle>\n");
                 build.append(linea);
