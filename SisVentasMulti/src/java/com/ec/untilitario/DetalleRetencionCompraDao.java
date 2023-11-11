@@ -18,17 +18,12 @@ public class DetalleRetencionCompraDao {
 
     private Integer drcCodigo;
     private BigDecimal drcBaseImponible;
-
     private BigDecimal drcPorcentaje;
-
     private BigDecimal drcValorRetenido;
-
     private String drcDescripcion;
     private String tipoResgistro;
     private String codImpuestoAsignado;
-
     private TipoRetencion tireCodigo;
-
     private RetencionCompra rcoCodigo;
 
     Tipoivaretencion tipoivaretencion;

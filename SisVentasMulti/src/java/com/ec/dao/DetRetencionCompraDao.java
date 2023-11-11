@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Darwin
  */
-public class DetRetencionDao {
+public class DetRetencionCompraDao {
 
     private BigDecimal drcValorRetenido;
     private String drcCodImpuestoAsignado;
