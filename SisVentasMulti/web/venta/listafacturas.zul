@@ -15,11 +15,11 @@
           viewModel="@id('vm') @init('com.ec.controlador.ListaFacturas')" >
         <tabbox id="tboxPrincipal"  width="100%" >
             <tabs >
-                <tab label="Lista de facturas emitidas" sclass="menutabs" /> 
+                <tab label="Lista de pedidos" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
                 
-                <tabpanel  width="99%" class="factura" >                    
+                <tabpanel  width="99%" class="Pedido" >                    
                  
 
                     <div class="factura_header">
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="fact_row">
-                            <div class="wrapper_data">
+<!--                            <div class="wrapper_data">
                                 <button 
                                     class="fa-solid fa-magnifying-glass btn_fact btn_base"
                                     label="PEN-SRI"
@@ -136,7 +136,7 @@
                                     tooltiptext="Descargar"
                                     label="Descargar Registros de Factura"
                                 />
-                            </div>
+                            </div>-->
                         </div>
                     </div>
 
@@ -166,7 +166,7 @@
                                              onChange="self.setValue(self.getValue().toUpperCase());" />
                                     
                                 </listheader>    
-                                <listheader width="13%"  >
+                                <listheader width="40%"  >
                                     <textbox value="@bind(vm.buscarCliente)"  
                                              class="form-control form-control-sm"
                                              tooltiptext="Nombre del cliente"
@@ -178,17 +178,10 @@
                                 <listheader width="8%"  label="Fecha" sort="auto(facFecha)" /> 
                                 <listheader width="5%"  label="Total "  /> 
                                 <listheader width="4%"  label="Estado " align="rigth" /> 
-                                <listheader width="8%"  label="Estado SRI" align="rigth" /> 
-                                <listheader width="8%"  label="Fecha Aut." align="rigth" /> 
-                                <!--<listheader width="20%"  label="Clave Autorizacion"  />-->                                   
+                                                              
                                 <listheader width="10%"  label="Responsable / Cuenta"  />                                   
-                                <listheader width="3%"  label="" align="rigth" />        
-                                <listheader width="3%"  label="" align="rigth" />        
-                                <listheader width="3%"  label="" align="rigth" />        
-                                <listheader width="3%"  label="" align="rigth" />        
-                                    
-                                <listheader width="3%"  label="" align="rigth" />
-                                <listheader width="3%"  label="" align="rigth" />                                 
+                                                             
+                                
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
@@ -209,7 +202,7 @@
                                     <listcell zclass = "mycss-listcell">
                                         <textbox readonly="true"  style="font-size:12px;background:#EBF5FB"  
                                                  class="form-control form-control-sm"                            
-                                                 value="@bind(each.facNumeroText)" width="100%" />
+                                                 value="@bind(each.facNumero)" width="100%" />
                                     </listcell>
                                     <listcell zclass = "mycss-listcell">
                                         <textbox readonly="true" style="font-size:12px;background:#EBF5FB"  
@@ -235,7 +228,7 @@
                                                     class="form-control form-control-sm"  
                                                     value="@bind(each.facTotal)" width="100%"/>
                                     </listcell>
-                                    <zk if="${each.facEstado=='PE'}" > 
+                                    <zk if="${each.facEstado!='PA'}" > 
                                         <listcell zclass = "mycss-listcell" style="background:#FFB1A0;color: red" >
                                             <textbox readonly="true"  style="font-size:12px;background:transparent" 
                                                      class="form-control form-control-sm"     
@@ -249,42 +242,9 @@
                                                       value="@bind(each.facEstado)" width="100%"/>
                                         </listcell>
                                     </zk>
-                                    <zk  choose="@bind(each.estadosri)" >
-                                        <zk  when="${each.estadosri == 'AUTORIZADO'}"  >
-                                            <listcell    zclass = "mycss-listcell"  style="background:#C7FEC1" >
-                                                <textbox readonly="true"  style="font-size:12px;background:transparent"    
-                                                         class="form-control form-control-sm"  
-                                                         value="@bind(each.estadosri)" tooltiptext="@bind(each.facMsmInfoSri)" width="100%"/>
-                                            </listcell>
-                                        </zk>
-                                        <zk  when="${each.estadosri == 'ANULADA'}"  >
-                                            <listcell    zclass = "mycss-listcell"  style="background:#E2C1F5" >
-                                                <textbox readonly="true"  style="font-size:12px;background:transparent"   
-                                                         class="form-control form-control-sm"  
-                                                         value="@bind(each.estadosri)" tooltiptext="@bind(each.facMsmInfoSri)" 
-                                                         width="100%"/>
-                                            </listcell>
-                                        </zk>
-                                        <zk  >
-                                            <listcell    zclass = "mycss-listcell"  style="background:#FCFE74" >
-                                                <textbox readonly="true"  style="font-size:12px;background:transparent"   
-                                                         class="form-control form-control-sm"  
-                                                         value="@bind(each.estadosri)" tooltiptext="@bind(each.facMsmInfoSri)" 
-                                                         width="100%"/>
-                                            </listcell>
-                                        </zk>
-                                    </zk>
                                     
-                                    <listcell   zclass = "mycss-listcell" >
-                                        <datebox compact="true" value="@bind(each.facFechaAutorizacion)" 
-                                                 buttonVisible="false" lenient="true" 
-                                                 tooltiptext="@bind(each.mensajesri)"
-                                                
-                                                 readonly="true"
-                                                 height=" 30px" 
-                                                 style="font-size:12px;background:#EBF5FB"
-                                                 format="medium" width="100%"  />
-                                    </listcell>
+                                    
+
                 
                                     <listcell   zclass = "mycss-listcell" >
                                         <textbox  readonly="true" 
@@ -302,21 +262,7 @@
                                                class="btn btn btn-secondary btn-sm grow"                                               
                                                tooltiptext="Cambiar estado de la factura"/> 
                                     </listcell>
-                                    <listcell if="${each.estadosri=='AUTORIZADO'}"  zclass = "mycss-listcell" >   
-                                            
-                                        <image src="/iconos/notacredito.png"  
-                                               height=" 30px"   
-                                               onClick="@command('crearNotaCredito',valor=each)"                                    
-                                               class="btn btn btn-secondary btn-sm grow"                                               
-                                               tooltiptext="Generar Nota de Crédito"/> 
-                                    </listcell>
-                                    <listcell if="${each.estadosri!='AUTORIZADO'}"  zclass = "mycss-listcell" >   
-                                            
-                                         <image src="/iconos/delete.png"   
-                                                   height=" 30px"  
-                                                   class=" btn-secondary btn-sm"                                               
-                                                   tooltiptext="No se puede generar una nota de credito a un documento sin autorizar"/>
-                                    </listcell>
+
                                     <listcell  zclass = "mycss-listcell" >    
                                         
                                         <image src="/iconos/tecketera.jpg"   
@@ -335,16 +281,8 @@
                                                tooltiptext="Imprimir factura"/>
                                 
                                     </listcell>
-                                    <listcell  zclass = "mycss-listcell" >    
-                                        
-                                        <image src="/iconos/armareval.png"
-                                               height=" 30px"     
-                                               class="btn btn btn-secondary btn-sm grow"                                         
-                                               onClick="@command('registrarRentencion',valor=each)"
-                                               tooltiptext="Registrar retencion de venta"/>
-                                
-                                    </listcell>
-                                    <zk if="${each.estadosri!='AUTORIZADO'}"  >
+                                    
+                                    
                                         <listcell  zclass = "mycss-listcell" >    
                                         
                                             <image src="/iconos/editar.png"   
@@ -354,88 +292,9 @@
                                                    tooltiptext="Modificar factura"/>
                                 
                                         </listcell>
-                                    </zk>
-                                
-                                    <zk if="${each.estadosri=='AUTORIZADO'}"  >
-                                        <listcell  zclass = "mycss-listcell" >                                         
-                                            <image src="/iconos/listo_uno.png"   
-                                                   height=" 30px"  
-                                                   class=" btn-secondary btn-sm"                                               
-                                                   tooltiptext="No se puede modificar por que se encuentra en estado autorizado"/>
-                                
-                                        </listcell>
-                                    </zk>
                                     
-                                    
-                                    
-                                    <zk if="${each.estadosri!='AUTORIZADO'}"  > 
-                                        <listcell  zclass = "mycss-listcell" >    
-                                            <image  src="/iconos/sri24x24.png" 
-                                                    height=" 30px"  
-                                                    class="btn btn btn-secondary btn-sm grow"
-                                                    onClick="@command('autorizarSRI',valor=each)" 
-                                                    tooltiptext="Autorizar facturas"/>
-                                        </listcell>
-                                    </zk>
-                            
-                                    <zk if="${each.estadosri=='AUTORIZADO' }"  >
-                                        <listcell  zclass = "mycss-listcell" >                                         
-                                            <image src="/iconos/listo_uno.png"   
-                                                   height=" 30px"  
-                                                   class="  btn-secondary btn-sm "       
-                                                   tooltiptext="Ya se encuentra autorizado"/>
                                 
-                                        </listcell>
-                                    </zk>
-                                    <zk if="${each.estadosri!='AUTORIZADO'}"  > 
-                                        <listcell  zclass = "mycss-listcell" >    
-                                            <image  src="/iconos/reenviar.png" 
-                                                    height=" 30px"  
-                                                    class="btn btn btn-secondary btn-sm grow"
-                                                    onClick="@command('reenviarSRI',valor=each)" 
-                                                    tooltiptext="Reenviar su factura a autorizar"/>
-                                        </listcell>
-                                    </zk>
-                                    <zk if="${each.estadosri=='AUTORIZADO'}"  > 
-                                        <listcell  zclass = "mycss-listcell" >   
-                                            <image  src="/iconos/reenviar.png"
-                                                    height=" 30px"   
-                                                    class="btn btn btn-secondary btn-sm grow"
-                                                    onClick="@command('reenviarSRI',valor=each)" 
-                                                    tooltiptext="Reenviar su factura a autorizar"/>
-                                        </listcell>
-                                    </zk>
-                                                                
-                                    
-                                    <listcell  zclass = "mycss-listcell"  if="${each.facEstado=='PE'}" >   
-                                            
-                                        <image src="/iconos/page_add.png"  
-                                               height=" 30px"  
-                                               onClick="@command('verDetallePago',valor=each)"  
-                                               class="btn btn btn-secondary btn-sm grow"                                               
-                                               tooltiptext="Verifica la tabla de amortizacion para los pagos"/> 
-                                    </listcell>
-                                    <listcell   zclass = "mycss-listcell" if="${each.facEstado=='PA'}">                                         
-                                        <image src="/iconos/listo_uno.png"   
-                                               height=" 30px"  
-                                               class="btn-secondary btn-sm grow"                                               
-                                               tooltiptext="Solo se puede crear la tabla de amortizacion en estado Pendiente (PE)"/>
-                                
-                                    </listcell>
-                                     <listcell if="${each.estadosri!='AUTORIZADO'}" zclass = "mycss-listcell" >   
-                                        <image src="/iconos/delete.png"      
-                                               height="30px"  
-                                               onClick="@command('reenviarMail',valor=each)" 
-                                               class="btn-secondary btn-sm "       
-                                               tooltiptext="Reenviar correo electronico"/>
-                                    </listcell>
-                                    <listcell  if="${each.estadosri=='AUTORIZADO'}" zclass = "mycss-listcell" >   
-                                        <image src="/iconos/email.png"   
-                                               height="30px"  
-                                               onClick="@command('reenviarMail',valor=each)" 
-                                               class="btn-secondary btn-sm "       
-                                               tooltiptext="Reenviar correo electronico"/>
-                                    </listcell>
+                                   
                                     
                                 </listitem>
                             </template>

@@ -17,7 +17,7 @@
             onClick="@command('nuevoCliente')"
             tooltiptext="Nuevo cliente"
         >
-            <span>Nuevo producto </span>
+            <span>Nuevo cliente </span>
         </div>
        
 

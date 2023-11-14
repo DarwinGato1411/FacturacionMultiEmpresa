@@ -171,6 +171,21 @@ public class Producto implements Serializable {
     private String prodServletUrl;
     @Column(name = "prod_publicado")
     private Boolean prodPublicado;
+    
+     @Column(name = "prod_descripcion")
+    private String prodDescripcion;
+     
+     @Column(name = "prod_servlet_url1")
+    private String prodServletUrl1;
+    
+    @Column(name = "prod_servlet_url2")
+    private String prodServletUrl2;
+    
+       @Column(name = "prod_imagen2")
+    private String prodImagen2;
+       
+          @Column(name = "prod_imagen3")
+    private String prodImagen3;
 
     public Producto() {
     }
@@ -578,6 +593,46 @@ public class Producto implements Serializable {
 
     public void setProdServletUrl(String prodServletUrl) {
         this.prodServletUrl = prodServletUrl;
+    }
+
+    public String getProdDescripcion() {
+        return prodDescripcion;
+    }
+
+    public void setProdDescripcion(String prodDescripcion) {
+        this.prodDescripcion = prodDescripcion;
+    }
+
+    public String getProdServletUrl1() {
+        return prodServletUrl1;
+    }
+
+    public void setProdServletUrl1(String prodServletUrl1) {
+        this.prodServletUrl1 = prodServletUrl1;
+    }
+
+    public String getProdServletUrl2() {
+        return prodServletUrl2;
+    }
+
+    public void setProdServletUrl2(String prodServletUrl2) {
+        this.prodServletUrl2 = prodServletUrl2;
+    }
+
+    public String getProdImagen2() {
+        return prodImagen2;
+    }
+
+    public void setProdImagen2(String prodImagen2) {
+        this.prodImagen2 = prodImagen2;
+    }
+
+    public String getProdImagen3() {
+        return prodImagen3;
+    }
+
+    public void setProdImagen3(String prodImagen3) {
+        this.prodImagen3 = prodImagen3;
     }
 
     

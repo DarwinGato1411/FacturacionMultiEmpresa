@@ -188,7 +188,7 @@ public class Facturar extends SelectorComposer<Component> {
     //Cabecera de la factura
     private String estdoFactura = "PA";
     private String tipoVentaAnterior = "FACT";
-    private String tipoVenta = "FACT";
+    private String tipoVenta = "PED";
     private String facturaDescripcion = "";
     private Integer numeroFactura = 0;
     private String numeroFacturaText = "";
@@ -570,7 +570,7 @@ public class Facturar extends SelectorComposer<Component> {
 
     private void verificarSecNumeracion() {
 
-        if (tipoVenta.equals("FACT")) {
+        if (tipoVenta.equals("FACT")||tipoVenta.equals("PED")) {
             numeroFactura();
         } else if (tipoVenta.equals("PROF")) {
             numeroProforma();
@@ -1949,7 +1949,7 @@ public class Facturar extends SelectorComposer<Component> {
             } else {
 
                 Boolean verificaEntraSecuen = Boolean.FALSE;
-
+  verificarSecNumeracion();
                 if (tipoVenta.equals("FACT") && (tipoVentaAnterior.equals("NTV"))) {
                     verificarSecNumeracion();
                     // numeroFactura = factura.getFacNumProforma();
@@ -2064,6 +2064,12 @@ public class Facturar extends SelectorComposer<Component> {
                 factura.setFacNumProforma(0);
                 factura.setFacNumNotaEntrega(0);
                 factura.setFacNumNotaVenta(numeroFactura);
+            } else if (tipoVenta.equals("PED")) {
+                factura.setFacNumero(numeroFactura);
+                factura.setFacNumProforma(0);
+                factura.setFacNumNotaEntrega(0);
+                /*PARA EL SRI*/
+                factura.setTipodocumento("01");
             }
 
             factura.setIdCliente(clienteBuscado);

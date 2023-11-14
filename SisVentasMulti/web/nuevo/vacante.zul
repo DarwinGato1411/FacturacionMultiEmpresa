@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window  id="windowCliente"  position="center top" closable="true"  
+         apply="org.zkoss.bind.BindComposer" 
+         viewModel="@id('vm') @init('com.ec.controlador.NuevoVacante')">
+    
+
+    <caption label="Vacante" style="font-weight:bold" /> 
+       
+    <div class="container_modal">
+        <div class="header">
+            <div class="inputGroupImg" >
+                    <image   content="@bind(vm.fotoGeneral)" width="200px" />
+                    <button 
+                        class="btnSubirImg"
+                        onClick="@command('subirImagen')" 
+                        
+                        tooltiptext="Buscar">
+                        Subir Imagen
+                    </button>                               
+                </div>
+            
+            
+            
+            <div class="wrapper_input_mod" style="position: relative">
+                <span>Fecha inicio: </span>
+                <datebox 
+                    compact="true" 
+                    value="@bind(vm.vacante.vacFechaInicio)" 
+                    readonly="true"
+                    buttonVisible="true" 
+                    lenient="true" 
+                    format="dd/MM/yyyy" 
+                    class=""
+                />
+                
+            </div>
+            <div class="wrapper_input_mod" style="position: relative">
+                <span>Fecha caduca: </span>
+                <datebox 
+                    compact="true" 
+                    value="@bind(vm.vacante.vacFechaFin)" 
+                    readonly="true"
+                    buttonVisible="true" 
+                    lenient="true" 
+                    format="dd/MM/yyyy" 
+                    class=""
+                />
+                
+            </div>
+
+        </div>
+        <div class="body" >
+            <div class="container_row_input">
+                  <div class="wrapper_input_mod">
+                    <span>Vacante: </span>
+                    <div class="wrapper_input_text">
+                        <!--<div class="fa-solid fa-barcode icon"></div>-->
+                        <textbox  
+                            maxlength="150"   
+                         
+                            value="@bind(vm.vacante.vacNombre)"  
+                            class="input_text" />
+                    </div>
+                </div>
+                <div class="wrapper_input_mod">
+                    <span>Area: </span>
+                    <div class="wrapper_input_text">
+                        <!--<div class="fa-solid fa-dollar-sign icon"></div>-->
+                        <textbox    maxlength="150"   
+                            value="@bind(vm.vacante.vacArea)"  
+                            class="input_text"  
+                        />
+                    </div>
+                </div>
+                  <div class="wrapper_input_mod">
+                    <span>Sueldo: </span>
+                    <div class="wrapper_input_text">
+                        <!--<div class="fa-solid fa-dollar-sign icon"></div>-->
+                        <textbox    
+                            constraint="/^[0-9]{1,9}(?:[.][0-9]{1,5})?$/:Ingrese solo numeros"
+                            value="@bind(vm.vacante.vacSueldo)"  
+                            class="input_text"  
+                        />
+                    </div>
+                </div>
+                  
+                
+            </div>
+        </div>
+        
+         <div class="body">
+            <div class="container_row_input">
+              
+               
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span style="margin:0 1em">Descripcion: </span>
+                    <div class="wrapper_input_text" style="width:100%">
+                        <!--<div class="fa-solid fa-location-dot icon"></div>-->
+                        <textbox  maxlength="400" 
+                            value="@bind(vm.vacante.vacDescripcion)" 
+                            rows="4"
+                            class="input_text" 
+                         />
+                    </div>
+                </div>
+                
+            </div>
+            <div class="container_row_input">
+              
+               
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span style="margin:0 1em">Experiencia: </span>
+                    <div class="wrapper_input_text" style="width:100%">
+                        <!--<div class="fa-solid fa-location-dot icon"></div>-->
+                        <textbox  maxlength="100" 
+                            value="@bind(vm.vacante.vacExperiencia)" 
+                            
+                            class="input_text" 
+                         />
+                    </div>
+                </div>
+                
+            </div>
+            <div class="container_row_input">
+              
+               
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span style="margin:0 1em">Requerido: </span>
+                    <div class="wrapper_input_text" style="width:100%">
+                        <!--<div class="fa-solid fa-location-dot icon"></div>-->
+                        <textbox  maxlength="100" 
+                            value="@bind(vm.vacante.vacReferencia)" 
+                            
+                            class="input_text" 
+                         />
+                    </div>
+                </div>
+                
+            </div>
+            <div class="container_row_input">
+              
+               
+                <div class="wrapper_input_mod" style="flex:auto">
+                    <span style="margin:0 1em">Estado vacante: </span>
+                    <div class="wrapper_input_text" style="width:100%">
+                        <!--<div class="fa-solid fa-location-dot icon"></div>-->
+                        <radiogroup  orient="horizontal"
+                                class="radio_group" 
+                                selectedItem="@bind(vm.vacante.vacEstado)"
+                                style="display:flex;gap:10px;"
+                            >                   
+                                <radio label="ACTIVA" value="${true}"/>                            
+                                <radio label="INACTIVA"  value="${false}"/>                          
+                            </radiogroup>
+                    </div>
+                </div>
+                
+            </div>
+           
+        </div>
+
+       
+        <div style="display:flex;justify-content:flex-end;">
+            <button class="btn_modal" style="width:300px"
+                    onClick="@command('guardar')"
+                    tooltiptext="Guardar Registro">
+                Guardar
+            </button>
+        </div>
+    </div>
+   
+                    
+                  
+</window>

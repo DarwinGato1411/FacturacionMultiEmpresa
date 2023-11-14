@@ -18,7 +18,7 @@
         <timer delay="300000" repeats="true" onTimer="@command('refrescarPagina')" />
         <tabbox  width="100%"  tabscroll="true" >
             <tabs >
-                <tab label="Emitir factura" sclass="menutabs"/>
+                <tab label="Generar pedido" sclass="menutabs"/>
             </tabs>
 
             <tabpanels >
@@ -145,9 +145,10 @@
                                             class="radio_group"  
                                             selectedItem="@bind(vm.tipoVenta)" 
                                             onCheck="@command('verificarNumeracion')">
-                                            <radio label="Factura" value="FACT"/>
-                                            <radio label="Proforma" value="PROF"/>
-                                            <!--<radio label="Nota venta" value="NTV"/>-->
+                                                <radio label="Pedido" value="PED"/>
+                                            <!--<radio label="Factura" value="FACT"/>-->
+                                            <!--<radio label="Proforma" value="PROF"/>-->
+                                        
                                         </radiogroup>
                                     </div>
                                 </div>

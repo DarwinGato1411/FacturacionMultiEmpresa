@@ -17,6 +17,40 @@
 
                 <div class="body">
                     <div class="container_row_input">
+                        
+                    
+
+                        <div class="wrapper_input_mod">
+                            <span>Activar WhatsApp </span>
+                            <div class="wrapper_input_text">
+                                <radiogroup 
+                                    class="input_group"                                     
+                                    selectedItem="@bind(vm.activaWhatsApp)" 
+                                >
+                                    <space bar="false"  />                        
+                                    <radio label="SI" value="SI"/>
+                                    <space bar="false"  /> 
+                                    <radio label="NO" value="NO"/>
+                                    <space bar="false"  />  
+                                </radiogroup>
+                            </div>
+                        </div>
+                        <div class="wrapper_input_mod">
+                            <!--<span>Modo </span>-->
+                            <div class="wrapper_input_text">
+                                <radiogroup 
+                                    class="input_group" 
+                                    onCheck="@command('ambienteCodigo')"
+                                    selectedItem="@bind(vm.amCodifo)" 
+                                >
+                                    <space bar="false"  />                        
+                                    <radio label="PRUEBAS" value="1"/>
+                                    <space bar="false"  /> 
+                                    <radio label="PRODUCCION" value="2"/>
+                                    <space bar="false"  />  
+                                </radiogroup>
+                            </div>
+                        </div>
                         <div class="wrapper_input_mod">
                             <span>Ruta Base: </span>
                             <div class="wrapper_input_text">
@@ -34,6 +68,10 @@
                                 </combobox> 
                             </div>
                         </div>
+                        
+                    </div>
+                    <div class="container_row_input">
+                        
                         <div class="wrapper_input_mod">
                             <span>RUC: </span>
                             <div class="wrapper_input_text">
@@ -49,27 +87,12 @@
                         </div>
                     
 
-                        <div class="wrapper_input_mod">
-                            <span>Modo: </span>
-                            <div class="wrapper_input_text">
-                                <radiogroup 
-                                    class="input_group" 
-                                    onCheck="@command('ambienteCodigo')"
-                                    selectedItem="@bind(vm.amCodifo)" 
-                                >
-                                    <space bar="false"  />                        
-                                    <radio label="PRUEBAS" value="1"/>
-                                    <space bar="false"  /> 
-                                    <radio label="PRODUCCION" value="2"/>
-                                    <space bar="false"  />  
-                                </radiogroup>
-                            </div>
-                        </div>
+                        
 
-                    </div>
+<!--                    </div>
 
                     <div class="container_row_input">
-                    
+                    -->
                         <div class="wrapper_input_mod">
                             <span>Nombre Comercial: </span>
                             <div class="wrapper_input_text">
@@ -94,8 +117,9 @@
                                 />
                             </div>
                         </div>
+                        
                     
-                        <div class="wrapper_input_mod">
+<!--                        <div class="wrapper_input_mod">
                             <span>LLeva Contabilidad: </span>
                             <div class="wrapper_input_text">
                                 <radiogroup 
@@ -109,12 +133,12 @@
                                     <space bar="false"  /> 
                                 </radiogroup> 
                             </div>
-                        </div>
+                        </div>-->
 
                     </div>
                 </div>
 
-                <div class="body">
+<!--                <div class="body">
                     <div class="wrapper_checkbox">
                         <checkbox 
                             id="chkRM" 
@@ -150,11 +174,11 @@
                         />
 
                     </div>
-                </div>
+                </div>-->
 
                 <div class="body">
                     <div class="container_row_input">
-                        <div class="wrapper_input_mod">
+<!--                        <div class="wrapper_input_mod">
                             <span># Contribuyente Esp: </span>
                             <div class="wrapper_input_text">
                                 <div class="fa-solid fa-user-pen icon"></div>
@@ -165,39 +189,13 @@
                                     tooltiptext="Número de contribuyente" 
                                 />
                             </div>
-                        </div>
-                        <div class="wrapper_input_mod">
-                            <span>Est. SRI: </span>
-                            <div class="wrapper_input_text">
-                                <div class="fa-solid fa-location-dot icon"></div>
-                                <textbox 
-                                    value="@bind(vm.tipoambiente.amEstab)" 
-                                    placeholder="Establecimiento 001"
-                                    onOK="@command('buscarCatastro')"
-                                    class="input_text"
-                                    tooltiptext="Establecimiento asignado por el SRI"
-                                />
-                            </div>
-                        </div>
-                    
-                        <div class="wrapper_input_mod">
-                            <span>Punto Emisión: </span>
-                            <div class="wrapper_input_text">
-                                <div class="fa-solid fa-location-dot icon"></div>
-                                <textbox 
-                                    value="@bind(vm.tipoambiente.amPtoemi)" 
-                                    placeholder="Punto 001"
-                                    onOK="@command('buscarCatastro')"
-                                    class="input_text"
-                                    tooltiptext="Punto de emisión"
-                                />
-                            </div>
-                        </div>
+                        </div>-->
+                        
                     </div>
 
                     <div class="container_row_input">
                     
-                        <div class="wrapper_input_mod">
+<!--                        <div class="wrapper_input_mod">
                             <span>Clave firma: </span>
                             <div class="wrapper_input_text">
                                 <div class="fa-solid fa-key icon"></div>
@@ -209,8 +207,8 @@
                                     tooltiptext="Clave SRI" 
                                 />
                             </div>
-                        </div>
-                        <div class="wrapper_input_mod" style="flex:auto;">
+                        </div>-->
+<!--                        <div class="wrapper_input_mod" style="flex:auto;">
                             <span style="margin:0 0.5em;">Firma Electrónica </span>
                             <div class="wrapper_input_text" style="width:86%;position:relative">
                                 <div class="fa-solid fa-unlock-keyhole icon"></div>
@@ -226,7 +224,7 @@
                                     tooltiptext="Subir archivos"
                                 />
                             </div>
-                        </div>
+                        </div>-->
 
                     </div>
 
@@ -321,7 +319,7 @@
                     </div>
                     
                      <div class="container_row_input">
-                        <div class="wrapper_input_mod">
+<!--                        <div class="wrapper_input_mod">
                         
                             <span style="margin:0 0.5em;">Graba ICE: </span>
                             <div class="wrapper_input_text">
@@ -346,6 +344,33 @@
                                     placeholder="15%"
                                     class="input_text"
                                     style="width:100%;"
+                                />
+                            </div>
+                        </div>-->
+                        <div class="wrapper_input_mod">
+                            <span>Est. SRI: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amEstab)" 
+                                    placeholder="Establecimiento 001"
+                                    onOK="@command('buscarCatastro')"
+                                    class="input_text"
+                                    tooltiptext="Establecimiento asignado por el SRI"
+                                />
+                            </div>
+                        </div>
+                    
+                        <div class="wrapper_input_mod">
+                            <span>Punto Emisión: </span>
+                            <div class="wrapper_input_text">
+                                <div class="fa-solid fa-location-dot icon"></div>
+                                <textbox 
+                                    value="@bind(vm.tipoambiente.amPtoemi)" 
+                                    placeholder="Punto 001"
+                                    onOK="@command('buscarCatastro')"
+                                    class="input_text"
+                                    tooltiptext="Punto de emisión"
                                 />
                             </div>
                         </div>

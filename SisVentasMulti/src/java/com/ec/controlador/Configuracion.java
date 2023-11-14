@@ -66,6 +66,8 @@ public class Configuracion extends SelectorComposer<Component> {
     private Parametrizar parametrizar = new Parametrizar();
     ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
 
+    private String activaWhatsApp = "NO";
+
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
@@ -80,6 +82,7 @@ public class Configuracion extends SelectorComposer<Component> {
                 llevaContabilidad = "SI";
             }
             grabaICE = tipoambiente.getAmGrabaIce() ? "S" : "N";
+            activaWhatsApp = tipoambiente.getAmContactoDirecto() ? "SI" : "NO";
 
         }
     }
@@ -141,6 +144,7 @@ public class Configuracion extends SelectorComposer<Component> {
         servicioTipoAmbiente.modificar(tipoambiente);
 
     }
+
     //subir pdf
     private String filePath;
     byte[] buffer = new byte[1024 * 1024];
@@ -199,7 +203,7 @@ public class Configuracion extends SelectorComposer<Component> {
 
                     return;
                 }
-                filePathImg =  parametrizar.getParPathRecursos() + File.separator + "img" + File.separator;
+                filePathImg = parametrizar.getParPathRecursos() + File.separator + "img" + File.separator;
 
                 File baseDir = new File(filePathImg);
                 if (!baseDir.exists()) {
@@ -231,6 +235,7 @@ public class Configuracion extends SelectorComposer<Component> {
         tipoambiente.setAmTipoEmision("1");
         tipoambiente.setAmEnviocliente("ENVIARCLIENTE");
         tipoambiente.setAmGrabaIce(grabaICE.equals("S") ? Boolean.TRUE : Boolean.FALSE);
+        tipoambiente.setAmContactoDirecto(activaWhatsApp.equals("SI") ? Boolean.TRUE : Boolean.FALSE);
         servicioTipoAmbiente.modificar(tipoambiente);
 
         Clients.showNotification("Información registrada exitosamente",
@@ -305,4 +310,14 @@ public class Configuracion extends SelectorComposer<Component> {
     public void setGrabaICE(String grabaICE) {
         this.grabaICE = grabaICE;
     }
+
+    public String getActivaWhatsApp() {
+        return activaWhatsApp;
+    }
+
+    public void setActivaWhatsApp(String activaWhatsApp) {
+        this.activaWhatsApp = activaWhatsApp;
+    }
+    
+    
 }

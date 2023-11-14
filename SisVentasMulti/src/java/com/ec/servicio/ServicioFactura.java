@@ -233,7 +233,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='FACT' AND f.facNumero IS NOT NULL AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.facNumero DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='PED' AND f.facNumero IS NOT NULL AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.facNumero DESC");
             query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(2);
 //           query.setParameter("codigoUsuario", factura);
@@ -369,7 +369,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliNombre LIKE :cliente AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliNombre LIKE :cliente AND f.facNumero > 0 AND f.facTipo='PED' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("cliente", "%" + cliente + "%");
             query.setParameter("codTipoambiente", codTipoambiente);
@@ -391,7 +391,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumeroText LIKE :facNumeroText AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumeroText LIKE :facNumeroText AND f.facNumero > 0 AND f.facTipo='PED' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("facNumeroText", "%" + numfac + "%");
             query.setParameter("codTipoambiente", codTipoambiente);
@@ -439,7 +439,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoAmbiente ORDER BY f.facNumero DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facNumero > 0 AND f.facTipo='PED' AND f.cod_tipoambiente=:codTipoAmbiente ORDER BY f.facNumero DESC");
             query.setParameter("codTipoAmbiente", codTipoAmbiente);
             query.setMaxResults(400);
 
@@ -529,11 +529,11 @@ public class ServicioFactura {
             em.getTransaction().begin();
             Query query;
             if (!estado.equals("TODO")) {
-                query = em.createQuery("SELECT f FROM Factura f WHERE  f.facEstado=:facEstado AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente");
+                query = em.createQuery("SELECT f FROM Factura f WHERE  f.facEstado=:facEstado AND f.facTipo='PED' AND f.cod_tipoambiente=:codTipoambiente");
                 query.setParameter("facEstado", estado);
                 query.setParameter("codTipoambiente", codTipoambiente);
             } else {
-                query = em.createQuery("SELECT f FROM Factura f WHERE f.cod_tipoambiente=:codTipoambiente AND f.facTipo='FACT' ");
+                query = em.createQuery("SELECT f FROM Factura f WHERE f.cod_tipoambiente=:codTipoambiente AND f.facTipo='PED' ");
                 query.setParameter("codTipoambiente", codTipoambiente);
                 query.setMaxResults(2000);
             }
@@ -556,7 +556,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE  f.facEstado=:facEstado AND f.idCliente=:idCliente AND f.facNumero > 0 AND f.facTipo='FACT' ORDER BY f.facNumero DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE  f.facEstado=:facEstado AND f.idCliente=:idCliente AND f.facNumero > 0 AND f.facTipo='PED' ORDER BY f.facNumero DESC");
 //            query.setMaxResults(2);
             query.setParameter("facEstado", estado);
             query.setParameter("idCliente", cliente);
@@ -660,13 +660,13 @@ public class ServicioFactura {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             if (!estado.equals("TODO")) {
-                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin AND f.facEstado=:facEstado AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.facFecha DESC");
+                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin AND f.facEstado=:facEstado AND f.facTipo='PED' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.facFecha DESC");
                 query.setParameter("inicio", inicio);
                 query.setParameter("fin", fin);
                 query.setParameter("facEstado", estado);
                 query.setParameter("codTipoambiente", codTipoambiente);
             } else {
-                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.facTipo='FACT'  AND f.cod_tipoambiente=:codTipoambiente  ORDER BY f.facFecha DESC");
+                query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.facTipo='PED'  AND f.cod_tipoambiente=:codTipoambiente  ORDER BY f.facFecha DESC");
                 query.setParameter("inicio", inicio);
                 query.setParameter("fin", fin);
                 query.setParameter("codTipoambiente", codTipoambiente);
@@ -691,7 +691,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT' AND f.estadosri <> 'ANULADA' AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumero DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='PED' AND f.estadosri <> 'ANULADA' AND f.cod_tipoambiente=:tipoambiente ORDER BY f.facNumero DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setParameter("tipoambiente", tipoambiente);
@@ -714,7 +714,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='PENDIENTE' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente ORDER BY a.facFecha DESC");
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='PENDIENTE' AND a.facTipo='PED' AND a.cod_tipoambiente=:codTipoambiente ORDER BY a.facFecha DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setParameter("codTipoambiente", codTipoambiente);
@@ -737,7 +737,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='DEVUELTA' AND a.mensajesri='CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri='DEVUELTA' AND a.mensajesri='CLAVE ACCESO REGISTRADA' AND a.facTipo='PED' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setParameter("codTipoambiente", codTipoambiente);
@@ -760,7 +760,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri<>'AUTORIZADO' AND a.estadosri<>'PENDIENTE' AND a.mensajesri<>'CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE a.facFecha BETWEEN :inicio AND :fin AND a.estadosri<>'AUTORIZADO' AND a.estadosri<>'PENDIENTE' AND a.mensajesri<>'CLAVE ACCESO REGISTRADA' AND a.facTipo='PED' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setParameter("codTipoambiente", codTipoambiente);
@@ -783,7 +783,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotalBaseGravaba)) FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT'");
+            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotalBaseGravaba)) FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='PED'");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setMaxResults(400);
@@ -805,7 +805,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotalBaseGravaba)) FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='FACT'");
+            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotalBaseGravaba)) FROM Factura f WHERE f.facFecha BETWEEN :inicio AND :fin AND f.facNumero > 0 AND f.facTipo='PED'");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
             query.setMaxResults(400);
@@ -827,7 +827,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliCedula LIKE :cliCedula AND f.facNumero > 0 AND f.facTipo='FACT' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.idCliente.cliCedula LIKE :cliCedula AND f.facNumero > 0 AND f.facTipo='PED' AND f.cod_tipoambiente=:codTipoambiente ORDER BY f.idFactura DESC");
             query.setMaxResults(400);
             query.setParameter("cliCedula", "%" + valor + "%");
             query.setParameter("codTipoambiente", codTipoambiente);
@@ -1085,7 +1085,7 @@ public class ServicioFactura {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
 
-            query = em.createQuery("SELECT NEW com.ec.untilitario.CompraPromedio( max(f.idProducto.prodNombre),sum(f.detCantidad),(sum(f.detSubtotaldescuentoporcantidad)/ sum(f.detCantidad)), max(f.idProducto.pordCostoVentaFinal),max(f.idFactura.facFecha)) FROM DetalleFactura f WHERE f.idFactura.facFecha BETWEEN :inicio and :fin  AND (f.idFactura.facTipo='NTV' OR f.idFactura.facTipo='FACT') GROUP BY f.idProducto");
+            query = em.createQuery("SELECT NEW com.ec.untilitario.CompraPromedio( max(f.idProducto.prodNombre),sum(f.detCantidad),(sum(f.detSubtotaldescuentoporcantidad)/ sum(f.detCantidad)), max(f.idProducto.pordCostoVentaFinal),max(f.idFactura.facFecha)) FROM DetalleFactura f WHERE f.idFactura.facFecha BETWEEN :inicio and :fin  AND (f.idFactura.facTipo='NTV' OR f.idFactura.facTipo='PED') GROUP BY f.idProducto");
             query.setParameter("inicio", inicio);
             query.setParameter("fin", fin);
 
@@ -1108,7 +1108,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotal)) FROM Factura f WHERE f.facFecha =:inicio AND f.facNumero > 0 AND f.facTipo='FACT' GROUP BY F.facFecha");
+            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotal)) FROM Factura f WHERE f.facFecha =:inicio AND f.facNumero > 0 AND f.facTipo='PED' GROUP BY F.facFecha");
             query.setParameter("inicio", new Date());
 
             query.setMaxResults(400);
@@ -1158,7 +1158,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotal)) FROM Factura f WHERE f.facFecha =:inicio AND f.facNumero > 0 AND f.idUsuario=:idUsuario AND f.facTipo='FACT' GROUP BY F.facFecha");
+            Query query = em.createQuery("SELECT new com.ec.untilitario.Totales(SUM(f.facTotal)) FROM Factura f WHERE f.facFecha =:inicio AND f.facNumero > 0 AND f.idUsuario=:idUsuario AND f.facTipo='PED' GROUP BY F.facFecha");
             query.setParameter("inicio", new Date());
             query.setParameter("idUsuario", usuario);
 
@@ -1183,7 +1183,7 @@ public class ServicioFactura {
             //Connection connection = em.unwrap(Connection.class);
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='FACT' AND f.facNumero IS NOT NULL AND f.cod_tipoambiente=:codTipoambiente AND f.facNumero=:numero ORDER BY f.facNumero DESC");
+            Query query = em.createQuery("SELECT f FROM Factura f WHERE f.facTipo='PED' AND f.facNumero IS NOT NULL AND f.cod_tipoambiente=:codTipoambiente AND f.facNumero=:numero ORDER BY f.facNumero DESC");
             query.setParameter("codTipoambiente", codTipoambiente);
             query.setParameter("numero", numero);
             

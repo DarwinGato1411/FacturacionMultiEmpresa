@@ -71,7 +71,7 @@ public class NuevoProducto {
 
     private String conIva = "S";
     private String conICE = "N";
-    private String esProducto = "P";
+    private String esProducto = "S";
     UserCredential credential = new UserCredential();
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
     private Tipoambiente amb = new Tipoambiente();
@@ -82,6 +82,17 @@ public class NuevoProducto {
     private String filePath;
     byte[] buffer = new byte[1024 * 1024];
     private AImage fotoGeneral = null;
+    
+    
+    //subir imagen
+    private String filePath2;
+    byte[] buffer2 = new byte[1024 * 1024];
+    private AImage fotoGeneral2 = null;
+    
+    //subir imagen
+    private String filePath3;
+    byte[] buffer3 = new byte[1024 * 1024];
+    private AImage fotoGeneral3 = null;
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") Producto producto, @ContextParam(ContextType.VIEW) Component view) {
@@ -108,6 +119,8 @@ public class NuevoProducto {
             try {
                 System.out.println("PATH" + parametrizar.getParServlet() + File.separator + "img" + File.separator + producto.getProdImagen());
                 fotoGeneral = new AImage("fotoPedido", Imagen_A_Bytes(parametrizar.getParPathRecursos() + File.separator + "img" + File.separator + producto.getProdImagen()));
+                fotoGeneral2 = new AImage("fotoPedido", Imagen_A_Bytes(parametrizar.getParPathRecursos() + File.separator + "img" + File.separator + producto.getProdImagen2()));
+                fotoGeneral3 = new AImage("fotoPedido", Imagen_A_Bytes(parametrizar.getParPathRecursos() + File.separator + "img" + File.separator + producto.getProdImagen3()));
 //                Imagen_A_Bytes(empresa.getIdUsuario().getUsuFoto());
             } catch (FileNotFoundException e) {
                 System.out.println("error imagen " + e.getMessage());
@@ -459,8 +472,8 @@ public class NuevoProducto {
             Integer largo = ((Image) media).getWidth();
             Integer alto = ((Image) media).getHeight();
 
-            if ((largo < 100 || largo > 800) || (alto < 100 || alto > 800)) {
-                Clients.showNotification("El alto y ancho de la imagen debe ser entre 100px y 800px (pixeles) ",
+            if ((largo < 100 || largo > 1200) || (alto < 100 || alto > 1200)) {
+                Clients.showNotification("El alto y ancho de la imagen debe ser entre 100px y 1200px (pixeles) ",
                         Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
                 return;
             }
@@ -485,7 +498,7 @@ public class NuevoProducto {
             producto.setProdImagen(media.getName().toLowerCase());
             producto.setProdServletUrl(parametrizar.getParServlet() + "/img/" + media.getName().toLowerCase());
             System.out.println("PATH SUBIR " + filePath + File.separator + media.getName());
-            fotoGeneral = new AImage("fotoPedido", Imagen_A_Bytes(filePath + File.separator + media.getName()));
+            fotoGeneral = new AImage("fotoPedido", Imagen_A_Bytes(filePath + File.separator + media.getName().toLowerCase()));
 
         }
     }
@@ -522,4 +535,103 @@ public class NuevoProducto {
         this.fotoGeneral = fotoGeneral;
     }
 
+    public AImage getFotoGeneral2() {
+        return fotoGeneral2;
+    }
+
+    public void setFotoGeneral2(AImage fotoGeneral2) {
+        this.fotoGeneral2 = fotoGeneral2;
+    }
+
+    public AImage getFotoGeneral3() {
+        return fotoGeneral3;
+    }
+
+    public void setFotoGeneral3(AImage fotoGeneral3) {
+        this.fotoGeneral3 = fotoGeneral3;
+    }
+
+     @Command
+    @NotifyChange({"fileContent", "empresa", "fotoGeneral2"})
+    public void subirImagen2() throws InterruptedException, IOException {
+
+        org.zkoss.util.media.Media media = Fileupload.get();
+        if (media instanceof org.zkoss.image.Image) {
+            String nombre = media.getName();
+            Integer largo = ((Image) media).getWidth();
+            Integer alto = ((Image) media).getHeight();
+
+            if ((largo < 100 || largo > 1200) || (alto < 100 || alto > 1200)) {
+                Clients.showNotification("El alto y ancho de la imagen debe ser entre 100px y 1200px (pixeles) ",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                return;
+            }
+
+            if (media.getByteData().length > 10 * 1024 * 1024) {
+                Messagebox.show("El arhivo seleccionado sobrepasa el tamaño de 10Mb.\n Por favor seleccione un archivo más pequeño.", "Atención", Messagebox.OK, Messagebox.ERROR);
+
+                return;
+            }
+
+            String reportFile = Executions.getCurrent().getDesktop().getWebApp()
+                    .getRealPath("/reportes");
+            filePath2 = parametrizar.getParPathRecursos() + File.separator + "img" + File.separator;
+
+            File baseDir = new File(filePath2);
+            if (!baseDir.exists()) {
+                baseDir.mkdirs();
+            }
+            Files.copy(new File(filePath2 + File.separator + media.getName().toLowerCase()),
+                    media.getStreamData());
+
+            producto.setProdImagen2(media.getName().toLowerCase());
+            producto.setProdServletUrl1(parametrizar.getParServlet() + "/img/" + media.getName().toLowerCase());
+            System.out.println("PATH SUBIR " + filePath2 + File.separator + media.getName());
+            fotoGeneral2 = new AImage("fotoPedido", Imagen_A_Bytes(filePath2 + File.separator + media.getName().toLowerCase()));
+
+        }
+    }
+    
+    
+      @Command
+    @NotifyChange({"fileContent", "empresa", "fotoGeneral3"})
+    public void subirImagen3() throws InterruptedException, IOException {
+
+        org.zkoss.util.media.Media media = Fileupload.get();
+        if (media instanceof org.zkoss.image.Image) {
+            String nombre = media.getName();
+            Integer largo = ((Image) media).getWidth();
+            Integer alto = ((Image) media).getHeight();
+
+            if ((largo < 100 || largo > 1200) || (alto < 100 || alto > 1200)) {
+                Clients.showNotification("El alto y ancho de la imagen debe ser entre 100px y 1200px (pixeles) ",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                return;
+            }
+
+            if (media.getByteData().length > 10 * 1024 * 1024) {
+                Messagebox.show("El arhivo seleccionado sobrepasa el tamaño de 10Mb.\n Por favor seleccione un archivo más pequeño.", "Atención", Messagebox.OK, Messagebox.ERROR);
+
+                return;
+            }
+
+            String reportFile = Executions.getCurrent().getDesktop().getWebApp()
+                    .getRealPath("/reportes");
+            filePath3 = parametrizar.getParPathRecursos() + File.separator + "img" + File.separator;
+
+            File baseDir = new File(filePath3);
+            if (!baseDir.exists()) {
+                baseDir.mkdirs();
+            }
+            Files.copy(new File(filePath3 + File.separator + media.getName().toLowerCase()),
+                    media.getStreamData());
+
+            producto.setProdImagen3(media.getName().toLowerCase());
+            producto.setProdServletUrl2(parametrizar.getParServlet() + "/img/" + media.getName().toLowerCase());
+            System.out.println("PATH SUBIR " + filePath3 + File.separator + media.getName());
+            fotoGeneral3 = new AImage("fotoPedido", Imagen_A_Bytes(filePath3 + File.separator + media.getName().toLowerCase()));
+
+        }
+    }
+    
 }

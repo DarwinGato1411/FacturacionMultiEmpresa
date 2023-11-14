@@ -4,6 +4,7 @@
  */
 package com.ec.controlador;
 
+import com.ec.entidad.Producto;
 import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
 import com.ec.seguridad.EnumSesion;
@@ -45,6 +46,7 @@ public class GestionUsuarios {
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
 
     private Boolean esVisisible = Boolean.FALSE;
+    private Boolean amModo = Boolean.FALSE;
 
     public GestionUsuarios() {
 
@@ -85,7 +87,7 @@ public class GestionUsuarios {
     @NotifyChange("listaUsuarios")
     public void agregarUsario() {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/usuario.zul", null, null);
+                "/nuevo/usuario.zul", null, null);
         window.doModal();
         cosultarUsuarios("");
     }
@@ -96,12 +98,11 @@ public class GestionUsuarios {
         final HashMap<String, Usuario> map = new HashMap<String, Usuario>();
         map.put("usuario", usuario);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevoadmin/usuario.zul", null, map);
+                "/nuevoadmin/usuario.zul", null, map);
         window.doModal();
         cosultarUsuarios("");
     }
 
-    
     @Command
     public void descargarFirma(@BindingParam("valor") Tipoambiente amb) {
 
@@ -119,7 +120,7 @@ public class GestionUsuarios {
         }
 
     }
-    
+
     public UserCredential getCredential() {
         return credential;
     }
@@ -158,6 +159,40 @@ public class GestionUsuarios {
 
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
+    }
+
+    @Command
+    @NotifyChange({"listaTipoambientes", "nombreUsuario"})
+    public void activarDesactivar(@BindingParam("valor") Tipoambiente valor) {
+        servicioTipoAmbiente.modificar(valor);
+    }
+
+    public Boolean getAmModo() {
+        return amModo;
+    }
+
+    public void setAmModo(Boolean amModo) {
+        this.amModo = amModo;
+    }
+
+    @Command
+    @NotifyChange({"listaTipoambientes"})
+    public void activarModo(@BindingParam("valor") Tipoambiente valor) {
+        /*COLOCA EL ANTERIOR EN FALSO*/
+        String amCOd = "1";
+        valor.setAmEstado(Boolean.FALSE);
+        servicioTipoAmbiente.modificar(valor);
+
+        if (valor.getAmCodigo().equals("1")) {
+            amCOd = "2";
+        } else {
+            amCOd = "1";
+        }
+        Tipoambiente tipoambiente = servicioTipoAmbiente.findByIdUsuario(valor, amCOd);
+        /*COLOCA EL NUEVO AMBIENTE EN ACTIVO*/
+        tipoambiente.setAmEstado(Boolean.TRUE);
+        servicioTipoAmbiente.modificar(tipoambiente);
+        consultarUsuarios();
     }
 
 }

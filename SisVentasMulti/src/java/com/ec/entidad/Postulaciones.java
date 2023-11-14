@@ -41,9 +41,9 @@ public class Postulaciones implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date posFecha;
     @Column(name = "pos_aprobado")
-    private Short posAprobado;
+    private Boolean posAprobado;
     @Column(name = "pos_estado")
-    private Short posEstado;
+    private Boolean posEstado;
     @Column(name = "pos_observacion")
     private String posObservacion;
     @Column(name = "pos_experiencia")
@@ -82,19 +82,19 @@ public class Postulaciones implements Serializable {
         this.posFecha = posFecha;
     }
 
-    public Short getPosAprobado() {
+    public Boolean getPosAprobado() {
         return posAprobado;
     }
 
-    public void setPosAprobado(Short posAprobado) {
+    public void setPosAprobado(Boolean posAprobado) {
         this.posAprobado = posAprobado;
     }
 
-    public Short getPosEstado() {
+    public Boolean getPosEstado() {
         return posEstado;
     }
 
-    public void setPosEstado(Short posEstado) {
+    public void setPosEstado(Boolean posEstado) {
         this.posEstado = posEstado;
     }
 

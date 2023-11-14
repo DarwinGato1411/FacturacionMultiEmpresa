@@ -73,11 +73,11 @@ public class MenuOpciones extends SelectorComposer<Component> {
             if (credential.getUsuarioSistema().getUsuNivel() == 1) {
                 menuEmitirfact.setVisible(Boolean.FALSE);
                 menuVentas.setVisible(Boolean.FALSE);
-                menuCompras.setVisible(Boolean.FALSE);
-                menuGuias.setVisible(Boolean.FALSE);
+//                menuCompras.setVisible(Boolean.FALSE);
+//                menuGuias.setVisible(Boolean.FALSE);
                 menuKardex.setVisible(Boolean.FALSE);
-                menuReportes.setVisible(Boolean.FALSE);
-                btnAdministarVenta.setVisible(Boolean.FALSE);
+//                menuReportes.setVisible(Boolean.FALSE);
+//                btnAdministarVenta.setVisible(Boolean.FALSE);
                 btnHisDeclaraciones.setVisible(Boolean.FALSE);
 
             } else {
@@ -332,6 +332,14 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Listen("onClick = #btnConfiguracion")
     public void btnConfiguracion() {
         Executions.sendRedirect("/administrar/configuracion.zul");
+    }
+    @Listen("onClick = #btnVacante")
+    public void btnVacante() {
+        Executions.sendRedirect("/empleo/admvacante.zul");
+    }
+    @Listen("onClick = #btnPostulaciones")
+    public void btnPostulaciones() {
+        Executions.sendRedirect("/empleo/postulaciones.zul");
     }
 
     @Listen("onClick = #btnCierreCajaUsu")

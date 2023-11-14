@@ -64,7 +64,7 @@ public class Vacante implements Serializable {
     @Column(name = "vac_nombre_imagen")
     private String vacNombreImagen;
     @Column(name = "vac_estado")
-    private Short vacEstado;
+    private Boolean vacEstado;
     @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
     @ManyToOne
     private Tipoambiente codTipoambiente;
@@ -166,11 +166,11 @@ public class Vacante implements Serializable {
         this.vacNombreImagen = vacNombreImagen;
     }
 
-    public Short getVacEstado() {
+    public Boolean getVacEstado() {
         return vacEstado;
     }
 
-    public void setVacEstado(Short vacEstado) {
+    public void setVacEstado(Boolean vacEstado) {
         this.vacEstado = vacEstado;
     }
 

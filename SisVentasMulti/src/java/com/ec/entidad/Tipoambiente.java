@@ -224,6 +224,9 @@ public class Tipoambiente implements Serializable {
     @Column(name = "am_servelet_img")
     private String amServeletImg;
 
+    @Column(name = "am_contacto_directo")
+    private Boolean amContactoDirecto;
+
     public Tipoambiente() {
     }
 
@@ -792,6 +795,13 @@ public class Tipoambiente implements Serializable {
     public void setAmActivo(Boolean amActivo) {
         this.amActivo = amActivo;
     }
-    
-    
+
+    public Boolean getAmContactoDirecto() {
+        return amContactoDirecto==null?Boolean.FALSE:amContactoDirecto;
+    }
+
+    public void setAmContactoDirecto(Boolean amContactoDirecto) {
+        this.amContactoDirecto = amContactoDirecto;
+    }
+
 }
