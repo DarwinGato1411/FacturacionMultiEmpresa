@@ -57,7 +57,7 @@ public class FacturaDao {
     private String facPorcentajeIva;
     private String llevarContabilidad;
     private List<DetFacturaDao> detFacturaDao;
-    private InfoAutoriza infoAutoriza;
+    private InfoAutorizaDao infoAutoriza;
     private String xmlAutorizado;
    
     
@@ -389,11 +389,11 @@ public class FacturaDao {
         this.llevarContabilidad = llevarContabilidad;
     }
 
-    public InfoAutoriza getInfoAutoriza() {
+    public InfoAutorizaDao getInfoAutoriza() {
         return infoAutoriza;
     }
 
-    public void setInfoAutoriza(InfoAutoriza infoAutoriza) {
+    public void setInfoAutoriza(InfoAutorizaDao infoAutoriza) {
         this.infoAutoriza = infoAutoriza;
     }
 

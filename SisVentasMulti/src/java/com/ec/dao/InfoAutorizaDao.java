@@ -9,7 +9,7 @@ package com.ec.dao;
  *
  * @author Darwin
  */
-public class InfoAutoriza {
+public class InfoAutorizaDao {
 
     private String rutaArchivo;
     private String rutaFirma;

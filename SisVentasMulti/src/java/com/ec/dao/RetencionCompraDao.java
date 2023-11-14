@@ -33,7 +33,7 @@ public class RetencionCompraDao {
     private boolean amRimpe;
     private boolean amGeneral;
     private List<DetRetencionCompraDao> detRetencion;
-    private InfoAutoriza infoAutoriza;
+    private InfoAutorizaDao infoAutoriza;
 
     public Date getRcoFecha() {
         return rcoFecha;
@@ -179,11 +179,11 @@ public class RetencionCompraDao {
         this.rcoSecuencial = rcoSecuencial;
     }
 
-    public InfoAutoriza getInfoAutoriza() {
+    public InfoAutorizaDao getInfoAutoriza() {
         return infoAutoriza;
     }
 
-    public void setInfoAutoriza(InfoAutoriza infoAutoriza) {
+    public void setInfoAutoriza(InfoAutorizaDao infoAutoriza) {
         this.infoAutoriza = infoAutoriza;
     }
 
