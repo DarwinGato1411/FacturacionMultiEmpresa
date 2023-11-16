@@ -14,7 +14,7 @@ import com.ec.entidad.NotaCreditoDebito;
  */
 public class NotaCreditoMapper {
     
-    public static NotaCreditoDebito daoToRetencion(NotaCreditoDebitoDao valor) {
+    public static NotaCreditoDebito daoToEntity(NotaCreditoDebitoDao valor) {
         NotaCreditoDebito respuesta = new NotaCreditoDebito();
         respuesta.setFacFecha(valor.getFacFecha());
         respuesta.setRazonSocialComprador(valor.getRazonSocialComprador());
