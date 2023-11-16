@@ -123,6 +123,10 @@ public class RetencionCompra implements Serializable {
     @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
     @ManyToOne
     private Tipoambiente codTipoambiente;
+    @Column(name = "prov_nombre")
+    private String provNombre;
+    @Column(name = "provCedula")
+    private String provCedula;
 
     public RetencionCompra() {
     }
@@ -319,6 +323,24 @@ public class RetencionCompra implements Serializable {
     public void setRcoBaseGravaIva(BigDecimal rcoBaseGravaIva) {
         this.rcoBaseGravaIva = rcoBaseGravaIva;
     }
+
+    public String getProvNombre() {
+        return provNombre;
+    }
+
+    public void setProvNombre(String provNombre) {
+        this.provNombre = provNombre;
+    }
+
+    public String getProvCedula() {
+        return provCedula;
+    }
+
+    public void setProvCedula(String provCedula) {
+        this.provCedula = provCedula;
+    }
+
+ 
 
     @Override
     public boolean equals(Object object) {

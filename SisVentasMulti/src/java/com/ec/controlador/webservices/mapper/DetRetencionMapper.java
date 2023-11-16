@@ -5,33 +5,28 @@
  */
 package com.ec.controlador.webservices.mapper;
 
-import com.ec.dao.RetencionCompraDao;
-import com.ec.entidad.RetencionCompra;
-import java.math.BigDecimal;
+import com.ec.dao.DetRetencionCompraDao;
+import com.ec.entidad.DetalleRetencionCompra;
 
 /**
  *
  * @author Darwin
  */
-public class RetencionCompraMapper {
+public class DetRetencionMapper {
 
-    public static RetencionCompra daoToRetencion(RetencionCompraDao valor) {
-        RetencionCompra respuesta = new RetencionCompra();
-        respuesta.setRcoDetalle("COMPRA DE MERCADERIA");
-        respuesta.setRcoIva(Boolean.FALSE);
-        respuesta.setRcoPorcentajeIva(12);
-        respuesta.setRcoPuntoEmision(valor.getAmPtoemi());
-        respuesta.setRcoSecuencial(valor.getRcoSecuencial());
-        respuesta.setRcoSerie("1");
-        respuesta.setRcoValorRetencionIva(BigDecimal.ZERO);
-        respuesta.setCabFechaEmision(valor.getRcoFecha());
-        respuesta.setDrcEstadosri("PENDIENTE");        
-        respuesta.setRcoFecha(valor.getRcoFecha());
-        respuesta.setRcoSecuencialText(valor.getRcoSecuencialText());
-        respuesta.setRcoSecuencial(valor.getRcoSecuencial());
-        respuesta.setProvNombre(valor.getProvNombre());
-        respuesta.setProvCedula(valor.getProvCedula());
-        
+    public static DetalleRetencionCompra daoToRetencion(DetRetencionCompraDao valor) {
+        DetalleRetencionCompra respuesta = new DetalleRetencionCompra();
+        respuesta.setDrcBaseImponible(valor.getDrcBaseImponible());
+        respuesta.setDrcPorcentaje(valor.getDrcPorcentaje());
+        respuesta.setDrcValorRetenido(valor.getDrcValorRetenido());
+
+        // respuesta.setTireCodigo("1");
+        respuesta.setDrcCodImpuestoAsignado(valor.getDrcCodImpuestoAsignado());
+        // respuesta.setIdTipoivaretencion(valor.get());
+        respuesta.setDrcDescripcion("IVA");
+
+        respuesta.setDrcTipoRegistro("IVA");
+
         return respuesta;
     }
 

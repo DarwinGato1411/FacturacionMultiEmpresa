@@ -10,9 +10,10 @@ package com.ec.controlador.webservices;
  * @author Darwin
  */
 import com.ec.controlador.ListaFacturas;
-import com.ec.controlador.procesar.ProcesarDocumentos;
 import com.ec.controlador.webservices.mapper.DetFacturaMapper;
+import com.ec.controlador.webservices.mapper.DetRetencionMapper;
 import com.ec.controlador.webservices.mapper.FacturaMapper;
+import com.ec.controlador.webservices.mapper.RetencionCompraMapper;
 import com.ec.dao.DetFacturaDao;
 import com.ec.dao.DetRetencionCompraDao;
 import com.ec.dao.FacturaDao;
@@ -24,12 +25,13 @@ import com.ec.dao.response.FacturaResponse;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.DetalleRetencionCompra;
 import com.ec.entidad.Factura;
-import com.ec.entidad.Tipoambiente;
+import com.ec.entidad.RetencionCompra;
 import com.ec.servicio.ServicioDetalleFactura;
 import com.ec.servicio.ServicioDetalleRetencionCompra;
 import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioRetencionCompra;
-import com.ec.servicio.ServicioTipoAmbiente;
+import com.ec.servicio.ServicioTipoIvaRetencion;
+import com.ec.servicio.ServicioTipoRetencion;
 import com.ec.untilitario.ArchivoUtils;
 
 import com.ec.untilitario.MailerClass;
@@ -40,28 +42,16 @@ import ec.gob.sri.comprobantes.ws.aut.Autorizacion;
 import ec.gob.sri.comprobantes.ws.aut.RespuestaComprobante;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import com.ec.untilitario.AutorizarDocumentosApi;
-import com.ec.untilitario.AutorizarDocumentosApi;
-import com.ec.untilitario.DetalleRetencionCompraDao;
 
-import net.sf.jasperreports.engine.JRException;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Path("/autorizar")
@@ -71,115 +61,58 @@ public class ServiciosRest {
     ServicioDetalleFactura servicioDetalleFactura = new ServicioDetalleFactura();
     ServicioRetencionCompra servicioRetencion = new ServicioRetencionCompra();
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
+    ServicioTipoRetencion servicioTipoRetencion = new ServicioTipoRetencion();
+    ServicioTipoIvaRetencion servicioTipoIvaRetencion = new ServicioTipoIvaRetencion();
 
-    @GET
-    @Path("/modelo/{codigo}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public FacturaDao getFacturas(@PathParam("codigo") Integer codigo) {
-
-        Factura recup = servicioFactura.findFirIdFact(codigo);
-        FacturaDao facturaDao = new FacturaDao();
-        facturaDao.setFacNumero(recup.getFacNumero());
-        List<DetalleFactura> detalle = servicioDetalleFactura.findDetalleForIdFactuta(recup);
-        List<DetFacturaDao> detalleDao = new ArrayList<>();
-        detalle.forEach((detalleFactura) -> {
-            detalleDao.add(DetFacturaMapper.facturaToDao(detalleFactura));
-        });
-        facturaDao.setDetFacturaDao(detalleDao);
-        InfoAutorizaDao autoriza = new InfoAutorizaDao();
-        autoriza.setRutaArchivo("D:\\\\DOCUMENTOSRI\\XML\\");
-        autoriza.setRutaFirma("D:\\DOCUMENTOSRI\\FIRMA\\DarwinMorocho2022-2023.p12");
-        autoriza.setPasswordFirma("Dereckandre02");
-        facturaDao.setInfoAutoriza(autoriza);
-        facturaDao.setAmCodigo("1");
-        facturaDao.setLlevarContabilidad("NO");
-        facturaDao.setTipoIdentificacionComprador("05");
-        facturaDao.setIdentificacionComprador("1718264839");
-        facturaDao.setRazonSocialComprador("Darwin Morocho");
-        facturaDao.setDireccionComprador("Gonzalez Suarez");
-        facturaDao.setGrabaICE(Boolean.FALSE);
-        facturaDao.setAgenteRetencion(Boolean.FALSE);
-        facturaDao.setRimpePolpular(Boolean.FALSE);
-        facturaDao.setRimpeEmprendedor(Boolean.FALSE);
-        facturaDao.setRegimenGeneral(Boolean.FALSE);
-        facturaDao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
-        facturaDao.setRazonSocialEmpresa("Darwin Morocho");
-        facturaDao.setNombreComercialEmpresa("DECKXEL");
-        facturaDao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
-        facturaDao.setRucEmpresa("1718264839001");
-        facturaDao.setFacTarifaIce(BigDecimal.ZERO);
-//        System.out.println("valor "+recup.getEstadosri());
-        return facturaDao;
-
-    }
-
-    @GET
-    @Path("/factura-enviar/{codigo}/{numero}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaDocumentos getFacturas(@PathParam("codigo") Integer codigo, @PathParam("numero") Integer numero) {
-        System.out.println("codigo " + codigo + " numero " + numero);
-        RespuestaDocumentos respuesta = new RespuestaDocumentos("PROCESO CORRECTO", "VALIDO");
-        ProcesarDocumentos documentos = new ProcesarDocumentos(codigo, numero);
-        try {
-
-            System.out.println("INGRESA LA SERVICIO DE FACTURAS");
-            respuesta.setDescripcion(documentos.autorizarEnLote());
-        } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
-            respuesta.setDescripcion(e.getMessage());
-            respuesta.setEstado("ERROR");
-        }
-
-        return respuesta;
-    }
-
-    @POST
-    @Path("/factura/")
-    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
-    public FacturaDao getReenviarFacturas(@RequestBody FacturaDao prod) throws Exception {
-
-        FacturaResponse facturaResponse = new FacturaResponse();
-        Factura recup = servicioFactura.findByNumero(prod.getFacNumero());
-//        System.out.println("valor "+recup.getEstadosri());
-        FacturaDao dao = FacturaMapper.facturaToDao(recup);
-        List<DetalleFactura> detalle = servicioDetalleFactura.findDetalleForIdFactuta(recup);
-        List<DetFacturaDao> detalleDao = new ArrayList<>();
-        detalle.forEach((detalleFactura) -> {
-            DetFacturaDao dao1 = DetFacturaMapper.facturaToDao(detalleFactura);
-            dao1.setCodigoProducto("05555");
-            dao1.setTieneSubsidio(Boolean.FALSE);
-            detalleDao.add(dao1);
-        });
-        dao.setDetFacturaDao(detalleDao);
-        InfoAutorizaDao autoriza = new InfoAutorizaDao();
-        autoriza.setRutaArchivo("D:\\\\DOCUMENTOSRI\\XML\\");
-        autoriza.setRutaFirma("D:\\DOCUMENTOSRI\\FIRMA\\DarwinMorocho2022-2023.p12");
-        autoriza.setPasswordFirma("Dereckandre02");
-        dao.setInfoAutoriza(autoriza);
-        dao.setAmCodigo("1");
-        dao.setLlevarContabilidad("NO");
-        dao.setTipoIdentificacionComprador("05");
-        dao.setIdentificacionComprador("1718264839");
-        dao.setRazonSocialComprador("Darwin Morocho");
-        dao.setDireccionComprador("Gonzalez Suarez");
-        dao.setGrabaICE(Boolean.FALSE);
-        dao.setAgenteRetencion(Boolean.FALSE);
-        dao.setRimpePolpular(Boolean.FALSE);
-        dao.setRimpeEmprendedor(Boolean.FALSE);
-        dao.setRegimenGeneral(Boolean.FALSE);
-        dao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
-        dao.setRazonSocialEmpresa("Darwin Morocho");
-        dao.setNombreComercialEmpresa("DECKXEL");
-        dao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
-        dao.setRucEmpresa("1718264839001");
-        dao.setFacTarifaIce(BigDecimal.ZERO);
-        return dao;
-    }
-
+//
+//    @POST
+//    @Path("/factura/")
+//    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+//    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+//    public FacturaDao getReenviarFacturas(@RequestBody FacturaDao prod) throws Exception {
+//
+//        FacturaResponse facturaResponse = new FacturaResponse();
+//        Factura recup = servicioFactura.findByNumero(prod.getFacNumero());
+////        System.out.println("valor "+recup.getEstadosri());
+//        FacturaDao dao = FacturaMapper.facturaToDao(recup);
+//        List<DetalleFactura> detalle = servicioDetalleFactura.findDetalleForIdFactuta(recup);
+//        List<DetFacturaDao> detalleDao = new ArrayList<>();
+//        detalle.forEach((detalleFactura) -> {
+//            DetFacturaDao dao1 = DetFacturaMapper.facturaToDao(detalleFactura);
+//            dao1.setCodigoProducto("05555");
+//            dao1.setTieneSubsidio(Boolean.FALSE);
+//            detalleDao.add(dao1);
+//        });
+//        dao.setDetFacturaDao(detalleDao);
+//        InfoAutorizaDao autoriza = new InfoAutorizaDao();
+//        autoriza.setRutaArchivo("D:\\\\DOCUMENTOSRI\\XML\\");
+//        autoriza.setRutaFirma("D:\\DOCUMENTOSRI\\FIRMA\\DarwinMorocho2022-2023.p12");
+//        autoriza.setPasswordFirma("Dereckandre02");
+//        dao.setInfoAutoriza(autoriza);
+//        dao.setAmCodigo("1");
+//        dao.setLlevarContabilidad("NO");
+//        dao.setTipoIdentificacionComprador("05");
+//        dao.setIdentificacionComprador("1718264839");
+//        dao.setRazonSocialComprador("Darwin Morocho");
+//        dao.setDireccionComprador("Gonzalez Suarez");
+//        dao.setGrabaICE(Boolean.FALSE);
+//        dao.setAgenteRetencion(Boolean.FALSE);
+//        dao.setRimpePolpular(Boolean.FALSE);
+//        dao.setRimpeEmprendedor(Boolean.FALSE);
+//        dao.setRegimenGeneral(Boolean.FALSE);
+//        dao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
+//        dao.setRazonSocialEmpresa("Darwin Morocho");
+//        dao.setNombreComercialEmpresa("DECKXEL");
+//        dao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
+//        dao.setRucEmpresa("1718264839001");
+//        dao.setFacTarifaIce(BigDecimal.ZERO);
+//        return dao;
+//    }
     @POST
     @Path("/factura-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+
     public FacturaResponse getEnviarFacturas(@RequestBody FacturaDao prod) throws Exception {
 
         FacturaResponse facturaResponse = new FacturaResponse();
@@ -452,23 +385,6 @@ public class ServiciosRest {
         return facturaResponse;
     }
 
-    @GET
-    @Path("/factura-reenviar/{codigo}/{numero}")
-    public RespuestaDocumentos getReenviarFacturas(@PathParam("codigo") Integer codigo, @PathParam("numero") Integer numero) {
-
-        RespuestaDocumentos respuesta = new RespuestaDocumentos("PROCESO CORRECTO", "VALIDO");
-        ProcesarDocumentos documentos = new ProcesarDocumentos(codigo, numero);
-        try {
-
-            System.out.println("INGRESA LA SERVICIO DE FACTURAS");
-            respuesta.setDescripcion(documentos.reenviarEnLote());
-        } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
-            respuesta.setDescripcion(e.getMessage());
-            respuesta.setEstado("ERROR");
-        }
-
-        return respuesta;
-    }
 
     /*encriptar desencriptar*/
     @POST
@@ -503,28 +419,6 @@ public class ServiciosRest {
 //        System.out.println(encryptedString);
         System.out.println(decryptedString);
         return decryptedString;
-    }
-
-    @POST
-    @Path("/notaventa-enviar/")
-    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
-    public FacturaResponse getNotaVenta(@RequestBody FacturaDao prod) throws Exception {
-
-        FacturaResponse facturaResponse = new FacturaResponse();
-        prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
-        Factura factura = FacturaMapper.daoToFactura(prod);
-        servicioFactura.crear(factura);
-
-        DetalleFactura detalleFactura = new DetalleFactura();
-
-        for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
-            detalleFactura = new DetalleFactura();
-            detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
-            detalleFactura.setIdFactura(factura);
-            servicioDetalleFactura.crear(detalleFactura);
-        }
-        return facturaResponse;
     }
 
     public static String rellenarConCeros(int numero, int longitudDeseada) {
@@ -626,16 +520,16 @@ public class ServiciosRest {
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
-//                            try {
-//                                String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-//                                facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
-//
-//                            } catch (java.text.ParseException ex) {
-//                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
+                            try {
+                                String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+                                facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
+
+                            } catch (java.text.ParseException ex) {
+                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 ////                     
 ////                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-//                            archivoEnvioCliente = api.generaXMLComprobanteRetencionApi(prod, archivoEnvioCliente, nombreArchivo);
+                            archivoEnvioCliente = api.generaXMLComprobanteRetencionApi(prod, archivoEnvioCliente, nombreArchivo);
 ////                            XAdESBESSignature.firmar(archivoEnvioCliente,
 ////                                    nombreArchivoXML,
 ////                                    amb.getAmClaveAccesoSri(),
@@ -649,17 +543,24 @@ public class ServiciosRest {
 ////                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 ////                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
 //                            /*GUARDA EL PATH PDF CREADO*/
-//                            Factura factura = FacturaMapper.daoToFactura(prod);
+                            RetencionCompra retencinon = RetencionCompraMapper.daoToRetencion(prod);
 //                            //RetencionCompraDao retencion=
 //
-//                            servicioFactura.crear(factura);
-//                            DetalleRetencionCompra detalleRetencion;
-//                            for (DetRetencionCompraDao detRetencionDao : prod.getDetRetencionDao()) {
-//                                detalleRetencion = new DetalleRetencionCompra();
-//                                detalleRetencion = DetFacturaMapper.daoToFactura(detFacturaDao);
-//                                detalleRetencion.setIdFactura(factura);
-//                                ServicioDetalleRetencionCompra.crear(detalleFactura);
-//                            }
+                            servicioRetencion.crear(retencinon);
+                            DetalleRetencionCompra detalleRetencion;
+                            for (DetRetencionCompraDao detRetencionDao : prod.getDetRetencion()) {
+                                detalleRetencion = new DetalleRetencionCompra();
+                                if (detRetencionDao.getTireCodigo() != null) {
+                                    detalleRetencion.setTireCodigo(servicioTipoRetencion.findOneTireCodigo(detRetencionDao.getTireCodigo()));
+                                }
+
+                                if (detRetencionDao.getTipivaretValor() != null) {
+                                    detalleRetencion.setIdTipoivaretencion(servicioTipoIvaRetencion.finTipoivaretencion(detRetencionDao.getTipivaretValor()));
+                                }
+                                detalleRetencion = DetRetencionMapper.daoToRetencion(detRetencionDao);
+                                detalleRetencion.setRcoCodigo(retencinon);
+                                servicioDetalleRetencionCompra.crear(detalleRetencion);
+                            }
 //                            /*envia el mail*/
 //                            String[] attachFiles = new String[2];
 //                            attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");

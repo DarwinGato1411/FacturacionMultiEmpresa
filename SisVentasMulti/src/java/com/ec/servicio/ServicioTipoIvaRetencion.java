@@ -5,7 +5,6 @@
 package com.ec.servicio;
 
 import com.ec.entidad.Tipoivaretencion;
-import com.ec.entidad.Tipoivaretencion;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -84,7 +83,7 @@ public class ServicioTipoIvaRetencion {
             Query query = em.createQuery("SELECT a FROM Tipoivaretencion a ORDER BY a.tipivaretDescripcion ASC");
 //           query.setParameter("codigoUsuario", tipoivaretencion);
             listaDatos = (List<Tipoivaretencion>) query.getResultList();
-            
+
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error en lsa consulta tipoivaretencion " + e.getMessage());
@@ -93,5 +92,29 @@ public class ServicioTipoIvaRetencion {
         }
 
         return listaDatos;
+    }
+
+    public Tipoivaretencion finTipoivaretencion(String tipivaretValor) {
+
+        List<Tipoivaretencion> listaDatos = new ArrayList<Tipoivaretencion>();
+        Tipoivaretencion tipoivaretencion = null;
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT a FROM Tipoivaretencion a WHERE a.tipivaretValor=:tipivaretValor ");
+            query.setParameter("tipivaretValor", tipivaretValor);
+            listaDatos = (List<Tipoivaretencion>) query.getResultList();
+            if (listaDatos.size() > 0) {
+                return listaDatos.get(0);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta tipoivaretencion " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return null;
     }
 }
