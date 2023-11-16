@@ -938,7 +938,7 @@ public class AutorizarDocumentosApi {
                             + "            <precioTotalSinImpuesto>" + item.getPrecioTotalSinImpuesto().setScale(2, RoundingMode.FLOOR) + "</precioTotalSinImpuesto>\n"
                             + "            <impuestos>\n"
                             + "                <impuesto>\n"
-                            + "                    <codigo>" + valor.getCodigo() + "</codigo>\n"
+                            + "                    <codigo>" + item.getCodigo() + "</codigo>\n"
                             + "                    <codigoPorcentaje>" + (item.getGrabaIva() ? "2" : "0") + "</codigoPorcentaje>\n"
                             + "                    <tarifa>" + (item.getGrabaIva() ? "12" : "0") + "</tarifa>\n"
                             + "                    <baseImponible>" + item.getBaseImponible().setScale(2, RoundingMode.FLOOR) + "</baseImponible>\n"

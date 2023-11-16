@@ -85,6 +85,7 @@ public class DetalleNotaDebitoCredito implements Serializable {
     @Size(max = 45)
     @Column(name = "det_tipo_venta")
     private String detTipoVenta;
+
     @Column(name = "det_iva")
     private BigDecimal detIva;
     @Column(name = "det_totalconiva")
@@ -112,6 +113,13 @@ public class DetalleNotaDebitoCredito implements Serializable {
     @JoinColumn(name = "id_nota", referencedColumnName = "id_nota")
     @ManyToOne
     private NotaCreditoDebito idNota;
+
+    @Column(name = "codigo_producto")
+    private String codigoProducto;
+    @Column(name = "prod_graba_iva")
+    private Boolean prodGrabaIva;
+    @Column(name = "codigo")
+    private String codigo;
 
     public DetalleNotaDebitoCredito() {
     }
@@ -291,6 +299,30 @@ public class DetalleNotaDebitoCredito implements Serializable {
 
     public void setIdNota(NotaCreditoDebito idNota) {
         this.idNota = idNota;
+    }
+
+    public String getCodigoProducto() {
+        return codigoProducto;
+    }
+
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto = codigoProducto;
+    }
+
+    public Boolean getProdGrabaIva() {
+        return prodGrabaIva;
+    }
+
+    public void setProdGrabaIva(Boolean prodGrabaIva) {
+        this.prodGrabaIva = prodGrabaIva;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     @Override

@@ -11,11 +11,14 @@ package com.ec.controlador.webservices;
  */
 import com.ec.controlador.ListaFacturas;
 import com.ec.controlador.webservices.mapper.DetFacturaMapper;
+import com.ec.controlador.webservices.mapper.DetNotaCreditoMapper;
 import com.ec.controlador.webservices.mapper.DetRetencionMapper;
 import com.ec.controlador.webservices.mapper.FacturaMapper;
+import com.ec.controlador.webservices.mapper.NotaCreditoMapper;
 import com.ec.controlador.webservices.mapper.RetencionCompraMapper;
 import com.ec.dao.DetFacturaDao;
 import com.ec.dao.DetRetencionCompraDao;
+import com.ec.dao.DetalleNotaCreditoDebitoDao;
 import com.ec.dao.FacturaDao;
 import com.ec.dao.GuiaremisionDao;
 import com.ec.dao.InfoAutorizaDao;
@@ -23,12 +26,16 @@ import com.ec.dao.NotaCreditoDebitoDao;
 import com.ec.dao.RetencionCompraDao;
 import com.ec.dao.response.FacturaResponse;
 import com.ec.entidad.DetalleFactura;
+import com.ec.entidad.DetalleNotaDebitoCredito;
 import com.ec.entidad.DetalleRetencionCompra;
 import com.ec.entidad.Factura;
+import com.ec.entidad.NotaCreditoDebito;
 import com.ec.entidad.RetencionCompra;
 import com.ec.servicio.ServicioDetalleFactura;
+import com.ec.servicio.ServicioDetalleNotaCredito;
 import com.ec.servicio.ServicioDetalleRetencionCompra;
 import com.ec.servicio.ServicioFactura;
+import com.ec.servicio.ServicioNotaCredito;
 import com.ec.servicio.ServicioRetencionCompra;
 import com.ec.servicio.ServicioTipoIvaRetencion;
 import com.ec.servicio.ServicioTipoRetencion;
@@ -63,6 +70,9 @@ public class ServiciosRest {
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
     ServicioTipoRetencion servicioTipoRetencion = new ServicioTipoRetencion();
     ServicioTipoIvaRetencion servicioTipoIvaRetencion = new ServicioTipoIvaRetencion();
+
+    ServicioNotaCredito servicioNotaCredito = new ServicioNotaCredito();
+    ServicioDetalleNotaCredito servicioDetalleNotaCredito = new ServicioDetalleNotaCredito();
 
 //
 //    @POST
@@ -704,15 +714,15 @@ public class ServiciosRest {
 //                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
-//                            Factura factura = FacturaMapper.daoToFactura(prod);
-//                            servicioFactura.crear(factura);
-//                            DetalleFactura detalleFactura = new DetalleFactura();
-//                            for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
-//                                detalleFactura = new DetalleFactura();
-//                                detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
-//                                detalleFactura.setIdFactura(factura);
-//                                servicioDetalleFactura.crear(detalleFactura);
-//                            }
+                            NotaCreditoDebito notacr = NotaCreditoMapper.daoToEntity(prod);
+                            servicioNotaCredito.crear(notacr);
+                            DetalleNotaDebitoCredito detalleNC = new DetalleNotaDebitoCredito();
+                            for (DetalleNotaCreditoDebitoDao item : prod.getDetalleNotaCredito()) {
+                                detalleNC = new DetalleNotaDebitoCredito();
+                                detalleNC = DetNotaCreditoMapper.daoToEntity(item);
+                                detalleNC.setIdNota(notacr);
+                                servicioDetalleNotaCredito.crear(detalleNC);
+                            }
                             /*envia el mail*/
                             String[] attachFiles = new String[2];
                             attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
