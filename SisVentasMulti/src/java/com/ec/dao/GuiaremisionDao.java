@@ -129,7 +129,7 @@ public class GuiaremisionDao {
     }
 
     public String getObligadoContabilidad() {
-        return obligadoContabilidad;
+        return obligadoContabilidad == null ? "NO" : obligadoContabilidad;
     }
 
     public void setObligadoContabilidad(String obligadoContabilidad) {
@@ -312,5 +312,4 @@ public class GuiaremisionDao {
         this.secuencial = secuencial;
     }
 
-    
 }

@@ -13,11 +13,14 @@ import com.ec.controlador.ListaFacturas;
 import com.ec.controlador.webservices.mapper.DetFacturaMapper;
 import com.ec.controlador.webservices.mapper.DetNotaCreditoMapper;
 import com.ec.controlador.webservices.mapper.DetRetencionMapper;
+import com.ec.controlador.webservices.mapper.DetalleGuiaRemisionMapper;
 import com.ec.controlador.webservices.mapper.FacturaMapper;
+import com.ec.controlador.webservices.mapper.GuiaRemisionMapper;
 import com.ec.controlador.webservices.mapper.NotaCreditoMapper;
 import com.ec.controlador.webservices.mapper.RetencionCompraMapper;
 import com.ec.dao.DetFacturaDao;
 import com.ec.dao.DetRetencionCompraDao;
+import com.ec.dao.DetalleGuiaremisionDao;
 import com.ec.dao.DetalleNotaCreditoDebitoDao;
 import com.ec.dao.FacturaDao;
 import com.ec.dao.GuiaremisionDao;
@@ -26,15 +29,19 @@ import com.ec.dao.NotaCreditoDebitoDao;
 import com.ec.dao.RetencionCompraDao;
 import com.ec.dao.response.FacturaResponse;
 import com.ec.entidad.DetalleFactura;
+import com.ec.entidad.DetalleGuiaremision;
 import com.ec.entidad.DetalleNotaDebitoCredito;
 import com.ec.entidad.DetalleRetencionCompra;
 import com.ec.entidad.Factura;
+import com.ec.entidad.Guiaremision;
 import com.ec.entidad.NotaCreditoDebito;
 import com.ec.entidad.RetencionCompra;
 import com.ec.servicio.ServicioDetalleFactura;
+import com.ec.servicio.ServicioDetalleGuia;
 import com.ec.servicio.ServicioDetalleNotaCredito;
 import com.ec.servicio.ServicioDetalleRetencionCompra;
 import com.ec.servicio.ServicioFactura;
+import com.ec.servicio.ServicioGuia;
 import com.ec.servicio.ServicioNotaCredito;
 import com.ec.servicio.ServicioRetencionCompra;
 import com.ec.servicio.ServicioTipoIvaRetencion;
@@ -70,6 +77,8 @@ public class ServiciosRest {
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
     ServicioTipoRetencion servicioTipoRetencion = new ServicioTipoRetencion();
     ServicioTipoIvaRetencion servicioTipoIvaRetencion = new ServicioTipoIvaRetencion();
+    ServicioGuia servicioGuiaRemision = new ServicioGuia();
+    ServicioDetalleGuia servicioDetalleGuiaRemision = new ServicioDetalleGuia();
 
     ServicioNotaCredito servicioNotaCredito = new ServicioNotaCredito();
     ServicioDetalleNotaCredito servicioDetalleNotaCredito = new ServicioDetalleNotaCredito();
@@ -850,31 +859,25 @@ public class ServiciosRest {
                             } catch (java.text.ParseException ex) {
                                 Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
                             }
-//                     
-//                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                             archivoEnvioCliente = api.generaXMLGuiaRemisionApi(prod, archivoEnvioCliente, nombreArchivo);
-//                            XAdESBESSignature.firmar(archivoEnvioCliente,
-//                                    nombreArchivoXML,
-//                                    amb.getAmClaveAccesoSri(),
-//                                    amb, foldervoAutorizado);
-//                            valor.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
-//                            servicioFactura.modificar(valor);
+
 
                             fEnvio = new File(archivoEnvioCliente);
 
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
+//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), prod.getSecuencialText(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
-//                            Factura factura = FacturaMapper.daoToFactura(prod);
-//                            servicioFactura.crear(factura);
-//                            DetalleFactura detalleFactura = new DetalleFactura();
-//                            for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
-//                                detalleFactura = new DetalleFactura();
-//                                detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
-//                                detalleFactura.setIdFactura(factura);
-//                                servicioDetalleFactura.crear(detalleFactura);
-//                            }
+                            Guiaremision guia = GuiaRemisionMapper.daoToGuiaremision(prod);
+
+                            servicioGuiaRemision.crear(guia);
+                            DetalleGuiaremision detalleGuia;
+                            for (DetalleGuiaremisionDao detFacturaDao : prod.getDetalleGuiaRemision()) {
+                                detalleGuia = new DetalleGuiaremision();
+                                detalleGuia = DetalleGuiaRemisionMapper.daoToDetalleGuiaremision(detFacturaDao);
+                                detalleGuia.setIdGuiaremision(guia);
+                                servicioDetalleGuiaRemision.crear(detalleGuia);
+                            }
                             /*envia el mail*/
                             String[] attachFiles = new String[2];
                             attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
@@ -912,5 +915,4 @@ public class ServiciosRest {
         }
         return facturaResponse;
     }
-
 }

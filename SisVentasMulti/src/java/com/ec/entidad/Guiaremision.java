@@ -253,6 +253,60 @@ public class Guiaremision implements Serializable {
     @ManyToOne
     private Cliente idCliente;
 
+    @Column(name = "razon_social_empresa", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+    private String razonSocialEmpresa;
+
+    @Column(name = "nombre_comercial_empresa", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+    private String nombreComercialEmpresa;
+
+    @Column(name = "ruc_empresa", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+    private String rucEmpresa;
+
+    @Column(name = "establecimiento_empresa", length = 10, columnDefinition = "VARCHAR(10) COLLATE pg_catalog.\"default\"")
+    private String establecimientoEmpresa;
+
+    @Column(name = "punto_emision_empresa", length = 10, columnDefinition = "VARCHAR(10) COLLATE pg_catalog.\"default\"")
+    private String puntoEmisionEmpresa;
+
+    @Column(name = "dir_matriz", length = 500, columnDefinition = "VARCHAR(500) COLLATE pg_catalog.\"default\"")
+    private String dirMatrizEmpresa;
+
+    @Column(name = "razon_social_transportista", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+    private String razonSocialTransportista;
+
+    @Column(name = "tipo_identificacion_transportista", length = 10, columnDefinition = "VARCHAR(10) COLLATE pg_catalog.\"default\"")
+    private String tipoIdentificacionTransportista;
+
+    @Column(name = "ruc_transportista", length = 20, columnDefinition = "VARCHAR(20) COLLATE pg_catalog.\"default\"")
+    private String rucTransportista;
+
+    @Column(name = "obligado_contabilidad", length = 2, columnDefinition = "VARCHAR(2) COLLATE pg_catalog.\"default\"")
+    private String obligadoContabilidad;
+
+    @Column(name = "identificacion_destinatario", length = 10, columnDefinition = "VARCHAR(10) COLLATE pg_catalog.\"default\"")
+    private String identificacionDestinatario;
+
+    @Column(name = "razon_social_destinatario", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+    private String razonSocialDestinatario;
+
+    @Column(name = "dir_destinatario", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+    private String dirDestinatario;
+
+    @Column(name = "motivo_traslado", length = 500, columnDefinition = "VARCHAR(500) COLLATE pg_catalog.\"default\"")
+    private String motivoTraslado;
+
+    @Column(name = "ruta", length = 500, columnDefinition = "VARCHAR(500) COLLATE pg_catalog.\"default\"")
+    private String ruta;
+
+    @Column(name = "doc_aduanero_unico", length = 100, columnDefinition = "VARCHAR(100) COLLATE pg_catalog.\"default\"")
+    private String docAduaneroUnico;
+
+    @Column(name = "dir_establecimiento", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
+
+    private String dirEstablecimiento;
+
+   
+
     public Guiaremision() {
     }
 
@@ -276,30 +330,6 @@ public class Guiaremision implements Serializable {
         this.facFecha = facFecha;
     }
 
-    public BigDecimal getFacSubtotal() {
-        return facSubtotal;
-    }
-
-    public void setFacSubtotal(BigDecimal facSubtotal) {
-        this.facSubtotal = facSubtotal;
-    }
-
-    public BigDecimal getFacIva() {
-        return facIva;
-    }
-
-    public void setFacIva(BigDecimal facIva) {
-        this.facIva = facIva;
-    }
-
-    public BigDecimal getFacTotal() {
-        return facTotal;
-    }
-
-    public void setFacTotal(BigDecimal facTotal) {
-        this.facTotal = facTotal;
-    }
-
     public String getFacEstado() {
         return facEstado;
     }
@@ -316,54 +346,6 @@ public class Guiaremision implements Serializable {
         this.facTipo = facTipo;
     }
 
-    public BigDecimal getFacAbono() {
-        return facAbono;
-    }
-
-    public void setFacAbono(BigDecimal facAbono) {
-        this.facAbono = facAbono;
-    }
-
-    public BigDecimal getFacSaldo() {
-        return facSaldo;
-    }
-
-    public void setFacSaldo(BigDecimal facSaldo) {
-        this.facSaldo = facSaldo;
-    }
-
-    public String getFacDescripcion() {
-        return facDescripcion;
-    }
-
-    public void setFacDescripcion(String facDescripcion) {
-        this.facDescripcion = facDescripcion;
-    }
-
-    public Integer getFacNumProforma() {
-        return facNumProforma;
-    }
-
-    public void setFacNumProforma(Integer facNumProforma) {
-        this.facNumProforma = facNumProforma;
-    }
-
-    public String getTipodocumento() {
-        return tipodocumento;
-    }
-
-    public void setTipodocumento(String tipodocumento) {
-        this.tipodocumento = tipodocumento;
-    }
-
-    public String getPuntoemision() {
-        return puntoemision;
-    }
-
-    public void setPuntoemision(String puntoemision) {
-        this.puntoemision = puntoemision;
-    }
-
     public String getCodestablecimiento() {
         return codestablecimiento;
     }
@@ -378,54 +360,6 @@ public class Guiaremision implements Serializable {
 
     public void setFacNumeroText(String facNumeroText) {
         this.facNumeroText = facNumeroText;
-    }
-
-    public String getFacTipoIdentificadorComprobador() {
-        return facTipoIdentificadorComprobador;
-    }
-
-    public void setFacTipoIdentificadorComprobador(String facTipoIdentificadorComprobador) {
-        this.facTipoIdentificadorComprobador = facTipoIdentificadorComprobador;
-    }
-
-    public BigDecimal getFacDescuento() {
-        return facDescuento;
-    }
-
-    public void setFacDescuento(BigDecimal facDescuento) {
-        this.facDescuento = facDescuento;
-    }
-
-    public String getFacCodIce() {
-        return facCodIce;
-    }
-
-    public void setFacCodIce(String facCodIce) {
-        this.facCodIce = facCodIce;
-    }
-
-    public String getFacCodIva() {
-        return facCodIva;
-    }
-
-    public void setFacCodIva(String facCodIva) {
-        this.facCodIva = facCodIva;
-    }
-
-    public BigDecimal getFacTotalBaseCero() {
-        return facTotalBaseCero;
-    }
-
-    public void setFacTotalBaseCero(BigDecimal facTotalBaseCero) {
-        this.facTotalBaseCero = facTotalBaseCero;
-    }
-
-    public BigDecimal getFacTotalBaseGravaba() {
-        return facTotalBaseGravaba;
-    }
-
-    public void setFacTotalBaseGravaba(BigDecimal facTotalBaseGravaba) {
-        this.facTotalBaseGravaba = facTotalBaseGravaba;
     }
 
     public String getCodigoPorcentaje() {
@@ -556,22 +490,6 @@ public class Guiaremision implements Serializable {
         this.facNumero = facNumero;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Factura getIdFactura() {
-        return idFactura;
-    }
-
-    public void setIdFactura(Factura idFactura) {
-        this.idFactura = idFactura;
-    }
-
     public Cliente getIdCliente() {
         return idCliente;
     }
@@ -586,10 +504,6 @@ public class Guiaremision implements Serializable {
 
     public void setDocumentoaduanerounico(String Documentoaduanerounico) {
         this.Documentoaduanerounico = Documentoaduanerounico;
-    }
-
-    public Transportista getIdTransportista() {
-        return idTransportista;
     }
 
     public String getNumplacaguia() {
@@ -614,10 +528,6 @@ public class Guiaremision implements Serializable {
 
     public void setFechafintranspguia(Date fechafintranspguia) {
         this.fechafintranspguia = fechafintranspguia;
-    }
-
-    public void setIdTransportista(Transportista idTransportista) {
-        this.idTransportista = idTransportista;
     }
 
     public String getMotivoGuia() {
@@ -660,21 +570,132 @@ public class Guiaremision implements Serializable {
         this.numeroGuiaRecibida = numeroGuiaRecibida;
     }
 
-    @XmlTransient
-    public Collection<DetalleGuiaremision> getDetalleGuiaremisionCollection() {
-        return detalleGuiaremisionCollection;
+    public String getRazonSocialEmpresa() {
+        return razonSocialEmpresa;
     }
 
-    public String getFacNumeroTextRecibida() {
-        return facNumeroTextRecibida;
+    public void setRazonSocialEmpresa(String razonSocialEmpresa) {
+        this.razonSocialEmpresa = razonSocialEmpresa;
     }
 
-    public void setFacNumeroTextRecibida(String facNumeroTextRecibida) {
-        this.facNumeroTextRecibida = facNumeroTextRecibida;
+    public String getNombreComercialEmpresa() {
+        return nombreComercialEmpresa;
     }
 
-    public void setDetalleGuiaremisionCollection(Collection<DetalleGuiaremision> detalleGuiaremisionCollection) {
-        this.detalleGuiaremisionCollection = detalleGuiaremisionCollection;
+    public void setNombreComercialEmpresa(String nombreComercialEmpresa) {
+        this.nombreComercialEmpresa = nombreComercialEmpresa;
+    }
+
+    public String getRucEmpresa() {
+        return rucEmpresa;
+    }
+
+    public void setRucEmpresa(String rucEmpresa) {
+        this.rucEmpresa = rucEmpresa;
+    }
+
+    public String getEstablecimientoEmpresa() {
+        return establecimientoEmpresa;
+    }
+
+    public void setEstablecimientoEmpresa(String establecimientoEmpresa) {
+        this.establecimientoEmpresa = establecimientoEmpresa;
+    }
+
+    public String getPuntoEmisionEmpresa() {
+        return puntoEmisionEmpresa;
+    }
+
+    public void setPuntoEmisionEmpresa(String puntoEmisionEmpresa) {
+        this.puntoEmisionEmpresa = puntoEmisionEmpresa;
+    }
+
+    public String getDirMatrizEmpresa() {
+        return dirMatrizEmpresa;
+    }
+
+    public void setDirMatrizEmpresa(String dirMatrizEmpresa) {
+        this.dirMatrizEmpresa = dirMatrizEmpresa;
+    }
+
+    public String getRazonSocialTransportista() {
+        return razonSocialTransportista;
+    }
+
+    public void setRazonSocialTransportista(String razonSocialTransportista) {
+        this.razonSocialTransportista = razonSocialTransportista;
+    }
+
+    public String getTipoIdentificacionTransportista() {
+        return tipoIdentificacionTransportista;
+    }
+
+    public void setTipoIdentificacionTransportista(String tipoIdentificacionTransportista) {
+        this.tipoIdentificacionTransportista = tipoIdentificacionTransportista;
+    }
+
+    public String getRucTransportista() {
+        return rucTransportista;
+    }
+
+    public void setRucTransportista(String rucTransportista) {
+        this.rucTransportista = rucTransportista;
+    }
+
+    public String getObligadoContabilidad() {
+        return obligadoContabilidad;
+    }
+
+    public void setObligadoContabilidad(String obligadoContabilidad) {
+        this.obligadoContabilidad = obligadoContabilidad;
+    }
+
+    public String getIdentificacionDestinatario() {
+        return identificacionDestinatario;
+    }
+
+    public void setIdentificacionDestinatario(String identificacionDestinatario) {
+        this.identificacionDestinatario = identificacionDestinatario;
+    }
+
+    public String getRazonSocialDestinatario() {
+        return razonSocialDestinatario;
+    }
+
+    public void setRazonSocialDestinatario(String razonSocialDestinatario) {
+        this.razonSocialDestinatario = razonSocialDestinatario;
+    }
+
+    public String getDirDestinatario() {
+        return dirDestinatario;
+    }
+
+    public void setDirDestinatario(String dirDestinatario) {
+        this.dirDestinatario = dirDestinatario;
+    }
+
+    public String getMotivoTraslado() {
+        return motivoTraslado;
+    }
+
+    public void setMotivoTraslado(String motivoTraslado) {
+        this.motivoTraslado = motivoTraslado;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
+
+    public String getDocAduaneroUnico() {
+        return docAduaneroUnico;
+    }
+
+    public void setDocAduaneroUnico(String docAduaneroUnico) {
+        this.docAduaneroUnico = docAduaneroUnico;
     }
 
     @Override
@@ -702,4 +723,173 @@ public class Guiaremision implements Serializable {
         return "com.ec.entidad.Guiaremision[ idGuiaremision=" + idGuiaremision + " ]";
     }
 
+    public String getDirEstablecimiento() {
+        return dirEstablecimiento;
+    }
+
+    public void setDirEstablecimiento(String dirEstablecimiento) {
+        this.dirEstablecimiento = dirEstablecimiento;
+    }
+
+    public BigDecimal getFacSubtotal() {
+        return facSubtotal;
+    }
+
+    public void setFacSubtotal(BigDecimal facSubtotal) {
+        this.facSubtotal = facSubtotal;
+    }
+
+    public BigDecimal getFacIva() {
+        return facIva;
+    }
+
+    public void setFacIva(BigDecimal facIva) {
+        this.facIva = facIva;
+    }
+
+    public BigDecimal getFacTotal() {
+        return facTotal;
+    }
+
+    public void setFacTotal(BigDecimal facTotal) {
+        this.facTotal = facTotal;
+    }
+
+    public BigDecimal getFacAbono() {
+        return facAbono;
+    }
+
+    public void setFacAbono(BigDecimal facAbono) {
+        this.facAbono = facAbono;
+    }
+
+    public BigDecimal getFacSaldo() {
+        return facSaldo;
+    }
+
+    public void setFacSaldo(BigDecimal facSaldo) {
+        this.facSaldo = facSaldo;
+    }
+
+    public String getFacDescripcion() {
+        return facDescripcion;
+    }
+
+    public void setFacDescripcion(String facDescripcion) {
+        this.facDescripcion = facDescripcion;
+    }
+
+    public Integer getFacNumProforma() {
+        return facNumProforma;
+    }
+
+    public void setFacNumProforma(Integer facNumProforma) {
+        this.facNumProforma = facNumProforma;
+    }
+
+    public String getTipodocumento() {
+        return tipodocumento;
+    }
+
+    public void setTipodocumento(String tipodocumento) {
+        this.tipodocumento = tipodocumento;
+    }
+
+    public String getPuntoemision() {
+        return puntoemision;
+    }
+
+    public void setPuntoemision(String puntoemision) {
+        this.puntoemision = puntoemision;
+    }
+
+    public String getFacNumeroTextRecibida() {
+        return facNumeroTextRecibida;
+    }
+
+    public void setFacNumeroTextRecibida(String facNumeroTextRecibida) {
+        this.facNumeroTextRecibida = facNumeroTextRecibida;
+    }
+
+    public String getFacTipoIdentificadorComprobador() {
+        return facTipoIdentificadorComprobador;
+    }
+
+    public void setFacTipoIdentificadorComprobador(String facTipoIdentificadorComprobador) {
+        this.facTipoIdentificadorComprobador = facTipoIdentificadorComprobador;
+    }
+
+    public BigDecimal getFacDescuento() {
+        return facDescuento;
+    }
+
+    public void setFacDescuento(BigDecimal facDescuento) {
+        this.facDescuento = facDescuento;
+    }
+
+    public String getFacCodIce() {
+        return facCodIce;
+    }
+
+    public void setFacCodIce(String facCodIce) {
+        this.facCodIce = facCodIce;
+    }
+
+    public String getFacCodIva() {
+        return facCodIva;
+    }
+
+    public void setFacCodIva(String facCodIva) {
+        this.facCodIva = facCodIva;
+    }
+
+    public BigDecimal getFacTotalBaseCero() {
+        return facTotalBaseCero;
+    }
+
+    public void setFacTotalBaseCero(BigDecimal facTotalBaseCero) {
+        this.facTotalBaseCero = facTotalBaseCero;
+    }
+
+    public BigDecimal getFacTotalBaseGravaba() {
+        return facTotalBaseGravaba;
+    }
+
+    public void setFacTotalBaseGravaba(BigDecimal facTotalBaseGravaba) {
+        this.facTotalBaseGravaba = facTotalBaseGravaba;
+    }
+
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Factura getIdFactura() {
+        return idFactura;
+    }
+
+    public void setIdFactura(Factura idFactura) {
+        this.idFactura = idFactura;
+    }
+
+    public Collection<DetalleGuiaremision> getDetalleGuiaremisionCollection() {
+        return detalleGuiaremisionCollection;
+    }
+
+    public void setDetalleGuiaremisionCollection(Collection<DetalleGuiaremision> detalleGuiaremisionCollection) {
+        this.detalleGuiaremisionCollection = detalleGuiaremisionCollection;
+    }
+
+    public Transportista getIdTransportista() {
+        return idTransportista;
+    }
+
+    public void setIdTransportista(Transportista idTransportista) {
+        this.idTransportista = idTransportista;
+    }
+
+    
 }

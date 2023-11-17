@@ -85,8 +85,8 @@ public class Transportista implements Serializable {
     @JoinColumn(name = "id_tipo_identificacion", referencedColumnName = "id_tipo_identificacion")
     @ManyToOne
     private Tipoadentificacion idTipoIdentificacion;
-    @OneToMany(mappedBy = "idTransportista")
-    private Collection<Guiaremision> guiaremisionCollection;
+//    @OneToMany(mappedBy = "idTransportista")
+//    private Collection<Guiaremision> guiaremisionCollection;
 
     @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
     @ManyToOne
@@ -179,14 +179,14 @@ public class Transportista implements Serializable {
         this.idTipoIdentificacion = idTipoIdentificacion;
     }
 
-    @XmlTransient
-    public Collection<Guiaremision> getGuiaremisionCollection() {
-        return guiaremisionCollection;
-    }
-
-    public void setGuiaremisionCollection(Collection<Guiaremision> guiaremisionCollection) {
-        this.guiaremisionCollection = guiaremisionCollection;
-    }
+//    @XmlTransient
+//    public Collection<Guiaremision> getGuiaremisionCollection() {
+//        return guiaremisionCollection;
+//    }
+//
+//    public void setGuiaremisionCollection(Collection<Guiaremision> guiaremisionCollection) {
+//        this.guiaremisionCollection = guiaremisionCollection;
+//    }
 
     public Tipoambiente getCodTipoambiente() {
         return codTipoambiente;

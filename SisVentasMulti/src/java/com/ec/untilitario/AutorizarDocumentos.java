@@ -572,110 +572,110 @@ public class AutorizarDocumentos {
     //<editor-fold defaultstate="collapsed" desc=" ARMAR GUIA DE REMISION">  
     public String generaXMLGuiaRemision(Guiaremision valor, Tipoambiente amb, String folderDestino, String nombreArchivoXML) {
         FileOutputStream out;
-        try {
-
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
-            String tipoemision = "1"; //en offline solo existe emision normal
-            String motivo = "TRASPORTE DE MERCADERIA";
-//            String claveAcceso = generaClave(valor.getFacFecha(), valor.getTipodocumento(), amb.getAmRuc(), amb.getAmCodigo(), "002001", valor.getFacNumeroText(), "12345678", "1");
-            String claveAcceso = generaClave(valor.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(), amb.getAmEstab() + amb.getAmPtoemi(), valor.getFacNumeroText(), "12345678", "1");
-            StringBuilder build = new StringBuilder();
-            String linea;
-            linea = ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
-                        + "<guiaRemision id=\"comprobante\" version=\"1.1.0\">\n"
-                        + "    <infoTributaria>\n"
-                        + "        <ambiente>" + amb.getAmCodigo() + "</ambiente>\n"
-                        + "        <tipoEmision>1</tipoEmision>\n"
-                        + "        <razonSocial>" + removeCaracteres(amb.getAmRazonSocial()) + "</razonSocial>\n"
-                        + "        <nombreComercial>" + removeCaracteres(amb.getAmNombreComercial()) + "</nombreComercial>\n"
-                        + "        <ruc>" + amb.getAmRuc() + "</ruc>\n"
-                        + "        <claveAcceso>" + claveAcceso + "</claveAcceso>\n"
-                        + "        <codDoc>06</codDoc>\n"
-                        + "        <estab>" + amb.getAmEstab() + "</estab>\n"
-                        + "        <ptoEmi>" + amb.getAmPtoemi() + "</ptoEmi>\n"
-                        + "        <secuencial>" + valor.getFacNumeroText() + "</secuencial>\n"
-                        + "        <dirMatriz>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirMatriz>\n"
-                        + "    </infoTributaria>\n"
-                        + "    <infoGuiaRemision>\n"
-                        + "        <dirEstablecimiento>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirEstablecimiento>\n"
-                        + "        <dirPartida>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirPartida>\n"
-                        + "        <razonSocialTransportista>" + removeCaracteres(valor.getIdTransportista().getTrpRazonSocial()) + "</razonSocialTransportista>\n"
-                        + "        <tipoIdentificacionTransportista>" + valor.getIdTransportista().getIdTipoIdentificacion().getTidCodigo() + "</tipoIdentificacionTransportista>\n"
-                        + "        <rucTransportista>" + valor.getIdTransportista().getTrpCedula() + "</rucTransportista>\n"
-                        + "        <obligadoContabilidad>" + amb.getLlevarContabilidad() + "</obligadoContabilidad>\n"
-                        //  + "        <contribuyenteEspecial>5368</contribuyenteEspecial>\n"
-                        + "        <fechaIniTransporte>" + formato.format(valor.getFechainitranspguia()) + "</fechaIniTransporte>\n"
-                        + "        <fechaFinTransporte>" + formato.format(valor.getFechafintranspguia()) + "</fechaFinTransporte>\n"
-                        + "        <placa>" + valor.getNumplacaguia() + "</placa>\n"); //verificar placa transporte
-
-            build.append(linea);
-            linea = ("    </infoGuiaRemision>\n"
-                        + "    <destinatarios>\n"
-                        + "        <destinatario>\n"
-                        + "            <identificacionDestinatario>" + valor.getIdCliente().getCliCedula() + "</identificacionDestinatario>\n"
-                        + "            <razonSocialDestinatario>" + removeCaracteres(valor.getIdCliente().getCliRazonSocial()) + "</razonSocialDestinatario>\n"
-                        + "            <dirDestinatario>" + removeCaracteres(valor.getIdCliente().getCliDireccion()) + "</dirDestinatario>\n"
-                        + "            <motivoTraslado>" + motivo + "</motivoTraslado>\n")
-                        + (valor.getDocumentoaduanerounico() == null ? "" : "            <docAduaneroUnico>" + valor.getDocumentoaduanerounico() + "</docAduaneroUnico>\n"
-                        + "            <codEstabDestino>001</codEstabDestino>\n"
-                        + "            <ruta>" + amb.getAmCiudad() + "-" + valor.getIdCliente().getCiudad() + "</ruta>\n");
-            build.append(linea);
-            try {
-                if (valor.getIdFactura() != null) {
-                    linea = ("            <codDocSustento>" + valor.getIdFactura().getTipodocumento() + "</codDocSustento>\n"
-                                + "            <numDocSustento>" + valor.getIdFactura().getCodestablecimiento() + "-" + valor.getIdFactura().getPuntoemision() + "-" + valor.getIdFactura().getFacNumeroText() + "</numDocSustento>\n"
-                                + "            <numAutDocSustento>" + valor.getIdFactura().getFacClaveAutorizacion() + "</numAutDocSustento>\n"
-                                + "            <fechaEmisionDocSustento>" + formato.format(valor.getIdFactura().getFacFecha()) + "</fechaEmisionDocSustento>\n");
-                    build.append(linea);
-                }
-            } catch (Exception e) {
-            }
-            linea = "<detalles>\n";
-            build.append(linea);
-            List<DetalleGuiaremision> det = servicioDetalleGuia.findDetalleForIdGuia(valor);
-            for (DetalleGuiaremision detalle : det) {
-                linea = ("                <detalle>\n"
-                            + "                    <codigoInterno>" + removeCaracteres(detalle.getIdProducto().getProdCodigo()) + "</codigoInterno>\n"
-                            + "                    <descripcion>" + removeCaracteres(detalle.getDetDescripcion()) + "</descripcion>\n"
-                            + "                    <cantidad>" + detalle.getDetCantidad().setScale(2, RoundingMode.FLOOR) + "</cantidad>\n"
-                            + "                </detalle>\n");
-                build.append(linea);
-            }
-            linea = ("            </detalles>\n"
-                        + "        </destinatario>\n"
-                        + "    </destinatarios>\n")
-                        + ("    <infoAdicional>\n")
-                        + ("        <campoAdicional nombre=\"E-MAIL\">" + removeCaracteres(valor.getIdCliente().getCliCorreo()) + "</campoAdicional>\n")
-                        + ("        <campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getIdCliente().getCliDireccion()) + "</campoAdicional>\n")
-                        + ("        <campoAdicional nombre=\"TELEFONO\">" + valor.getIdCliente().getCliTelefono() + "</campoAdicional>\n")
-                        + ("        <campoAdicional nombre=\"CIUDAD\">" + valor.getIdCliente().getCiudad() + "</campoAdicional>\n"
-                        + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
-                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
-                        + "    </infoAdicional>\n"
-                        + "</guiaRemision>");
-            build.append(linea);
-            /*IMPRIME EL XML GUIA DE REMISION*/
-            System.out.println("XML " + build);
-            String pathArchivoSalida = "";
-
-            /*ruta de salida del archivo XML 
-            generados o autorizados para enviar al cliente 
-            dependiendo la ruta enviada en el parametro del metodo */
-            pathArchivoSalida = folderDestino
-                        + nombreArchivoXML;
-
-            //String pathArchivoSalida = "D:\\";
-            out = new FileOutputStream(pathArchivoSalida);
-            out.write(build.toString().getBytes());
-            //GRABA DATOS EN FACTURA//
-            return pathArchivoSalida;
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("ERROR EN LA GENERACION DE XML DEBITO O CREDITO  FileNotFoundException" + ex);
-        } catch (IOException ex) {
-            System.out.println("ERROR EN LA GENERACION DE XML DEBITO O CREDITO IOException " + ex);
-        }
+//        try {
+//
+//            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+//
+//            String tipoemision = "1"; //en offline solo existe emision normal
+//            String motivo = "TRASPORTE DE MERCADERIA";
+////            String claveAcceso = generaClave(valor.getFacFecha(), valor.getTipodocumento(), amb.getAmRuc(), amb.getAmCodigo(), "002001", valor.getFacNumeroText(), "12345678", "1");
+//            String claveAcceso = generaClave(valor.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(), amb.getAmEstab() + amb.getAmPtoemi(), valor.getFacNumeroText(), "12345678", "1");
+//            StringBuilder build = new StringBuilder();
+//            String linea;
+//            linea = ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+//                        + "<guiaRemision id=\"comprobante\" version=\"1.1.0\">\n"
+//                        + "    <infoTributaria>\n"
+//                        + "        <ambiente>" + amb.getAmCodigo() + "</ambiente>\n"
+//                        + "        <tipoEmision>1</tipoEmision>\n"
+//                        + "        <razonSocial>" + removeCaracteres(amb.getAmRazonSocial()) + "</razonSocial>\n"
+//                        + "        <nombreComercial>" + removeCaracteres(amb.getAmNombreComercial()) + "</nombreComercial>\n"
+//                        + "        <ruc>" + amb.getAmRuc() + "</ruc>\n"
+//                        + "        <claveAcceso>" + claveAcceso + "</claveAcceso>\n"
+//                        + "        <codDoc>06</codDoc>\n"
+//                        + "        <estab>" + amb.getAmEstab() + "</estab>\n"
+//                        + "        <ptoEmi>" + amb.getAmPtoemi() + "</ptoEmi>\n"
+//                        + "        <secuencial>" + valor.getFacNumeroText() + "</secuencial>\n"
+//                        + "        <dirMatriz>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirMatriz>\n"
+//                        + "    </infoTributaria>\n"
+//                        + "    <infoGuiaRemision>\n"
+//                        + "        <dirEstablecimiento>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirEstablecimiento>\n"
+//                        + "        <dirPartida>" + removeCaracteres(amb.getAmDireccionMatriz()) + "</dirPartida>\n"
+////                        + "        <razonSocialTransportista>" + removeCaracteres(valor.getIdTransportista().getTrpRazonSocial()) + "</razonSocialTransportista>\n"
+////                        + "        <tipoIdentificacionTransportista>" + valor.getIdTransportista().getIdTipoIdentificacion().getTidCodigo() + "</tipoIdentificacionTransportista>\n"
+////                        + "        <rucTransportista>" + valor.getIdTransportista().getTrpCedula() + "</rucTransportista>\n"
+//                        + "        <obligadoContabilidad>" + amb.getLlevarContabilidad() + "</obligadoContabilidad>\n"
+//                        //  + "        <contribuyenteEspecial>5368</contribuyenteEspecial>\n"
+//                        + "        <fechaIniTransporte>" + formato.format(valor.getFechainitranspguia()) + "</fechaIniTransporte>\n"
+//                        + "        <fechaFinTransporte>" + formato.format(valor.getFechafintranspguia()) + "</fechaFinTransporte>\n"
+//                        + "        <placa>" + valor.getNumplacaguia() + "</placa>\n"); //verificar placa transporte
+//
+//            build.append(linea);
+//            linea = ("    </infoGuiaRemision>\n"
+//                        + "    <destinatarios>\n"
+//                        + "        <destinatario>\n"
+//                        + "            <identificacionDestinatario>" + valor.getIdCliente().getCliCedula() + "</identificacionDestinatario>\n"
+//                        + "            <razonSocialDestinatario>" + removeCaracteres(valor.getIdCliente().getCliRazonSocial()) + "</razonSocialDestinatario>\n"
+//                        + "            <dirDestinatario>" + removeCaracteres(valor.getIdCliente().getCliDireccion()) + "</dirDestinatario>\n"
+//                        + "            <motivoTraslado>" + motivo + "</motivoTraslado>\n")
+//                        + (valor.getDocumentoaduanerounico() == null ? "" : "            <docAduaneroUnico>" + valor.getDocumentoaduanerounico() + "</docAduaneroUnico>\n"
+//                        + "            <codEstabDestino>001</codEstabDestino>\n"
+//                        + "            <ruta>" + amb.getAmCiudad() + "-" + valor.getIdCliente().getCiudad() + "</ruta>\n");
+//            build.append(linea);
+//            try {
+//                if (valor.getIdFactura() != null) {
+//                    linea = ("            <codDocSustento>" + valor.getIdFactura().getTipodocumento() + "</codDocSustento>\n"
+//                                + "            <numDocSustento>" + valor.getIdFactura().getCodestablecimiento() + "-" + valor.getIdFactura().getPuntoemision() + "-" + valor.getIdFactura().getFacNumeroText() + "</numDocSustento>\n"
+//                                + "            <numAutDocSustento>" + valor.getIdFactura().getFacClaveAutorizacion() + "</numAutDocSustento>\n"
+//                                + "            <fechaEmisionDocSustento>" + formato.format(valor.getIdFactura().getFacFecha()) + "</fechaEmisionDocSustento>\n");
+//                    build.append(linea);
+//                }
+//            } catch (Exception e) {
+//            }
+//            linea = "<detalles>\n";
+//            build.append(linea);
+//            List<DetalleGuiaremision> det = servicioDetalleGuia.findDetalleForIdGuia(valor);
+//            for (DetalleGuiaremision detalle : det) {
+//                linea = ("                <detalle>\n"
+//                            + "                    <codigoInterno>" + removeCaracteres(detalle.getIdProducto().getProdCodigo()) + "</codigoInterno>\n"
+//                            + "                    <descripcion>" + removeCaracteres(detalle.getDetDescripcion()) + "</descripcion>\n"
+//                            + "                    <cantidad>" + detalle.getDetCantidad().setScale(2, RoundingMode.FLOOR) + "</cantidad>\n"
+//                            + "                </detalle>\n");
+//                build.append(linea);
+//            }
+//            linea = ("            </detalles>\n"
+//                        + "        </destinatario>\n"
+//                        + "    </destinatarios>\n")
+//                        + ("    <infoAdicional>\n")
+//                        + ("        <campoAdicional nombre=\"E-MAIL\">" + removeCaracteres(valor.getIdCliente().getCliCorreo()) + "</campoAdicional>\n")
+//                        + ("        <campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getIdCliente().getCliDireccion()) + "</campoAdicional>\n")
+//                        + ("        <campoAdicional nombre=\"TELEFONO\">" + valor.getIdCliente().getCliTelefono() + "</campoAdicional>\n")
+//                        + ("        <campoAdicional nombre=\"CIUDAD\">" + valor.getIdCliente().getCiudad() + "</campoAdicional>\n"
+//                        + (amb.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
+//                        + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
+//                        + "    </infoAdicional>\n"
+//                        + "</guiaRemision>");
+//            build.append(linea);
+//            /*IMPRIME EL XML GUIA DE REMISION*/
+//            System.out.println("XML " + build);
+//            String pathArchivoSalida = "";
+//
+//            /*ruta de salida del archivo XML 
+//            generados o autorizados para enviar al cliente 
+//            dependiendo la ruta enviada en el parametro del metodo */
+//            pathArchivoSalida = folderDestino
+//                        + nombreArchivoXML;
+//
+//            //String pathArchivoSalida = "D:\\";
+//            out = new FileOutputStream(pathArchivoSalida);
+//            out.write(build.toString().getBytes());
+//            //GRABA DATOS EN FACTURA//
+//            return pathArchivoSalida;
+//
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("ERROR EN LA GENERACION DE XML DEBITO O CREDITO  FileNotFoundException" + ex);
+//        } catch (IOException ex) {
+//            System.out.println("ERROR EN LA GENERACION DE XML DEBITO O CREDITO IOException " + ex);
+//        }
         return "";
     }
     //</editor-fold>

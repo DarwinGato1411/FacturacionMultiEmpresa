@@ -294,178 +294,178 @@ public class ListaGuia {
     public void autorizarSRI(@BindingParam("valor") Guiaremision valor)
                 throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-        String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-        String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-
-        String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-
-        String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-
-        /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
-        File folderGen = new File(folderGenerados);
-        if (!folderGen.exists()) {
-            folderGen.mkdirs();
-        }
-        File folderFirm = new File(folderFirmado);
-        if (!folderFirm.exists()) {
-            folderFirm.mkdirs();
-        }
-
-        File folderAu = new File(foldervoAutorizado);
-        if (!folderAu.exists()) {
-            folderAu.mkdirs();
-        }
-
-        File folderCliente = new File(folderEnviarCliente);
-        if (!folderCliente.exists()) {
-            folderCliente.mkdirs();
-        }
-        File folderNoAut = new File(folderNoAutorizados);
-        if (!folderNoAut.exists()) {
-            folderNoAut.mkdirs();
-        }
-        /*Ubicacion del archivo firmado para obtener la informacion*/
-
- /*PARA CREAR EL ARCHIVO XML FIRMADO*/
-        String nombreArchivoXML = File.separator + "GUIA-"
-                    + valor.getCodestablecimiento()
-                    + valor.getPuntoemision()
-                    + valor.getFacNumeroText() + ".xml";
-
-
-        /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
-        String pathArchivoFirmado = folderFirmado + nombreArchivoXML;
-        String pathArchivoAutorizado = foldervoAutorizado + nombreArchivoXML;
-        String pathArchivoNoAutorizado = folderNoAutorizados + nombreArchivoXML;
-        String archivoEnvioCliente = "";
-
-        File f = null;
-        File fEnvio = null;
-        byte[] datos = null;
-        //tipoambiente tiene los parameteos para los directorios y la firma digital
-        AutorizarDocumentos aut = new AutorizarDocumentos();
-        /*Generamos el archivo XML de la factura*/
-        String archivo = aut.generaXMLGuiaRemision(valor, amb, folderGenerados, nombreArchivoXML);
-
-        /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
-        archivo es la ruta del archivo xml generado
-        nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
-
-        f = new File(pathArchivoFirmado);
-
-        datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-        //obtener la clave de acceso desde el archivo xml
-        String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
-        /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
-        valor.setFacClaveAcceso(claveAccesoComprobante);
-        AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
-        if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
-            // Autorizacion autorizacion = null;
-
-            if (resSolicitud.getEstado().equals("RECIBIDA")) {
+//        String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//        String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//        String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//
+//        String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//
+//        String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//
+//        /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
+//        File folderGen = new File(folderGenerados);
+//        if (!folderGen.exists()) {
+//            folderGen.mkdirs();
+//        }
+//        File folderFirm = new File(folderFirmado);
+//        if (!folderFirm.exists()) {
+//            folderFirm.mkdirs();
+//        }
+//
+//        File folderAu = new File(foldervoAutorizado);
+//        if (!folderAu.exists()) {
+//            folderAu.mkdirs();
+//        }
+//
+//        File folderCliente = new File(folderEnviarCliente);
+//        if (!folderCliente.exists()) {
+//            folderCliente.mkdirs();
+//        }
+//        File folderNoAut = new File(folderNoAutorizados);
+//        if (!folderNoAut.exists()) {
+//            folderNoAut.mkdirs();
+//        }
+//        /*Ubicacion del archivo firmado para obtener la informacion*/
+//
+// /*PARA CREAR EL ARCHIVO XML FIRMADO*/
+//        String nombreArchivoXML = File.separator + "GUIA-"
+//                    + valor.getCodestablecimiento()
+//                    + valor.getPuntoemision()
+//                    + valor.getFacNumeroText() + ".xml";
+//
+//
+//        /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
+//        String pathArchivoFirmado = folderFirmado + nombreArchivoXML;
+//        String pathArchivoAutorizado = foldervoAutorizado + nombreArchivoXML;
+//        String pathArchivoNoAutorizado = folderNoAutorizados + nombreArchivoXML;
+//        String archivoEnvioCliente = "";
+//
+//        File f = null;
+//        File fEnvio = null;
+//        byte[] datos = null;
+//        //tipoambiente tiene los parameteos para los directorios y la firma digital
+//        AutorizarDocumentos aut = new AutorizarDocumentos();
+//        /*Generamos el archivo XML de la factura*/
+//        String archivo = aut.generaXMLGuiaRemision(valor, amb, folderGenerados, nombreArchivoXML);
+//
+//        /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
+//        archivo es la ruta del archivo xml generado
+//        nomre del archivo a firmar*/
+//        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+//                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+//
+//        f = new File(pathArchivoFirmado);
+//
+//        datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
+//        //obtener la clave de acceso desde el archivo xml
+//        String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
+//        /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
+//        valor.setFacClaveAcceso(claveAccesoComprobante);
+//        AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
+//        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos,amb);
+//        if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
+//            // Autorizacion autorizacion = null;
+//
+//            if (resSolicitud.getEstado().equals("RECIBIDA")) {
+////                try {
+////                    Thread.sleep(1000);
+////                } catch (InterruptedException ex) {
+////                    Logger.getLogger(Tipoambiente.class.getName()).log(Level.SEVERE, null, ex);
+////                }
 //                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(Tipoambiente.class.getName()).log(Level.SEVERE, null, ex);
+//
+//                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+//                    for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
+//                        FileOutputStream nuevo = null;
+//
+//                        /*CREA EL ARCHIVO XML AUTORIZADO*/
+//                        System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
+//                        nuevo = new FileOutputStream(pathArchivoNoAutorizado);
+//                        nuevo.write(autorizacion.getComprobante().getBytes());
+//                        if (!autorizacion.getEstado().equals("AUTORIZADO")) {
+//
+//                            String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
+//                            String smsInfo = autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional();
+//                            nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
+//                            if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
+//                                nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
+//                            }
+//
+//                            valor.setMensajesri(texto);
+//                            valor.setEstadosri(autorizacion.getEstado());
+//
+//                            nuevo.flush();
+//                            servicioGuia.modificar(valor);
+//                        } else {
+//
+//                            valor.setFacClaveAutorizacion(claveAccesoComprobante);
+//                            valor.setEstadosri(autorizacion.getEstado());
+//                            valor.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+//
+//                            /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
+//                            archivoEnvioCliente = aut.generaXMLGuiaRemision(valor, amb, foldervoAutorizado, nombreArchivoXML);
+////                            XAdESBESSignature.firmar(archivoEnvioCliente,
+////                                    nombreArchivoXML,
+////                                    amb.getAmClaveAccesoSri(),
+////                                    amb, foldervoAutorizado);
+//
+//                            fEnvio = new File(archivoEnvioCliente);
+//
+//                            System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
+//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "GUIA",amb);
+////                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
+//                            /*GUARDA EL PATH PDF CREADO*/
+//
+//                            servicioGuia.modificar(valor);
+//                            /*envia el mail*/
+//
+//                            String[] attachFiles = new String[2];
+//                            attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
+//                            attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
+//                            MailerClass mail = new MailerClass();
+//                            if (valor.getIdCliente().getCliClave() == null) {
+//                                Cliente mod = valor.getIdCliente();
+//                                mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
+//                                servicioCliente.modificar(mod);
+//                            }
+////                            if (valor.getIdCliente().getCliCorreo() != null) {
+////                                mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
+////                                            attachFiles,
+////                                            "GUIA DE REMISION ELECTRONICA",
+////                                            valor.getFacClaveAcceso(),
+////                                            valor.getFacNumeroText(),
+////                                            valor.getFacTotal(),
+////                                            valor.getIdCliente().getCliNombre(),amb);
+////                            }
+//                        }
+//
+//                    }
+//                } catch (RespuestaAutorizacionException ex) {
+//                    Logger.getLogger(ListaGuia.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-                try {
-
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
-                    for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
-                        FileOutputStream nuevo = null;
-
-                        /*CREA EL ARCHIVO XML AUTORIZADO*/
-                        System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
-                        nuevo = new FileOutputStream(pathArchivoNoAutorizado);
-                        nuevo.write(autorizacion.getComprobante().getBytes());
-                        if (!autorizacion.getEstado().equals("AUTORIZADO")) {
-
-                            String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
-                            String smsInfo = autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional();
-                            nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
-                            if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
-                                nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
-                            }
-
-                            valor.setMensajesri(texto);
-                            valor.setEstadosri(autorizacion.getEstado());
-
-                            nuevo.flush();
-                            servicioGuia.modificar(valor);
-                        } else {
-
-                            valor.setFacClaveAutorizacion(claveAccesoComprobante);
-                            valor.setEstadosri(autorizacion.getEstado());
-                            valor.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-
-                            /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
-                            archivoEnvioCliente = aut.generaXMLGuiaRemision(valor, amb, foldervoAutorizado, nombreArchivoXML);
-//                            XAdESBESSignature.firmar(archivoEnvioCliente,
-//                                    nombreArchivoXML,
-//                                    amb.getAmClaveAccesoSri(),
-//                                    amb, foldervoAutorizado);
-
-                            fEnvio = new File(archivoEnvioCliente);
-
-                            System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "GUIA",amb);
-//                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
-                            /*GUARDA EL PATH PDF CREADO*/
-
-                            servicioGuia.modificar(valor);
-                            /*envia el mail*/
-
-                            String[] attachFiles = new String[2];
-                            attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
-                            attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
-                            MailerClass mail = new MailerClass();
-                            if (valor.getIdCliente().getCliClave() == null) {
-                                Cliente mod = valor.getIdCliente();
-                                mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
-                                servicioCliente.modificar(mod);
-                            }
-                            if (valor.getIdCliente().getCliCorreo() != null) {
-                                mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                                            attachFiles,
-                                            "GUIA DE REMISION ELECTRONICA",
-                                            valor.getFacClaveAcceso(),
-                                            valor.getFacNumeroText(),
-                                            valor.getFacTotal(),
-                                            valor.getIdCliente().getCliNombre(),amb);
-                            }
-                        }
-
-                    }
-                } catch (RespuestaAutorizacionException ex) {
-                    Logger.getLogger(ListaGuia.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
-                ArchivoUtils.FileCopy(pathArchivoFirmado, pathArchivoNoAutorizado);
-                valor.setEstadosri(resSolicitud.getEstado());
-                valor.setMensajesri(resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje());
-
-                servicioGuia.modificar(valor);
-            }
-        } else {
-
-            valor.setMensajesri(resSolicitud.getEstado());
-            servicioGuia.modificar(valor);
-        }
+//            } else {
+//                String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
+//                ArchivoUtils.FileCopy(pathArchivoFirmado, pathArchivoNoAutorizado);
+//                valor.setEstadosri(resSolicitud.getEstado());
+//                valor.setMensajesri(resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje());
+//
+//                servicioGuia.modificar(valor);
+//            }
+//        } else {
+//
+//            valor.setMensajesri(resSolicitud.getEstado());
+//            servicioGuia.modificar(valor);
+//        }
 
     }
 
@@ -474,162 +474,162 @@ public class ListaGuia {
     public void reenviarSRI(@BindingParam("valor") Guiaremision valor)
                 throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-        String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-        String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-
-        String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-
-        String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
-                    + File.separator + new Date().getYear()
-                    + File.separator + new Date().getMonth();
-
-        /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
-        File folderGen = new File(folderGenerados);
-        if (!folderGen.exists()) {
-            folderGen.mkdirs();
-        }
-        File folderFirm = new File(folderFirmado);
-        if (!folderFirm.exists()) {
-            folderFirm.mkdirs();
-        }
-
-        File folderAu = new File(foldervoAutorizado);
-        if (!folderAu.exists()) {
-            folderAu.mkdirs();
-        }
-
-        File folderCliente = new File(folderEnviarCliente);
-        if (!folderCliente.exists()) {
-            folderCliente.mkdirs();
-        }
-        File folderNoAut = new File(folderNoAutorizados);
-        if (!folderNoAut.exists()) {
-            folderNoAut.mkdirs();
-        }
-        /*Ubicacion del archivo firmado para obtener la informacion*/
-
- /*PARA CREAR EL ARCHIVO XML FIRMADO*/
-        String nombreArchivoXML = File.separator + "GUIA-"
-                    + valor.getCodestablecimiento()
-                    + valor.getPuntoemision()
-                    + valor.getFacNumeroText() + ".xml";
-
-
-        /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
-        String pathArchivoFirmado = folderFirmado + nombreArchivoXML;
-        String pathArchivoAutorizado = foldervoAutorizado + nombreArchivoXML;
-        String pathArchivoNoAutorizado = folderNoAutorizados + nombreArchivoXML;
-        String archivoEnvioCliente = "";
-
-        File f = null;
-        File fEnvio = null;
-        byte[] datos = null;
-        //tipoambiente tiene los parameteos para los directorios y la firma digital
-        AutorizarDocumentos aut = new AutorizarDocumentos();
-        /*Generamos el archivo XML de la factura*/
-        String archivo = aut.generaXMLGuiaRemision(valor, amb, folderGenerados, nombreArchivoXML);
-
-        /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
-        archivo es la ruta del archivo xml generado
-        nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
-
-        f = new File(pathArchivoFirmado);
-
-        datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-        //obtener la clave de acceso desde el archivo xml
-        String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
-        /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
-        valor.setFacClaveAcceso(claveAccesoComprobante);
-        AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-//        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
-//        if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
-//            // Autorizacion autorizacion = null;
+//        String folderGenerados = PATH_BASE + File.separator + amb.getAmGenerados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//        String folderEnviarCliente = PATH_BASE + File.separator + amb.getAmEnviocliente()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//        String folderFirmado = PATH_BASE + File.separator + amb.getAmFirmados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
 //
-//            if (resSolicitud.getEstado().equals("RECIBIDA")) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Tipoambiente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
-            for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
-                FileOutputStream nuevo = null;
-
-                /*CREA EL ARCHIVO XML AUTORIZADO*/
-//                System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
-                nuevo = new FileOutputStream(pathArchivoNoAutorizado);
-                nuevo.write(autorizacion.getComprobante().getBytes());
-                if (!autorizacion.getEstado().equals("AUTORIZADO")) {
-
-                    String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
-                    nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
-                    if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
-                        nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
-                    }
-
-                    valor.setMensajesri(texto);
-                    nuevo.flush();
-                } else {
-
-                    valor.setFacClaveAutorizacion(claveAccesoComprobante);
-                    valor.setEstadosri(autorizacion.getEstado());
-                    valor.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-
-                    /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
-                    archivoEnvioCliente = aut.generaXMLGuiaRemision(valor, amb, foldervoAutorizado, nombreArchivoXML);
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
-                                nombreArchivoXML,
-                                amb.getAmClaveAccesoSri(),
-                                amb, foldervoAutorizado);
-
-                    fEnvio = new File(archivoEnvioCliente);
-                }
-
-                System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "GUIA",amb);
-//                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
-                /*GUARDA EL PATH PDF CREADO*/
-
-                servicioGuia.modificar(valor);
-                /*envia el mail*/
-
-                String[] attachFiles = new String[2];
-                attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
-                attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
-                MailerClass mail = new MailerClass();
-                if (valor.getIdCliente().getCliClave() == null) {
-                    Cliente mod = valor.getIdCliente();
-                    mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
-                    servicioCliente.modificar(mod);
-                }
-                if (valor.getIdCliente().getCliCorreo() != null) {
-                    mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                                attachFiles,
-                                "GUIA DE REMISION ELECTRONICA",
-                                valor.getFacClaveAcceso(),
-                                valor.getFacNumeroText(),
-                                valor.getFacTotal(),
-                                valor.getIdCliente().getCliNombre(),amb);
-                }
-
-            }
-            consultarFacturaFecha();
-        } catch (RespuestaAutorizacionException ex) {
-            Logger.getLogger(ListaGuia.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        String foldervoAutorizado = PATH_BASE + File.separator + amb.getAmAutorizados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//
+//        String folderNoAutorizados = PATH_BASE + File.separator + amb.getAmNoAutorizados()
+//                    + File.separator + new Date().getYear()
+//                    + File.separator + new Date().getMonth();
+//
+//        /*EN EL CASO DE NO EXISTIR LOS DIRECTORIOS LOS CREA*/
+//        File folderGen = new File(folderGenerados);
+//        if (!folderGen.exists()) {
+//            folderGen.mkdirs();
+//        }
+//        File folderFirm = new File(folderFirmado);
+//        if (!folderFirm.exists()) {
+//            folderFirm.mkdirs();
+//        }
+//
+//        File folderAu = new File(foldervoAutorizado);
+//        if (!folderAu.exists()) {
+//            folderAu.mkdirs();
+//        }
+//
+//        File folderCliente = new File(folderEnviarCliente);
+//        if (!folderCliente.exists()) {
+//            folderCliente.mkdirs();
+//        }
+//        File folderNoAut = new File(folderNoAutorizados);
+//        if (!folderNoAut.exists()) {
+//            folderNoAut.mkdirs();
+//        }
+//        /*Ubicacion del archivo firmado para obtener la informacion*/
+//
+// /*PARA CREAR EL ARCHIVO XML FIRMADO*/
+//        String nombreArchivoXML = File.separator + "GUIA-"
+//                    + valor.getCodestablecimiento()
+//                    + valor.getPuntoemision()
+//                    + valor.getFacNumeroText() + ".xml";
+//
+//
+//        /*RUTAS FINALES DE,LOS ARCHIVOS XML FIRMADOS Y AUTORIZADOS*/
+//        String pathArchivoFirmado = folderFirmado + nombreArchivoXML;
+//        String pathArchivoAutorizado = foldervoAutorizado + nombreArchivoXML;
+//        String pathArchivoNoAutorizado = folderNoAutorizados + nombreArchivoXML;
+//        String archivoEnvioCliente = "";
+//
+//        File f = null;
+//        File fEnvio = null;
+//        byte[] datos = null;
+//        //tipoambiente tiene los parameteos para los directorios y la firma digital
+//        AutorizarDocumentos aut = new AutorizarDocumentos();
+//        /*Generamos el archivo XML de la factura*/
+//        String archivo = aut.generaXMLGuiaRemision(valor, amb, folderGenerados, nombreArchivoXML);
+//
+//        /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
+//        archivo es la ruta del archivo xml generado
+//        nomre del archivo a firmar*/
+//        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+//                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+//
+//        f = new File(pathArchivoFirmado);
+//
+//        datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
+//        //obtener la clave de acceso desde el archivo xml
+//        String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
+//        /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
+//        valor.setFacClaveAcceso(claveAccesoComprobante);
+//        AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
+////        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos);
+////        if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
+////            // Autorizacion autorizacion = null;
+////
+////            if (resSolicitud.getEstado().equals("RECIBIDA")) {
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Tipoambiente.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        try {
+//
+//            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante,amb);
+//            for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
+//                FileOutputStream nuevo = null;
+//
+//                /*CREA EL ARCHIVO XML AUTORIZADO*/
+////                System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
+//                nuevo = new FileOutputStream(pathArchivoNoAutorizado);
+//                nuevo.write(autorizacion.getComprobante().getBytes());
+//                if (!autorizacion.getEstado().equals("AUTORIZADO")) {
+//
+//                    String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
+//                    nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
+//                    if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
+//                        nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
+//                    }
+//
+//                    valor.setMensajesri(texto);
+//                    nuevo.flush();
+//                } else {
+//
+//                    valor.setFacClaveAutorizacion(claveAccesoComprobante);
+//                    valor.setEstadosri(autorizacion.getEstado());
+//                    valor.setFacFechaAutorizacion(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
+//
+//                    /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
+//                    archivoEnvioCliente = aut.generaXMLGuiaRemision(valor, amb, foldervoAutorizado, nombreArchivoXML);
+//                    XAdESBESSignature.firmar(archivoEnvioCliente,
+//                                nombreArchivoXML,
+//                                amb.getAmClaveAccesoSri(),
+//                                amb, foldervoAutorizado);
+//
+//                    fEnvio = new File(archivoEnvioCliente);
+//                }
+//
+//                System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
+//                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "GUIA",amb);
+////                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
+//                /*GUARDA EL PATH PDF CREADO*/
+//
+//                servicioGuia.modificar(valor);
+//                /*envia el mail*/
+//
+//                String[] attachFiles = new String[2];
+//                attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
+//                attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
+//                MailerClass mail = new MailerClass();
+//                if (valor.getIdCliente().getCliClave() == null) {
+//                    Cliente mod = valor.getIdCliente();
+//                    mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
+//                    servicioCliente.modificar(mod);
+//                }
+////                if (valor.getIdCliente().getCliCorreo() != null) {
+////                    mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
+////                                attachFiles,
+////                                "GUIA DE REMISION ELECTRONICA",
+////                                valor.getFacClaveAcceso(),
+////                                valor.getFacNumeroText(),
+////                                valor.getFacTotal(),
+////                                valor.getIdCliente().getCliNombre(),amb);
+////                }
+//
+//            }
+//            consultarFacturaFecha();
+//        } catch (RespuestaAutorizacionException ex) {
+//            Logger.getLogger(ListaGuia.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
 

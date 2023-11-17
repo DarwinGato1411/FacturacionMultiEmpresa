@@ -88,7 +88,6 @@ public class RetencionCompra implements Serializable {
     @Column(name = "rco_secuencial")
     private int rcoSecuencial;
     @Basic(optional = false)
-
     @Size(min = 1, max = 3)
     @Column(name = "rco_serie")
     private String rcoSerie;

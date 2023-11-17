@@ -22,7 +22,7 @@ public class RetencionCompraDao {
     private Date rcoFecha;
     private String rcoSecuencialText;
     private int rcoSecuencial;
-    private String amRazonSocial;
+    private String razonSocialEmpresa;
     private String amNombreComercial;
     private String amDireccionMatriz;
     private String llevarContabilidad;
@@ -84,11 +84,11 @@ public class RetencionCompraDao {
     }
 
     public String getAmRazonSocial() {
-        return amRazonSocial;
+        return razonSocialEmpresa;
     }
 
     public void setAmRazonSocial(String amRazonSocial) {
-        this.amRazonSocial = amRazonSocial;
+        this.razonSocialEmpresa = amRazonSocial;
     }
 
     public String getAmNombreComercial() {

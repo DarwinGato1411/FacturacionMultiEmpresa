@@ -214,71 +214,71 @@ public class GuiaRemision {
     @NotifyChange({"listaGuiaModel"})
     public void guardar() {
 
-        try {
-
-            if (listaGuiaModel.size() > 0) {
-
-            } else {
-                Clients.showNotification("Verifique el detalle de la guia",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 2000, true);
-                return;
-            }
-            numeroGuia();
-            if (!partida.equals("")
-                        && !numeroPlaca.equals("")
-                        && clienteBuscado != null
-                        && transportista != null) {
-
-                Guiaremision guiaremision = new Guiaremision();
-
-                if (tipoGuiaRemision.equals("EMITIDA")) {
-                    guiaremision.setFacNumero(numeroGuia);
-//                    numeroGuia();
-                    guiaremision.setFacNumeroText(numeroGuiaText);
-                } else {
-                    guiaremision.setFacNumero(0);
-                    guiaremision.setFacNumeroTextRecibida(numeroGuiaRecibida);
-                }
-                guiaremision.setIdUsuario(credential.getUsuarioSistema());
-                guiaremision.setFacFecha(new Date());
-                guiaremision.setFacEstado("PENDIENTE");
-                guiaremision.setTipodocumento("06");
-                guiaremision.setPuntoemision("001");
-                guiaremision.setCodestablecimiento("001");
-                guiaremision.setEstadosri("PENDIENTE");
-                String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(),amb.getAmEstab()+amb.getAmPtoemi(), numeroGuiaText, "12345678", "1");
-                guiaremision.setFacClaveAcceso(claveAccesoGuia);
-                guiaremision.setFacClaveAutorizacion(claveAccesoGuia);
-                guiaremision.setCodTipoambiente(amb.getCodTipoambiente());
-                guiaremision.setFacFechaSustento(new Date());
-                guiaremision.setIdTransportista(transportista);
-                guiaremision.setNumplacaguia(numeroPlaca);
-                guiaremision.setIdCliente(clienteBuscado);
-                guiaremision.setFechainitranspguia(incioTraslado);
-                guiaremision.setFechafintranspguia(finTraslado);
-                guiaremision.setMotivoGuia(motivoGuia);
-                guiaremision.setPartida(partida);
-                guiaremision.setLlegada(llegada);
-                guiaremision.setTipoGuia(tipoGuiaRemision);
-                List<DetalleGuiaremision> detalleGuia = new ArrayList<DetalleGuiaremision>();
-                DetalleGuiaremision nuevo = null;
-                for (DetalleGuiaDao itemDet : listaGuiaModel) {
-                    nuevo = new DetalleGuiaremision(itemDet.getDetCantidad(), itemDet.getDetDescripcion(), itemDet.getIdProducto(), guiaremision);
-                    detalleGuia.add(nuevo);
-                }
-                servicioGuia.guardarGuiaremision(detalleGuia, guiaremision);
-                Clients.showNotification("Guardado con exito",
-                            Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
-
-                Executions.sendRedirect("/venta/guia.zul");
-            } else {
-                Clients.showNotification("Verifique la informacion",
-                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
-            }
-        } catch (Exception e) {
-            Clients.showNotification("Error al registrar " + e.getMessage(),
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
-        }
+//        try {
+//
+//            if (listaGuiaModel.size() > 0) {
+//
+//            } else {
+//                Clients.showNotification("Verifique el detalle de la guia",
+//                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 2000, true);
+//                return;
+//            }
+//            numeroGuia();
+//            if (!partida.equals("")
+//                        && !numeroPlaca.equals("")
+//                        && clienteBuscado != null
+//                        && transportista != null) {
+//
+//                Guiaremision guiaremision = new Guiaremision();
+//
+//                if (tipoGuiaRemision.equals("EMITIDA")) {
+//                    guiaremision.setFacNumero(numeroGuia);
+////                    numeroGuia();
+//                    guiaremision.setFacNumeroText(numeroGuiaText);
+//                } else {
+//                    guiaremision.setFacNumero(0);
+//                    guiaremision.setFacNumeroTextRecibida(numeroGuiaRecibida);
+//                }
+////                guiaremision.setIdUsuario(credential.getUsuarioSistema());
+//                guiaremision.setFacFecha(new Date());
+//                guiaremision.setFacEstado("PENDIENTE");
+//                guiaremision.setTipodocumento("06");
+//                guiaremision.setPuntoemision("001");
+//                guiaremision.setCodestablecimiento("001");
+//                guiaremision.setEstadosri("PENDIENTE");
+//                String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(),amb.getAmEstab()+amb.getAmPtoemi(), numeroGuiaText, "12345678", "1");
+//                guiaremision.setFacClaveAcceso(claveAccesoGuia);
+//                guiaremision.setFacClaveAutorizacion(claveAccesoGuia);
+//                guiaremision.setCodTipoambiente(amb.getCodTipoambiente());
+//                guiaremision.setFacFechaSustento(new Date());
+////                guiaremision.setIdTransportista(transportista);
+//                guiaremision.setNumplacaguia(numeroPlaca);
+//                guiaremision.setIdCliente(clienteBuscado);
+//                guiaremision.setFechainitranspguia(incioTraslado);
+//                guiaremision.setFechafintranspguia(finTraslado);
+//                guiaremision.setMotivoGuia(motivoGuia);
+//                guiaremision.setPartida(partida);
+//                guiaremision.setLlegada(llegada);
+//                guiaremision.setTipoGuia(tipoGuiaRemision);
+//                List<DetalleGuiaremision> detalleGuia = new ArrayList<DetalleGuiaremision>();
+//                DetalleGuiaremision nuevo = null;
+//                for (DetalleGuiaDao itemDet : listaGuiaModel) {
+//                    nuevo = new DetalleGuiaremision(itemDet.getDetCantidad(), itemDet.getDetDescripcion(), itemDet.getIdProducto(), guiaremision);
+//                    detalleGuia.add(nuevo);
+//                }
+//                servicioGuia.guardarGuiaremision(detalleGuia, guiaremision);
+//                Clients.showNotification("Guardado con exito",
+//                            Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
+//
+//                Executions.sendRedirect("/venta/guia.zul");
+//            } else {
+//                Clients.showNotification("Verifique la informacion",
+//                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+//            }
+//        } catch (Exception e) {
+//            Clients.showNotification("Error al registrar " + e.getMessage(),
+//                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+//        }
     }
 
     @Command

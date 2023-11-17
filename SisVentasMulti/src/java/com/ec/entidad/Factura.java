@@ -238,9 +238,7 @@ public class Factura implements Serializable {
     @OneToMany(mappedBy = "idFactura")
     private Collection<NotaCreditoDebito> notaCreditoDebitoCollection;
     @JsonIgnore
-    @OneToMany(mappedBy = "idFactura")
-    private Collection<Guiaremision> guiaremisionCollection;
-    @JsonIgnore
+   
     @OneToMany(mappedBy = "idFactura")
     private Collection<DetallePago> detallePagoCollection;
     @JsonIgnore
@@ -915,14 +913,7 @@ public class Factura implements Serializable {
         this.idReferencia = idReferencia;
     }
 
-    @XmlTransient
-    public Collection<Guiaremision> getGuiaremisionCollection() {
-        return guiaremisionCollection;
-    }
-
-    public void setGuiaremisionCollection(Collection<Guiaremision> guiaremisionCollection) {
-        this.guiaremisionCollection = guiaremisionCollection;
-    }
+   
 
     @XmlTransient
     public Collection<DetallePago> getDetallePagoCollection() {

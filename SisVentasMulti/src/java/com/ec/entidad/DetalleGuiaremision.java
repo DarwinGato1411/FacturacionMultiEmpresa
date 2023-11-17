@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ec.entidad;
 
 import java.io.Serializable;
@@ -30,24 +29,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "detalle_guiaremision")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DetalleGuiaremision.findAll", query = "SELECT d FROM DetalleGuiaremision d"),
-    @NamedQuery(name = "DetalleGuiaremision.findByIdDetalleGuiaremision", query = "SELECT d FROM DetalleGuiaremision d WHERE d.idDetalleGuiaremision = :idDetalleGuiaremision"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetCantidad", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detCantidad = :detCantidad"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetDescripcion", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detDescripcion = :detDescripcion"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetSubtotal", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detSubtotal = :detSubtotal"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetTotal", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotal = :detTotal"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetTipoVenta", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTipoVenta = :detTipoVenta"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetIva", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detIva = :detIva"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetTotalconiva", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotalconiva = :detTotalconiva"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetPordescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detPordescuento = :detPordescuento"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetValdescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detValdescuento = :detValdescuento"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetSubtotaldescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detSubtotaldescuento = :detSubtotaldescuento"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetTotaldescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotaldescuento = :detTotaldescuento"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetTotaldescuentoiva", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotaldescuentoiva = :detTotaldescuentoiva"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetCantpordescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detCantpordescuento = :detCantpordescuento"),
-    @NamedQuery(name = "DetalleGuiaremision.findByDetSubtotaldescuentoporcantidad", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detSubtotaldescuentoporcantidad = :detSubtotaldescuentoporcantidad"),
+    @NamedQuery(name = "DetalleGuiaremision.findAll", query = "SELECT d FROM DetalleGuiaremision d")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByIdDetalleGuiaremision", query = "SELECT d FROM DetalleGuiaremision d WHERE d.idDetalleGuiaremision = :idDetalleGuiaremision")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetCantidad", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detCantidad = :detCantidad")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetDescripcion", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detDescripcion = :detDescripcion")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetSubtotal", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detSubtotal = :detSubtotal")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetTotal", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotal = :detTotal")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetTipoVenta", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTipoVenta = :detTipoVenta")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetIva", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detIva = :detIva")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetTotalconiva", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotalconiva = :detTotalconiva")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetPordescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detPordescuento = :detPordescuento")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetValdescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detValdescuento = :detValdescuento")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetSubtotaldescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detSubtotaldescuento = :detSubtotaldescuento")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetTotaldescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotaldescuento = :detTotaldescuento")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetTotaldescuentoiva", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detTotaldescuentoiva = :detTotaldescuentoiva")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetCantpordescuento", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detCantpordescuento = :detCantpordescuento")
+    ,
+    @NamedQuery(name = "DetalleGuiaremision.findByDetSubtotaldescuentoporcantidad", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detSubtotaldescuentoporcantidad = :detSubtotaldescuentoporcantidad")
+    ,
     @NamedQuery(name = "DetalleGuiaremision.findByDetCodTipoVenta", query = "SELECT d FROM DetalleGuiaremision d WHERE d.detCodTipoVenta = :detCodTipoVenta")})
 public class DetalleGuiaremision implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,6 +111,9 @@ public class DetalleGuiaremision implements Serializable {
     @ManyToOne
     private Guiaremision idGuiaremision;
 
+    @Column(name = "codigo_interno", length = 100, columnDefinition = "VARCHAR(100) COLLATE pg_catalog.\"default\"")
+    private String codigoInterno;
+
     public DetalleGuiaremision() {
     }
 
@@ -104,8 +123,6 @@ public class DetalleGuiaremision implements Serializable {
         this.idProducto = idProducto;
         this.idGuiaremision = idGuiaremision;
     }
-    
-    
 
     public DetalleGuiaremision(Integer idDetalleGuiaremision) {
         this.idDetalleGuiaremision = idDetalleGuiaremision;
@@ -255,6 +272,16 @@ public class DetalleGuiaremision implements Serializable {
         this.idGuiaremision = idGuiaremision;
     }
 
+    public String getCodigoInterno() {
+        return codigoInterno;
+    }
+
+    public void setCodigoInterno(String codigoInterno) {
+        this.codigoInterno = codigoInterno;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -279,5 +306,5 @@ public class DetalleGuiaremision implements Serializable {
     public String toString() {
         return "com.ec.entidad.DetalleGuiaremision[ idDetalleGuiaremision=" + idDetalleGuiaremision + " ]";
     }
-    
+
 }

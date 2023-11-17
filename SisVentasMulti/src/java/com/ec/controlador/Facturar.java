@@ -2214,36 +2214,36 @@ public class Facturar extends SelectorComposer<Component> {
                     }
                     if (valor.equalsIgnoreCase("CG")) {
 
-                        numeroGuia();
-                        Guiaremision guiaremision = new Guiaremision();
-                        guiaremision.setFacNumero(numeroGuia);
-                        guiaremision.setFacNumeroText(numeroGuiaText);
-                        guiaremision.setIdFactura(factura);
-                        guiaremision.setIdUsuario(credential.getUsuarioSistema());
-                        guiaremision.setFacFecha(new Date());
-                        guiaremision.setFacEstado("PENDIENTE");
-                        guiaremision.setTipodocumento("06");
-                        guiaremision.setPuntoemision(factura.getPuntoemision());
-                        guiaremision.setCodestablecimiento(factura.getCodestablecimiento());
-                        guiaremision.setEstadosri("PENDIENTE");
-                        String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(),  amb.getAmEstab()+amb.getAmPtoemi(), guiaremision.getFacNumeroText(), "12345678", "1");
-                        guiaremision.setFacClaveAcceso(claveAccesoGuia);
-                        guiaremision.setFacClaveAutorizacion(claveAccesoGuia);
-                        guiaremision.setCodTipoambiente(factura.getCod_tipoambiente().getCodTipoambiente());
-                        guiaremision.setFacFechaSustento(factura.getFacFecha());
-                        guiaremision.setIdTransportista(transportista);
-                        guiaremision.setNumplacaguia(numeroPlaca);
-                        guiaremision.setIdCliente(factura.getIdCliente());
-                        guiaremision.setFechainitranspguia(incioTraslado);
-                        guiaremision.setFechafintranspguia(finTraslado);
-                        guiaremision.setMotivoGuia(motivoGuia);
-                        guiaremision.setPartida(partida);
-                        guiaremision.setLlegada(llegada);
-                        List<DetalleGuiaremision> detalleGuia = new ArrayList<DetalleGuiaremision>();
-                        for (DetalleFacturaDAO itemDet : detalleFactura) {
-                            detalleGuia.add(new DetalleGuiaremision(itemDet.getCantidad(), itemDet.getDescripcion(), itemDet.getProducto(), guiaremision));
-                        }
-                        servicioGuia.guardarGuiaremision(detalleGuia, guiaremision);
+//                        numeroGuia();
+//                        Guiaremision guiaremision = new Guiaremision();
+//                        guiaremision.setFacNumero(numeroGuia);
+//                        guiaremision.setFacNumeroText(numeroGuiaText);
+////                        guiaremision.setIdFactura(factura);
+////                        guiaremision.setIdUsuario(credential.getUsuarioSistema());
+//                        guiaremision.setFacFecha(new Date());
+//                        guiaremision.setFacEstado("PENDIENTE");
+//                        guiaremision.setTipodocumento("06");
+//                        guiaremision.setPuntoemision(factura.getPuntoemision());
+//                        guiaremision.setCodestablecimiento(factura.getCodestablecimiento());
+//                        guiaremision.setEstadosri("PENDIENTE");
+//                        String claveAccesoGuia = ArchivoUtils.generaClave(guiaremision.getFacFecha(), "06", amb.getAmRuc(), amb.getAmCodigo(),  amb.getAmEstab()+amb.getAmPtoemi(), guiaremision.getFacNumeroText(), "12345678", "1");
+//                        guiaremision.setFacClaveAcceso(claveAccesoGuia);
+//                        guiaremision.setFacClaveAutorizacion(claveAccesoGuia);
+//                        guiaremision.setCodTipoambiente(factura.getCod_tipoambiente().getCodTipoambiente());
+//                        guiaremision.setFacFechaSustento(factura.getFacFecha());
+////                        guiaremision.setIdTransportista(transportista);
+//                        guiaremision.setNumplacaguia(numeroPlaca);
+//                        guiaremision.setIdCliente(factura.getIdCliente());
+//                        guiaremision.setFechainitranspguia(incioTraslado);
+//                        guiaremision.setFechafintranspguia(finTraslado);
+//                        guiaremision.setMotivoGuia(motivoGuia);
+//                        guiaremision.setPartida(partida);
+//                        guiaremision.setLlegada(llegada);
+//                        List<DetalleGuiaremision> detalleGuia = new ArrayList<DetalleGuiaremision>();
+//                        for (DetalleFacturaDAO itemDet : detalleFactura) {
+//                            detalleGuia.add(new DetalleGuiaremision(itemDet.getCantidad(), itemDet.getDescripcion(), itemDet.getProducto(), guiaremision));
+//                        }
+//                        servicioGuia.guardarGuiaremision(detalleGuia, guiaremision);
 
                     }
                     /*VERIFICA SI EL CLINETE QUIERE AUTORIZAR LA FACTURA*/

@@ -4,11 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/untilitario/AutorizarDocumentosApi.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/NotaCreditoDebitoDao.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/DetalleNotaCreditoDebitoDao.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/GuiaremisionDao.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/NotaCreditoDebito.java</file>
+            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/servicio/ServicioRetencionCompra.java</file>
+            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/RetencionCompra.java</file>
+            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/DetRetencionCompraDao.java</file>
             <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/webservices/ServiciosRest.java</file>
+            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/RetencionCompraDao.java</file>
         </group>
     </open-files>
 </project-private>
