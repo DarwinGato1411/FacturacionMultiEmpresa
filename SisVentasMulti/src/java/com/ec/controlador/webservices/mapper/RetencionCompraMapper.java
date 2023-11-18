@@ -20,18 +20,17 @@ public class RetencionCompraMapper {
         respuesta.setRcoDetalle("COMPRA DE MERCADERIA");
         respuesta.setRcoIva(Boolean.FALSE);
         respuesta.setRcoPorcentajeIva(12);
-        respuesta.setRcoPuntoEmision(valor.getAmPtoemi());
-        respuesta.setRcoSecuencial(valor.getRcoSecuencial());
+        respuesta.setRcoPuntoEmision(valor.getPuntoEmisionEmpresa());
+        respuesta.setRcoSecuencial(valor.getSecuencial());
+        respuesta.setRcoSecuencialText(valor.getSecuencialText());
         respuesta.setRcoSerie("1");
         respuesta.setRcoValorRetencionIva(BigDecimal.ZERO);
-        respuesta.setCabFechaEmision(valor.getRcoFecha());
-        respuesta.setDrcEstadosri("PENDIENTE");        
-        respuesta.setRcoFecha(valor.getRcoFecha());
-        respuesta.setRcoSecuencialText(valor.getRcoSecuencialText());
-        respuesta.setRcoSecuencial(valor.getRcoSecuencial());
-        respuesta.setProvNombre(valor.getProvNombre());
-        respuesta.setProvCedula(valor.getProvCedula());
-        
+        respuesta.setCabFechaEmision(valor.getRetencionFecha());
+        respuesta.setDrcEstadosri("PENDIENTE");
+        respuesta.setRcoFecha(valor.getRetencionFecha());
+        respuesta.setProvNombre(valor.getRazonSocialSujetoRetenido());
+        respuesta.setProvCedula(valor.getIdentificacionSujetoRetenido());
+
         return respuesta;
     }
 

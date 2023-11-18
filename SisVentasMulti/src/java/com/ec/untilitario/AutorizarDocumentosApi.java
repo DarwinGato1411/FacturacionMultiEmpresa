@@ -649,7 +649,6 @@ public class AutorizarDocumentosApi {
 //        }
 //        return "";
 //    }
-
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc=" ARMAR RETENCION">
     public String generaXMLComprobanteRetencion(RetencionCompra retencion, Tipoambiente amb, String folderDestino, String nombreArchivoXML) {
@@ -703,7 +702,7 @@ public class AutorizarDocumentosApi {
 
                 linea = ("  <impuesto>\n"
                         + "         <codigo>" + detalle.getDrcCodImpuestoAsignado() + "</codigo>\n"
-                        + "         <codigoRetencion>" + (detalle.getDrcDescripcion().equals("RENTA") 
+                        + "         <codigoRetencion>" + (detalle.getDrcDescripcion().equals("RENTA")
                         ? detalle.getTireCodigo().getTireCodigo() : detalle.getIdTipoivaretencion().getTipivaretValor()) + "</codigoRetencion>\n"
                         + "         <baseImponible>" + ArchivoUtils.redondearDecimales(detalle.getDrcBaseImponible(), 2) + "</baseImponible>\n"
                         + "         <porcentajeRetener>" + detalle.getDrcPorcentaje() + "</porcentajeRetener>\n"
@@ -757,7 +756,7 @@ public class AutorizarDocumentosApi {
             SimpleDateFormat formatoPeriodo = new SimpleDateFormat("MM/yyyy");
             //tipoEmision(); //dependiendo de la coneccion al sri.
             String tipoemision = "1"; //en offline solo existe emision normal
-            String claveAcceso = generaClave(retencion.getRcoFecha(), "07", retencion.getAmRuc(), retencion.getAmCodigo(), retencion.getAmEstab().trim() + retencion.getAmPtoemi().trim(), retencion.getRcoSecuencialText(), "12345678", "1");
+            String claveAcceso = generaClave(retencion.getRetencionFecha(), "07", retencion.getRucEmpresa(), retencion.getAmCodigo(), retencion.getEstablecimientoEmpresa().trim() + retencion.getPuntoEmisionEmpresa().trim(), retencion.getSecuencialText(), "12345678", "1");
             String tipoAmbiente = "";
             if (retencion.getAmCodigo().equals("1")) {
                 tipoAmbiente = "PRUEBAS";
@@ -772,25 +771,25 @@ public class AutorizarDocumentosApi {
                     + "     <infoTributaria>\n"
                     + "        <ambiente>" + retencion.getAmCodigo() + "</ambiente>\n"
                     + "        <tipoEmision>" + tipoemision + "</tipoEmision>\n"
-                    + "        <razonSocial>" + removeCaracteres(retencion.getAmRazonSocial()) + "</razonSocial>\n"
-                    + "        <nombreComercial>" + removeCaracteres(retencion.getAmNombreComercial()) + "</nombreComercial>\n"
-                    + "        <ruc>" + retencion.getAmRuc() + "</ruc>\n"
+                    + "        <razonSocial>" + removeCaracteres(retencion.getRazonSocialEmpresa()) + "</razonSocial>\n"
+                    + "        <nombreComercial>" + removeCaracteres(retencion.getNombreComercialEmpresa()) + "</nombreComercial>\n"
+                    + "        <ruc>" + retencion.getRucEmpresa() + "</ruc>\n"
                     + "        <claveAcceso>" + claveAcceso + "</claveAcceso>\n"
                     + "        <codDoc>07</codDoc>\n"
-                    + "        <estab>" + retencion.getAmEstab() + "</estab>\n"
-                    + "        <ptoEmi>" + retencion.getAmPtoemi() + "</ptoEmi>\n"
-                    + "        <secuencial>" + retencion.getRcoSecuencialText() + "</secuencial>\n"
-                    + "        <dirMatriz>" + removeCaracteres(retencion.getAmDireccionMatriz()) + "</dirMatriz>\n"
+                    + "        <estab>" + retencion.getEstablecimientoEmpresa() + "</estab>\n"
+                    + "        <ptoEmi>" + retencion.getPuntoEmisionEmpresa() + "</ptoEmi>\n"
+                    + "        <secuencial>" + retencion.getSecuencialText() + "</secuencial>\n"
+                    + "        <dirMatriz>" + removeCaracteres(retencion.getDirMatrizEmpresa()) + "</dirMatriz>\n"
                     + "    </infoTributaria>\n"
                     + "    <infoCompRetencion>\n"
-                    + "        <fechaEmision>" + formato.format(retencion.getRcoFecha()) + "</fechaEmision>\n"
-                    + "        <dirEstablecimiento>" + removeCaracteres(retencion.getAmDireccionMatriz()) + "</dirEstablecimiento>\n"
+                    + "        <fechaEmision>" + formato.format(retencion.getFechaEmision()) + "</fechaEmision>\n"
+                    + "        <dirEstablecimiento>" + removeCaracteres(retencion.getDirEstablecimiento()) + "</dirEstablecimiento>\n"
                     //        + "        <contribuyenteEspecial>5368</contribuyenteEspecial>\n"
-                    + "        <obligadoContabilidad>" + retencion.getLlevarContabilidad() + "</obligadoContabilidad>\n"
-                    + "        <tipoIdentificacionSujetoRetenido>" + retencion.getTicCodigo() + "</tipoIdentificacionSujetoRetenido>\n"
-                    + "        <razonSocialSujetoRetenido>" + removeCaracteres(retencion.getProvNombre()) + "</razonSocialSujetoRetenido>\n"
-                    + "        <identificacionSujetoRetenido>" + retencion.getProvCedula() + "</identificacionSujetoRetenido>\n"
-                    + "        <periodoFiscal>" + formatoPeriodo.format(retencion.getRcoFecha()) + "</periodoFiscal>\n"
+                    + "        <obligadoContabilidad>" + retencion.getObligadoContabilidad() + "</obligadoContabilidad>\n"
+                    + "        <tipoIdentificacionSujetoRetenido>" + retencion.getTipoIdentificacionSujetoRetenido() + "</tipoIdentificacionSujetoRetenido>\n"
+                    + "        <razonSocialSujetoRetenido>" + removeCaracteres(retencion.getRazonSocialSujetoRetenido()) + "</razonSocialSujetoRetenido>\n"
+                    + "        <identificacionSujetoRetenido>" + retencion.getIdentificacionSujetoRetenido() + "</identificacionSujetoRetenido>\n"
+                    + "        <periodoFiscal>" + formatoPeriodo.format(retencion.getPeriodoFiscal()) + "</periodoFiscal>\n"
                     + "    </infoCompRetencion>\n"
                     + "<impuestos>\n");
             build.append(linea);
@@ -808,7 +807,7 @@ public class AutorizarDocumentosApi {
                         + "         <porcentajeRetener>" + detalle.getDrcPorcentaje() + "</porcentajeRetener>\n"
                         + "         <valorRetenido>" + ArchivoUtils.redondearDecimales(detalle.getDrcValorRetenido(), 2) + "</valorRetenido>\n"
                         + "         <codDocSustento>" + detalle.getDrcCodigoSustento() + "</codDocSustento>\n"
-                        + "         <numDocSustento>" + detalle.getCabEstablecimiento().trim() + detalle.getCabPuntoEmi().trim() + detalle.getCabNumFactura().trim() + "</numDocSustento>\n"
+                        + "         <numDocSustento>" + detalle.getNumDocSustento() + "</numDocSustento>\n"
                         + "         <fechaEmisionDocSustento>" + formato.format(detalle.getCabFechaEmision()) + "</fechaEmisionDocSustento>\n"
                         + "   </impuesto>\n");
                 build.append(linea);
@@ -817,9 +816,9 @@ public class AutorizarDocumentosApi {
             linea = ("</impuestos>\n"
                     + " <infoAdicional>\n"
                     + ("<campoAdicional nombre=\"SUMA\">" + suma.toString() + "</campoAdicional>\n")
-                    + (retencion.isAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
-                    + (retencion.isAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
-                    + (retencion.isAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
+                    + (retencion.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
+                    + (retencion.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
+                    + (retencion.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                     + "    </infoAdicional>\n"
                     + "</comprobanteRetencion>");
             build.append(linea);
@@ -906,7 +905,7 @@ public class AutorizarDocumentosApi {
                 List<DetalleNotaCreditoDebitoDao> listaDetalle = valor.getDetalleNotaCredito();
 
 //                List<Detalledocumento> det = detalledocumentoFacade.getDetalleDcto(cabdoc.getIdcabeceradocumentos());
-//                build.append("    <detalles>\n");
+                build.append("    <detalles>\n");
 //                if (listaDetalle.isEmpty()) {
 //                    linea = ("        <detalle>\n"
 //                            + "            <codigoInterno>" + (valor.getMotivo() != null ? valor.getMotivo() : "DEVOLUCION") + "</codigoInterno>\n"
