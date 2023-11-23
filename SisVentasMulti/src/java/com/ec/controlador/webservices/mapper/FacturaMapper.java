@@ -16,20 +16,16 @@ public class FacturaMapper {
 
     public static Factura daoToFactura(FacturaDao valor) {
         Factura respuesta = new Factura();
-        respuesta.setFacFecha(valor.getFacFecha());
-        respuesta.setFacNumero(valor.getFacNumero());
-        respuesta.setFacNumeroText(valor.getFacNumeroText());
-        respuesta.setFacTotalBaseGravaba(valor.getFacTotalBaseGravada());
-        respuesta.setCodigoICE(valor.getCodigoICE());
-        respuesta.setFacTarifaIce(valor.getFacTarifaIce());
-        respuesta.setFacValorIce(valor.getFacValorIce());
+
+        respuesta.setRazonSocialEmpresa(valor.getRazonSocialEmpresa());
+        respuesta.setNombreComercialEmpresa(valor.getNombreComercialEmpresa());
+        respuesta.setRucEmpresa(valor.getRucEmpresa());
         respuesta.setCodestablecimiento(valor.getEstablecimientoEmpresa());
         respuesta.setPuntoemision(valor.getPuntoEmisionEmpresa());
+        respuesta.setFacNumero(valor.getFacNumero());
+        respuesta.setFacNumeroText(valor.getFacNumeroText());
         respuesta.setDireccionMatriz(valor.getDireccionMatriz());
-        respuesta.setAgenteRetencion(valor.getAgenteRetencion());
-        respuesta.setRimpePolpular(valor.getRimpePolpular());
-        respuesta.setRimpeEmprendedor(valor.getRimpeEmprendedor());
-        respuesta.setRegimenGeneral(valor.getRegimenGeneral());
+        respuesta.setFacFecha(valor.getFacFecha());
         respuesta.setObligadoLlevarContabilidad(valor.getObligadoLlevarContabilidad());
         respuesta.setTipoIdentificacionComprador(valor.getTipoIdentificacionComprador());
         respuesta.setRazonSocialComprador(valor.getRazonSocialComprador());
@@ -40,19 +36,30 @@ public class FacturaMapper {
         respuesta.setFacCodIva(valor.getFacCodIva());
         respuesta.setFacTotalBaseCero(valor.getFacTotalBaseCero());
         respuesta.setGrabaICE(valor.getGrabaICE());
+        respuesta.setFacValorIce(valor.getFacValorIce());
         respuesta.setCodigoPorcentaje(valor.getCodigoPorcentaje());
+        respuesta.setFacTotalBaseGravaba(valor.getFacTotalBaseGravada());
+        respuesta.setFacPorcentajeIva(valor.getFacPorcentajeIva());
         respuesta.setFacIva(valor.getFacIva());
         respuesta.setFacTotal(valor.getFacTotal());
-        respuesta.setFacMoneda(valor.getFacMoneda());
         respuesta.setCodigoFormaPago(valor.getCodigoFormaPago());
-        respuesta.setFacPlazo(valor.getFacPlazo());
+        respuesta.setFacMoneda(valor.getFacMoneda());
         respuesta.setFacUnidadTiempo(valor.getFacUnidaTiempo());
+
+        respuesta.setCodigoICE(valor.getCodigoICE());
+        respuesta.setFacTarifaIce(valor.getFacTarifaIce());
+        respuesta.setCodestablecimiento(valor.getEstablecimientoEmpresa());
+        respuesta.setAgenteRetencion(valor.getAgenteRetencion());
+        respuesta.setRimpePolpular(valor.getRimpePolpular());
+        respuesta.setRimpeEmprendedor(valor.getRimpeEmprendedor());
+        respuesta.setRegimenGeneral(valor.getRegimenGeneral());
+        respuesta.setFacPlazo(valor.getFacPlazo());
         respuesta.setDireccionComprador(valor.getDireccionComprador());
         respuesta.setCorreoComprador(valor.getCorreoComprador());
         respuesta.setFacObservacion(valor.getObservacion());
-        respuesta.setFacPorcentajeIva(valor.getFacPorcentajeIva());
         respuesta.setDireccionMatriz(valor.getDireccionMatriz());
         respuesta.setFacTipo(valor.getFacTipo());
+
         return respuesta;
 
     }
