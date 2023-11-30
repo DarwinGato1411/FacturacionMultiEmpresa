@@ -22,9 +22,10 @@ public class DetRetencionCompraDao {
     private String drcCodigoSustento;
     private String cabEstablecimiento;
     private String cabPuntoEmi;
-    private String cabNumFactura;
+
     private String tipivaretValor;
     private String tireCodigo;
+    private String numDocSustento;
     private Date cabFechaEmision;
 
     public BigDecimal getDrcValorRetenido() {
@@ -91,13 +92,7 @@ public class DetRetencionCompraDao {
         this.cabPuntoEmi = cabPuntoEmi;
     }
 
-    public String getCabNumFactura() {
-        return cabNumFactura;
-    }
-
-    public void setCabNumFactura(String cabNumFactura) {
-        this.cabNumFactura = cabNumFactura;
-    }
+    
 
     public String getTipivaretValor() {
         return tipivaretValor;
@@ -121,6 +116,14 @@ public class DetRetencionCompraDao {
 
     public void setCabFechaEmision(Date cabFechaEmision) {
         this.cabFechaEmision = cabFechaEmision;
+    }
+
+    public String getNumDocSustento() {
+        return numDocSustento;
+    }
+
+    public void setNumDocSustento(String numDocSustento) {
+        this.numDocSustento = numDocSustento;
     }
 
 }

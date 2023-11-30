@@ -122,10 +122,54 @@ public class RetencionCompra implements Serializable {
     @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
     @ManyToOne
     private Tipoambiente codTipoambiente;
+    @Column(name = "razon_social_empresa")
+    private String razonSocialEmpresa;
+    @Column(name = "nombre_comercial_empresa")
+    private String nombreComercialEmpresa;
+    @Column(name = "ruc_empresa ")
+    private String rucEmpresa;
+
+    @Column(name = "establecimiento_empresa")
+    private String establecimientoEmpresa;
+
+    @Column(name = "punto_emision_empresa")
+    private String puntoEmisionEmpresa;
+
+    @Column(name = "dir_matriz")
+    private String dirMatriz;
+
+    @Column(name = "dir_Establecimiento")
+    private String dirEstablecimiento;
+
+    @Column(name = "obligado_contabilidad")
+    private String obligadoContabilidad;
+
+    @Column(name = "tipo_identificacion_sujeto_retenido")
+    private String tipoIdentificacionSujetoRetenido;
+
+    @Column(name = "razonSocial_sujeto_retenido")
+    private String razonSocialSujetoRetenido;
+
+    @Column(name = "identificacion_Sujeto_Retenido")
+    private String identificacionSujetoRetenido;
+
+    @Column(name = "periodo_fiscal")
+    @Temporal(TemporalType.DATE)
+    private Date periodoFiscal;
+
     @Column(name = "prov_nombre")
     private String provNombre;
-    @Column(name = "provCedula")
+    @Column(name = "prov_cedula")
     private String provCedula;
+
+    @Column(name = "am_age_ret")
+    private Boolean amAgeRet;
+
+    @Column(name = "am_rimpe")
+    private Boolean amRimpe;
+
+    @Column(name = "am_general")
+    private Boolean amGeneral;
 
     public RetencionCompra() {
     }
@@ -339,8 +383,6 @@ public class RetencionCompra implements Serializable {
         this.provCedula = provCedula;
     }
 
- 
-
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -359,4 +401,125 @@ public class RetencionCompra implements Serializable {
         return "com.ec.entidad.RetencionCompra[ rcoCodigo=" + rcoCodigo + " ]";
     }
 
+    public String getRazonSocialEmpresa() {
+        return razonSocialEmpresa;
+    }
+
+    public void setRazonSocialEmpresa(String razonSocialEmpresa) {
+        this.razonSocialEmpresa = razonSocialEmpresa;
+    }
+
+    public String getNombreComercialEmpresa() {
+        return nombreComercialEmpresa;
+    }
+
+    public void setNombreComercialEmpresa(String nombreComercialEmpresa) {
+        this.nombreComercialEmpresa = nombreComercialEmpresa;
+    }
+
+    public String getRucEmpresa() {
+        return rucEmpresa;
+    }
+
+    public void setRucEmpresa(String rucEmpresa) {
+        this.rucEmpresa = rucEmpresa;
+    }
+
+    public String getEstablecimientoEmpresa() {
+        return establecimientoEmpresa;
+    }
+
+    public void setEstablecimientoEmpresa(String establecimientoEmpresa) {
+        this.establecimientoEmpresa = establecimientoEmpresa;
+    }
+
+    public String getPuntoEmisionEmpresa() {
+        return puntoEmisionEmpresa;
+    }
+
+    public void setPuntoEmisionEmpresa(String puntoEmisionEmpresa) {
+        this.puntoEmisionEmpresa = puntoEmisionEmpresa;
+    }
+
+    public String getDirMatriz() {
+        return dirMatriz;
+    }
+
+    public void setDirMatriz(String dirMatriz) {
+        this.dirMatriz = dirMatriz;
+    }
+
+    public String getDirEstablecimiento() {
+        return dirEstablecimiento;
+    }
+
+    public void setDirEstablecimiento(String dirEstablecimiento) {
+        this.dirEstablecimiento = dirEstablecimiento;
+    }
+
+    public String getObligadoContabilidad() {
+        return obligadoContabilidad;
+    }
+
+    public void setObligadoContabilidad(String obligadoContabilidad) {
+        this.obligadoContabilidad = obligadoContabilidad;
+    }
+
+    public String getTipoIdentificacionSujetoRetenido() {
+        return tipoIdentificacionSujetoRetenido;
+    }
+
+    public void setTipoIdentificacionSujetoRetenido(String tipoIdentificacionSujetoRetenido) {
+        this.tipoIdentificacionSujetoRetenido = tipoIdentificacionSujetoRetenido;
+    }
+
+    public String getRazonSocialSujetoRetenido() {
+        return razonSocialSujetoRetenido;
+    }
+
+    public void setRazonSocialSujetoRetenido(String razonSocialSujetoRetenido) {
+        this.razonSocialSujetoRetenido = razonSocialSujetoRetenido;
+    }
+
+    public String getIdentificacionSujetoRetenido() {
+        return identificacionSujetoRetenido;
+    }
+
+    public void setIdentificacionSujetoRetenido(String identificacionSujetoRetenido) {
+        this.identificacionSujetoRetenido = identificacionSujetoRetenido;
+    }
+
+    public Date getPeriodoFiscal() {
+        return periodoFiscal;
+    }
+
+    public void setPeriodoFiscal(Date periodoFiscal) {
+        this.periodoFiscal = periodoFiscal;
+    }
+
+    public Boolean getAmAgeRet() {
+        return amAgeRet;
+    }
+
+    public void setAmAgeRet(Boolean amAgeRet) {
+        this.amAgeRet = amAgeRet;
+    }
+
+    public Boolean getAmRimpe() {
+        return amRimpe;
+    }
+
+    public void setAmRimpe(Boolean amRimpe) {
+        this.amRimpe = amRimpe;
+    }
+
+    public Boolean getAmGeneral() {
+        return amGeneral;
+    }
+
+    public void setAmGeneral(Boolean amGeneral) {
+        this.amGeneral = amGeneral;
+    }
+
+    
 }

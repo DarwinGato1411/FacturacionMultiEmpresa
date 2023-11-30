@@ -178,6 +178,15 @@ public class Factura implements Serializable {
     @Column(name = "fac_base_ice")
     private BigDecimal facBaseIce;
 
+    @Column(name = "ruc_empresa")
+    private String rucEmpresa;
+    
+    @Column(name = "nombre_comercial_empresa")
+    private String nombreComercialEmpresa;
+    
+    @Column(name = "razon_social_empresa")
+    private String  razonSocialEmpresa;
+
     @Column(name = "fac_fecha_cobro")
     @Temporal(TemporalType.DATE)
     private Date facFechaCobro;
@@ -238,7 +247,7 @@ public class Factura implements Serializable {
     @OneToMany(mappedBy = "idFactura")
     private Collection<NotaCreditoDebito> notaCreditoDebitoCollection;
     @JsonIgnore
-   
+
     @OneToMany(mappedBy = "idFactura")
     private Collection<DetallePago> detallePagoCollection;
     @JsonIgnore
@@ -268,8 +277,10 @@ public class Factura implements Serializable {
 
     @Column(name = "tipo_identificacion_comp")
     private String tipoIdentificacionComprador;
+    
     @Column(name = "razon_social_comp")
     private String razonSocialComprador;
+ 
     @Column(name = "identificacion_comp")
     private String identificacionComprador;
     @Column(name = "codigo_forma_pago")
@@ -278,6 +289,9 @@ public class Factura implements Serializable {
     private String direccionComprador;
     @Column(name = "correo_comprador")
     private String correoComprador;
+    
+    
+   
 
     public String getCodigoICE() {
         return codigoICE;
@@ -913,8 +927,6 @@ public class Factura implements Serializable {
         this.idReferencia = idReferencia;
     }
 
-   
-
     @XmlTransient
     public Collection<DetallePago> getDetallePagoCollection() {
         return detallePagoCollection;
@@ -973,4 +985,31 @@ public class Factura implements Serializable {
         this.facObservacion = facObservacion;
     }
 
+    public String getRucEmpresa() {
+        return rucEmpresa;
+    }
+
+    public void setRucEmpresa(String rucEmpresa) {
+        this.rucEmpresa = rucEmpresa;
+    }
+
+    public String getNombreComercialEmpresa() {
+        return nombreComercialEmpresa;
+    }
+
+    public void setNombreComercialEmpresa(String nombreComercialEmpresa) {
+        this.nombreComercialEmpresa = nombreComercialEmpresa;
+    }
+
+    public String getRazonSocialEmpresa() {
+        return razonSocialEmpresa;
+    }
+
+    public void setRazonSocialEmpresa(String razonSocialEmpresa) {
+        this.razonSocialEmpresa = razonSocialEmpresa;
+    }
+
+    
+    
+    
 }

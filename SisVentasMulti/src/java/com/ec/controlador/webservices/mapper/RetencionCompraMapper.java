@@ -14,23 +14,42 @@ import java.math.BigDecimal;
  * @author Darwin
  */
 public class RetencionCompraMapper {
-
+    
     public static RetencionCompra daoToRetencion(RetencionCompraDao valor) {
         RetencionCompra respuesta = new RetencionCompra();
+        
+        respuesta.setRazonSocialEmpresa(valor.getRazonSocialEmpresa());
+        respuesta.setNombreComercialEmpresa(valor.getNombreComercialEmpresa());
+        respuesta.setRucEmpresa(valor.getRucEmpresa());
+        respuesta.setEstablecimientoEmpresa(valor.getEstablecimientoEmpresa());
+        respuesta.setPuntoEmisionEmpresa(valor.getPuntoEmisionEmpresa());
+        respuesta.setRcoSecuencial(valor.getSecuencial());
+        respuesta.setRcoSecuencialText(valor.getSecuencialText());
+        respuesta.setDirMatriz(valor.getDirMatrizEmpresa());
+        respuesta.setCabFechaEmision(valor.getRetencionFecha());
+        respuesta.setDirEstablecimiento(valor.getDirEstablecimiento());
+        respuesta.setObligadoContabilidad(valor.getObligadoContabilidad());
+        respuesta.setTipoIdentificacionSujetoRetenido(valor.getTipoIdentificacionSujetoRetenido());
+        respuesta.setRazonSocialSujetoRetenido(valor.getRazonSocialSujetoRetenido());
+        respuesta.setIdentificacionSujetoRetenido(valor.getIdentificacionSujetoRetenido());
+        respuesta.setPeriodoFiscal(valor.getPeriodoFiscal());
+        respuesta.setAmAgeRet(valor.getAmAgeRet());
+        respuesta.setAmGeneral(valor.getAmGeneral());
+        respuesta.setAmRimpe(valor.getAmRimpe());
+        
         respuesta.setRcoDetalle("COMPRA DE MERCADERIA");
         respuesta.setRcoIva(Boolean.FALSE);
         respuesta.setRcoPorcentajeIva(12);
-        respuesta.setRcoPuntoEmision(valor.getAmPtoemi());
-        respuesta.setRcoSecuencial(valor.getRcoSecuencial());
+        respuesta.setRcoPuntoEmision(valor.getPuntoEmisionEmpresa());
+        
         respuesta.setRcoSerie("1");
         respuesta.setRcoValorRetencionIva(BigDecimal.ZERO);
-        respuesta.setCabFechaEmision(valor.getRcoFecha());
-        respuesta.setDrcEstadosri("PENDIENTE");        
-        respuesta.setRcoFecha(valor.getRcoFecha());
-        respuesta.setRcoSecuencialText(valor.getRcoSecuencialText());
-        respuesta.setRcoSecuencial(valor.getRcoSecuencial());
-        respuesta.setProvNombre(valor.getProvNombre());
-        respuesta.setProvCedula(valor.getProvCedula());
+        
+        respuesta.setDrcEstadosri("PENDIENTE");
+        respuesta.setRcoFecha(valor.getRetencionFecha());
+        
+        respuesta.setProvNombre(valor.getRazonSocialSujetoRetenido());
+        respuesta.setProvCedula(valor.getIdentificacionSujetoRetenido());
         
         return respuesta;
     }

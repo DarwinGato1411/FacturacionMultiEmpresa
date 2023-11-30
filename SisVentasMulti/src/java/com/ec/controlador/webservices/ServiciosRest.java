@@ -464,28 +464,28 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getEnviarRetencion(@RequestBody RetencionCompraDao prod) throws Exception {
 
+        prod.setSecuencialText(rellenarConCeros(prod.getSecuencial(), 9));
+
         FacturaResponse facturaResponse = new FacturaResponse();
-        facturaResponse.setFacFecha(prod.getRcoFecha());
-        facturaResponse.setFacNumeroText(prod.getRcoSecuencialText());
-        facturaResponse.setIdentificacionComprador(prod.getAmRuc());
-        facturaResponse.setRazonSocialComprador(prod.getAmRazonSocial());
+        facturaResponse.setFacFecha(prod.getRetencionFecha());
+        facturaResponse.setFacNumeroText(prod.getSecuencialText());
+        facturaResponse.setIdentificacionComprador(prod.getRucEmpresa());
+        facturaResponse.setRazonSocialComprador(prod.getRazonSocialEmpresa());
 
         //Rellenar de 0 el numero de factura
-        prod.setRcoSecuencialText(rellenarConCeros(prod.getRcoSecuencial(), 9));
-
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
         String folderArchivos = prod.getInfoAutoriza().getRutaArchivo();
         String folderFirmado = folderArchivos + File.separator + "FIRMADO" + File.separator;
-        String nombreArchivo = prod.getAmRuc() + "-" + prod.getRcoSecuencial() + ".xml";
+        String nombreArchivo = prod.getRucEmpresa() + "-" + prod.getSecuencial() + ".xml";
         String pathArchivoFirmado = folderFirmado + nombreArchivo;
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLComprobanteRetencionApi(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo);
-        XAdESBESSignatureApi.firmar(archivo, prod.getAmRuc() + "-" + prod.getRcoSecuencial() + ".xml",
+        XAdESBESSignatureApi.firmar(archivo, prod.getRucEmpresa() + "-" + prod.getSecuencial() + ".xml",
                 ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
         File f = null;
         File fEnvio = null;
@@ -638,7 +638,7 @@ public class ServiciosRest {
         /*RUTA DE LOS ARCHIVOS*/
         String folderArchivos = prod.getInfoAutoriza().getRutaArchivo();
         String folderFirmado = folderArchivos + File.separator + "FIRMADO" + File.separator;
-        String nombreArchivo = prod.getRucEmpresa() + "-" + prod.getSecuencial() + ".xml";
+        String nombreArchivo = prod.getRucEmpresa() + "-" + prod.getSecuencialText() + ".xml";
         String pathArchivoFirmado = folderFirmado + nombreArchivo;
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
@@ -860,7 +860,6 @@ public class ServiciosRest {
                                 Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             archivoEnvioCliente = api.generaXMLGuiaRemisionApi(prod, archivoEnvioCliente, nombreArchivo);
-
 
                             fEnvio = new File(archivoEnvioCliente);
 

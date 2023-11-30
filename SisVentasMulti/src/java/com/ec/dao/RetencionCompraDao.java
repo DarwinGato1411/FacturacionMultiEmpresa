@@ -15,32 +15,35 @@ import java.util.List;
  */
 public class RetencionCompraDao {
 
-    private String amRuc;
-    private String amEstab;
-    private String amPtoemi;
+    private Date retencionFecha;
     private String amCodigo;
-    private Date rcoFecha;
-    private String rcoSecuencialText;
-    private int rcoSecuencial;
+    private Boolean amAgeRet;
+    private Boolean amRimpe;
+    private Boolean amGeneral;
     private String razonSocialEmpresa;
-    private String amNombreComercial;
-    private String amDireccionMatriz;
-    private String llevarContabilidad;
-    private String ticCodigo;
-    private String provNombre;
-    private String provCedula;
-    private boolean amAgeRet;
-    private boolean amRimpe;
-    private boolean amGeneral;
+    private String nombreComercialEmpresa;
+    private String rucEmpresa;
+    private String establecimientoEmpresa;
+    private String puntoEmisionEmpresa;
+    private int secuencial;
+    private String secuencialText;
+    private String dirMatrizEmpresa;
+    private Date fechaEmision;
+    private String dirEstablecimiento;
+    private String obligadoContabilidad;
+    private String tipoIdentificacionSujetoRetenido;
+    private String razonSocialSujetoRetenido;
+    private String identificacionSujetoRetenido;
+    private Date periodoFiscal;
     private List<DetRetencionCompraDao> detRetencion;
     private InfoAutorizaDao infoAutoriza;
 
-    public Date getRcoFecha() {
-        return rcoFecha;
+    public Date getRetencionFecha() {
+        return retencionFecha;
     }
 
-    public void setRcoFecha(Date rcoFecha) {
-        this.rcoFecha = rcoFecha;
+    public void setRetencionFecha(Date retencionFecha) {
+        this.retencionFecha = retencionFecha;
     }
 
     public String getAmCodigo() {
@@ -51,132 +54,156 @@ public class RetencionCompraDao {
         this.amCodigo = amCodigo;
     }
 
-    public String getAmRuc() {
-        return amRuc;
+    public Boolean getAmAgeRet() {
+        return amAgeRet;
     }
 
-    public void setAmRuc(String amRuc) {
-        this.amRuc = amRuc;
+    public void setAmAgeRet(Boolean amAgeRet) {
+        this.amAgeRet = amAgeRet;
     }
 
-    public String getAmEstab() {
-        return amEstab;
+    public Boolean getAmRimpe() {
+        return amRimpe;
     }
 
-    public void setAmEstab(String amEstab) {
-        this.amEstab = amEstab;
+    public void setAmRimpe(Boolean amRimpe) {
+        this.amRimpe = amRimpe;
     }
 
-    public String getAmPtoemi() {
-        return amPtoemi;
+    public Boolean getAmGeneral() {
+        return amGeneral;
     }
 
-    public void setAmPtoemi(String amPtoemi) {
-        this.amPtoemi = amPtoemi;
+    public void setAmGeneral(Boolean amGeneral) {
+        this.amGeneral = amGeneral;
     }
 
-    public String getRcoSecuencialText() {
-        return rcoSecuencialText;
-    }
-
-    public void setRcoSecuencialText(String rcoSecuencialText) {
-        this.rcoSecuencialText = rcoSecuencialText;
-    }
-
-    public String getAmRazonSocial() {
+    public String getRazonSocialEmpresa() {
         return razonSocialEmpresa;
     }
 
-    public void setAmRazonSocial(String amRazonSocial) {
-        this.razonSocialEmpresa = amRazonSocial;
+    public void setRazonSocialEmpresa(String razonSocialEmpresa) {
+        this.razonSocialEmpresa = razonSocialEmpresa;
     }
 
-    public String getAmNombreComercial() {
-        return amNombreComercial;
+    public String getNombreComercialEmpresa() {
+        return nombreComercialEmpresa;
     }
 
-    public void setAmNombreComercial(String amNombreComercial) {
-        this.amNombreComercial = amNombreComercial;
+    public void setNombreComercialEmpresa(String nombreComercialEmpresa) {
+        this.nombreComercialEmpresa = nombreComercialEmpresa;
     }
 
-    public String getAmDireccionMatriz() {
-        return amDireccionMatriz;
+    public String getRucEmpresa() {
+        return rucEmpresa;
     }
 
-    public void setAmDireccionMatriz(String amDireccionMatriz) {
-        this.amDireccionMatriz = amDireccionMatriz;
+    public void setRucEmpresa(String rucEmpresa) {
+        this.rucEmpresa = rucEmpresa;
     }
 
-    public String getLlevarContabilidad() {
-        return llevarContabilidad;
+    public String getEstablecimientoEmpresa() {
+        return establecimientoEmpresa;
     }
 
-    public void setLlevarContabilidad(String llevarContabilidad) {
-        this.llevarContabilidad = llevarContabilidad;
+    public void setEstablecimientoEmpresa(String establecimientoEmpresa) {
+        this.establecimientoEmpresa = establecimientoEmpresa;
     }
 
-    public String getTicCodigo() {
-        return ticCodigo;
+    public String getPuntoEmisionEmpresa() {
+        return puntoEmisionEmpresa;
     }
 
-    public void setTicCodigo(String ticCodigo) {
-        this.ticCodigo = ticCodigo;
+    public void setPuntoEmisionEmpresa(String puntoEmisionEmpresa) {
+        this.puntoEmisionEmpresa = puntoEmisionEmpresa;
     }
 
-    public String getProvNombre() {
-        return provNombre;
+    public int getSecuencial() {
+        return secuencial;
     }
 
-    public void setProvNombre(String provNombre) {
-        this.provNombre = provNombre;
+    public void setSecuencial(int secuencial) {
+        this.secuencial = secuencial;
     }
 
-    public String getProvCedula() {
-        return provCedula;
+    public String getSecuencialText() {
+        return secuencialText;
     }
 
-    public void setProvCedula(String provCedula) {
-        this.provCedula = provCedula;
+    public void setSecuencialText(String secuencialText) {
+        this.secuencialText = secuencialText;
+    }
+
+    public String getDirMatrizEmpresa() {
+        return dirMatrizEmpresa;
+    }
+
+    public void setDirMatrizEmpresa(String dirMatrizEmpresa) {
+        this.dirMatrizEmpresa = dirMatrizEmpresa;
+    }
+
+    public Date getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(Date fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
+
+    public String getDirEstablecimiento() {
+        return dirEstablecimiento;
+    }
+
+    public void setDirEstablecimiento(String dirEstablecimiento) {
+        this.dirEstablecimiento = dirEstablecimiento;
+    }
+
+    public String getObligadoContabilidad() {
+        return obligadoContabilidad;
+    }
+
+    public void setObligadoContabilidad(String obligadoContabilidad) {
+        this.obligadoContabilidad = obligadoContabilidad;
+    }
+
+    public String getTipoIdentificacionSujetoRetenido() {
+        return tipoIdentificacionSujetoRetenido;
+    }
+
+    public void setTipoIdentificacionSujetoRetenido(String tipoIdentificacionSujetoRetenido) {
+        this.tipoIdentificacionSujetoRetenido = tipoIdentificacionSujetoRetenido;
+    }
+
+    public String getRazonSocialSujetoRetenido() {
+        return razonSocialSujetoRetenido;
+    }
+
+    public void setRazonSocialSujetoRetenido(String razonSocialSujetoRetenido) {
+        this.razonSocialSujetoRetenido = razonSocialSujetoRetenido;
+    }
+
+    public String getIdentificacionSujetoRetenido() {
+        return identificacionSujetoRetenido;
+    }
+
+    public void setIdentificacionSujetoRetenido(String identificacionSujetoRetenido) {
+        this.identificacionSujetoRetenido = identificacionSujetoRetenido;
+    }
+
+    public Date getPeriodoFiscal() {
+        return periodoFiscal;
+    }
+
+    public void setPeriodoFiscal(Date periodoFiscal) {
+        this.periodoFiscal = periodoFiscal;
     }
 
     public List<DetRetencionCompraDao> getDetRetencion() {
         return detRetencion;
     }
 
-    public void setDetRetencion(List<DetRetencionCompraDao> detRetencionDao) {
-        this.detRetencion = detRetencionDao;
-    }
-
-    public boolean isAmAgeRet() {
-        return amAgeRet;
-    }
-
-    public void setAmAgeRet(boolean amAgeRet) {
-        this.amAgeRet = amAgeRet;
-    }
-
-    public boolean isAmRimpe() {
-        return amRimpe;
-    }
-
-    public void setAmRimpe(boolean amRimpe) {
-        this.amRimpe = amRimpe;
-    }
-
-    public boolean isAmGeneral() {
-        return amGeneral;
-    }
-
-    public void setAmGeneral(boolean amGeneral) {
-        this.amGeneral = amGeneral;
-    }
-
-    public int getRcoSecuencial() {
-        return rcoSecuencial;
-    }
-
-    public void setRcoSecuencial(int rcoSecuencial) {
-        this.rcoSecuencial = rcoSecuencial;
+    public void setDetRetencion(List<DetRetencionCompraDao> detRetencion) {
+        this.detRetencion = detRetencion;
     }
 
     public InfoAutorizaDao getInfoAutoriza() {
