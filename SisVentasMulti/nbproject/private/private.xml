@@ -3,12 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/untilitario/AutorizarDocumentosApi.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/servicio/ServicioRetencionCompra.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/RetencionCompra.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/DetRetencionCompraDao.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/controlador/webservices/ServiciosRest.java</file>
-            <file>file:/E:/Deckxel/Desarrollo/Facturas/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/dao/RetencionCompraDao.java</file>
+            <file>file:/D:/PROYECTOS/Sistema%20Facturacion%20Multi%20Empresas/Multi/FacturacionMultiEmpresa/SisVentasMulti/src/java/com/ec/entidad/Factura.java</file>
         </group>
     </open-files>
 </project-private>
