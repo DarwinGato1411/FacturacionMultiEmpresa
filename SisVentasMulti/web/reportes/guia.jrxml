@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guia" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.zoom" value="1.3310000000000008"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="94"/>
+	<property name="ireport.y" value="156"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -34,7 +34,7 @@ FROM
 guiaremision
 INNER JOIN detalle_guiaremision ON detalle_guiaremision.id_guiaremision= guiaremision.id_guiaremision
 INNER JOIN producto ON detalle_guiaremision.id_producto = producto.id_producto
-where guiaremision.id_guiaremision=$P{id_factura}]]>
+where guiaremision.id_guiaremision=$P{id_factura};]]>
 		</queryString>
 		<field name="id_guiaremision" class="java.lang.Integer"/>
 		<field name="id_factura" class="java.lang.Integer"/>
@@ -87,6 +87,25 @@ where guiaremision.id_guiaremision=$P{id_factura}]]>
 		<field name="tipo_guia" class="java.lang.String"/>
 		<field name="fac_numero_text_recibida" class="java.lang.String"/>
 		<field name="numero_guia_recibida" class="java.lang.String"/>
+		<field name="razon_social_empresa" class="java.lang.String"/>
+		<field name="nombre_comercial_empresa" class="java.lang.String"/>
+		<field name="ruc_empresa" class="java.lang.String"/>
+		<field name="establecimiento_empresa" class="java.lang.String"/>
+		<field name="punto_emision_empresa" class="java.lang.String"/>
+		<field name="dir_matriz" class="java.lang.String"/>
+		<field name="razon_social_transportista" class="java.lang.String"/>
+		<field name="tipo_identificacion_transportista" class="java.lang.String"/>
+		<field name="ruc_transportista" class="java.lang.String"/>
+		<field name="obligado_contabilidad" class="java.lang.String"/>
+		<field name="identificacion_destinatario" class="java.lang.String"/>
+		<field name="razon_social_destinatario" class="java.lang.String"/>
+		<field name="dir_destinatario" class="java.lang.String"/>
+		<field name="motivo_traslado" class="java.lang.String"/>
+		<field name="ruta" class="java.lang.String"/>
+		<field name="doc_aduanero_unico" class="java.lang.String"/>
+		<field name="dir_establecimiento" class="java.lang.String"/>
+		<field name="am_codigo" class="java.lang.String"/>
+		<field name="correo_destinatario" class="java.lang.String"/>
 		<field name="id_detalle_guiaremision" class="java.lang.Integer"/>
 		<field name="id_producto" class="java.lang.Integer"/>
 		<field name="det_cantidad" class="java.math.BigDecimal"/>
@@ -104,6 +123,7 @@ where guiaremision.id_guiaremision=$P{id_factura}]]>
 		<field name="det_cantpordescuento" class="java.math.BigDecimal"/>
 		<field name="det_subtotaldescuentoporcantidad" class="java.math.BigDecimal"/>
 		<field name="det_cod_tipo_venta" class="java.lang.String"/>
+		<field name="codigo_interno" class="java.lang.String"/>
 		<field name="id_sub_categoria" class="java.lang.Integer"/>
 		<field name="prod_codigo" class="java.lang.String"/>
 		<field name="prod_nombre" class="java.lang.String"/>
@@ -150,83 +170,24 @@ where guiaremision.id_guiaremision=$P{id_factura}]]>
 		<field name="prod_graba_ice" class="java.lang.Boolean"/>
 		<field name="prod_detalle" class="java.lang.String"/>
 	</subDataset>
-	<parameter name="numfactura" class="java.lang.Integer">
+	<parameter name="rucEmpresa" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="codTipoAmbiente" class="java.lang.Integer">
+	<parameter name="puntoEmision" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codEstablecimiento" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numSecuencial" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-*
-FROM
-tipoambiente
-INNER JOIN guiaremision ON guiaremision.cod_tipoambiente = tipoambiente.cod_tipoambiente
-INNER JOIN cliente ON  guiaremision.id_cliente = cliente.id_cliente
-INNER JOIN transportista b ON guiaremision.id_transportista = b.id_transportista
-where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=$P{codTipoAmbiente};]]>
+		<![CDATA[SELECT * FROM guiaremision gr where gr.ruc_empresa=$P{rucEmpresa} and gr.punto_emision_empresa=$P{puntoEmision} and gr.establecimiento_empresa=$P{codEstablecimiento} and gr.fac_numero=$P{numSecuencial};]]>
 	</queryString>
-	<field name="cod_tipoambiente" class="java.lang.Integer"/>
-	<field name="am_codigo" class="java.lang.String"/>
-	<field name="am_descripcion" class="java.lang.String"/>
-	<field name="am_estado" class="java.lang.Boolean"/>
-	<field name="am_id_empresa" class="java.lang.Integer"/>
-	<field name="am_usuariosri" class="java.lang.String"/>
-	<field name="am_urlsri" class="java.lang.String"/>
-	<field name="am_dir_reportes" class="java.lang.String"/>
-	<field name="am_dir_firma" class="java.lang.String"/>
-	<field name="am_dir_base_archivos" class="java.lang.String"/>
-	<field name="am_dir_xml" class="java.lang.String"/>
-	<field name="am_firmados" class="java.lang.String"/>
-	<field name="am_trasmitidos" class="java.lang.String"/>
-	<field name="am_devueltos" class="java.lang.String"/>
-	<field name="am_autorizados" class="java.lang.String"/>
-	<field name="am_no_autorizados" class="java.lang.String"/>
-	<field name="am_clave_acceso_sri" class="java.lang.String"/>
-	<field name="am_generados" class="java.lang.String"/>
-	<field name="am_razon_social" class="java.lang.String"/>
-	<field name="am_nombre_comercial" class="java.lang.String"/>
-	<field name="am_ruc" class="java.lang.String"/>
-	<field name="am_tipo_emision" class="java.lang.String"/>
-	<field name="am_direccion_matriz" class="java.lang.String"/>
-	<field name="llevar_contabilidad" class="java.lang.String"/>
-	<field name="am_estab" class="java.lang.String"/>
-	<field name="am_ptoemi" class="java.lang.String"/>
-	<field name="am_nro_contribuyente" class="java.lang.String"/>
-	<field name="am_enviocliente" class="java.lang.String"/>
-	<field name="am_unidad_disco" class="java.lang.String"/>
-	<field name="am_folder_firma" class="java.lang.String"/>
-	<field name="am_dir_ats" class="java.lang.String"/>
-	<field name="am_telefono" class="java.lang.String"/>
-	<field name="am_dir_img_punto_venta" class="java.lang.String"/>
-	<field name="am_ciudad" class="java.lang.String"/>
-	<field name="am_host" class="java.lang.String"/>
-	<field name="am_port" class="java.lang.String"/>
-	<field name="am_protocol" class="java.lang.String"/>
-	<field name="am_usuario_smpt" class="java.lang.String"/>
-	<field name="am_password" class="java.lang.String"/>
-	<field name="am_imagenes" class="java.lang.String"/>
-	<field name="am_numero_consult_public" class="java.math.BigDecimal"/>
-	<field name="am_direccion_sucursal" class="java.lang.String"/>
-	<field name="am_micro_emp" class="java.lang.Boolean"/>
-	<field name="am_age_ret" class="java.lang.Boolean"/>
-	<field name="am_contr_esp" class="java.lang.Boolean"/>
-	<field name="am_exp" class="java.lang.Boolean"/>
-	<field name="am_ripme" class="java.lang.Boolean"/>
-	<field name="am_sec_factura" class="java.lang.Integer"/>
-	<field name="am_sec_retencion" class="java.lang.Integer"/>
-	<field name="am_sec_nota_credito" class="java.lang.Integer"/>
-	<field name="am_sec_guia" class="java.lang.Integer"/>
-	<field name="am_valor_iva" class="java.math.BigDecimal"/>
-	<field name="am_general" class="java.lang.Boolean"/>
-	<field name="am_graba_ice" class="java.lang.Boolean"/>
-	<field name="am_valor_ice" class="java.math.BigDecimal"/>
-	<field name="am_comprobante_imprime" class="java.lang.String"/>
-	<field name="am_codigo_ice" class="java.lang.String"/>
-	<field name="id_usuario" class="java.lang.Integer"/>
-	<field name="am_rimpe_popular" class="java.lang.Boolean"/>
 	<field name="id_guiaremision" class="java.lang.Integer"/>
 	<field name="id_factura" class="java.lang.Integer"/>
+	<field name="id_usuario" class="java.lang.Integer"/>
 	<field name="fac_fecha" class="java.sql.Date"/>
 	<field name="fac_subtotal" class="java.math.BigDecimal"/>
 	<field name="fac_iva" class="java.math.BigDecimal"/>
@@ -257,6 +218,7 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 	<field name="mensajesri" class="java.lang.String"/>
 	<field name="fac_fecha_autorizacion" class="java.sql.Date"/>
 	<field name="fac_clave_acceso" class="java.lang.String"/>
+	<field name="cod_tipoambiente" class="java.lang.Integer"/>
 	<field name="fac_clave_autorizacion" class="java.lang.String"/>
 	<field name="fac_path" class="java.lang.String"/>
 	<field name="tipodocumentomod" class="java.lang.String"/>
@@ -274,36 +236,32 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 	<field name="tipo_guia" class="java.lang.String"/>
 	<field name="fac_numero_text_recibida" class="java.lang.String"/>
 	<field name="numero_guia_recibida" class="java.lang.String"/>
-	<field name="cli_cedula" class="java.lang.String"/>
-	<field name="cli_nombre" class="java.lang.String"/>
-	<field name="cli_razon_social" class="java.lang.String"/>
-	<field name="cli_direccion" class="java.lang.String"/>
-	<field name="cli_telefono" class="java.lang.String"/>
-	<field name="cli_movil" class="java.lang.String"/>
-	<field name="cli_correo" class="java.lang.String"/>
-	<field name="clie_fecha_registro" class="java.sql.Date"/>
-	<field name="clie_tipo" class="java.lang.Integer"/>
-	<field name="id_tipo_identificacion" class="java.lang.Integer"/>
-	<field name="cli_nombres" class="java.lang.String"/>
-	<field name="cli_apellidos" class="java.lang.String"/>
-	<field name="ciudad" class="java.lang.String"/>
-	<field name="cli_clave" class="java.lang.String"/>
-	<field name="cli_monto_asignado" class="java.math.BigDecimal"/>
-	<field name="trp_cedula" class="java.lang.String"/>
-	<field name="trp_razon_social" class="java.lang.String"/>
-	<field name="trp_direccion" class="java.lang.String"/>
-	<field name="trp_telefono" class="java.lang.String"/>
-	<field name="trp_movil" class="java.lang.String"/>
-	<field name="trp_correo" class="java.lang.String"/>
-	<field name="trp_ciudad" class="java.lang.String"/>
-	<field name="trp_clave" class="java.lang.String"/>
+	<field name="razon_social_empresa" class="java.lang.String"/>
+	<field name="nombre_comercial_empresa" class="java.lang.String"/>
+	<field name="ruc_empresa" class="java.lang.String"/>
+	<field name="establecimiento_empresa" class="java.lang.String"/>
+	<field name="punto_emision_empresa" class="java.lang.String"/>
+	<field name="dir_matriz" class="java.lang.String"/>
+	<field name="razon_social_transportista" class="java.lang.String"/>
+	<field name="tipo_identificacion_transportista" class="java.lang.String"/>
+	<field name="ruc_transportista" class="java.lang.String"/>
+	<field name="obligado_contabilidad" class="java.lang.String"/>
+	<field name="identificacion_destinatario" class="java.lang.String"/>
+	<field name="razon_social_destinatario" class="java.lang.String"/>
+	<field name="dir_destinatario" class="java.lang.String"/>
+	<field name="motivo_traslado" class="java.lang.String"/>
+	<field name="ruta" class="java.lang.String"/>
+	<field name="doc_aduanero_unico" class="java.lang.String"/>
+	<field name="dir_establecimiento" class="java.lang.String"/>
+	<field name="am_codigo" class="java.lang.String"/>
+	<field name="correo_destinatario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="418" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement x="0" y="250" width="555" height="165"/>
+				<reportElement x="0" y="251" width="555" height="165"/>
 			</rectangle>
 			<rectangle radius="10">
 				<reportElement x="295" y="0" width="260" height="247"/>
@@ -319,7 +277,7 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[R.U.C.;]]></text>
+				<text><![CDATA[R.U.C.:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="307" y="34" width="100" height="20"/>
@@ -343,7 +301,7 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 			<textField isBlankWhenNull="true">
 				<reportElement x="366" y="14" width="184" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_ruc}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ruc_empresa}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="307" y="132" width="100" height="30"/>
@@ -374,12 +332,12 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 			<textField isBlankWhenNull="true">
 				<reportElement x="407" y="162" width="143" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_descripcion}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_codigo}.equals("1")?"PRODUCCION":"PRUEBAS"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="328" y="54" width="222" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_estab}+"-"+$F{am_ptoemi}+"-"+$F{fac_numero_text}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{establecimiento_empresa}+"-"+$F{punto_emision_empresa}+"-"+$F{fac_numero_text}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="10">
 				<reportElement x="0" y="97" width="284" height="148"/>
@@ -387,16 +345,16 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 			<textField isBlankWhenNull="true">
 				<reportElement x="11" y="103" width="273" height="20"/>
 				<textElement>
-					<font size="10"/>
+					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_nombre_comercial}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_comercial_empresa}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="11" y="123" width="273" height="20"/>
 				<textElement>
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_razon_social}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{razon_social_empresa}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="11" y="143" width="65" height="30"/>
@@ -420,30 +378,30 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<text><![CDATA[Razón Social / Nombres Apellidos: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="223" width="195" height="20"/>
+				<reportElement x="11" y="207" width="195" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[OBLIGADO A LLEVAR CONTABILIDAD]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="206" y="223" width="54" height="20"/>
+				<reportElement x="206" y="207" width="78" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{llevar_contabilidad}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{obligado_contabilidad}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="76" y="143" width="208" height="30"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_direccion_matriz}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dir_matriz}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="76" y="173" width="208" height="30"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_direccion_matriz}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dir_matriz}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="307" y="227" width="243" height="20"/>
@@ -458,18 +416,6 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{fac_clave_acceso}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="11" y="203" width="165" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Contribuyente Especial Nro]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="189" y="377" width="343" height="13"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_nombres}+" "+$F{cli_apellidos}]]></textFieldExpression>
-			</textField>
-			<staticText>
 				<reportElement x="11" y="364" width="75" height="13"/>
 				<textElement>
 					<font isBold="true"/>
@@ -477,9 +423,9 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<text><![CDATA[Identificación:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="87" y="364" width="102" height="13"/>
+				<reportElement x="87" y="364" width="445" height="13"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_cedula}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{identificacion_destinatario}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="390" width="95" height="13"/>
@@ -496,12 +442,7 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 			<textField>
 				<reportElement x="407" y="182" width="143" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_tipo_emision}.equals( "1" ) ? "NORMAL":""]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="176" y="203" width="108" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_nro_contribuyente}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["NORMAL"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="258" width="105" height="13"/>
@@ -532,17 +473,17 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<text><![CDATA[Punto Partida]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="115" y="258" width="145" height="13"/>
+				<reportElement x="115" y="258" width="417" height="13"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{trp_cedula}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ruc_transportista}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="116" y="271" width="262" height="13"/>
+				<reportElement x="116" y="271" width="416" height="13"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{trp_razon_social}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{razon_social_transportista}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="115" y="284" width="145" height="13"/>
+				<reportElement x="115" y="284" width="417" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{numplacaguia}]]></textFieldExpression>
 			</textField>
@@ -585,7 +526,7 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<text><![CDATA[Destino:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="89" y="338" width="289" height="13"/>
+				<reportElement x="89" y="338" width="443" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{motivoguia}]]></textFieldExpression>
 			</textField>
@@ -598,6 +539,11 @@ where  guiaremision.fac_numero=$P{numfactura} and tipoambiente.cod_tipoambiente=
 				<reportElement x="89" y="351" width="443" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{llegada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="377" width="343" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{razon_social_destinatario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -639,7 +585,7 @@ Principal]]></text>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$F{prod_codigo}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo_interno}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -778,7 +724,7 @@ Principal]]></text>
 			<textField>
 				<reportElement positionType="Float" x="110" y="75" width="185" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_correo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{correo_destinatario}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement positionType="Float" x="10" y="22" width="285" height="20"/>
@@ -790,7 +736,7 @@ Principal]]></text>
 			<textField>
 				<reportElement positionType="Float" x="110" y="50" width="185" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_direccion}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dir_destinatario}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="347" y="75" width="65" height="20"/>

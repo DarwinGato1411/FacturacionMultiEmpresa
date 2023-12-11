@@ -17,6 +17,7 @@ public class FacturaMapper {
     public static Factura daoToFactura(FacturaDao valor) {
         Factura respuesta = new Factura();
 
+        respuesta.setAmCodigo(valor.getAmCodigo());
         respuesta.setRazonSocialEmpresa(valor.getRazonSocialEmpresa());
         respuesta.setNombreComercialEmpresa(valor.getNombreComercialEmpresa());
         respuesta.setRucEmpresa(valor.getRucEmpresa());
@@ -26,7 +27,7 @@ public class FacturaMapper {
         respuesta.setFacNumeroText(valor.getFacNumeroText());
         respuesta.setDireccionMatriz(valor.getDireccionMatriz());
         respuesta.setFacFecha(valor.getFacFecha());
-        respuesta.setObligadoLlevarContabilidad(valor.getObligadoLlevarContabilidad());
+        respuesta.setObligadoLlevarContabilidad(valor.getLlevarContabilidad());
         respuesta.setTipoIdentificacionComprador(valor.getTipoIdentificacionComprador());
         respuesta.setRazonSocialComprador(valor.getRazonSocialComprador());
         respuesta.setIdentificacionComprador(valor.getIdentificacionComprador());
@@ -80,7 +81,7 @@ public class FacturaMapper {
         respuesta.setRimpePolpular(valor.getRimpePolpular());
         respuesta.setRimpeEmprendedor(valor.getRimpeEmprendedor());
         respuesta.setRegimenGeneral(valor.getRegimenGeneral());
-        respuesta.setObligadoLlevarContabilidad(valor.getObligadoLlevarContabilidad());
+        respuesta.setLlevarContabilidad(valor.getObligadoLlevarContabilidad());
         respuesta.setTipoIdentificacionComprador(valor.getTipoIdentificacionComprador());
         respuesta.setRazonSocialComprador(valor.getRazonSocialComprador());
         respuesta.setIdentificacionComprador(valor.getIdentificacionComprador());
