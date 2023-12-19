@@ -34,7 +34,7 @@ public class FacturaDao {
     private Boolean rimpeEmprendedor;
     private Boolean regimenGeneral;
     private String facTipo;
-    private String obligadoLlevarContabilidad;
+    private String llevarContabilidad;
     private String tipoIdentificacionComprador;
     private String razonSocialComprador;
     private String identificacionComprador;
@@ -55,7 +55,7 @@ public class FacturaDao {
     private String correoComprador;
     private String observacion;
     private String facPorcentajeIva;
-    private String llevarContabilidad;
+    
     private List<DetFacturaDao> detFacturaDao;
     private InfoAutorizaDao infoAutoriza;
     private String xmlAutorizado;
@@ -197,13 +197,7 @@ public class FacturaDao {
         this.regimenGeneral = regimenGeneral;
     }
 
-    public String getObligadoLlevarContabilidad() {
-        return obligadoLlevarContabilidad;
-    }
-
-    public void setObligadoLlevarContabilidad(String obligadoLlevarContabilidad) {
-        this.obligadoLlevarContabilidad = obligadoLlevarContabilidad;
-    }
+    
 
     public String getTipoIdentificacionComprador() {
         return tipoIdentificacionComprador;
@@ -413,4 +407,5 @@ public class FacturaDao {
         this.facTipo = facTipo;
     }
 
+    
 }

@@ -28,6 +28,7 @@ public class GuiaremisionDao {
     private String dirMatrizEmpresa;
     private String dirEstablecimiento;
     private String dirPartida;
+    private String dirLlegada;
     private String razonSocialTransportista;
     private String tipoIdentificacionTransportista;
     private String rucTransportista;
@@ -43,10 +44,8 @@ public class GuiaremisionDao {
     private String ruta;
     private InfoAutorizaDao infoAutoriza;
     private List<DetalleGuiaremisionDao> detalleGuiaRemision;
-    private String cliCorreo;
-    private String cliDireccion;
-    private String cliTelefono;
-    private String cliCiudad;
+
+    private String correoDestinatario;
 
     public String getRucEmpresa() {
         return rucEmpresa;
@@ -224,37 +223,6 @@ public class GuiaremisionDao {
         this.facFecha = facFecha;
     }
 
-    public String getCliCorreo() {
-        return cliCorreo;
-    }
-
-    public void setCliCorreo(String cliCorreo) {
-        this.cliCorreo = cliCorreo;
-    }
-
-    public String getCliDireccion() {
-        return cliDireccion;
-    }
-
-    public void setCliDireccion(String cliDireccion) {
-        this.cliDireccion = cliDireccion;
-    }
-
-    public String getCliTelefono() {
-        return cliTelefono;
-    }
-
-    public void setCliTelefono(String cliTelefono) {
-        this.cliTelefono = cliTelefono;
-    }
-
-    public String getCliCiudad() {
-        return cliCiudad;
-    }
-
-    public void setCliCiudad(String cliCiudad) {
-        this.cliCiudad = cliCiudad;
-    }
 
     public String getRazonSocialEmpresa() {
         return razonSocialEmpresa;
@@ -312,4 +280,22 @@ public class GuiaremisionDao {
         this.secuencial = secuencial;
     }
 
+    public String getDirLlegada() {
+        return dirLlegada;
+    }
+
+    public void setDirLlegada(String dirLlegada) {
+        this.dirLlegada = dirLlegada;
+    }
+
+  
+    public String getCorreoDestinatario() {
+        return correoDestinatario;
+    }
+
+    public void setCorreoDestinatario(String correoDestinatario) {
+        this.correoDestinatario = correoDestinatario;
+    }
+
+    
 }

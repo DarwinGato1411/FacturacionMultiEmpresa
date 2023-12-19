@@ -235,6 +235,7 @@ public class ServiciosRest {
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
                             Factura factura = FacturaMapper.daoToFactura(prod);
+                            factura.setFacClaveAcceso(claveAccesoComprobante);
                             servicioFactura.crear(factura);
                             DetalleFactura detalleFactura = new DetalleFactura();
                             for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
@@ -287,6 +288,8 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getReenvioFacturas(@RequestBody FacturaDao prod) throws Exception {
 
+        prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getFacNumeroText());
@@ -418,9 +421,9 @@ public class ServiciosRest {
         String encryptedString = ArchivoUtils.encrypt(originalString, secretKey);
         String decryptedString = ArchivoUtils.decrypt(encryptedString, secretKey);
 
-        System.out.println(originalString);
-        System.out.println(encryptedString);
-        System.out.println(decryptedString);
+//        System.out.println(originalString);
+//        System.out.println(encryptedString);
+//        System.out.println(decryptedString);
         return encryptedString;
     }
 

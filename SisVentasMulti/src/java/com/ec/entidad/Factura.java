@@ -180,12 +180,12 @@ public class Factura implements Serializable {
 
     @Column(name = "ruc_empresa")
     private String rucEmpresa;
-    
+
     @Column(name = "nombre_comercial_empresa")
     private String nombreComercialEmpresa;
-    
+
     @Column(name = "razon_social_empresa")
-    private String  razonSocialEmpresa;
+    private String razonSocialEmpresa;
 
     @Column(name = "fac_fecha_cobro")
     @Temporal(TemporalType.DATE)
@@ -272,15 +272,15 @@ public class Factura implements Serializable {
     private Boolean rimpeEmprendedor;
     @Column(name = "regimen_general")
     private Boolean regimenGeneral;
-    @Column(name = "obligado_llevar_conta")
+    @Column(name = "obligado_llevar_contabilidad")
     private String obligadoLlevarContabilidad;
 
     @Column(name = "tipo_identificacion_comp")
     private String tipoIdentificacionComprador;
-    
+
     @Column(name = "razon_social_comp")
     private String razonSocialComprador;
- 
+
     @Column(name = "identificacion_comp")
     private String identificacionComprador;
     @Column(name = "codigo_forma_pago")
@@ -289,9 +289,9 @@ public class Factura implements Serializable {
     private String direccionComprador;
     @Column(name = "correo_comprador")
     private String correoComprador;
-    
-    
-   
+
+    @Column(name = "am_codigo")
+    private String  amCodigo;
 
     public String getCodigoICE() {
         return codigoICE;
@@ -1009,7 +1009,12 @@ public class Factura implements Serializable {
         this.razonSocialEmpresa = razonSocialEmpresa;
     }
 
-    
-    
-    
+    public String getAmCodigo() {
+        return amCodigo;
+    }
+
+    public void setAmCodigo(String amCodigo) {
+        this.amCodigo = amCodigo;
+    }
+
 }

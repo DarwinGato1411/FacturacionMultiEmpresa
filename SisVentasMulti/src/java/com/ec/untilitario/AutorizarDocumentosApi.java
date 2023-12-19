@@ -1060,14 +1060,12 @@ public class AutorizarDocumentosApi {
                     + "        </destinatario>\n"
                     + "    </destinatarios>\n")
                     + ("    <infoAdicional>\n")
-                    + ("        <campoAdicional nombre=\"E-MAIL\">" + removeCaracteres(valor.getCliCorreo()) + "</campoAdicional>\n")
-                    + ("        <campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getCliDireccion()) + "</campoAdicional>\n")
-                    + ("        <campoAdicional nombre=\"TELEFONO\">" + valor.getCliTelefono() + "</campoAdicional>\n")
-                    + ("        <campoAdicional nombre=\"CIUDAD\">" + valor.getCliCiudad() + "</campoAdicional>\n"
+                    + ("        <campoAdicional nombre=\"E-MAIL\">" + removeCaracteres(valor.getCorreoDestinatario()) + "</campoAdicional>\n")
+                    + ("        <campoAdicional nombre=\"DIRECCION\">" + removeCaracteres(valor.getDirDestinatario()) + "</campoAdicional>\n")
                     + (valor.getAmRimpe() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN RIMPE\">CONTRIBUYENTE REGIMEN RIMPE</campoAdicional>\n" : "")
                     + (valor.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                     + "    </infoAdicional>\n"
-                    + "</guiaRemision>");
+                    + ("</guiaRemision>");
             build.append(linea);
             /*IMPRIME EL XML GUIA DE REMISION*/
             System.out.println("XML " + build);

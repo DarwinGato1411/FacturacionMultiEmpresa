@@ -302,8 +302,10 @@ public class Guiaremision implements Serializable {
     private String docAduaneroUnico;
 
     @Column(name = "dir_establecimiento", length = 300, columnDefinition = "VARCHAR(300) COLLATE pg_catalog.\"default\"")
-
     private String dirEstablecimiento;
+    
+    @Column(name = "am_codigo")
+    private String amCodigo;
 
    
 
@@ -891,5 +893,12 @@ public class Guiaremision implements Serializable {
         this.idTransportista = idTransportista;
     }
 
-    
+    public String getAmCodigo() {
+        return amCodigo;
+    }
+
+    public void setAmCodigo(String amCodigo) {
+        this.amCodigo = amCodigo;
+    }
+
 }
