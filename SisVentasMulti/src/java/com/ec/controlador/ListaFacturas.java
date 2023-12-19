@@ -714,6 +714,7 @@ public class ListaFacturas {
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
+                     Clients.showNotification("RespuestaAutorizacionException> Error del servicio del SRI ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
                     Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {

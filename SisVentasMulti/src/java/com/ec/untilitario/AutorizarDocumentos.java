@@ -178,6 +178,7 @@ public class AutorizarDocumentos {
             RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
             return repuesta;
         } catch (Exception ex) {
+            System.out.println("ex.getMessage() API SRI"+ex.getMessage());
             RespuestaComprobante response = new RespuestaComprobante();
             response.setNumeroComprobantes(ex.getMessage());
             return response;
