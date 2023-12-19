@@ -152,9 +152,10 @@ public class ServiciosRest {
         String pathArchivoFirmado = folderFirmado + nombreArchivo;
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
+        String archivoGenerado = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "GENERADO" + File.separator;
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
-        String archivo = api.generaXMLFactura(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo, Boolean.FALSE, new Date());
+        String archivo = api.generaXMLFactura(prod, archivoGenerado, nombreArchivo, Boolean.FALSE, new Date());
         XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
                 ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
         File f = null;
