@@ -11,7 +11,13 @@ import es.mityc.firmaJava.libreria.xades.XAdESSchemas;
 import es.mityc.javasign.xml.refs.InternObjectToSign;
 import es.mityc.javasign.xml.refs.ObjectToSign;
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -52,7 +58,7 @@ public class XAdESBESSignatureApi extends GenericXMLSignature {
      *
      * @param args Argumentos del programa
      */
-    public static void firmar(String xmlPath, String nomreArchivoFirmado, String ClaveFima, String pathFima, String FOLDER_BASE_FIRMADO) {
+    public static void firmar(String xmlPath, String nomreArchivoFirmado, String ClaveFima, String pathFima, String FOLDER_BASE_FIRMADO) throws Exception {
         XAdESBESSignatureApi signature = new XAdESBESSignatureApi(xmlPath);
         //clave para la firma electronica
         signature.setPassSignature(ClaveFima);
@@ -84,8 +90,16 @@ public class XAdESBESSignatureApi extends GenericXMLSignature {
         datosAFirmar.addObject(new ObjectToSign(new InternObjectToSign("comprobante"), "contenido comprobante", null, "text/xml", null));
         datosAFirmar.setParentSignNode("comprobante");
 
-        Document docToSign = getDocument(fileToSign);
-        datosAFirmar.setDocument(docToSign);
+        Document docToSign;
+        try {
+            docToSign = getDocument(fileToSign);
+            datosAFirmar.setDocument(docToSign);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(XAdESBESSignatureApi.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(XAdESBESSignatureApi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
 
         return datosAFirmar;
     }

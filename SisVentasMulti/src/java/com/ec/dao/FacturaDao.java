@@ -53,14 +53,16 @@ public class FacturaDao {
     private String facUnidaTiempo;
     private String direccionComprador;
     private String correoComprador;
+    private String telefonoComprador;
     private String observacion;
     private String facPorcentajeIva;
-    
+
     private List<DetFacturaDao> detFacturaDao;
     private InfoAutorizaDao infoAutoriza;
     private String xmlAutorizado;
-   
+    private String tipoEmision;
     
+
     public Date getFacFecha() {
         return facFecha;
     }
@@ -196,8 +198,6 @@ public class FacturaDao {
     public void setRegimenGeneral(Boolean regimenGeneral) {
         this.regimenGeneral = regimenGeneral;
     }
-
-    
 
     public String getTipoIdentificacionComprador() {
         return tipoIdentificacionComprador;
@@ -407,5 +407,20 @@ public class FacturaDao {
         this.facTipo = facTipo;
     }
 
-    
+    public String getTelefonoComprador() {
+        return telefonoComprador;
+    }
+
+    public void setTelefonoComprador(String telefonoComprador) {
+        this.telefonoComprador = telefonoComprador;
+    }
+
+    public String getTipoEmision() {
+        return tipoEmision;
+    }
+
+    public void setTipoEmision(String tipoEmision) {
+        this.tipoEmision = tipoEmision;
+    }
+
 }

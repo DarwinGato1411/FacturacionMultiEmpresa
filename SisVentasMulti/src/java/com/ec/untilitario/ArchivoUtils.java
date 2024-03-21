@@ -419,12 +419,13 @@ public class ArchivoUtils {
         return "";
     }
 
-    public static void reporteGeneralPdfMail(String pathPDF, Integer numeroFactura, String tipo, Tipoambiente amb) throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
+    public static void reporteGeneralPdfMail(String pathPDF, Integer numeroFactura, String tipo, String ruc, String establecimiento, String ptoEmi,String pathJasper, String logo) throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
         EntityManager emf = HelperPersistencia.getEMF();
         Connection con = null;
         try {
-            String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                        .getRealPath("/reportes");
+            
+            
+            String reportFile = pathJasper;
             String reportPath = "";
             emf.getTransaction().begin();
             con = emf.unwrap(Connection.class);
@@ -437,12 +438,19 @@ public class ArchivoUtils {
             } else if (tipo.contains("GUIA")) {
                 reportPath = reportFile + File.separator + "guia.jasper";
             }
+            else if (tipo.contains("TICKET")) {
+                reportPath = reportFile + File.separator + "puntoventa.jasper";
+            }
+
 
             Map<String, Object> parametros = new HashMap<String, Object>();
 
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", numeroFactura);
-            parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
+            parametros.put("rucEmpresa", ruc);
+            parametros.put("puntoEmision", ptoEmi);
+            parametros.put("codEstablecimiento", establecimiento);
+            parametros.put("logo", logo);
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
             }

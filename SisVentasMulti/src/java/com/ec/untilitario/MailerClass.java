@@ -65,7 +65,7 @@ public class MailerClass {
 //                    InternetAddress.parse(address));
     public boolean sendMailSimple(String address,
                 String[] attachFiles, String asuntoInf, String acceso,
-                String numeroDocumento, BigDecimal valorTotal, String cliente, Tipoambiente ambiente)
+                String numeroDocumento, BigDecimal valorTotal, String cliente, Tipoambiente ambiente,String nombreEmpresa)
                 throws java.rmi.RemoteException {
 
         try {
@@ -103,7 +103,7 @@ public class MailerClass {
             // Get the default Session object.
             Session session = Session.getInstance(properties, auth);
             MimeMessage m = new MimeMessage(session);
-            String nickFrom = MimeUtility.encodeText(amb.getAmNombreComercial());
+            String nickFrom = MimeUtility.encodeText(nombreEmpresa);
 //            String nickTo = MimeUtility.encodeText(amb.getAmNombreComercial());
             Address addressfrom = new InternetAddress(usuarioSmpt, nickFrom);
 
@@ -127,7 +127,7 @@ public class MailerClass {
                         + "                                 overflow: hidden;\n"
                         + "                                 line-height: 32px;\">\n"
                         + "        <div style=\"color:#00000;font-size:18px\"><strong>\n"
-                        + "		 DOCUMENTO ELETRONICO DE: " + amb.getAmNombreComercial().toUpperCase() + "</strong></div>\n"
+                        + "		 DOCUMENTO ELETRONICO DE: " + nombreEmpresa + "</strong></div>\n"
                         + "		<div style=\"color:#00000;font-size:11px\"><strong>\n"
                         + "		SISTEMA DE FACTURACION ELECTRONICA  </strong></div>\n"
                         + "    </div>\n"
@@ -165,13 +165,13 @@ public class MailerClass {
                         + "			 </tr>\n"
                         + "			 <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:7px\n"
                         + "				align-items: center;display: flex;justify-content: center;\">\n"
-                        + "			  <td style=\" font-size:9px\">DECKXEL - Tlf. 0993530018</td>\n"
+                        + "			  <td style=\" font-size:9px\"></td>\n"
                         + "\n"
                         + "			 </tr>\n"
                         + "\n"
                         + "			  <tr style=\" background: #fafafa; color: #333; border-bottom: 1px solid #eee;;font-size:7px\n"
                         + "				align-items: center;display: flex;justify-content: center;\">\n"
-                        + "			  <td style=\" font-size:9px\">Tabacundo - Ecuador</td>\n"
+                        + "			  <td style=\" font-size:9px\">  Ecuador</td>\n"
                         + "\n"
                         + "			 </tr>\n"
                         + "\n"

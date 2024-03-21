@@ -15,6 +15,9 @@ public class InfoAutorizaDao {
     private String rutaFirma;
     private String passwordFirma;
     private String ambiente;
+    private String rutaLogo;
+    
+    
 
     public String getRutaArchivo() {
         return rutaArchivo;
@@ -46,6 +49,14 @@ public class InfoAutorizaDao {
 
     public void setAmbiente(String ambiente) {
         this.ambiente = ambiente;
+    }
+
+    public String getRutaLogo() {
+        return rutaLogo;
+    }
+
+    public void setRutaLogo(String rutaLogo) {
+        this.rutaLogo = rutaLogo;
     }
 
 }

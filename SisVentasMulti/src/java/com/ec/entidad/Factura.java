@@ -4,6 +4,7 @@
  */
 package com.ec.entidad;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -291,7 +292,11 @@ public class Factura implements Serializable {
     private String correoComprador;
 
     @Column(name = "am_codigo")
-    private String  amCodigo;
+    private String amCodigo;
+    @Column(name = "telefono_comprador")
+    private String telefonoComprador;
+    @Column(name = "tipo_emision")
+    private String tipoEmision;
 
     public String getCodigoICE() {
         return codigoICE;
@@ -1015,6 +1020,22 @@ public class Factura implements Serializable {
 
     public void setAmCodigo(String amCodigo) {
         this.amCodigo = amCodigo;
+    }
+
+    public String getTelefonoComprador() {
+        return telefonoComprador;
+    }
+
+    public void setTelefonoComprador(String telefonoComprador) {
+        this.telefonoComprador = telefonoComprador;
+    }
+
+    public String getTipoEmision() {
+        return tipoEmision;
+    }
+
+    public void setTipoEmision(String tipoEmision) {
+        this.tipoEmision = tipoEmision;
     }
 
 }

@@ -171,8 +171,11 @@ public class ReenviaEnLote {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+              XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -220,16 +223,19 @@ public class ReenviaEnLote {
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
+                    try {
+                        XAdESBESSignature.firmar(archivoEnvioCliente,
                                 nombreArchivoXML,
                                 amb.getAmClaveAccesoSri(),
                                 amb, foldervoAutorizado);
+                    } catch (Exception e) {
+                    }
 
                     fEnvio = new File(archivoEnvioCliente);
                 }
 
                 System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT",amb);
+//                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT",amb);
 //                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                 /*GUARDA EL PATH PDF CREADO*/
                 valor.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -245,15 +251,15 @@ public class ReenviaEnLote {
                     mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
                     servicioCliente.modificar(mod);
                 }
-                if (valor.getIdCliente().getCliCorreo() != null) {
-                    mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
-                                attachFiles,
-                                "FACTURA ELECTRONICA",
-                                valor.getFacClaveAcceso(),
-                                valor.getFacNumeroText(),
-                                valor.getFacTotal(),
-                                valor.getIdCliente().getCliNombre(),amb);
-                }
+//                if (valor.getIdCliente().getCliCorreo() != null) {
+//                    mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
+//                                attachFiles,
+//                                "FACTURA ELECTRONICA",
+//                                valor.getFacClaveAcceso(),
+//                                valor.getFacNumeroText(),
+//                                valor.getFacTotal(),
+//                                valor.getIdCliente().getCliNombre(),amb);
+//                }
 
             }
         } catch (RespuestaAutorizacionException ex) {

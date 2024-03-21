@@ -26,8 +26,10 @@ import com.ec.dao.FacturaDao;
 import com.ec.dao.GuiaremisionDao;
 import com.ec.dao.InfoAutorizaDao;
 import com.ec.dao.NotaCreditoDebitoDao;
+import com.ec.dao.PdfRequest;
 import com.ec.dao.RetencionCompraDao;
 import com.ec.dao.response.FacturaResponse;
+import com.ec.dao.response.PdfResponse;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.DetalleGuiaremision;
 import com.ec.entidad.DetalleNotaDebitoCredito;
@@ -36,6 +38,7 @@ import com.ec.entidad.Factura;
 import com.ec.entidad.Guiaremision;
 import com.ec.entidad.NotaCreditoDebito;
 import com.ec.entidad.RetencionCompra;
+import com.ec.entidad.Tipoambiente;
 import com.ec.servicio.ServicioDetalleFactura;
 import com.ec.servicio.ServicioDetalleGuia;
 import com.ec.servicio.ServicioDetalleNotaCredito;
@@ -44,6 +47,7 @@ import com.ec.servicio.ServicioFactura;
 import com.ec.servicio.ServicioGuia;
 import com.ec.servicio.ServicioNotaCredito;
 import com.ec.servicio.ServicioRetencionCompra;
+import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoIvaRetencion;
 import com.ec.servicio.ServicioTipoRetencion;
 import com.ec.untilitario.ArchivoUtils;
@@ -65,8 +69,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import com.ec.untilitario.AutorizarDocumentosApi;
+import java.io.IOException;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import net.sf.jasperreports.engine.JRException;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 @Path("/autorizar")
 public class ServiciosRest {
@@ -79,59 +89,23 @@ public class ServiciosRest {
     ServicioTipoIvaRetencion servicioTipoIvaRetencion = new ServicioTipoIvaRetencion();
     ServicioGuia servicioGuiaRemision = new ServicioGuia();
     ServicioDetalleGuia servicioDetalleGuiaRemision = new ServicioDetalleGuia();
-
+    ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
     ServicioNotaCredito servicioNotaCredito = new ServicioNotaCredito();
     ServicioDetalleNotaCredito servicioDetalleNotaCredito = new ServicioDetalleNotaCredito();
 
-//
-//    @POST
-//    @Path("/factura/")
-//    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-//    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
-//    public FacturaDao getReenviarFacturas(@RequestBody FacturaDao prod) throws Exception {
-//
-//        FacturaResponse facturaResponse = new FacturaResponse();
-//        Factura recup = servicioFactura.findByNumero(prod.getFacNumero());
-////        System.out.println("valor "+recup.getEstadosri());
-//        FacturaDao dao = FacturaMapper.facturaToDao(recup);
-//        List<DetalleFactura> detalle = servicioDetalleFactura.findDetalleForIdFactuta(recup);
-//        List<DetFacturaDao> detalleDao = new ArrayList<>();
-//        detalle.forEach((detalleFactura) -> {
-//            DetFacturaDao dao1 = DetFacturaMapper.facturaToDao(detalleFactura);
-//            dao1.setCodigoProducto("05555");
-//            dao1.setTieneSubsidio(Boolean.FALSE);
-//            detalleDao.add(dao1);
-//        });
-//        dao.setDetFacturaDao(detalleDao);
-//        InfoAutorizaDao autoriza = new InfoAutorizaDao();
-//        autoriza.setRutaArchivo("D:\\\\DOCUMENTOSRI\\XML\\");
-//        autoriza.setRutaFirma("D:\\DOCUMENTOSRI\\FIRMA\\DarwinMorocho2022-2023.p12");
-//        autoriza.setPasswordFirma("Dereckandre02");
-//        dao.setInfoAutoriza(autoriza);
-//        dao.setAmCodigo("1");
-//        dao.setLlevarContabilidad("NO");
-//        dao.setTipoIdentificacionComprador("05");
-//        dao.setIdentificacionComprador("1718264839");
-//        dao.setRazonSocialComprador("Darwin Morocho");
-//        dao.setDireccionComprador("Gonzalez Suarez");
-//        dao.setGrabaICE(Boolean.FALSE);
-//        dao.setAgenteRetencion(Boolean.FALSE);
-//        dao.setRimpePolpular(Boolean.FALSE);
-//        dao.setRimpeEmprendedor(Boolean.FALSE);
-//        dao.setRegimenGeneral(Boolean.FALSE);
-//        dao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
-//        dao.setRazonSocialEmpresa("Darwin Morocho");
-//        dao.setNombreComercialEmpresa("DECKXEL");
-//        dao.setDireccionMatriz("Tabacundo km 27 1/2 via Cayambe");
-//        dao.setRucEmpresa("1718264839001");
-//        dao.setFacTarifaIce(BigDecimal.ZERO);
-//        return dao;
-//    }
+    @POST
+    @Path("/cargar-firma/")
+    @Consumes({javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA})
+    public String cargarFirma(@RequestPart("logo") MultipartFile firma) {
+        System.out.println("logo = contentType: {}, fileName: {}, formName: {}, size: {}" + firma.getContentType()
+                + "   " + firma.getOriginalFilename() + "   " + firma.getName() + "   " + firma.getSize());
+        return "";
+    }
+
     @POST
     @Path("/factura-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
-
     public FacturaResponse getEnviarFacturas(@RequestBody FacturaDao prod) throws Exception {
 
         FacturaResponse facturaResponse = new FacturaResponse();
@@ -153,11 +127,43 @@ public class ServiciosRest {
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
         String archivoGenerado = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "GENERADO" + File.separator;
+
+        File folderNuevo = new File(folderFirmado);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
+        folderNuevo = new File(folderArchivos);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
+        folderNuevo = new File(pathArchivoNoAutorizado);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
+        folderNuevo = new File(archivoEnvioCliente);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+        folderNuevo = new File(archivoGenerado);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, archivoGenerado, nombreArchivo, Boolean.FALSE, new Date());
-        XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
-                ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
+        try {
+            XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
+                    ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            facturaResponse.setMensajeError("FIRMA");
+            facturaResponse.setDetalleError("Firma o clave incorrecta");
+            return facturaResponse;
+        }
         File f = null;
         File fEnvio = null;
         byte[] datos = null;
@@ -179,15 +185,14 @@ public class ServiciosRest {
                     System.out.println("RECIBIDA");
                     RespuestaComprobante resComprobante = api.autorizarComprobante(claveAccesoComprobante, prod.getInfoAutoriza().getAmbiente());
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
-                        FileOutputStream nuevo = null;
+//                        FileOutputStream nuevo = null;
 
                         /*CREA EL ARCHIVO XML AUTORIZADO*/
 //                        System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
-                        nuevo = new FileOutputStream(pathArchivoNoAutorizado);
-                        if (autorizacion.getComprobante() != null) {
-                            nuevo.write(autorizacion.getComprobante().getBytes());
-                        }
-
+//                        nuevo = new FileOutputStream(pathArchivoNoAutorizado);
+//                        if (autorizacion.getComprobante() != null) {
+//                            nuevo.write(autorizacion.getComprobante().getBytes());
+//                        }
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
 //                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
@@ -198,26 +203,34 @@ public class ServiciosRest {
 
                                 if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                                     texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
-                                    smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
-                                    nuevo.write(smsInfo.getBytes());
-                                    nuevo.write(smsInfo.getBytes());
+                                    smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : "") : " ERROR SIN DEFINIR " + autorizacion.getEstado();
+//                                    if (smsInfo != null) {
+//                                        nuevo.write(smsInfo.getBytes());
+//                                    }
+//                                    nuevo.write(smsInfo.getBytes());
                                 }
 
                                 facturaResponse.setEstadoSri(autorizacion.getEstado());
                                 facturaResponse.setMensajeError(texto);
-                                facturaResponse.setDetalleError(smsInfo);
+                                if (smsInfo != null) {
+                                    facturaResponse.setDetalleError(smsInfo);
+                                }
 
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
 
+                            Date fechaAutoriza = null;
                             try {
                                 String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-                                facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
+                                fechaAutoriza = sm.parse(fechaForm);
+                                facturaResponse.setFechaAtorizacion(fechaAutoriza);
 
                             } catch (java.text.ParseException ex) {
-                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ListaFacturas.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                             }
+//                     
 //                     
 //                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                             archivoEnvioCliente = api.generaXMLFactura(prod, archivoEnvioCliente, nombreArchivo, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
@@ -230,43 +243,50 @@ public class ServiciosRest {
 
                             fEnvio = new File(archivoEnvioCliente);
 
-                            System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
                             Factura factura = FacturaMapper.daoToFactura(prod);
                             factura.setFacClaveAcceso(claveAccesoComprobante);
+                            factura.setFacFechaAutorizacion(fechaAutoriza);
                             servicioFactura.crear(factura);
                             DetalleFactura detalleFactura = new DetalleFactura();
+
                             for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
                                 detalleFactura = new DetalleFactura();
                                 detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
                                 detalleFactura.setIdFactura(factura);
                                 servicioDetalleFactura.crear(detalleFactura);
                             }
+                            /*GENERAR EL PDF PARA ENVIAR AL CLIENTE*/
+
+                            System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
+                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getInfoAutoriza().getRutaLogo());
+
                             /*envia el mail*/
                             String[] attachFiles = new String[2];
                             attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
                             attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
                             MailerClass mail = new MailerClass();
-//                            Tipoambiente amb= servicioTipoAmbiente.finActivo();
-//                            if (prod.getCorreoComprador() != null) {
-//                                mail.sendMailSimple(prod.getCorreoComprador(),
-//                                            attachFiles,
-//                                            "FACTURA ELECTRONICA",
-//                                           claveAccesoComprobante,
-//                                            prod.getFacNumeroText(),
-//                                            prod.getFacTotal(),
-//                                            prod.getRazonSocialComprador(), amb);
-//                            }
+                            Tipoambiente amb = servicioTipoAmbiente.finActivo();
+                            if (prod.getCorreoComprador() != null) {
+                                mail.sendMailSimple(prod.getCorreoComprador(),
+                                        attachFiles,
+                                        "FACTURA ELECTRONICA",
+                                        claveAccesoComprobante,
+                                        prod.getFacNumeroText(),
+                                        prod.getFacTotal(),
+                                        prod.getRazonSocialComprador(), amb, prod.getNombreComercialEmpresa());
+                            }
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
+
                         }
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
-                    Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ListaFacturas.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getTipo();
@@ -289,7 +309,7 @@ public class ServiciosRest {
     public FacturaResponse getReenvioFacturas(@RequestBody FacturaDao prod) throws Exception {
 
         prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
-        
+
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getFacNumeroText());
@@ -305,6 +325,27 @@ public class ServiciosRest {
         String pathArchivoFirmado = folderFirmado + nombreArchivo;
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
+
+        File folderNuevo = new File(folderFirmado);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
+        folderNuevo = new File(folderArchivos);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
+        folderNuevo = new File(pathArchivoNoAutorizado);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
+        folderNuevo = new File(archivoEnvioCliente);
+        if (!folderNuevo.exists()) {
+            folderNuevo.mkdirs();
+        }
+
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo, Boolean.FALSE, new Date());
@@ -327,11 +368,10 @@ public class ServiciosRest {
 
                 /*CREA EL ARCHIVO XML AUTORIZADO*/
 //                        System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
-                nuevo = new FileOutputStream(pathArchivoNoAutorizado);
-                if (autorizacion.getComprobante() != null) {
-                    nuevo.write(autorizacion.getComprobante().getBytes());
-                }
-
+//                nuevo = new FileOutputStream(pathArchivoNoAutorizado+ nombreArchivo);
+//                if (autorizacion.getComprobante() != null) {
+//                    nuevo.write(autorizacion.getComprobante().getBytes());
+//                }
                 if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                     if (autorizacion.getEstado().equals("EN PROCESO")) {
 //                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
@@ -354,55 +394,65 @@ public class ServiciosRest {
                     }
                 } else {
                     facturaResponse.setEstadoSri(autorizacion.getEstado());
-
+                    Date fechaAutoriza = null;
                     try {
                         String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-                        facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
+                        fechaAutoriza = sm.parse(fechaForm);
+                        facturaResponse.setFechaAtorizacion(fechaAutoriza);
 
                     } catch (java.text.ParseException ex) {
-                        Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ListaFacturas.class
+                                .getName()).log(Level.SEVERE, null, ex);
                     }
 //                     
 //                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                     archivoEnvioCliente = api.generaXMLFactura(prod, archivoEnvioCliente, nombreArchivo, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
 
                     fEnvio = new File(archivoEnvioCliente);
-
-                    System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
-//                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
+                    servicioFactura.eliminarFactura(prod.getFacNumero(), prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa());
                     /*GUARDA EL PATH PDF CREADO*/
                     Factura factura = FacturaMapper.daoToFactura(prod);
+                    factura.setFacClaveAcceso(claveAccesoComprobante);
+                    factura.setFacFechaAutorizacion(fechaAutoriza);
                     servicioFactura.crear(factura);
                     DetalleFactura detalleFactura = new DetalleFactura();
+
                     for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
                         detalleFactura = new DetalleFactura();
                         detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
                         detalleFactura.setIdFactura(factura);
                         servicioDetalleFactura.crear(detalleFactura);
                     }
+                    /*GENERAR EL PDF PARA ENVIAR AL CLIENTE*/
+
+                    System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
+                    ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getInfoAutoriza().getRutaLogo());
+
                     /*envia el mail*/
                     String[] attachFiles = new String[2];
                     attachFiles[0] = archivoEnvioCliente.replace(".xml", ".pdf");
                     attachFiles[1] = archivoEnvioCliente.replace(".xml", ".xml");
                     MailerClass mail = new MailerClass();
-//                            Tipoambiente amb= servicioTipoAmbiente.finActivo();
-//                            if (prod.getCorreoComprador() != null) {
-//                                mail.sendMailSimple(prod.getCorreoComprador(),
-//                                            attachFiles,
-//                                            "FACTURA ELECTRONICA",
-//                                           claveAccesoComprobante,
-//                                            prod.getFacNumeroText(),
-//                                            prod.getFacTotal(),
-//                                            prod.getRazonSocialComprador(), amb);
-//                            }
+                    Tipoambiente amb = servicioTipoAmbiente.finActivo();
+                    if (prod.getCorreoComprador() != null) {
+                        mail.sendMailSimple(prod.getCorreoComprador(),
+                                attachFiles,
+                                "FACTURA ELECTRONICA",
+                                claveAccesoComprobante,
+                                prod.getFacNumeroText(),
+                                prod.getFacTotal(),
+                                prod.getRazonSocialComprador(), amb,
+                                prod.getNombreComercialEmpresa());
+                    }
 
                     facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
+
                 }
 
             }
         } catch (RespuestaAutorizacionException ex) {
-            Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListaFacturas.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 //            
         return facturaResponse;
@@ -548,7 +598,8 @@ public class ServiciosRest {
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
 
                             } catch (java.text.ParseException ex) {
-                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ListaFacturas.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                             }
 ////                     
 ////                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
@@ -583,6 +634,7 @@ public class ServiciosRest {
                                 detalleRetencion = DetRetencionMapper.daoToRetencion(detRetencionDao);
                                 detalleRetencion.setRcoCodigo(retencinon);
                                 servicioDetalleRetencionCompra.crear(detalleRetencion);
+
                             }
 //                            /*envia el mail*/
 //                            String[] attachFiles = new String[2];
@@ -606,7 +658,8 @@ public class ServiciosRest {
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
-                    Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ListaFacturas.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getTipo();
@@ -709,7 +762,8 @@ public class ServiciosRest {
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
 
                             } catch (java.text.ParseException ex) {
-                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ListaFacturas.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                             }
 //                     
 //                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
@@ -754,11 +808,13 @@ public class ServiciosRest {
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
+
                         }
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
-                    Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ListaFacturas.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getTipo();
@@ -861,7 +917,8 @@ public class ServiciosRest {
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
 
                             } catch (java.text.ParseException ex) {
-                                Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ListaFacturas.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                             }
                             archivoEnvioCliente = api.generaXMLGuiaRemisionApi(prod, archivoEnvioCliente, nombreArchivo);
 
@@ -899,11 +956,13 @@ public class ServiciosRest {
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
+
                         }
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
-                    Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ListaFacturas.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getTipo();
@@ -917,5 +976,65 @@ public class ServiciosRest {
             }
         }
         return facturaResponse;
+    }
+
+    /*generar PDF*/
+    @POST
+    @Path("/pdf-factura/")
+    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public PdfResponse getPdfFactura(@RequestBody PdfRequest prod) throws Exception {
+        PdfResponse response = new PdfResponse();
+
+        try {
+            String folderCliente = prod.getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
+            String folderArchivos = prod.getRutaArchivo();
+
+            String nombreArchivo = prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".pdf";
+            String pathEnvio = folderCliente + File.separator + nombreArchivo;
+            String directoryName = System.getProperty("user.dir");
+            String[] valores = directoryName.split("config");
+            String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "pdf";
+            pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
+
+            System.out.println("pathEnvio " + pathEnvio);
+            ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
+            response.setDocumento("FACTURA");
+//            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
+            response.setUrlReporte("https://consultoriointegradodecardiologia.com/recursos/recursos/pdf/" + nombreArchivo);
+        } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
+            response.setDocumento("FACTURA");
+            response.setUrlReporte("Error al generar el pdf " + e.getMessage());
+        }
+        return response;
+    }
+
+    @POST
+    @Path("/pdf-ticket/")
+    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public PdfResponse getPdfTicket(@RequestBody PdfRequest prod) throws Exception {
+        PdfResponse response = new PdfResponse();
+
+        try {
+            String folderCliente = prod.getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
+            String folderArchivos = prod.getRutaArchivo();
+
+            String nombreArchivo = "TK-" + prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".pdf";
+            String pathEnvio = folderCliente + File.separator + nombreArchivo;
+            String directoryName = System.getProperty("user.dir");
+            String[] valores = directoryName.split("config");
+            String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "pdf";
+            pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
+
+            System.out.println("pathEnvio " + pathEnvio);
+            ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "TICKET", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
+            response.setDocumento("TICKET");
+            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
+        } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
+            response.setDocumento("TICKET");
+            response.setUrlReporte("Error al generar el pdf " + e.getMessage());
+        }
+        return response;
     }
 }

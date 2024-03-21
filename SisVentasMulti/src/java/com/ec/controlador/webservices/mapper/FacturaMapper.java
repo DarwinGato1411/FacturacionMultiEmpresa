@@ -13,10 +13,10 @@ import com.ec.entidad.Factura;
  * @author Darwin
  */
 public class FacturaMapper {
-
+    
     public static Factura daoToFactura(FacturaDao valor) {
         Factura respuesta = new Factura();
-
+        
         respuesta.setAmCodigo(valor.getAmCodigo());
         respuesta.setRazonSocialEmpresa(valor.getRazonSocialEmpresa());
         respuesta.setNombreComercialEmpresa(valor.getNombreComercialEmpresa());
@@ -46,7 +46,7 @@ public class FacturaMapper {
         respuesta.setCodigoFormaPago(valor.getCodigoFormaPago());
         respuesta.setFacMoneda(valor.getFacMoneda());
         respuesta.setFacUnidadTiempo(valor.getFacUnidaTiempo());
-
+        
         respuesta.setCodigoICE(valor.getCodigoICE());
         respuesta.setFacTarifaIce(valor.getFacTarifaIce());
         respuesta.setCodestablecimiento(valor.getEstablecimientoEmpresa());
@@ -60,11 +60,13 @@ public class FacturaMapper {
         respuesta.setFacObservacion(valor.getObservacion());
         respuesta.setDireccionMatriz(valor.getDireccionMatriz());
         respuesta.setFacTipo(valor.getFacTipo());
-
+        respuesta.setTelefonoComprador(valor.getTelefonoComprador());
+        respuesta.setTipoEmision(valor.getInfoAutoriza().getAmbiente());
+        
         return respuesta;
-
+        
     }
-
+    
     public static FacturaDao facturaToDao(Factura valor) {
         FacturaDao respuesta = new FacturaDao();
         respuesta.setFacFecha(valor.getFacFecha());
@@ -102,7 +104,7 @@ public class FacturaMapper {
         respuesta.setCorreoComprador(valor.getCorreoComprador());
         respuesta.setObservacion(valor.getFacObservacion());
         respuesta.setFacPorcentajeIva(valor.getFacPorcentajeIva());
-
+        
         return respuesta;
     }
 }

@@ -238,8 +238,11 @@ public class ListaRetenciones {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+            XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -295,16 +298,19 @@ public class ListaRetenciones {
 
                             /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                             archivoEnvioCliente = aut.generaXMLComprobanteRetencion(valor, amb, foldervoAutorizado, nombreArchivoXML);
-                            XAdESBESSignature.firmar(archivoEnvioCliente,
+                            try {
+                                XAdESBESSignature.firmar(archivoEnvioCliente,
                                         nombreArchivoXML,
                                         amb.getAmClaveAccesoSri(),
                                         amb, foldervoAutorizado);
+                            } catch (Exception e) {
+                            }
 
                             fEnvio = new File(archivoEnvioCliente);
 
                             servicioRetencionCompra.modificar(valor);
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getRcoCodigo(), "RET",amb);
+//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getRcoCodigo(), "RET",amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
                             valor.setRcoPathRet(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -320,17 +326,17 @@ public class ListaRetenciones {
 //                            mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
 //                            servicioRetencionCompra.modificar(mod);
 //                        }
-                            if (valor.getIdCabecera().getIdProveedor().getProvCorreo() != null) {
-
-                                mail.sendMailSimple(valor.getIdCabecera().getIdProveedor().getProvCorreo(),
-                                            attachFiles,
-                                            "RETENCION ELECTRONICA",
-                                            valor.getRcoAutorizacion(),
-                                            valor.getRcoSecuencialText(),
-                                            BigDecimal.ZERO,
-                                            valor.getIdCabecera().getIdProveedor().getProvNombre(),amb);
-
-                            }
+//                            if (valor.getIdCabecera().getIdProveedor().getProvCorreo() != null) {
+//
+//                                mail.sendMailSimple(valor.getIdCabecera().getIdProveedor().getProvCorreo(),
+//                                            attachFiles,
+//                                            "RETENCION ELECTRONICA",
+//                                            valor.getRcoAutorizacion(),
+//                                            valor.getRcoSecuencialText(),
+//                                            BigDecimal.ZERO,
+//                                            valor.getIdCabecera().getIdProveedor().getProvNombre(),amb);
+//
+//                            }
                         }
 
                     }
@@ -431,8 +437,11 @@ public class ListaRetenciones {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+                XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -479,16 +488,20 @@ public class ListaRetenciones {
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLComprobanteRetencion(valor, amb, foldervoAutorizado, nombreArchivoXML);
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
+                    try {
+                        XAdESBESSignature.firmar(archivoEnvioCliente,
                                 nombreArchivoXML,
                                 amb.getAmClaveAccesoSri(),
                                 amb, foldervoAutorizado);
+                    } catch (Exception e) {
+                    }
+                        
 
                     fEnvio = new File(archivoEnvioCliente);
 
                     servicioRetencionCompra.modificar(valor);
                     System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                    ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getRcoCodigo(), "RET",amb);
+//                    ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getRcoCodigo(), "RET",amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                     /*GUARDA EL PATH PDF CREADO*/
                     valor.setRcoPathRet(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -504,15 +517,15 @@ public class ListaRetenciones {
 //                            mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
 //                            servicioRetencionCompra.modificar(mod);
 //                        }
-                    if (valor.getIdCabecera().getIdProveedor().getProvCorreo() != null) {
-                        mail.sendMailSimple(valor.getIdCabecera().getIdProveedor().getProvCorreo(),
-                                    attachFiles,
-                                    "RETENCION ELECTRONICA",
-                                    valor.getRcoAutorizacion(),
-                                    valor.getRcoSecuencialText(),
-                                    BigDecimal.ZERO,
-                                    valor.getIdCabecera().getIdProveedor().getProvNombre(),amb);
-                    }
+//                    if (valor.getIdCabecera().getIdProveedor().getProvCorreo() != null) {
+//                        mail.sendMailSimple(valor.getIdCabecera().getIdProveedor().getProvCorreo(),
+//                                    attachFiles,
+//                                    "RETENCION ELECTRONICA",
+//                                    valor.getRcoAutorizacion(),
+//                                    valor.getRcoSecuencialText(),
+//                                    BigDecimal.ZERO,
+//                                    valor.getIdCabecera().getIdProveedor().getProvNombre(),amb);
+//                    }
                 }
 
             }

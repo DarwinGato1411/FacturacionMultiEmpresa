@@ -361,8 +361,11 @@ public class ListaNC {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+             XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -422,7 +425,7 @@ public class ListaNC {
                             fEnvio = new File(archivoEnvioCliente);
 
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
+//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
 
@@ -438,16 +441,16 @@ public class ListaNC {
                                 mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
                                 servicioCliente.modificar(mod);
                             }
-                            if (valor.getIdFactura().getIdCliente().getCliCorreo() != null) {
-                                mail.sendMailSimple(valor.getIdFactura().getIdCliente().getCliCorreo(),
-                                            attachFiles,
-                                            "NOTA DE CREDITO ELECTRONICA",
-                                            valor.getFacClaveAcceso(),
-                                            valor.getFacNumeroText(),
-                                            valor.getFacTotal(),
-                                            valor.getIdFactura().getIdCliente().getCliNombre(), amb);
-
-                            }
+//                            if (valor.getIdFactura().getIdCliente().getCliCorreo() != null) {
+//                                mail.sendMailSimple(valor.getIdFactura().getIdCliente().getCliCorreo(),
+//                                            attachFiles,
+//                                            "NOTA DE CREDITO ELECTRONICA",
+//                                            valor.getFacClaveAcceso(),
+//                                            valor.getFacNumeroText(),
+//                                            valor.getFacTotal(),
+//                                            valor.getIdFactura().getIdCliente().getCliNombre(), amb);
+//
+//                            }
                         }
 
                     }
@@ -542,8 +545,11 @@ public class ListaNC {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+                  XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -596,17 +602,20 @@ public class ListaNC {
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLNotaCreditoDebito(valor, amb, folderGenerados, nombreArchivoXML, "04");
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
+                    try {
+                         XAdESBESSignature.firmar(archivoEnvioCliente,
                                 nombreArchivoXML,
                                 amb.getAmClaveAccesoSri(),
                                 amb, foldervoAutorizado);
+                    } catch (Exception e) {
+                    }
 
                     fEnvio = new File(archivoEnvioCliente);
                 }
 
                 System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
-//                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
+//                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
+//                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);C
                 /*GUARDA EL PATH PDF CREADO*/
 
                 servicioNotaCredito.modificar(valor);
@@ -621,16 +630,16 @@ public class ListaNC {
                     mod.setCliClave(ArchivoUtils.generaraClaveTemporal());
                     servicioCliente.modificar(mod);
                 }
-                if (valor.getIdFactura().getIdCliente().getCliCorreo() != null) {
-                    mail.sendMailSimple(valor.getIdFactura().getIdCliente().getCliCorreo(),
-                                attachFiles,
-                                "NOTA DE CREDITO ELECTRONICA",
-                                valor.getFacClaveAcceso(),
-                                valor.getFacNumeroText(),
-                                valor.getFacTotal(),
-                                valor.getIdFactura().getIdCliente().getCliNombre(), amb);
-
-                }
+//                if (valor.getIdFactura().getIdCliente().getCliCorreo() != null) {
+//                    mail.sendMailSimple(valor.getIdFactura().getIdCliente().getCliCorreo(),
+//                                attachFiles,
+//                                "NOTA DE CREDITO ELECTRONICA",
+//                                valor.getFacClaveAcceso(),
+//                                valor.getFacNumeroText(),
+//                                valor.getFacTotal(),
+//                                valor.getIdFactura().getIdCliente().getCliNombre(), amb);
+//
+//                }
 
             }
             consultarFacturaFecha();

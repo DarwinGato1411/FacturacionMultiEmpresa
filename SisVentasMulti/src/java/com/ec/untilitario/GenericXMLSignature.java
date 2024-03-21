@@ -17,10 +17,12 @@ import es.mityc.firmaJava.libreria.xades.DataToSign;
 import es.mityc.firmaJava.libreria.xades.FirmaXML;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -78,7 +80,7 @@ public abstract class GenericXMLSignature {
         this.passSignature = passSignature;
     }
 
-    protected void execute() {
+    protected void execute() throws Exception  {
 
         // Obtencion del gestor de claves
         KeyStore keyStore = getKeyStore();
@@ -92,31 +94,31 @@ public abstract class GenericXMLSignature {
         // Obtencion del certificado para firmar. Utilizaremos el primer
         // certificado del almacen.           
         X509Certificate certificate = null;
-        try {
+//        try {
             certificate = (X509Certificate) keyStore.getCertificate(alias);
             if (certificate == null) {
                 System.err.println("No existe ningún certificado para firmar.");
                 return;
             }
-        } catch (KeyStoreException e1) {
-            e1.printStackTrace();
-        }
+//        } catch (KeyStoreException e1) {
+//            e1.printStackTrace();
+//        }
 
         // Obtención de la clave privada asociada al certificado
         PrivateKey privateKey = null;
         KeyStore tmpKs = keyStore;
-        try {
+//        try {
             privateKey = (PrivateKey) tmpKs.getKey(alias, this.passSignature.toCharArray());
-        } catch (UnrecoverableKeyException e) {
-            System.err.println("No existe clave privada para firmar.");
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            System.err.println("No existe clave privada para firmar.");
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println("No existe clave privada para firmar.");
-            e.printStackTrace();
-        }
+//        } catch (UnrecoverableKeyException e) {
+//            System.err.println("No existe clave privada para firmar.");
+//            e.printStackTrace();
+//        } catch (KeyStoreException e) {
+//            System.err.println("No existe clave privada para firmar.");
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            System.err.println("No existe clave privada para firmar.");
+//            e.printStackTrace();
+//        }
 
         // Obtención del provider encargado de las labores criptográficas
         Provider provider = keyStore.getProvider();
@@ -134,14 +136,10 @@ public abstract class GenericXMLSignature {
 
         // Firmamos el documento
         Document docSigned = null;
-        try {
+        
             Object[] res = firma.signFile(certificate, dataToSign, privateKey, provider);
             docSigned = (Document) res[0];
-        } catch (Exception ex) {
-            System.err.println("Error realizando la firma");
-            ex.printStackTrace();
-            return;
-        }
+        
 
         // Guardamos la firma a un fichero en el home del usuario
         String filePath = getPathOut() + File.separator + getSignatureFileName();
@@ -167,12 +165,12 @@ public abstract class GenericXMLSignature {
 
     protected abstract String getPathOut();
 
-    protected Document getDocument(String resource) {
+    protected Document getDocument(String resource) throws FileNotFoundException, UnsupportedEncodingException, ParserConfigurationException, SAXException, IOException {
         Document doc = null;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         File file = new File(resource);
-        try {
+//        try {
 
             InputStream inputStream = new FileInputStream(resource);
             Reader reader = new InputStreamReader(inputStream, "ISO-8859-1");
@@ -193,40 +191,40 @@ public abstract class GenericXMLSignature {
 
             //  DocumentBuilder db = dbf.newDocumentBuilder();
             //doc=db.parse(file);
-        } catch (ParserConfigurationException ex) {
-            System.err.println("Error al parsear el documento ParserConfigurationException " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(-1);
-        } catch (SAXException ex) {
-            System.err.println("Error al parsear el documento SAXException " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(-1);
-        } catch (IOException ex) {
-            System.err.println("Error al parsear el documento IOException " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(-1);
-        } catch (IllegalArgumentException ex) {
-            System.err.println("Error al parsear el documento IllegalArgumentException" + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(-1);
-        }
+//        } catch (ParserConfigurationException ex) {
+//            System.err.println("Error al parsear el documento ParserConfigurationException " + ex.getMessage());
+//            ex.printStackTrace();
+//            System.exit(-1);
+//        } catch (SAXException ex) {
+//            System.err.println("Error al parsear el documento SAXException " + ex.getMessage());
+//            ex.printStackTrace();
+//            System.exit(-1);
+//        } catch (IOException ex) {
+//            System.err.println("Error al parsear el documento IOException " + ex.getMessage());
+//            ex.printStackTrace();
+//            System.exit(-1);
+//        } catch (IllegalArgumentException ex) {
+//            System.err.println("Error al parsear el documento IllegalArgumentException" + ex.getMessage());
+//            ex.printStackTrace();
+//            System.exit(-1);
+//        }
         return doc;
     }
 
-    private KeyStore getKeyStore() {
+    private KeyStore getKeyStore() throws KeyStoreException, FileNotFoundException, IOException, NoSuchAlgorithmException, CertificateException {
         KeyStore ks = null;
-        try {
+//        try {
             ks = KeyStore.getInstance("PKCS12");
             ks.load(new FileInputStream(pathSignature), passSignature.toCharArray());
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (KeyStoreException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (CertificateException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return ks;
     }
 

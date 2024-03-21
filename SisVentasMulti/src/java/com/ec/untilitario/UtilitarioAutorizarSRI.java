@@ -124,8 +124,11 @@ public class UtilitarioAutorizarSRI {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+            XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -183,7 +186,7 @@ public class UtilitarioAutorizarSRI {
                         /*PARA EL CASO QUE NO AUTORIZA NO ENVIA EL COREEO*/
                         if (!archivoEnvioCliente.equals("")) {
 
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
+//                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
                             ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
 
                             valor.setFacpath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -206,7 +209,7 @@ public class UtilitarioAutorizarSRI {
                                             valor.getFacClaveAcceso(),
                                             valor.getFacNumeroText(),
                                             valor.getFacTotal(),
-                                            valor.getIdCliente().getCliNombre(), amb);
+                                            valor.getIdCliente().getCliNombre(), amb,"");
                             }
                         }
                     }
@@ -303,8 +306,11 @@ public class UtilitarioAutorizarSRI {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+        try {
+             XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -357,7 +363,7 @@ public class UtilitarioAutorizarSRI {
                         }
 
                         System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                        ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "NCRE", amb);
+//                        ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "NCRE", amb);
                         ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                         /*GUARDA EL PATH PDF CREADO*/
                         valor.setFacPath(archivoEnvioCliente.replace(".xml", ".pdf"));
@@ -380,7 +386,7 @@ public class UtilitarioAutorizarSRI {
                                         valor.getFacClaveAcceso(),
                                         valor.getFacNumeroText(),
                                         valor.getFacTotal(),
-                                        valor.getIdFactura().getIdCliente().getCliNombre(), amb);
+                                        valor.getIdFactura().getIdCliente().getCliNombre(), amb,"Logo");
                         }
 
                     }
