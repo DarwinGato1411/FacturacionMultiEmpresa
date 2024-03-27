@@ -24,7 +24,16 @@ body {
   display: flex;
   gap: 1em;
 }
-
+.factura_header > .fact_row_all {
+    position: relative;
+    background-color: #eee;
+    padding: 1em;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1em;
+}
 .paint_all_row {
   width: 100% !important;
   background-color: #eee;
@@ -525,6 +534,10 @@ body {
   .factura_header > .fact_row {
     width: 50%;
   }
+   .factura_header > .fact_row_all {
+        width: 100%;
+        flex-direction: row;
+    }
 
   .factura_header > .fact_row:first-child:after {
     display: none;
@@ -546,4 +559,37 @@ body {
    .factura_body_content > .factura_body_item_lefth {
     width: 60%;
   }
+}
+.input_total {
+    color:#0275d8 !important;
+    font-size:22px !important; 
+    font-weight: bold !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: #e1e1e1;
+    width: 90%;
+}
+.input_cobro {
+    color:#02d895 !important;
+    font-size:22px !important; 
+    font-weight: bold !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    
+    width: 90%;
+}
+.input_cambio {
+    color:#d9534f !important;
+    font-size:22px !important; 
+    font-weight: bold !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: #e1e1e1;
+    width: 90%;
 }

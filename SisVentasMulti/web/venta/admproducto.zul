@@ -8,55 +8,6 @@
 <div apply="org.zkoss.bind.BindComposer" 
      viewModel="@id('vm') @init('com.ec.controlador.AdmProducto')"  width="100%"  >
 
-    <!-- <div class="container-fluid">
-        <div class="row">
-            <div class="col-2 col-sm-2 col-md-1 col-lg-1 form-group " align="start"  >
-                <image  src="/iconos/nuevo_pro-24.png"
-                        class="btn btn btn-secondary btn-sm "
-                        onClick="@command('nuevoCliente')"
-                        tooltiptext="Nuevo producto"/>
-        
-            </div>
-            <div class="col-2 col-sm-2 col-md-1 col-lg-1 form-group " align="start"  >
-                <image  src="/iconos/armareval.png"
-                        class="btn btn btn-secondary btn-sm "
-                        onClick="@command('inicializarKardex')"
-                        tooltiptext="Iniciar inventario de productos anteriores"/>
-        
-            </div>
-            <div class="col-2 col-sm-2 col-md-1 col-lg-1  " align="start"  >
-            
-                <intbox value="@bind(vm.cantidadCodBar)" 
-                    placeholder="Cantidad"
-                            class="form-control form-control-sm  "
-                            tooltiptext="Cantidad de veces que imprimira cada codigo de barras"/>
-                    </div>
-            <div class="col-3 col-sm-2 col-md-1 col-lg-1 " align="start"  >
-                
-                <image  src="/iconos/codbar.jpg"
-                        class="btn btn btn-secondary btn-sm "
-                        onClick="@command('crearCodigoBarras')"
-                        tooltiptext="Generar codigos de barras"/>
-        
-            </div>
-            <div class="col-2 col-sm-2 col-md-1 col-lg-1 " align="start"  >
-                
-                <image  src="/iconos/excel1.png"
-                        class="btn btn btn-secondary btn-sm "
-                        onClick="@command('exportListboxToExcel')"
-                        tooltiptext="Descargar productos"/>
-        
-            </div>
-            <div class="col-2 col-sm-2 col-md-1 col-lg-1 " align="start"  >
-                
-                <image  src="/iconos/excel1.png"
-                        class="btn btn btn-secondary btn-sm "
-                        onClick="@command('exportListboxToExcelTodo')"
-                        tooltiptext="Descargar todos los productos"/>
-        
-            </div>
-        </div>
-    </div> -->
 
     <div class="container_headers" style="margin-bottom:1em">
 
@@ -98,14 +49,6 @@
                 tooltiptext="Cantidad de veces que imprimira cada codigo de barras"
             />
         </div>
-<!--        <div class="wrapper_input_head">
-            
-            <button   image="/imagenes/excel.png"  
-                     onClick="@command('cargarProducto')"                                               
-                     style="border: 1px solid #efefef;display: inline-block;padding: 6px 12px; cursor: pointer;"
-                     label="Cargar producto"
-                     tooltiptext="Cargar su archivo TXT, obtenido desde el SRI"/>
-        </div>-->
         
         <div 
             class="fa-solid fa-file-excel fa-2x icon"
@@ -114,6 +57,7 @@
         >
             <span>Cargar producto</span>
         </div>
+        
     </div>
 
     <div class="cont_body">
@@ -146,6 +90,7 @@
 
                         
                     </listheader> 
+                    <listheader width="10%"  label="% IVA" />  
                     <listheader width="10%"  label="Cantidad Inicial" />  
                     <listheader width="10%"  label="Precio Compra" />  
                     <listheader width="10%"  label="Precio por unidad"  /> 
@@ -165,6 +110,12 @@
                         <listcell zclass = "mycss-listcell">
                             <textbox readonly="true" style="font-size:12px;background:#EBF5FB"
                                      class="form-control form-control-sm" value="@bind(each.prodNombre)" />
+                        </listcell>
+                        <listcell zclass = "mycss-listcell">
+                            <decimalbox format="###.#####" readonly="true"
+                                        style="font-size:12px;background:#EBF5FB"
+                                        class="form-control form-control-sm"
+                                        value="@bind(each.prodIva)"  />
                         </listcell>
                         <listcell zclass = "mycss-listcell">
                             <decimalbox format="###.#####" readonly="true"
