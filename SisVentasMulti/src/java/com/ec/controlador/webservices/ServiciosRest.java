@@ -1000,8 +1000,8 @@ public class ServiciosRest {
             System.out.println("pathEnvio " + pathEnvio);
             ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
             response.setDocumento("FACTURA");
-//            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
-            response.setUrlReporte("https://consultoriointegradodecardiologia.com/recursos/recursos/pdf/" + nombreArchivo);
+            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
+//            response.setUrlReporte("https://consultoriointegradodecardiologia.com/recursos/recursos/pdf/" + nombreArchivo);
         } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
             response.setDocumento("FACTURA");
             response.setUrlReporte("Error al generar el pdf " + e.getMessage());

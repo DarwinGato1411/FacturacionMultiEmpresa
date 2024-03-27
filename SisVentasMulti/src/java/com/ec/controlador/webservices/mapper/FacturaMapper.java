@@ -62,7 +62,7 @@ public class FacturaMapper {
         respuesta.setFacTipo(valor.getFacTipo());
         respuesta.setTelefonoComprador(valor.getTelefonoComprador());
         respuesta.setTipoEmision(valor.getInfoAutoriza().getAmbiente());
-        
+        respuesta.setMovilComprador(valor.getMovilComprador());
         return respuesta;
         
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.1435888100000042"/>
+	<property name="ireport.zoom" value="1.948717100000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="621"/>
+	<property name="ireport.y" value="452"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -187,6 +187,7 @@ where dt.id_factura=$P{id_factura}]]>
 	<field name="ruc_empresa" class="java.lang.String"/>
 	<field name="telefono_comprador" class="java.lang.String"/>
 	<field name="movil_comprador" class="java.lang.String"/>
+	<field name="tipo_emision" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -662,11 +663,6 @@ where dt.id_factura=$P{id_factura}]]>
 				</textElement>
 				<text><![CDATA[SUBTOTAL IVA 0%]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="92" y="35" width="274" height="14"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{fac_correo_cliente}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement style="table_TD" positionType="Float" x="388" y="123" width="104" height="12" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" bottomPadding="0" rightPadding="2"/>
@@ -975,6 +971,11 @@ where dt.id_factura=$P{id_factura}]]>
 				</reportElement>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{movil_comprador}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="35" width="274" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{correo_comprador}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

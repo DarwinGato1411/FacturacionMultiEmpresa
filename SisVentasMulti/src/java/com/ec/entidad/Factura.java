@@ -297,6 +297,8 @@ public class Factura implements Serializable {
     private String telefonoComprador;
     @Column(name = "tipo_emision")
     private String tipoEmision;
+      @Column(name = "movil_comprador")
+    private String movilComprador;
 
     public String getCodigoICE() {
         return codigoICE;
@@ -1037,5 +1039,15 @@ public class Factura implements Serializable {
     public void setTipoEmision(String tipoEmision) {
         this.tipoEmision = tipoEmision;
     }
+
+    public String getMovilComprador() {
+        return movilComprador;
+    }
+
+    public void setMovilComprador(String movilComprador) {
+        this.movilComprador = movilComprador;
+    }
+
+
 
 }

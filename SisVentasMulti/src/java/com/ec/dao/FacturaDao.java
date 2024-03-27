@@ -62,6 +62,8 @@ public class FacturaDao {
     private String xmlAutorizado;
     private String tipoEmision;
     
+    private String movilComprador;
+    
 
     public Date getFacFecha() {
         return facFecha;
@@ -421,6 +423,14 @@ public class FacturaDao {
 
     public void setTipoEmision(String tipoEmision) {
         this.tipoEmision = tipoEmision;
+    }
+
+    public String getMovilComprador() {
+        return movilComprador;
+    }
+
+    public void setMovilComprador(String movilComprador) {
+        this.movilComprador = movilComprador;
     }
 
 }
