@@ -500,10 +500,10 @@
                                             
                                             <!--onDoubleClick="@command('cambiarRegistro',valor=each)"-->
                                             <textbox                                                            
-                                                     class="form-control form-control-sm"
-                                                     value="@bind(each.codigo)" 
-                                                     style="font-size:10px"
-                                                     onOK="@command('buscarPorCodigo',valor=each)"
+                                                class="form-control form-control-sm"
+                                                value="@bind(each.codigo)" 
+                                                style="font-size:10px"
+                                                onOK="@command('buscarPorCodigo',valor=each)"
                                                         
                                             />
                                         </listcell>
@@ -542,6 +542,7 @@
                                                         onOK="@command('calcularValoresDesCantidad',valor=each)"
                                                         class="form-control form-control-sm"                                                                                                                            
                                                         ctrlKeys="^A" onCtrlKey="@command('cambioPrecio',valor=each)"
+                                                        onChange="@command('calcularValoresDesCantidad',valor=each)"
                                                         value="@bind(each.total)"  />
                                         </listcell>
                                     
