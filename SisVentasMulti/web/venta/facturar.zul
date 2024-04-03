@@ -286,6 +286,16 @@
                                         class="input" 
                                     />
                                 </div>
+                                <div class="wrapper_input">
+                                    <span>ICE :</span>
+                                    <decimalbox  
+                                        format="###.##"   
+                                        value="@bind(vm.valorIce)" 
+                                        readonly="true"
+                                        onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                        class="input" 
+                                    />
+                                </div>
                                 <div class="wrapper_input" style="flex:auto">
                                     <!--<span   >-->
                                     <label  class="input_total"   style="background-color:transparent" value="Total :"> </label> 
