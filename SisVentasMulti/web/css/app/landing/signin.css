@@ -146,7 +146,7 @@ body {
 .login_container .wrapper_login .container_signin .title {
   margin-top: 2em;
   display: block;
-  font-size: 30px;
+  font-size: 15px;
   text-align: center;
   font-family: "Poppins", sans-serif;
   color: rgb(var(--secondary-color));
