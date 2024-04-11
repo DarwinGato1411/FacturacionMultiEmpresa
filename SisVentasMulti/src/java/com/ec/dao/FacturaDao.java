@@ -61,9 +61,13 @@ public class FacturaDao {
     private InfoAutorizaDao infoAutoriza;
     private String xmlAutorizado;
     private String tipoEmision;
-    
+
     private String movilComprador;
-    
+
+    private BigDecimal facSubt5;
+    private BigDecimal facSubt15;
+       private BigDecimal facIva5;
+          private BigDecimal facIva15;
 
     public Date getFacFecha() {
         return facFecha;
@@ -431,6 +435,38 @@ public class FacturaDao {
 
     public void setMovilComprador(String movilComprador) {
         this.movilComprador = movilComprador;
+    }
+
+    public BigDecimal getFacSubt5() {
+        return facSubt5;
+    }
+
+    public void setFacSubt5(BigDecimal facSubt5) {
+        this.facSubt5 = facSubt5;
+    }
+
+    public BigDecimal getFacSubt15() {
+        return facSubt15;
+    }
+
+    public void setFacSubt15(BigDecimal facSubt15) {
+        this.facSubt15 = facSubt15;
+    }
+
+    public BigDecimal getFacIva5() {
+        return facIva5;
+    }
+
+    public void setFacIva5(BigDecimal facIva5) {
+        this.facIva5 = facIva5;
+    }
+
+    public BigDecimal getFacIva15() {
+        return facIva15;
+    }
+
+    public void setFacIva15(BigDecimal facIva15) {
+        this.facIva15 = facIva15;
     }
 
 }
