@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="209"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -88,6 +88,7 @@ where dt.id_factura=$P{id_factura}]]>
 	<parameter name="codEstablecimiento" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from factura fc where fc.ruc_empresa=$P{rucEmpresa} and fc.puntoemision=$P{puntoEmision} and fc.codestablecimiento=$P{codEstablecimiento} and fc.fac_numero=$P{numfactura};]]>
 	</queryString>
@@ -399,9 +400,6 @@ where dt.id_factura=$P{id_factura}]]>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fac_fecha}]]></textFieldExpression>
 			</textField>
-			<image onErrorType="Blank">
-				<reportElement x="0" y="0" width="284" height="55"/>
-			</image>
 			<staticText>
 				<reportElement positionType="Float" x="11" y="241" width="274" height="14">
 					<printWhenExpression><![CDATA[$F{agente_retencion}]]></printWhenExpression>
@@ -423,6 +421,10 @@ where dt.id_factura=$P{id_factura}]]>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA["NORMAL"]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="0" y="7" width="283" height="44"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -585,7 +587,9 @@ where dt.id_factura=$P{id_factura}]]>
 									<bottomPen lineWidth="0.1"/>
 									<rightPen lineWidth="0.1"/>
 								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
 								<text><![CDATA[Descuento]]></text>
 							</staticText>
 						</jr:columnHeader>
@@ -826,7 +830,7 @@ where dt.id_factura=$P{id_factura}]]>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[ $F{fac_total_base_cero}.add($F{fac_subt_5}).add($F{fac_subt_15})]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_total_base_cero}.add($F{fac_subt_5}).add($F{fac_subt_15})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="table_TD" positionType="Float" x="388" y="75" width="104" height="12" isPrintWhenDetailOverflows="true"/>
