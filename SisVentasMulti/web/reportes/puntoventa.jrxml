@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="puntoventa" language="groovy" pageWidth="212" pageHeight="400" columnWidth="190" leftMargin="9" rightMargin="13" topMargin="2" bottomMargin="20" isIgnorePagination="true">
-	<property name="ireport.zoom" value="2.253944402704733"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="puntoventa" language="groovy" pageWidth="212" pageHeight="400" columnWidth="189" leftMargin="16" rightMargin="7" topMargin="2" bottomMargin="20" isIgnorePagination="true">
+	<property name="ireport.zoom" value="1.5394743546921197"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="493"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -341,43 +341,43 @@ and  tipoambiente.am_estado is true limit 1;]]>
 	<title>
 		<band height="274" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="2" y="78" width="190" height="13"/>
+				<reportElement x="6" y="78" width="174" height="13"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["RUC: "+$F{am_ruc}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="62" y="135" width="128" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="66" y="135" width="112" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_estab}+"-"+$F{am_ptoemi}+"-"+$F{fac_numero_text}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="2" y="56" width="189" height="21" isPrintWhenDetailOverflows="true"/>
+				<reportElement x="6" y="56" width="173" height="21" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_nombre_comercial}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="129" width="190" height="1"/>
+				<reportElement x="4" y="129" width="174" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="2" y="12" width="188" height="44"/>
+				<reportElement x="6" y="12" width="172" height="44"/>
 				<imageExpression class="java.lang.String"><![CDATA[$F{am_dir_img_punto_venta}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="1" y="91" width="190" height="13"/>
+				<reportElement x="5" y="91" width="174" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Telf. " +$F{am_telefono}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="218" width="190" height="24" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="4" y="218" width="174" height="24" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box topPadding="10" bottomPadding="2"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -385,21 +385,21 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[CLAVE DE ACCESO / AUTORIZACIÓN:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="242" width="190" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="4" y="242" width="174" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{fac_clave_acceso}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="135" width="62" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="4" y="135" width="50" height="13" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[FACTURA Nº:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="29" y="261" width="98" height="13"/>
+				<reportElement positionType="Float" x="33" y="261" width="86" height="13"/>
 				<box>
 					<bottomPen lineWidth="0.25"/>
 				</box>
@@ -409,7 +409,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="154" y="261" width="28" height="13"/>
+				<reportElement positionType="Float" x="158" y="261" width="12" height="13"/>
 				<box>
 					<bottomPen lineWidth="0.25"/>
 				</box>
@@ -419,7 +419,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="1" y="261" width="28" height="13"/>
+				<reportElement positionType="Float" x="5" y="261" width="24" height="13"/>
 				<box>
 					<bottomPen lineWidth="0.25"/>
 				</box>
@@ -429,7 +429,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[Cant]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="127" y="261" width="28" height="13"/>
+				<reportElement positionType="Float" x="131" y="261" width="16" height="13"/>
 				<box>
 					<bottomPen lineWidth="0.25"/>
 				</box>
@@ -439,35 +439,35 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[PU]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="1" y="104" width="190" height="23" isPrintWhenDetailOverflows="true"/>
+				<reportElement x="5" y="104" width="174" height="23" isPrintWhenDetailOverflows="true"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{am_direccion_matriz}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="24" y="148" width="86" height="13" isPrintWhenDetailOverflows="true"/>
+				<reportElement stretchType="RelativeToBandHeight" x="28" y="148" width="74" height="13" isPrintWhenDetailOverflows="true"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_cedula}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
-				<reportElement stretchType="RelativeToBandHeight" x="110" y="148" width="80" height="13" isPrintWhenDetailOverflows="true"/>
+				<reportElement stretchType="RelativeToBandHeight" x="114" y="148" width="64" height="13" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Right">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fac_fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="148" width="24" height="13" isPrintWhenDetailOverflows="true"/>
+				<reportElement stretchType="RelativeToBandHeight" x="4" y="148" width="20" height="13" isPrintWhenDetailOverflows="true"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RUC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="187" width="192" height="22" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="4" y="187" width="173" height="22" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box topPadding="8" bottomPadding="2"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -476,14 +476,14 @@ and  tipoambiente.am_estado is true limit 1;]]>
 			</staticText>
 			<elementGroup>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="174" width="190" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+					<reportElement stretchType="RelativeToBandHeight" x="4" y="174" width="174" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 					<textElement>
 						<font size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{cli_nombre}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="161" width="190" height="11"/>
+					<reportElement x="4" y="161" width="174" height="11"/>
 					<textElement>
 						<font size="8" isBold="true"/>
 					</textElement>
@@ -491,7 +491,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				</staticText>
 			</elementGroup>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
-				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="207" width="190" height="11" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="4" y="207" width="174" height="11" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -502,7 +502,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 	<detail>
 		<band height="12">
 			<componentElement>
-				<reportElement key="table" positionType="Float" x="0" y="0" width="182" height="12" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="table" positionType="Float" x="4" y="0" width="170" height="12" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="detallefactura">
 						<datasetParameter name="id_factura">
@@ -590,14 +590,14 @@ and  tipoambiente.am_estado is true limit 1;]]>
 		</band>
 		<band height="243" splitType="Prevent">
 			<textField>
-				<reportElement positionType="Float" x="59" y="187" width="125" height="13"/>
+				<reportElement positionType="Float" x="59" y="187" width="117" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{usu_nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="38" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="38" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -618,7 +618,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[Cajero:]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="9" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="9" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -632,14 +632,14 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_total_base_cero}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="6" y="137" width="67" height="13" isPrintWhenDetailOverflows="true"/>
+				<reportElement positionType="Float" x="6" y="137" width="59" height="13" isPrintWhenDetailOverflows="true"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Forma Pago:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="52" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="52" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -653,7 +653,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[SubTotal 15%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="81" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="81" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -667,14 +667,14 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[IVA 5%]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="200" width="180" height="43"/>
+				<reportElement x="5" y="200" width="172" height="43"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{fac_observacion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="123" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="123" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -688,7 +688,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[Valor Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="9" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="9" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -702,7 +702,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[SubTotal 0%]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="123" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="123" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -716,7 +716,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="95" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="95" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -730,7 +730,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[IVA 12%]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="109" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="109" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -744,14 +744,14 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_iva_15}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="6" y="149" width="178" height="13" isPrintWhenDetailOverflows="true"/>
+				<reportElement positionType="Float" x="6" y="149" width="170" height="13" isPrintWhenDetailOverflows="true"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{for_nombre}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="95" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="95" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -765,7 +765,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_iva}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="52" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="52" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -779,7 +779,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_subt_15}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="66" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="66" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -793,7 +793,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_descuento}.setScale(2, RoundingMode.FLOOR)]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="81" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="81" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -807,7 +807,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_iva_5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="23" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="23" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -821,7 +821,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[SubTotal 5%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="66" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="66" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -835,7 +835,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[Descuento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="0" y="162" width="190" height="25" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="0" y="162" width="182" height="25" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -849,7 +849,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[La factura autorizada será enviada a su correo electrónico]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" x="139" y="23" width="45" height="14"/>
+				<reportElement style="table_TD" positionType="Float" x="139" y="23" width="37" height="14"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -863,7 +863,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fac_subt_5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="table_TD" positionType="Float" x="60" y="109" width="79" height="14" isPrintWhenDetailOverflows="true"/>
+				<reportElement style="table_TD" positionType="Float" x="60" y="109" width="71" height="14" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -877,7 +877,7 @@ and  tipoambiente.am_estado is true limit 1;]]>
 				<text><![CDATA[IVA 15%]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement style="table_TD" positionType="Float" mode="Opaque" x="139" y="38" width="45" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement style="table_TD" positionType="Float" mode="Opaque" x="139" y="38" width="37" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
