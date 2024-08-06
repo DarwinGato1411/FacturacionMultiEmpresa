@@ -3,7 +3,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
-<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?script src="/js/icon.js"?>
 
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
@@ -189,6 +189,7 @@
                                     
                                 <listheader width="3%"  label="" align="rigth" />
                                 <listheader width="3%"  label="" align="rigth" />                                 
+                                <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
                                 <listheader width="3%"  label="" align="rigth" />        
@@ -436,7 +437,13 @@
                                                class="btn-secondary btn-sm "       
                                                tooltiptext="Reenviar correo electronico"/>
                                     </listcell>
-                                    
+                                    <listcell   zclass = "mycss-listcell"  >   
+                                            
+                                        <image src="/iconos/xml.png"  
+                                               onClick="@command('descargarXML',valor=each)"  
+                                               class="btn-secondary btn-sm"                                               
+                                               tooltiptext="Generar XML"/> 
+                                    </listcell>
                                 </listitem>
                             </template>
                         </listbox>

@@ -171,11 +171,6 @@ public class NuevoProducto {
             muestraIncluye = Boolean.TRUE;
         } else {
             muestraIncluye = Boolean.FALSE;
-            txtIvaRec.setText("0");
-            producto.setProdIva(BigDecimal.ZERO);
-            grabaIva = Boolean.FALSE;
-            this.producto.setProdPorcentajeIva(0);
-            this.producto.setProdCodigoIva(0);
         }
         muestraSubtotal();
 //        
@@ -217,11 +212,11 @@ public class NuevoProducto {
 //            colocarIvaCampo();
             Integer valorIva = producto.getProdIva().intValue();
             switch (valorIva) {
-                case 0:
-                    // secuencia de sentencias.
-                    this.producto.setProdPorcentajeIva(0);
-                    this.producto.setProdCodigoIva(0);
-                    break;
+//                case 0:
+//                    // secuencia de sentencias.
+//                    this.producto.setProdPorcentajeIva(0);
+//                    this.producto.setProdCodigoIva(0);
+//                    break;
                 case 5:
                     // secuencia de sentencias.
                     this.producto.setProdPorcentajeIva(5);
@@ -249,14 +244,17 @@ public class NuevoProducto {
                     this.producto.setProdCodigoIva(4);
                     break;
                 default:
-                // Default secuencia de sentencias.
+                    // Default secuencia de sentencias.
+                    this.producto.setProdIva(BigDecimal.ZERO);
+                    this.producto.setProdPorcentajeIva(0);
+                    this.producto.setProdCodigoIva(0);
             }
         } else {
             txtIvaRec.setText("0");
             producto.setProdIva(BigDecimal.ZERO);
-            grabaIva = Boolean.FALSE;
             this.producto.setProdPorcentajeIva(0);
             this.producto.setProdCodigoIva(0);
+            grabaIva = Boolean.FALSE;
         }
 //        calculopreciofinal();
     }

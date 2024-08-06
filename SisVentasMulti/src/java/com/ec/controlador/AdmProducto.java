@@ -108,7 +108,7 @@ public class AdmProducto {
 //         = servicioTipoAmbiente.FindALlTipoambiente();
         //OBTIENE LAS RUTAS DE ACCESO A LOS DIRECTORIOS DE LA TABLA TIPOAMBIENTE
         PATH_BASE = amb.getAmDirBaseArchivos() + File.separator
-                    + amb.getAmDirXml();
+                + amb.getAmDirXml();
         FOLDER_CODIGO_BARRAS = PATH_BASE + File.separator + "CODIGOBARRAS";
 
         File folderGen = new File(FOLDER_CODIGO_BARRAS);
@@ -195,7 +195,7 @@ public class AdmProducto {
         for (Producto producto : listaProducto) {
 
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                        .getRealPath("/codigoqr");
+                    .getRealPath("/codigoqr");
             String reportPath = "";
             System.out.println("PATh codigos " + reportFile);
             pathQR = reportFile + reportPath + File.separator + producto.getProdNombre() + ".JPEG";
@@ -256,7 +256,7 @@ public class AdmProducto {
     public void nuevoCliente() {
         buscarNombre = "";
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/producto.zul", null, null);
+                "/nuevo/producto.zul", null, null);
         window.doModal();
         findLikeNombre();
         getProductosModel();
@@ -269,7 +269,7 @@ public class AdmProducto {
         final HashMap<String, Producto> map = new HashMap<String, Producto>();
         map.put("valor", valor);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/producto.zul", null, map);
+                "/nuevo/producto.zul", null, map);
         window.doModal();
         // findLikeNombre();
         // getProductosModel();
@@ -324,7 +324,7 @@ public class AdmProducto {
 
     @Command
     public void reporteCodigosQR() throws JRException, IOException,
-                ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
+            ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
         EntityManager emf = HelperPersistencia.getEMF();
 
         try {
@@ -334,7 +334,7 @@ public class AdmProducto {
 
             con = ConexionReportes.Conexion.conexion();
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                        .getRealPath("/reportes");
+                    .getRealPath("/reportes");
             String reportPath = "";
             //con = conexionReportes.conexion();
 
@@ -358,7 +358,7 @@ public class AdmProducto {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                        "/venta/contenedorReporte.zul", null, map);
+                    "/venta/contenedorReporte.zul", null, map);
             window.doModal();
 //        con.close();
             emf.getTransaction().commit();
@@ -400,7 +400,7 @@ public class AdmProducto {
     }
 
     public void reporteCodigosBarras() throws JRException, IOException,
-                ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
+            ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {
         EntityManager emf = HelperPersistencia.getEMF();
 
         try {
@@ -409,7 +409,7 @@ public class AdmProducto {
             con = emf.unwrap(Connection.class);
 
             String reportFile = Executions.getCurrent().getDesktop().getWebApp()
-                        .getRealPath("/reportes");
+                    .getRealPath("/reportes");
             String reportPath = "";
             //con = conexionReportes.conexion();
 
@@ -431,7 +431,7 @@ public class AdmProducto {
 //para pasar al visor
             map.put("pdf", fileContent);
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                        "/venta/contenedorReporte.zul", null, map);
+                    "/venta/contenedorReporte.zul", null, map);
             window.doModal();
 //        con.close();
             emf.getTransaction().commit();
@@ -539,6 +539,10 @@ public class AdmProducto {
             ch4.setCellValue(new HSSFRichTextString("Grava Iva"));
             ch4.setCellStyle(estiloCelda);
 
+            HSSFCell ch5 = r.createCell(j++);
+            ch5.setCellValue(new HSSFRichTextString("Cantidad inicial"));
+            ch5.setCellStyle(estiloCelda);
+
             int rownum = 1;
             int i = 0;
 
@@ -554,19 +558,24 @@ public class AdmProducto {
                 c0.setCellValue(new HSSFRichTextString(item.getProdNombre()));
 
                 HSSFCell c1 = r.createCell(i++);
-                c1.setCellValue(new HSSFRichTextString(item.getPordCostoCompra().toString()));
+                c1.setCellValue(new HSSFRichTextString(item.getPordCostoCompra() != null ? item.getPordCostoCompra().toString() : ""));
 
                 HSSFCell c11 = r.createCell(i++);
-                c11.setCellValue(new HSSFRichTextString(item.getProdUtilidadNormal().toString()));
+                c11.setCellValue(new HSSFRichTextString(item.getPordCostoVentaFinal() != null ? item.getPordCostoVentaFinal().toString() : ""));
 
                 HSSFCell c2 = r.createCell(i++);
-                c2.setCellValue(new HSSFRichTextString(item.getPordCostoVentaFinal().toString()));
-
-                HSSFCell c22 = r.createCell(i++);
-                c22.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencial().toString()));
+                c2.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencial() != null ? item.getProdCostoPreferencial().toString() : ""));
 
                 HSSFCell c3 = r.createCell(i++);
-                c3.setCellValue(new HSSFRichTextString(item.getProdGrabaIva().toString()));
+                c3.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencialDos() != null ? item.getProdCostoPreferencialDos().toString() : ""));
+
+                HSSFCell c4 = r.createCell(i++);
+                c4.setCellValue(new HSSFRichTextString(item.getProdGrabaIva() != null ? (item.getProdGrabaIva() ? "1" : "0") : ""));
+
+                HSSFCell c5 = r.createCell(i++);
+                c5.setCellValue(new HSSFRichTextString(item.getProdCantidadInicial() != null ? item.getProdCantidadInicial().toString() : ""));
+
+
                 /*autemta la siguiente fila*/
                 rownum += 1;
 
@@ -645,7 +654,7 @@ public class AdmProducto {
             chfe.setCellStyle(estiloCelda);
 
             HSSFCell ch1 = r.createCell(j++);
-            ch1.setCellValue(new HSSFRichTextString("Descripcion"));
+            ch1.setCellValue(new HSSFRichTextString("Nombre"));
             ch1.setCellStyle(estiloCelda);
 
             HSSFCell ch2 = r.createCell(j++);
@@ -667,6 +676,10 @@ public class AdmProducto {
             ch5.setCellValue(new HSSFRichTextString("Grava Iva (SI=1; NO=0)"));
             ch5.setCellStyle(estiloCelda);
 
+            HSSFCell ch6 = r.createCell(j++);
+            ch6.setCellValue(new HSSFRichTextString("Cantidad inicial"));
+            ch6.setCellStyle(estiloCelda);
+
             int rownum = 1;
             int i = 0;
 
@@ -682,19 +695,22 @@ public class AdmProducto {
                 c0.setCellValue(new HSSFRichTextString(item.getProdNombre()));
 
                 HSSFCell c1 = r.createCell(i++);
-                c1.setCellValue(new HSSFRichTextString(item.getPordCostoCompra().toString()));
+                c1.setCellValue(new HSSFRichTextString(item.getPordCostoCompra() != null ? item.getPordCostoCompra().toString() : ""));
 
                 HSSFCell c11 = r.createCell(i++);
-                c11.setCellValue(new HSSFRichTextString(item.getPordCostoVentaFinal().toString()));
+                c11.setCellValue(new HSSFRichTextString(item.getPordCostoVentaFinal() != null ? item.getPordCostoVentaFinal().toString() : ""));
 
                 HSSFCell c2 = r.createCell(i++);
-                c2.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencial().toString()));
+                c2.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencial() != null ? item.getProdCostoPreferencial().toString() : ""));
 
                 HSSFCell c3 = r.createCell(i++);
-                c3.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencialDos().toString()));
+                c3.setCellValue(new HSSFRichTextString(item.getProdCostoPreferencialDos() != null ? item.getProdCostoPreferencialDos().toString() : ""));
 
                 HSSFCell c4 = r.createCell(i++);
-                c4.setCellValue(new HSSFRichTextString(item.getProdGrabaIva() ? "1" : "0"));
+                c4.setCellValue(new HSSFRichTextString(item.getProdGrabaIva() != null ? (item.getProdGrabaIva() ? "1" : "0") : ""));
+
+                HSSFCell c5 = r.createCell(i++);
+                c5.setCellValue(new HSSFRichTextString(item.getProdCantidadInicial() != null ? item.getProdCantidadInicial().toString() : ""));
                 /*autemta la siguiente fila*/
                 rownum += 1;
 
@@ -712,7 +728,7 @@ public class AdmProducto {
 
     }
 
-     @Command
+    @Command
     @NotifyChange({"listaProductosModel", "buscarNombre"})
     public void cargarProducto() {
 
@@ -723,14 +739,14 @@ public class AdmProducto {
 
                 if (!nombre.contains("xls")) {
                     Clients.showNotification("Su documento debe ser un archivo excel",
-                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
 
                     return;
                 }
 
                 System.out.println("media " + nombre);
                 Files.copy(new File(PATH_BASE + File.separator + "CARGAR" + File.separator + nombre),
-                            new ByteArrayInputStream(media.getByteData()));
+                        new ByteArrayInputStream(media.getByteData()));
 
                 String rutaArchivo = PATH_BASE + File.separator + "CARGAR" + File.separator + nombre;
 
@@ -765,22 +781,26 @@ public class AdmProducto {
                             prod.setProdFechaRegistro(new Date());
 
                             if (row.getCell(6) != null) {
-                                String valor =String.valueOf(row.getCell(6));
+                                String valor = String.valueOf(row.getCell(6));
                                 prod.setProdGrabaIva(String.valueOf(row.getCell(6)).contains("1") ? Boolean.TRUE : Boolean.FALSE);
 
                                 if (prod.getProdGrabaIva()) {
                                     BigDecimal precioIva = BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2))));
-                                    BigDecimal precioCompra = precioIva.divide(BigDecimal.valueOf(1.12), 4, RoundingMode.FLOOR);
+                                    BigDecimal precioCompra = precioIva.divide(BigDecimal.valueOf(1.15), 4, RoundingMode.FLOOR);
                                     prod.setPordCostoCompra(precioCompra);
+                                    prod.setProdCodigoIva(4);
+                                    prod.setProdPorcentajeIva(15);
                                 } else {
                                     prod.setPordCostoCompra(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2)))));
+                                    prod.setProdCodigoIva(0);
+                                    prod.setProdPorcentajeIva(0);
                                 }
 
                             } else {
                                 prod.setProdGrabaIva(Boolean.FALSE);
                                 prod.setPordCostoCompra(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(2)))));
                             }
-                            prod.setProdCantidadInicial(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(6)))));
+                            prod.setProdCantidadInicial(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(7)))));
                             servicioProducto.crear(prod);
                             System.out.println("Valor: " + cell.toString());
                         } else {
@@ -795,11 +815,11 @@ public class AdmProducto {
                 inicializarKardex();
                 getProductosModel();
                 Clients.showNotification("Productos cargados correctamente",
-                            Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
+                        Clients.NOTIFICATION_TYPE_INFO, null, "end_center", 3000, true);
             }
         } catch (IOException | NumberFormatException e) {
             Clients.showNotification("Verifique le archivo para cargar",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
             e.printStackTrace();
 //            Messagebox.show("Upload failed");
         }
