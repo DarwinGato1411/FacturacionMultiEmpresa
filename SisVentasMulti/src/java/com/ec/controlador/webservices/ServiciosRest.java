@@ -22,11 +22,13 @@ import com.ec.dao.DetFacturaDao;
 import com.ec.dao.DetRetencionCompraDao;
 import com.ec.dao.DetalleGuiaremisionDao;
 import com.ec.dao.DetalleNotaCreditoDebitoDao;
+import com.ec.dao.ExcelRequest;
 import com.ec.dao.FacturaDao;
 import com.ec.dao.GuiaremisionDao;
 import com.ec.dao.InfoAutorizaDao;
 import com.ec.dao.NotaCreditoDebitoDao;
 import com.ec.dao.PdfRequest;
+import com.ec.dao.RequestAnulaDoc;
 import com.ec.dao.RetencionCompraDao;
 import com.ec.dao.response.FacturaResponse;
 import com.ec.dao.response.PdfResponse;
@@ -69,10 +71,21 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import com.ec.untilitario.AutorizarDocumentosApi;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 import javax.naming.NamingException;
 import net.sf.jasperreports.engine.JRException;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -82,6 +95,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ServiciosRest {
 
     ServicioFactura servicioFactura = new ServicioFactura();
+
     ServicioDetalleFactura servicioDetalleFactura = new ServicioDetalleFactura();
     ServicioRetencionCompra servicioRetencion = new ServicioRetencionCompra();
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
@@ -1024,9 +1038,8 @@ public class ServiciosRest {
             String pathEnvio = folderCliente + File.separator + nombreArchivo;
             String directoryName = System.getProperty("user.dir");
             String[] valores = directoryName.split("config");
-            String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "pdf";
+            String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "excel";
             pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
-
             System.out.println("pathEnvio " + pathEnvio);
             ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "TICKET", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
             response.setDocumento("TICKET");
@@ -1037,4 +1050,301 @@ public class ServiciosRest {
         }
         return response;
     }
+
+    @POST
+    @Path("/excel-factura/")
+    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public PdfResponse exportarExcel(@RequestBody ExcelRequest prod) {
+        PdfResponse response = new PdfResponse();
+        List<Factura> lstFacturas = servicioFactura.findFacFechaEmpresa(prod.getFechainicio(), prod.getFechafin(), prod.getRucEmpresa());
+
+        String nombreArchivo = "Facturas.xls";
+
+        String directoryName = System.getProperty("user.dir");
+        String[] valores = directoryName.split("config");
+        String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "excel";
+        String pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
+
+        Date date = new Date();
+        SimpleDateFormat fhora = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
+        String strDate = sm.format(date);
+
+        String pathSalida = pathEnvio;
+        System.out.println("Direccion del reporte  " + pathSalida);
+        try {
+            int j = 0;
+            File archivoXLS = new File(pathSalida);
+//              folderNuevo = new File(archivoGenerado);
+//        if (!folderNuevo.exists()) {
+//            folderNuevo.mkdirs();
+//        }
+            BufferedWriter bw;
+            if (!archivoXLS.exists()) {
+                bw = new BufferedWriter(new FileWriter(pathSalida));
+                bw.close(); // Debe cerrarse la escritura del ficher
+            }
+            System.out.println("PASA 1 ");
+            archivoXLS.createNewFile();
+            System.out.println("PASA 2 ");
+            FileOutputStream archivo = new FileOutputStream(archivoXLS);
+            HSSFWorkbook wb = new HSSFWorkbook();
+            HSSFSheet s = wb.createSheet("Emitidas");
+            System.out.println("PASA 3 ");
+            HSSFFont fuente = wb.createFont();
+            fuente.setBoldweight((short) 700);
+            HSSFCellStyle estiloCelda = wb.createCellStyle();
+            estiloCelda.setWrapText(true);
+            estiloCelda.setAlignment((short) 2);
+            estiloCelda.setFont(fuente);
+
+            HSSFCellStyle estiloCeldaInterna = wb.createCellStyle();
+            estiloCeldaInterna.setWrapText(true);
+            estiloCeldaInterna.setAlignment((short) 5);
+            estiloCeldaInterna.setFont(fuente);
+
+            HSSFCellStyle estiloCelda1 = wb.createCellStyle();
+            estiloCelda1.setWrapText(true);
+            estiloCelda1.setFont(fuente);
+
+            HSSFRow r = null;
+
+            HSSFCell c = null;
+            r = s.createRow(0);
+
+            HSSFCell chfe = r.createCell(j++);
+            chfe.setCellValue(new HSSFRichTextString("Factura"));
+            chfe.setCellStyle(estiloCelda);
+
+            HSSFCell chfe1 = r.createCell(j++);
+            chfe1.setCellValue(new HSSFRichTextString("CI/RUC"));
+            chfe1.setCellStyle(estiloCelda);
+
+            HSSFCell chfe11 = r.createCell(j++);
+            chfe11.setCellValue(new HSSFRichTextString("Cliente"));
+            chfe11.setCellStyle(estiloCelda);
+
+            HSSFCell ch1 = r.createCell(j++);
+            ch1.setCellValue(new HSSFRichTextString("F Emision"));
+            ch1.setCellStyle(estiloCelda);
+
+            HSSFCell ch2 = r.createCell(j++);
+            ch2.setCellValue(new HSSFRichTextString("Subtotal"));
+            ch2.setCellStyle(estiloCelda);
+
+            HSSFCell ch23 = r.createCell(j++);
+            ch23.setCellValue(new HSSFRichTextString("Subtotal 0%"));
+            ch23.setCellStyle(estiloCelda);
+            HSSFCell ch22 = r.createCell(j++);
+            ch22.setCellValue(new HSSFRichTextString("Subtotal 5%"));
+            ch22.setCellStyle(estiloCelda);
+            HSSFCell ch222 = r.createCell(j++);
+            ch222.setCellValue(new HSSFRichTextString("Subtotal 15%"));
+            ch222.setCellStyle(estiloCelda);
+
+            HSSFCell ch3 = r.createCell(j++);
+            ch3.setCellValue(new HSSFRichTextString("Iva 5%"));
+            ch3.setCellStyle(estiloCelda);
+            HSSFCell ch33 = r.createCell(j++);
+            ch33.setCellValue(new HSSFRichTextString("Iva 15%"));
+            ch33.setCellStyle(estiloCelda);
+
+            HSSFCell ch4 = r.createCell(j++);
+            ch4.setCellValue(new HSSFRichTextString("Total"));
+            ch4.setCellStyle(estiloCelda);
+//            HSSFCell ch5 = r.createCell(j++);
+//            ch5.setCellValue(new HSSFRichTextString("ESTADO"));
+//            ch5.setCellStyle(estiloCelda);
+
+            HSSFCell ch6 = r.createCell(j++);
+            ch6.setCellValue(new HSSFRichTextString("ESTADO SRI"));
+            ch6.setCellStyle(estiloCelda);
+
+            HSSFCell ch7 = r.createCell(j++);
+            ch7.setCellValue(new HSSFRichTextString("CLAVE AUTORIZA"));
+            ch7.setCellStyle(estiloCelda);
+
+            HSSFCell ch8 = r.createCell(j++);
+            ch8.setCellValue(new HSSFRichTextString("FECHA AUTORIZA"));
+            ch8.setCellStyle(estiloCelda);
+
+            HSSFCell ch9 = r.createCell(j++);
+            ch9.setCellValue(new HSSFRichTextString("OBSERVACIÓN"));
+            ch9.setCellStyle(estiloCelda);
+
+            int rownum = 1;
+            int i = 0;
+            BigDecimal subTotal = BigDecimal.ZERO;
+            BigDecimal subTotal12 = BigDecimal.ZERO;
+            BigDecimal subTotal5 = BigDecimal.ZERO;
+            BigDecimal subTotal15 = BigDecimal.ZERO;
+            BigDecimal subTotal0 = BigDecimal.ZERO;
+            BigDecimal IVATotal = BigDecimal.ZERO;
+            BigDecimal IVATotal5 = BigDecimal.ZERO;
+            BigDecimal IVATotal15 = BigDecimal.ZERO;
+            BigDecimal total = BigDecimal.ZERO;
+
+            for (Factura item : lstFacturas) {
+                i = 0;
+                System.out.println("PASA 4 ");
+                r = s.createRow(rownum);
+
+                HSSFCell cf = r.createCell(i++);
+                cf.setCellValue(new HSSFRichTextString(item.getFacNumero().toString()));
+
+                HSSFCell cf1 = r.createCell(i++);
+                cf1.setCellValue(new HSSFRichTextString(item.getIdentificacionComprador().toString()));
+
+                HSSFCell cf11 = r.createCell(i++);
+                cf11.setCellValue(new HSSFRichTextString(item.getRazonSocialComprador().toString()));
+
+                HSSFCell c0 = r.createCell(i++);
+                c0.setCellValue(new HSSFRichTextString(sm.format(item.getFacFecha())));
+
+                HSSFCell c1 = r.createCell(i++);
+                c1.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacSubtotal(), 2)).toString()));
+
+                subTotal = subTotal.add(ArchivoUtils.redondearDecimales(item.getFacSubtotal(), 2));
+
+                HSSFCell c12 = r.createCell(i++);
+                c12.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacTotalBaseCero(), 2)).toString()));
+                subTotal0 = subTotal0.add(ArchivoUtils.redondearDecimales(item.getFacTotalBaseCero(), 2));
+
+                HSSFCell c11 = r.createCell(i++);
+                c11.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacSubt5(), 2)).toString()));
+                subTotal5 = subTotal5.add(ArchivoUtils.redondearDecimales(item.getFacSubt5(), 2));
+
+                HSSFCell c111 = r.createCell(i++);
+                c111.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacSubt15(), 2)).toString()));
+                subTotal15 = subTotal15.add(ArchivoUtils.redondearDecimales(item.getFacSubt15(), 2));
+
+                HSSFCell c2 = r.createCell(i++);
+                c2.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacIva5(), 2)).toString()));
+                IVATotal5 = IVATotal5.add(ArchivoUtils.redondearDecimales(item.getFacIva5(), 2));
+
+                HSSFCell c22 = r.createCell(i++);
+                c22.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacIva15(), 2)).toString()));
+                IVATotal15 = IVATotal15.add(ArchivoUtils.redondearDecimales(item.getFacIva15(), 2));
+                HSSFCell c3 = r.createCell(i++);
+                c3.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacTotal(), 2)).toString()));
+
+                total = total.add(ArchivoUtils.redondearDecimales(item.getFacTotal(), 2));
+//
+//                HSSFCell c4 = r.createCell(i++);
+//                c4.setCellValue(new HSSFRichTextString(item.getIdEstado().getEstNombre()));
+
+                HSSFCell c5 = r.createCell(i++);
+                c5.setCellValue(new HSSFRichTextString(item.getEstadosri() != null ? item.getEstadosri() : ""));
+
+                HSSFCell c13 = r.createCell(i++);
+                c13.setCellValue(new HSSFRichTextString(item.getFacClaveAutorizacion() != null ? item.getFacClaveAutorizacion() : ""));
+
+                HSSFCell c15 = r.createCell(i++);
+                c15.setCellValue(new HSSFRichTextString(item.getFacFechaAutorizacion() != null ? sm.format(item.getFacFechaAutorizacion()) : ""));
+                /*autemta la siguiente fila*/
+
+                HSSFCell c16 = r.createCell(i++);
+                c16.setCellValue(new HSSFRichTextString(item.getFacObservacion() != null ? item.getFacObservacion() : ""));
+
+                rownum += 1;
+
+            }
+
+            j = 0;
+            r = s.createRow(rownum);
+            HSSFCell chfeF1 = r.createCell(j++);
+            chfeF1.setCellValue(new HSSFRichTextString(""));
+            chfeF1.setCellStyle(estiloCelda);
+
+            HSSFCell chfeF2 = r.createCell(j++);
+            chfeF2.setCellValue(new HSSFRichTextString(""));
+            chfeF2.setCellStyle(estiloCelda);
+
+            HSSFCell chfeF3 = r.createCell(j++);
+            chfeF3.setCellValue(new HSSFRichTextString(""));
+            chfeF3.setCellStyle(estiloCelda);
+
+            HSSFCell chF4 = r.createCell(j++);
+            chF4.setCellValue(new HSSFRichTextString(""));
+            chF4.setCellStyle(estiloCelda);
+
+            HSSFCell chF5 = r.createCell(j++);
+            chF5.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal, 2)).toString()));
+            chF5.setCellStyle(estiloCelda);
+
+            HSSFCell chF6 = r.createCell(j++);
+            chF6.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal0, 2)).toString()));
+            chF6.setCellStyle(estiloCelda);
+
+            HSSFCell chF7 = r.createCell(j++);
+            chF7.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal5, 2)).toString()));
+            chF7.setCellStyle(estiloCelda);
+
+            HSSFCell chF77 = r.createCell(j++);
+            chF77.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal15, 2)).toString()));
+            chF77.setCellStyle(estiloCelda);
+
+            HSSFCell chF8 = r.createCell(j++);
+            chF8.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(IVATotal5, 2)).toString()));
+            chF8.setCellStyle(estiloCelda);
+
+            HSSFCell chF88 = r.createCell(j++);
+            chF88.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(IVATotal15, 2)).toString()));
+            chF88.setCellStyle(estiloCelda);
+
+            HSSFCell chF9 = r.createCell(j++);
+            chF9.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(total, 2)).toString()));
+            chF9.setCellStyle(estiloCelda);
+
+//            HSSFCell chF10 = r.createCell(j++);
+//            chF10.setCellValue(new HSSFRichTextString(""));
+//            chF10.setCellStyle(estiloCelda);
+            HSSFCell chF11 = r.createCell(j++);
+            chF11.setCellValue(new HSSFRichTextString(""));
+            chF11.setCellStyle(estiloCelda);
+
+            for (int k = 0; k <= lstFacturas.size(); k++) {
+                s.autoSizeColumn(k);
+            }
+            wb.write(archivo);
+            archivo.close();
+            response.setDocumento("EXCEL");
+            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/excel/" + nombreArchivo);
+        } catch (IOException e) {
+            System.out.println("error " + e.getMessage());
+            response.setDocumento("ERROR");
+            response.setUrlReporte("Error al crear el reporte " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return response;
+
+    }
+
+    @POST
+    @Path("/anular-factura/")
+    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public FacturaResponse getAnularFactura(@RequestBody RequestAnulaDoc prod) throws Exception {
+        FacturaResponse facturaResponse = new FacturaResponse();
+
+        try {
+            Factura recup = servicioFactura.findNumeroEmpresa(prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), prod.getFacNumero(), prod.getRucEmpresa());
+            if (recup != null) {
+                recup.setEstadosri("ANULADA");
+                servicioFactura.modificar(recup);
+                facturaResponse.setMensajeError("FACTURA OK");
+                facturaResponse.setEstadoSri("ANULADA");
+            } else {
+                facturaResponse.setMensajeError("FACTURA OK");
+                facturaResponse.setEstadoSri("NO SE ENCONTRO LA FACTURA ");
+            }
+        } catch (Exception e) {
+            facturaResponse.setMensajeError("ERROR");
+            facturaResponse.setEstadoSri(e.getMessage());
+        }
+        return facturaResponse;
+    }
+
 }

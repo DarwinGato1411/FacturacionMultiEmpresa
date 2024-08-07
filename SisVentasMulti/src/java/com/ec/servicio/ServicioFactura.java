@@ -12,6 +12,8 @@ import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.Usuario;
 import com.ec.untilitario.CompraPromedio;
 import com.ec.untilitario.Totales;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1248,5 +1250,102 @@ public class ServicioFactura {
         }
 
         return facturas;
+    }
+
+    public List<Factura> findFacFechaEmpresa(Date inicio, Date fin, String empresaTipoambiente) {
+
+        List<Factura> listaFacturas = new ArrayList<Factura>();
+        try {
+            
+             Date fechaInicio = recuperarFecha(inicio, "inicio");
+            Date fechaFin = recuperarFecha(fin, "fin");
+            Query query;
+
+//            String SQL = "SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin ORDER BY f.facFecha DESC";
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+
+            query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.rucEmpresa=:rucEmpresa ORDER BY f.facFecha DESC");
+            query.setParameter("inicio", fechaInicio);
+            query.setParameter("fin", fechaFin);
+            query.setParameter("rucEmpresa", empresaTipoambiente);
+
+//            query.setMaxResults(400);
+            listaFacturas = (List<Factura>) query.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta factura " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return listaFacturas;
+    }
+
+    public Factura findNumeroEmpresa(String establecimiento, String puntoEmision, Integer numero, String rucEmpresa) {
+
+        List<Factura> listaFacturas = new ArrayList<Factura>();
+        try {
+            
+            
+            Query query;
+
+//            String SQL = "SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin ORDER BY f.facFecha DESC";
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+
+            query = em.createQuery("SELECT f FROM Factura f WHERE f.codestablecimiento=:codestablecimiento and f.puntoemision=:puntoemision and f.facNumero=:facNumero AND f.rucEmpresa=:rucEmpresa ORDER BY f.facFecha DESC");
+            query.setParameter("codestablecimiento", establecimiento);
+            query.setParameter("puntoemision", puntoEmision);
+            query.setParameter("facNumero", numero);
+            query.setParameter("rucEmpresa", rucEmpresa);
+
+//            query.setMaxResults(400);
+            listaFacturas = (List<Factura>) query.getResultList();
+            if (listaFacturas.size() > 0) {
+                return listaFacturas.get(0);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta factura " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return null;
+    }
+public Date recuperarFecha(Date fecha, String tipo) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaSinHoraStr = sdf.format(fecha);
+        String horaStr = "00:00:00";
+        // Hora a agregar
+        if (tipo.equals("fin")) {
+            horaStr = "23:59:59";
+        }
+
+        // Formato de fecha y hora
+        SimpleDateFormat formatoFechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            // Convertir fecha sin hora a objeto Date
+            Date fechaSinHora = formatoFechaHora.parse(fechaSinHoraStr + " 00:00:00");
+
+            // Concatenar la hora a la fecha sin hora
+            String fechaConHoraStr = fechaSinHoraStr + " " + horaStr;
+            System.out.println(fechaConHoraStr);
+
+            // Convertir la cadena con fecha y hora a objeto Date
+            Date fechaConHora = formatoFechaHora.parse(fechaConHoraStr);
+            System.out.println(fechaConHora);
+
+            // Imprimir los objetos Date resultantes
+            return fechaConHora;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return fecha;
+        }
     }
 }
