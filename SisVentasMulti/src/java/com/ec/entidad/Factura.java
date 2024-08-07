@@ -838,7 +838,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacSubt5() {
-        return facSubt5;
+        return facSubt5==null?BigDecimal.ZERO:facSubt5;
     }
 
     public void setFacSubt5(BigDecimal facSubt5) {
@@ -846,7 +846,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacIva5() {
-        return facIva5;
+        return facIva5==null?BigDecimal.ZERO:facIva5;
     }
 
     public void setFacIva5(BigDecimal facIva5) {
@@ -854,7 +854,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacSubt13() {
-        return facSubt13;
+        return facSubt13== null ? BigDecimal.ZERO : facSubt13;
     }
 
     public void setFacSubt13(BigDecimal facSubt13) {
@@ -862,7 +862,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacIva13() {
-        return facIva13;
+        return facIva13==null?BigDecimal.ZERO:facIva13;
     }
 
     public void setFacIva13(BigDecimal facIva13) {
@@ -870,7 +870,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacSubt14() {
-        return facSubt14;
+        return facSubt14==null?BigDecimal.ZERO:facSubt14;
     }
 
     public void setFacSubt14(BigDecimal facSubt14) {
@@ -878,7 +878,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacIva14() {
-        return facIva14;
+        return facIva14==null?BigDecimal.ZERO:facIva14;
     }
 
     public void setFacIva14(BigDecimal facIva14) {
@@ -886,7 +886,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacSubt15() {
-        return facSubt15;
+        return facSubt15==null?BigDecimal.ZERO:facSubt15;
     }
 
     public void setFacSubt15(BigDecimal facSubt15) {
@@ -894,7 +894,7 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getFacIva15() {
-        return facIva15;
+        return facIva15==null?BigDecimal.ZERO:facIva15;
     }
 
     public void setFacIva15(BigDecimal facIva15) {
