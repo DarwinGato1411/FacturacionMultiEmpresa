@@ -1252,12 +1252,12 @@ public class ServicioFactura {
         return facturas;
     }
 
-    public List<Factura> findFacFechaEmpresa(Date inicio, Date fin, String empresaTipoambiente) {
+    public List<Factura> findFacFechaEmpresa(Date inicio, Date fin, String empresaTipoambiente, String codestablecimiento, String puntoemision) {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
-            
-             Date fechaInicio = recuperarFecha(inicio, "inicio");
+
+            Date fechaInicio = recuperarFecha(inicio, "inicio");
             Date fechaFin = recuperarFecha(fin, "fin");
             Query query;
 
@@ -1266,7 +1266,9 @@ public class ServicioFactura {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
 
-            query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.rucEmpresa=:rucEmpresa ORDER BY f.facFecha DESC");
+            query = em.createQuery("SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin  AND f.rucEmpresa=:rucEmpresa and f.codestablecimiento=:codestablecimiento and f.puntoemision=:puntoemision ORDER BY f.facFecha DESC");
+            query.setParameter("codestablecimiento", codestablecimiento);
+            query.setParameter("puntoemision", puntoemision);
             query.setParameter("inicio", fechaInicio);
             query.setParameter("fin", fechaFin);
             query.setParameter("rucEmpresa", empresaTipoambiente);
@@ -1287,8 +1289,7 @@ public class ServicioFactura {
 
         List<Factura> listaFacturas = new ArrayList<Factura>();
         try {
-            
-            
+
             Query query;
 
 //            String SQL = "SELECT f FROM Factura f WHERE f.facFecha BETWEEN :inicio and :fin ORDER BY f.facFecha DESC";
@@ -1316,7 +1317,8 @@ public class ServicioFactura {
 
         return null;
     }
-public Date recuperarFecha(Date fecha, String tipo) {
+
+    public Date recuperarFecha(Date fecha, String tipo) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaSinHoraStr = sdf.format(fecha);

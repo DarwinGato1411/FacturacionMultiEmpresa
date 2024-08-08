@@ -1057,7 +1057,7 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public PdfResponse exportarExcel(@RequestBody ExcelRequest prod) {
         PdfResponse response = new PdfResponse();
-        List<Factura> lstFacturas = servicioFactura.findFacFechaEmpresa(prod.getFechainicio(), prod.getFechafin(), prod.getRucEmpresa());
+        List<Factura> lstFacturas = servicioFactura.findFacFechaEmpresa(prod.getFechainicio(), prod.getFechafin(), prod.getRucEmpresa(),prod.getEstablecimiento(),prod.getPuntoEmision());
 
         String nombreArchivo = "Facturas.xls";
 

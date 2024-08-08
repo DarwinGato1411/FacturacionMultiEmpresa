@@ -13,7 +13,9 @@ import java.util.Date;
  * @author Darwin
  */
 public class ExcelRequest {
-
+  private String establecimiento;
+     private String puntoEmision;
+    
     private String rucEmpresa;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date fechainicio = new Date();
@@ -42,6 +44,22 @@ public class ExcelRequest {
 
     public void setFechafin(Date fechafin) {
         this.fechafin = fechafin;
+    }
+
+    public String getEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(String establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    public String getPuntoEmision() {
+        return puntoEmision;
+    }
+
+    public void setPuntoEmision(String puntoEmision) {
+        this.puntoEmision = puntoEmision;
     }
 
 }
