@@ -363,8 +363,15 @@ public class ServiciosRest {
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo, Boolean.FALSE, new Date());
-        XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
-                ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
+         try {
+            XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
+                    ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            facturaResponse.setMensajeError("FIRMA");
+            facturaResponse.setDetalleError("Firma o clave incorrecta");
+            return facturaResponse;
+        }
         File f = null;
         File fEnvio = null;
         byte[] datos = null;
@@ -378,7 +385,7 @@ public class ServiciosRest {
         try {
             RespuestaComprobante resComprobante = api.autorizarComprobante(claveAccesoComprobante, prod.getInfoAutoriza().getAmbiente());
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
-                FileOutputStream nuevo = null;
+//                FileOutputStream nuevo = null;
 
                 /*CREA EL ARCHIVO XML AUTORIZADO*/
 //                        System.out.println("pathArchivoNoAutorizado " + pathArchivoNoAutorizado);
@@ -397,8 +404,8 @@ public class ServiciosRest {
                         if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                             texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                             smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
-                            nuevo.write(smsInfo.getBytes());
-                            nuevo.write(smsInfo.getBytes());
+//                            nuevo.write(smsInfo.getBytes());
+//                            nuevo.write(smsInfo.getBytes());
                         }
 
                         facturaResponse.setEstadoSri(autorizacion.getEstado());
@@ -1038,7 +1045,7 @@ public class ServiciosRest {
             String pathEnvio = folderCliente + File.separator + nombreArchivo;
             String directoryName = System.getProperty("user.dir");
             String[] valores = directoryName.split("config");
-            String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "excel";
+            String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "pdf";
             pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
             System.out.println("pathEnvio " + pathEnvio);
             ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "TICKET", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
