@@ -257,6 +257,7 @@ public class NotaCreditoDebitoVm {
         try {
             BigDecimal factorIva = (parametrizar.getParIva().divide(BigDecimal.valueOf(100.0)));
             BigDecimal factorSacarSubtotal = (factorIva.add(BigDecimal.ONE));
+            
 //            Kardex kardex = servicioKardex.FindALlKardexs(valor.getProducto());
 //            if (kardex.getKarTotal().intValue() < valor.getCantidad().intValue()) {
 //               // valor.setCantidad(kardex.getKarTotal());

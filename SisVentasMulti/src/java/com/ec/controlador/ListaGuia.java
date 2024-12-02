@@ -50,6 +50,7 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 
 /**
  *
@@ -361,9 +362,14 @@ public class ListaGuia {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+      
+   try {
+              XAdESBESSignature.firmar(archivo, nombreArchivoXML,
                     amb.getAmClaveAccesoSri(), amb, folderFirmado);
-
+        } catch (Exception e) {
+            Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+            return;
+        }
         f = new File(pathArchivoFirmado);
 
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
@@ -541,9 +547,18 @@ public class ListaGuia {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        
 
+        try {
+              XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+            Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+            return;
+        }
+        
+        
+        
         f = new File(pathArchivoFirmado);
 
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
@@ -590,11 +605,16 @@ public class ListaGuia {
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLGuiaRemision(valor, amb, foldervoAutorizado, nombreArchivoXML);
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
+                   
+                    try {
+                        XAdESBESSignature.firmar(archivoEnvioCliente,
                                 nombreArchivoXML,
                                 amb.getAmClaveAccesoSri(),
                                 amb, foldervoAutorizado);
-
+                    } catch (Exception e) {
+                        Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                        return;
+                    }
                     fEnvio = new File(archivoEnvioCliente);
                 }
 

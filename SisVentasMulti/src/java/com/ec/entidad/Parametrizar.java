@@ -132,6 +132,8 @@ public class Parametrizar implements Serializable {
 
     @Column(name = "par_ilimitado_permanente")
     private Boolean parIlimitadoPermanente;
+    @Column(name = "par_con_datos")
+    private Boolean parConDatos;
 
     @Column(name = "par_smtp")
     private String parSmtp;
@@ -479,6 +481,14 @@ public class Parametrizar implements Serializable {
 
     public void setParContratado(BigDecimal parContratado) {
         this.parContratado = parContratado;
+    }
+
+    public Boolean getParConDatos() {
+        return parConDatos==null ?Boolean.FALSE:parConDatos;
+    }
+
+    public void setParConDatos(Boolean parConDatos) {
+        this.parConDatos = parConDatos;
     }
 
 }

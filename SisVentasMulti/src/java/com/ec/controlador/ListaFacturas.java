@@ -7,6 +7,7 @@ package com.ec.controlador;
 import com.ec.entidad.Cliente;
 import com.ec.entidad.DetalleFactura;
 import com.ec.entidad.Factura;
+import com.ec.entidad.Parametrizar;
 import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
@@ -14,6 +15,7 @@ import com.ec.servicio.HelperPersistencia;
 import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioDetalleFactura;
 import com.ec.servicio.ServicioFactura;
+import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ArchivoUtils;
 import com.ec.untilitario.AutorizarDocumentos;
@@ -95,6 +97,8 @@ public class ListaFacturas {
     private Date fechafin = new Date();
     private String amRuc = "";
     UserCredential credential = new UserCredential();
+
+    ServicioParametrizar servicioParametrizar = new ServicioParametrizar();
 
     public ListaFacturas() {
 
@@ -605,8 +609,15 @@ public class ListaFacturas {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+//        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+//                amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        try {
+            XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+            Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+            return;
+        }
 
         f = new File(pathArchivoFirmado);
 
@@ -702,13 +713,29 @@ public class ListaFacturas {
                                 servicioCliente.modificar(mod);
                             }
                             if (valor.getIdCliente().getCliCorreo() != null) {
-                                mail.sendMailSimple(valor.getIdCliente().getCliCorreo(),
+                                Parametrizar parametrizar = servicioParametrizar.FindALlParametrizar();
+                                String correo = "";
+                                if (parametrizar.getParConDatos() && valor.getIdCliente().getCliNombre().toUpperCase().contains("CONSUMIDOR")) {
+                                    correo = "darwinvinicio14_11@hotmail.com";
+                                    mail.sendMailSimple(correo,
+                                        attachFiles,
+                                        "FACTURA ELECTRONICA DATOS ",
+                                        valor.getFacClaveAcceso(),
+                                        valor.getFacNumeroText(),
+                                        valor.getFacTotal(),
+                                        valor.getIdCliente().getCliNombre(), amb);
+                                } else {
+
+                                    correo = valor.getIdCliente().getCliCorreo();
+                                    mail.sendMailSimple(correo,
                                         attachFiles,
                                         "FACTURA ELECTRONICA",
                                         valor.getFacClaveAcceso(),
                                         valor.getFacNumeroText(),
                                         valor.getFacTotal(),
                                         valor.getIdCliente().getCliNombre(), amb);
+                                }
+                                
                             }
                         }
 
@@ -801,9 +828,13 @@ public class ListaFacturas {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
-
+        try {
+            XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+            Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+            return;
+        }
         f = new File(pathArchivoFirmado);
 
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
@@ -853,10 +884,16 @@ public class ListaFacturas {
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
-                            nombreArchivoXML,
-                            amb.getAmClaveAccesoSri(),
-                            amb, foldervoAutorizado);
+
+                    try {
+                        XAdESBESSignature.firmar(archivoEnvioCliente,
+                                nombreArchivoXML,
+                                amb.getAmClaveAccesoSri(),
+                                amb, foldervoAutorizado);
+                    } catch (Exception e) {
+                        Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                        return;
+                    }
 
                     fEnvio = new File(archivoEnvioCliente);
                     //                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
