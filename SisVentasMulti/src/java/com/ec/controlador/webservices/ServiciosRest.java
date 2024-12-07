@@ -261,6 +261,8 @@ public class ServiciosRest {
                             /*GUARDA EL PATH PDF CREADO*/
                             Factura factura = FacturaMapper.daoToFactura(prod);
                             factura.setFacClaveAcceso(claveAccesoComprobante);
+                            factura.setFacClaveAutorizacion(claveAccesoComprobante);
+                            factura.setEstadosri(autorizacion.getEstado());
                             factura.setFacFechaAutorizacion(fechaAutoriza);
                             servicioFactura.crear(factura);
                             DetalleFactura detalleFactura = new DetalleFactura();
@@ -363,7 +365,7 @@ public class ServiciosRest {
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo, Boolean.FALSE, new Date());
-         try {
+        try {
             XAdESBESSignatureApi.firmar(archivo, prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".xml",
                     ArchivoUtils.decrypt(prod.getInfoAutoriza().getPasswordFirma(), secretKey), prod.getInfoAutoriza().getRutaFirma(), folderFirmado);
         } catch (Exception e) {
@@ -435,6 +437,9 @@ public class ServiciosRest {
                     Factura factura = FacturaMapper.daoToFactura(prod);
                     factura.setFacClaveAcceso(claveAccesoComprobante);
                     factura.setFacFechaAutorizacion(fechaAutoriza);
+                    factura.setFacClaveAutorizacion(claveAccesoComprobante);
+
+                    factura.setEstadosri(autorizacion.getEstado());
                     servicioFactura.crear(factura);
                     DetalleFactura detalleFactura = new DetalleFactura();
 
@@ -1064,19 +1069,18 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public PdfResponse exportarExcel(@RequestBody ExcelRequest prod) {
         PdfResponse response = new PdfResponse();
-        List<Factura> lstFacturas = servicioFactura.findFacFechaEmpresa(prod.getFechainicio(), prod.getFechafin(), prod.getRucEmpresa(),prod.getEstablecimiento(),prod.getPuntoEmision());
+        List<Factura> lstFacturas = servicioFactura.findFacFechaEmpresa(prod.getFechainicio(), prod.getFechafin(), prod.getRucEmpresa(), prod.getEstablecimiento(), prod.getPuntoEmision());
+        Date date = new Date();
+        SimpleDateFormat fhora = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
+        String strDate = sm.format(date);
 
-        String nombreArchivo = "Facturas.xls";
+        String nombreArchivo = "Facturas" + date.getTime() + ".xls";
 
         String directoryName = System.getProperty("user.dir");
         String[] valores = directoryName.split("config");
         String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "excel";
         String pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
-
-        Date date = new Date();
-        SimpleDateFormat fhora = new SimpleDateFormat("HH:mm");
-        SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
-        String strDate = sm.format(date);
 
         String pathSalida = pathEnvio;
         System.out.println("Direccion del reporte  " + pathSalida);
@@ -1097,7 +1101,7 @@ public class ServiciosRest {
             System.out.println("PASA 2 ");
             FileOutputStream archivo = new FileOutputStream(archivoXLS);
             HSSFWorkbook wb = new HSSFWorkbook();
-            HSSFSheet s = wb.createSheet("Emitidas");
+            HSSFSheet s = wb.createSheet("Facturas emitidas");
             System.out.println("PASA 3 ");
             HSSFFont fuente = wb.createFont();
             fuente.setBoldweight((short) 700);
@@ -1121,7 +1125,7 @@ public class ServiciosRest {
             r = s.createRow(0);
 
             HSSFCell chfe = r.createCell(j++);
-            chfe.setCellValue(new HSSFRichTextString("Factura"));
+            chfe.setCellValue(new HSSFRichTextString("Nº Factura"));
             chfe.setCellStyle(estiloCelda);
 
             HSSFCell chfe1 = r.createCell(j++);
@@ -1198,7 +1202,7 @@ public class ServiciosRest {
                 r = s.createRow(rownum);
 
                 HSSFCell cf = r.createCell(i++);
-                cf.setCellValue(new HSSFRichTextString(item.getFacNumero().toString()));
+                cf.setCellValue(new HSSFRichTextString(item.getCodestablecimiento() + "-" + item.getPuntoemision() + "-" + item.getFacNumero().toString()));
 
                 HSSFCell cf1 = r.createCell(i++);
                 cf1.setCellValue(new HSSFRichTextString(item.getIdentificacionComprador().toString()));
@@ -1245,7 +1249,7 @@ public class ServiciosRest {
                 c5.setCellValue(new HSSFRichTextString(item.getEstadosri() != null ? item.getEstadosri() : ""));
 
                 HSSFCell c13 = r.createCell(i++);
-                c13.setCellValue(new HSSFRichTextString(item.getFacClaveAutorizacion() != null ? item.getFacClaveAutorizacion() : ""));
+                c13.setCellValue(new HSSFRichTextString(item.getFacClaveAcceso() != null ? item.getFacClaveAcceso() : "Sin Autorizar"));
 
                 HSSFCell c15 = r.createCell(i++);
                 c15.setCellValue(new HSSFRichTextString(item.getFacFechaAutorizacion() != null ? sm.format(item.getFacFechaAutorizacion()) : ""));
