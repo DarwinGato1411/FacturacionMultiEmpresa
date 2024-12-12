@@ -157,7 +157,7 @@ public class ListaNC {
 
             Map<String, Object> parametros = new HashMap<String, Object>();
 
-            //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
+            parametros.put("tipoambiente", amb.getCodTipoambiente());
             parametros.put("numfactura", numeroFactura);
 
             if (con != null) {
