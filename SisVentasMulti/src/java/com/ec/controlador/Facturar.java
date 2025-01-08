@@ -323,7 +323,7 @@ public class Facturar extends SelectorComposer<Component> {
         } else if (valor.getBusqueda().equals("producto") || valor.getBusqueda().equals("cliente")) {
 
         } else if (valor.getBusqueda().equals("cambio")) {
-            PRODUCTOCAMBIO = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
+            PRODUCTOCAMBIO = servicioProducto.findByProdCodigo(valor.getCodigo());
         } else if (valor.getBusqueda().equals("nte")) {
             cargaNotaEntrega();
         } else {
@@ -479,7 +479,12 @@ public class Facturar extends SelectorComposer<Component> {
             nuevoRegistro.setDetIvaDesc(det.getDetIva());
             nuevoRegistro.setCodTipoVenta(det.getDetCodTipoVenta());
             nuevoRegistro.setDetSubtotaldescuentoporcantidad(det.getDetSubtotaldescuentoporcantidad());
+             if (det.getIdProducto().getProdEsproducto()) {
+                nuevoRegistro.setTotalInicial(det.getIdProducto().getPordCostoVentaFinal());
+            }else{
             nuevoRegistro.setTotalInicial(det.getDetTotal());
+            }
+            
             nuevoRegistro.setEsProducto(det.getIdProducto().getProdEsproducto());
             nuevoRegistro.setValorIce(valorIce);
             clietipo = det.getDetCodTipoVenta();
@@ -768,7 +773,7 @@ public class Facturar extends SelectorComposer<Component> {
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/venta/buscarproducto.zul", null, map);
             window.doModal();
-            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda, amb);
+            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
             if (productoBuscado == null) {
                 return;
             }
@@ -982,7 +987,7 @@ public class Facturar extends SelectorComposer<Component> {
         }
 
 //        BigDecimal factorIva = (parametrizar.getParIva().divide(BigDecimal.valueOf(100.0)));
-        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
+        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
 
         if (buscadoPorCodigo == null) {
             valor.setCodigo("");
@@ -1366,15 +1371,15 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
     }
 
     public Cliente getClienteBuscado() {
@@ -1604,7 +1609,7 @@ public class Facturar extends SelectorComposer<Component> {
                 "/venta/buscarcliente.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente, amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
         clienteBuscado = buscarClienteSelected;
 //        if (clienteBuscado == null) {
 //            clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
@@ -1640,7 +1645,7 @@ public class Facturar extends SelectorComposer<Component> {
             return;
         }
 
-        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula(), amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula());
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }
@@ -2535,11 +2540,11 @@ public class Facturar extends SelectorComposer<Component> {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
     }
 
     @Command
@@ -2548,18 +2553,18 @@ public class Facturar extends SelectorComposer<Component> {
         System.out.println("valor codigo " + valor.getCodigo());
 //        findProductoLikeCodigo();
         if (codigo.length() >= 3) {
-            listaProductoCmb = servicioProducto.findLikeProdNombre(codigo.toUpperCase(), amb);
+            listaProductoCmb = servicioProducto.findLikeProdNombre(codigo.toUpperCase());
         }
 
 //        valor.setListaProductoCmb(listaProductoCmb);
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd, amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd);
     }
 
     @Command

@@ -155,16 +155,16 @@ public class ServicioKardex {
         return totales;
     }
 
-    public List<Kardex> findByCodOrName(String prodCodigo, String prodNombre, Tipoambiente codTipoambiente) {
+    public List<Kardex> findByCodOrName(String prodCodigo, String prodNombre) {
 
         List<Kardex> listaKardexs = new ArrayList<Kardex>();
         try {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
-            Query query = em.createQuery("SELECT a from Kardex a where (a.idProducto.prodCodigo like :prodCodigo and a.idProducto.prodNombre LIKE :prodNombre) AND a.idProducto.codTipoambiente=:codTipoambiente ORDER BY a.idProducto.prodNombre ASC");
+            Query query = em.createQuery("SELECT a from Kardex a where (a.idProducto.prodCodigo like :prodCodigo and a.idProducto.prodNombre LIKE :prodNombre)  ORDER BY a.idProducto.prodNombre ASC");
             query.setParameter("prodCodigo", "%" + prodCodigo + "%");
             query.setParameter("prodNombre", "%" + prodNombre + "%");
-            query.setParameter("codTipoambiente", codTipoambiente);
+//            query.setParameter("codTipoambiente", codTipoambiente);
             query.setMaxResults(200);
             listaKardexs = (List<Kardex>) query.getResultList();
             em.getTransaction().commit();

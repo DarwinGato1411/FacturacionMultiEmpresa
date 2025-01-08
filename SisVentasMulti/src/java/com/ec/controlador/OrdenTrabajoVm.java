@@ -183,15 +183,15 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
     }
 
     public Cliente getClienteBuscado() {
@@ -309,7 +309,7 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
                 "/venta/buscarclienteorden.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }
@@ -330,7 +330,7 @@ public class OrdenTrabajoVm extends SelectorComposer<Component> {
             return;
         }
 
-        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula(),amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(valor.getCliCedula());
         if (clienteBuscado == null) {
             clienteBuscado = servicioCliente.findClienteLikeCedula("999999999");
         }

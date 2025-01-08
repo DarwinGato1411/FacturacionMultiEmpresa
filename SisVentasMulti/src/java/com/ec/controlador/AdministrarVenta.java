@@ -83,15 +83,15 @@ public class AdministrarVenta {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
     }
 
     //get y set de las variables de la vista

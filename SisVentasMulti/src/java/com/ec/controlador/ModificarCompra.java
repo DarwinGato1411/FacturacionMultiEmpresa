@@ -400,7 +400,7 @@ public class ModificarCompra {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/compra/buscarproducto.zul", null, map);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda, amb);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
         if (productoBuscado != null) {
             valor.setProducto(productoBuscado);
             valor.setCodigo(productoBuscado.getProdCodigo());
@@ -419,7 +419,7 @@ public class ModificarCompra {
 
                 //calcularValoresTotales();
                 //nuevo registro
-                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(), amb);
+                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
                 if (buscadoPorCodigo != null) {
                     valor.setDescripcion(buscadoPorCodigo.getProdNombre());
 //                    valor.setSubtotal(buscadoPorCodigo.getPordCostoVentaRef());
@@ -498,11 +498,11 @@ public class ModificarCompra {
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd, amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd);
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
     }
 //proveedor
 
@@ -550,11 +550,11 @@ public class ModificarCompra {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
     }
 
     //guardar la factura

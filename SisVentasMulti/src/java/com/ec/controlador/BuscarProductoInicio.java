@@ -49,7 +49,7 @@ public class BuscarProductoInicio {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
     }
 
     public List<Producto> getListaProducto() {

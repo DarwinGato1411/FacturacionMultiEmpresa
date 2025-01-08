@@ -445,11 +445,11 @@ public class AjusteEntradaSalida {
     }
 
     private void findKardexProductoLikeNombre() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
     }
 
     private void findKardexProductoLikeCodigo() {
-        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd, amb);
+        listaKardexProducto = servicioKardex.findByCodOrName(buscarCodigoProd, buscarNombreProd);
     }
 
 //    public void reporteGeneral() throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {

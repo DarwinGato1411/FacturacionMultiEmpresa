@@ -219,15 +219,15 @@ public class FacturarEditar {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
     }
 
     public Cliente getClienteBuscado() {
@@ -470,7 +470,7 @@ public class FacturarEditar {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                 "/venta/buscarclienteEdit.zul", null, map);
         window.doModal();
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
     }
 
     @Command
@@ -541,7 +541,7 @@ public class FacturarEditar {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                 "/venta/buscarproductoEdit.zul", null, map);
         window.doModal();
-        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
+        productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
         if (productoBuscado != null) {
             DetalleFacturaDAO nuevoRegistro = new DetalleFacturaDAO();
             nuevoRegistro.setProducto(productoBuscado);
@@ -572,7 +572,7 @@ public class FacturarEditar {
             org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
                     "/venta/buscarproductoEdit.zul", null, map);
             window.doModal();
-            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda,amb);
+            productoBuscado = servicioProducto.findByProdCodigo(codigoBusqueda);
             if (productoBuscado != null) {
                 valor.setProducto(productoBuscado);
                 valor.setCodigo(productoBuscado.getProdCodigo());
@@ -704,11 +704,11 @@ public class FacturarEditar {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
     }
 
     private void findProductoLikeCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd,amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigoProd);
     }
 
     @Command
@@ -735,7 +735,7 @@ public class FacturarEditar {
                 valor.setTotal(valor.getCantidad().multiply(valor.getSubTotal()));
                 calcularValoresTotales();
                 //nuevo registro
-                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
+                Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
                 if (buscadoPorCodigo != null) {
                     valor.setDescripcion(buscadoPorCodigo.getProdNombre());
                    // valor.setSubTotal(buscadoPorCodigo.getPordCostoVentaFinal());
@@ -786,7 +786,7 @@ public class FacturarEditar {
     @NotifyChange("listaDetalleFacturaDAOMOdel")
     public void buscarPorCodigo(@BindingParam("valor") DetalleFacturaDAO valor) {
 //        valorSystem.out.println("producto seleccionado " + valor.getProdCodigo());
-        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo(),amb);
+        Producto buscadoPorCodigo = servicioProducto.findByProdCodigo(valor.getCodigo());
         if (buscadoPorCodigo != null) {
             valor.setDescripcion(buscadoPorCodigo.getProdNombre());
             //valor.setSubTotal(buscadoPorCodigo.getPordCostoVentaFinal());

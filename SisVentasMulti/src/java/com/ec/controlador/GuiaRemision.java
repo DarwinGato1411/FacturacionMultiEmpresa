@@ -142,7 +142,7 @@ public class GuiaRemision {
                     "/venta/buscarclienteguia.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente,amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
         if (clienteBuscado != null) {
             llegada = clienteBuscado.getCliDireccion();
         }
@@ -316,15 +316,15 @@ public class GuiaRemision {
     }
 
     private void findClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
     }
 
     private void findClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
     }
 
     private void findClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula,amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
     }
 
     private void getDetalle() {
@@ -338,7 +338,7 @@ public class GuiaRemision {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd,amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
     }
 
     public ListModelList<DetalleGuiaDao> getListaGuiaModel() {

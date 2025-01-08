@@ -160,6 +160,8 @@ public class Producto implements Serializable {
 
     @Column(name = "prod_graba_ice")
     private Boolean prodGrabaIce;
+    @Column(name = "prod_activo")
+    private Boolean prodActivo;
 
     @Column(name = "prod_porcentaje_ice")
     private BigDecimal prodPorcentajeIce;
@@ -567,6 +569,14 @@ public class Producto implements Serializable {
 
     public void setProdCodigoIva(Integer prodCodigoIva) {
         this.prodCodigoIva = prodCodigoIva;
+    }
+
+    public Boolean getProdActivo() {
+        return prodActivo;
+    }
+
+    public void setProdActivo(Boolean prodActivo) {
+        this.prodActivo = prodActivo;
     }
 
     @Override

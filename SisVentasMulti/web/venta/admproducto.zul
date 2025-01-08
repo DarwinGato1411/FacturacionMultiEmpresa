@@ -98,6 +98,7 @@
                     <listheader width="10%"  label="Precio por 6 unidades"  /> 
                     <listheader width="10%"  label="Precio por caja"  /> 
                     <listheader width="5%"  label="" align="center"/>
+                    <listheader width="5%"  label="" align="center"/>
                     <!--<listheader width="5%"  label="" align="center"/>-->
                 </listhead>  
                 <template name="model">                                                            
@@ -159,6 +160,12 @@
                                    class="grow"
                                    onClick="@command('actualizarCliente',valor=each)" 
                                    tooltiptext="Modificar producto"/> 
+                        </listcell>
+                        <listcell zclass = "mycss-listcell" style="font-size:12px;background:#F8F9F9">    
+                            <image src="/iconos/eliminar.png"
+                                   class="grow"
+                                   onClick="@command('eliminar',valor=each)" 
+                                   tooltiptext="Eliminar producto"/> 
                         </listcell>
                     </listitem>
                 </template>

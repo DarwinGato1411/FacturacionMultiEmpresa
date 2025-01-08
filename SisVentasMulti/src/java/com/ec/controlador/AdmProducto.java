@@ -130,11 +130,11 @@ public class AdmProducto {
     }
 
     private void findLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombre, amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombre);
     }
 
     private void findLikeProdCodigo() {
-        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigo, amb);
+        listaProducto = servicioProducto.findLikeProdCodigo(buscarCodigo);
     }
 
     public List<Producto> getListaProducto() {
@@ -277,9 +277,10 @@ public class AdmProducto {
 
     @Command
     @NotifyChange({"listaProductosModel", "buscarNombre"})
-    public void eliminarCliente(@BindingParam("valor") Producto valor) {
+    public void eliminar(@BindingParam("valor") Producto valor) {
         if (Messagebox.show("¿Seguro que desea eliminar el registro?", "Atención", Messagebox.YES | Messagebox.NO, Messagebox.INFORMATION) == Messagebox.YES) {
-            servicioProducto.eliminar(valor);
+            valor.setProdActivo(Boolean.FALSE);
+            servicioProducto.modificar(valor);
             findLikeNombre();
             getProductosModel();
             Clients.showNotification("Eliminado correctamente", "Info", null, "end_center", 3000, true);
@@ -294,7 +295,7 @@ public class AdmProducto {
     public void inicializarKardex() {
         if (Messagebox.show("¿Seguro que desea inicializar el Kardex?", "Atención", Messagebox.YES | Messagebox.NO, Messagebox.INFORMATION) == Messagebox.YES) {
             Kardex kardex;
-            List<Producto> listaKardex = servicioProducto.findALlProductoCodTipoAmbiente(amb);
+            List<Producto> listaKardex = servicioProducto.findALlProductoCodTipoAmbiente();
             for (Producto producto : listaKardex) {
                 if (servicioKardex.FindALlKardexs(producto) == null) {
                     kardex = new Kardex();
@@ -596,7 +597,7 @@ public class AdmProducto {
     @Command
     public void exportListboxToExcelTodo() throws Exception {
         try {
-            List<Producto> listarTodo = servicioProducto.findALlProductoCodTipoAmbiente(amb);
+            List<Producto> listarTodo = servicioProducto.findALlProductoCodTipoAmbiente();
             File dosfile = new File(exportarExcelTodo(listarTodo));
             if (dosfile.exists()) {
                 FileInputStream inputStream = new FileInputStream(dosfile);
@@ -765,8 +766,8 @@ public class AdmProducto {
                     row = sheet.getRow(i);
 //                    for (int j = 0; j < row.getLastCellNum(); j++) {
                     for (int j = 0; j < 6; j++) {
-
-                        if (servicioProducto.findLikeProdNombre(String.valueOf(row.getCell(1)), amb).isEmpty()) {
+                        List<Producto> listaRecup = servicioProducto.findLikeProdNombre(String.valueOf(row.getCell(1)));
+                        if (listaRecup.isEmpty()) {
                             cell = row.getCell(j);
                             prod = new Producto();
                             prod.setProdCodigo(String.valueOf(row.getCell(0)));
@@ -804,7 +805,10 @@ public class AdmProducto {
                             servicioProducto.crear(prod);
                             System.out.println("Valor: " + cell.toString());
                         } else {
-                            System.out.println("El producto existe " + String.valueOf(row.getCell(1)));
+                            Producto edit = listaRecup.get(0);
+                            edit.setProdCantidadInicial(BigDecimal.valueOf(Double.valueOf(String.valueOf(row.getCell(7)))));
+                            servicioProducto.modificar(edit);
+                            System.out.println("El producto existe y fue modificado " + String.valueOf(row.getCell(1)));
                         }
 
                     }

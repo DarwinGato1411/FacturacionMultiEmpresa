@@ -66,7 +66,7 @@ public class AdmKardex {
     }
 
     private void getProductos() {
-        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto, amb);
+        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto);
     }
 
     public AdmKardex() {
@@ -141,11 +141,11 @@ public class AdmKardex {
     }
 
     private void findProductoLikeNombre() {
-        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto, amb);
+        listaProductos = servicioProducto.findLikeProdNombre(buscarProducto);
     }
 
     private void findProductoLikeCodigo() {
-        listaProductos = servicioProducto.findLikeProdCodigo(buscarProductoCodigo, amb);
+        listaProductos = servicioProducto.findLikeProdCodigo(buscarProductoCodigo);
     }
 
     public Kardex getKardex() {

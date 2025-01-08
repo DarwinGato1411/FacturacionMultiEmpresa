@@ -468,15 +468,15 @@ public class NotaCreditoDebitoVm {
     }
 
     private void FindClienteLikeNombre() {
-        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeNombre(buscarNombre);
     }
 
     private void FindClienteLikeRazon() {
-        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeRazonSocial(buscarRazonSocial);
     }
 
     private void FindClienteLikeCedula() {
-        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula, amb);
+        listaClientesAll = servicioCliente.FindClienteLikeCedula(buscarCedula);
     }
 
     public Cliente getClienteBuscado() {
@@ -706,7 +706,7 @@ public class NotaCreditoDebitoVm {
                 "/venta/buscarcliente.zul", null, map);
         window.doModal();
         System.out.println("clinete de la lsitas buscarCliente " + buscarCliente);
-        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente, amb);
+        clienteBuscado = servicioCliente.FindClienteForCedula(buscarCliente);
     }
 
     @Command
@@ -1126,7 +1126,7 @@ public class NotaCreditoDebitoVm {
     }
 
     private void findProductoLikeNombre() {
-        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd, amb);
+        listaProducto = servicioProducto.findLikeProdNombre(buscarNombreProd);
     }
 
     public void reporteGeneral() throws JRException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, NamingException {

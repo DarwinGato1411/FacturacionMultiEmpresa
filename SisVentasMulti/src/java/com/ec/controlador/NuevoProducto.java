@@ -419,7 +419,7 @@ public class NuevoProducto {
                 producto.setProdGrabaIce(Boolean.FALSE);
             }
             if (accion.equals("create")) {
-                if (servicioProducto.findByProdCodigo(producto.getProdCodigo(), amb) != null) {
+                if (servicioProducto.findByProdCodigo(producto.getProdCodigo()) != null) {
                     Clients.showNotification("El codigo del prodcuto ya se encuentra registrado",
                             Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
                     return;

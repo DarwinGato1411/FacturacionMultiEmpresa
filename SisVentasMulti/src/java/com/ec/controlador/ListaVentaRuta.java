@@ -194,7 +194,7 @@ public class ListaVentaRuta {
                     totalUnidad = BigDecimal.valueOf(1.6);
                     totalBaseCero = BigDecimal.ZERO;
                 }
-                factura.setIdCliente(servicioCliente.FindClienteForCedula(ventaRuta.getCedula(), amb));
+                factura.setIdCliente(servicioCliente.FindClienteForCedula(ventaRuta.getCedula()));
                 factura.setIdUsuario(credential.getUsuarioSistema());
                 factura.setFacSubtotal(subTotalUnidad.multiply(BigDecimal.valueOf(Double.valueOf(ventaRuta.getCantidad()))));
 
@@ -354,7 +354,7 @@ public class ListaVentaRuta {
                                 "N");
                     nuevaVenta.setTransporte(camposInd[9]);
                     /*CREAR EL CLIENTE SI NO EXISTE*/
-                    Cliente buscado = servicioCliente.FindClienteForCedula(camposInd[0], amb);
+                    Cliente buscado = servicioCliente.FindClienteForCedula(camposInd[0]);
                     Cliente cliNuevo = null;
                     if (buscado == null) {
                         cliNuevo = new Cliente();
