@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
+<?script src="/js/icon.js"?>
 <?init class="com.ec.seguridad.Autentificador"?>
 <zk class="border border-primary">
 

@@ -14,7 +14,6 @@ import com.ec.servicio.ServicioCliente;
 import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.servicio.ServicioTipoIdentificacion;
-import com.ec.untilitario.AduanaJson;
 import com.ec.untilitario.ArchivoUtils;
 import com.ec.untilitario.InfoPersona;
 import java.io.IOException;
@@ -102,7 +101,7 @@ public class NuevoCliente {
         
         
         
-       String token=ArchivoUtils.token("");
+//       String token=ArchivoUtils.token("");
         InfoPersona aduana = new InfoPersona();
         String nombre = "";
         if (cliente.getCliCedula() != null) {

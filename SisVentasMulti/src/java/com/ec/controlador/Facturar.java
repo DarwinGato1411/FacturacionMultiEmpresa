@@ -479,7 +479,11 @@ public class Facturar extends SelectorComposer<Component> {
             nuevoRegistro.setDetIvaDesc(det.getDetIva());
             nuevoRegistro.setCodTipoVenta(det.getDetCodTipoVenta());
             nuevoRegistro.setDetSubtotaldescuentoporcantidad(det.getDetSubtotaldescuentoporcantidad());
+           if (det.getIdProducto().getProdEsproducto()) {
+                nuevoRegistro.setTotalInicial(det.getIdProducto().getPordCostoVentaFinal());
+            }else{
             nuevoRegistro.setTotalInicial(det.getDetTotal());
+            }
             nuevoRegistro.setEsProducto(det.getIdProducto().getProdEsproducto());
             nuevoRegistro.setValorIce(valorIce);
             clietipo = det.getDetCodTipoVenta();
