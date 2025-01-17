@@ -161,8 +161,12 @@ public class AutorizarDocumentos {
     public RespuestaSolicitud validar(byte[] datos, Tipoambiente amb) {
         try {
 
-            //System.setProperty("https.protocols", "SSLv3");
-            //System.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, Boolean.FALSE);
+            System.setProperty("javax.net.debug", "ssl,handshake");
+            System.setProperty("javax.net.ssl.keyStore", "/home/payara41_old/glassfish/domains/domain1/config/keystore.jks");
+            System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
+            System.setProperty("javax.net.ssl.trustStore", "/home/payara41_old/glassfish/domains/domain1/config/keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+//            SSLContextSetup.setupSSLContext("/home/payara41_old/glassfish/domains/domain1/config/keystore.jks", "tu_password_keystore");
             URL url = new URL("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl");
             QName qname = new QName("http://ec.gob.sri.ws.recepcion", "RecepcionComprobantesOfflineService");
             RecepcionComprobantesOfflineService service = new RecepcionComprobantesOfflineService(url, qname);
@@ -437,7 +441,7 @@ public class AutorizarDocumentos {
                     //                    + (valor.getIdCliente().getCliMovil().length() > 0 ? "<campoAdicional nombre=\"CELULAR\">" + valor.getIdCliente().getCliMovil() + " </campoAdicional>\n" : " ")
                     + "<campoAdicional nombre=\"PLAZO\"> DIAS</campoAdicional>\n"
                     + (valor.getFacPlazo().toString().length() > 0 ? "<campoAdicional nombre=\"DIAS\">" + valor.getFacPlazo().setScale(0) + "</campoAdicional>\n" : " ")
-//                    + (valor.getFacPorcentajeIva().length() > 0 ? "<campoAdicional nombre=\"TARIFAIMP\">" + valor.getFacPorcentajeIva() + "</campoAdicional>\n" : " ")
+                    //                    + (valor.getFacPorcentajeIva().length() > 0 ? "<campoAdicional nombre=\"TARIFAIMP\">" + valor.getFacPorcentajeIva() + "</campoAdicional>\n" : " ")
                     + (amb.getAmGeneral() ? "<campoAdicional nombre=\"CONTRIBUYENTE REGIMEN GENERAL\">CONTRIBUYENTE REGIMEN GENERAL</campoAdicional>\n" : "")
                     + (valor.getFacObservacion() != null ? (valor.getFacObservacion().length() > 0 ? "<campoAdicional nombre=\"OBSERVACION\">" + valor.getFacObservacion() + "</campoAdicional>\n" : "") : "")
                     // + (amb.getAmAgeRet() ? "<campoAdicional nombre=\"Agente de Retencion\">Agente de Retencion Resolucion Nro. NAC-DNCRASC20-00000001</campoAdicional>\n" : "")
@@ -470,8 +474,7 @@ public class AutorizarDocumentos {
     }
 //</editor-fold > 
 
-    
-     //<editor-fold defaultstate="collapsed" desc=" ARMAR NOTA DE CREDITO"> 
+    //<editor-fold defaultstate="collapsed" desc=" ARMAR NOTA DE CREDITO"> 
     public String generaXMLNotaCreditoDebito(NotaCreditoDebito valor, Tipoambiente amb, String folderDestino, String nombreArchivoXML, String NCoND) {
         FileOutputStream out;
         try {
@@ -481,42 +484,42 @@ public class AutorizarDocumentos {
                     + "                <codigo>" + valor.getFacCodIva() + "</codigo>\n"
                     + "                <codigoPorcentaje>0</codigoPorcentaje>\n"
                     + "                <baseImponible>" + ArchivoUtils.redondearDecimales(valor.getFacTotalBaseCero(), 2) + "</baseImponible>\n"
-//                    + "                <tarifa>0</tarifa>\n"
+                    //                    + "                <tarifa>0</tarifa>\n"
                     + "                <valor>0.00</valor>\n"
                     + "             </totalImpuesto>\n");
             String TARIFA12 = ("             <totalImpuesto>\n"
                     + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
                     + "                 <codigoPorcentaje>2</codigoPorcentaje>\n"
                     + "                 <baseImponible>" + valor.getFacTotalBaseGravaba() + "</baseImponible>\n"
-//                    + "                 <tarifa>" + valor.getFacPorcentajeIva() + "</tarifa>\n"
+                    //                    + "                 <tarifa>" + valor.getFacPorcentajeIva() + "</tarifa>\n"
                     + "                 <valor>" + ArchivoUtils.redondearDecimales(valor.getFacIva(), 2) + "</valor>\n"
                     + "              </totalImpuesto>\n");
             String TARIFA5 = ("             <totalImpuesto>\n"
                     + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
                     + "                 <codigoPorcentaje>5</codigoPorcentaje>\n"
                     + "                 <baseImponible>" + valor.getFacSubt5() + "</baseImponible>\n"
-//                    + "                 <tarifa>5</tarifa>\n"
+                    //                    + "                 <tarifa>5</tarifa>\n"
                     + "                 <valor>" + ArchivoUtils.redondearDecimales(valor.getFacIva5(), 2) + "</valor>\n"
                     + "              </totalImpuesto>\n");
             String TARIFA13 = ("             <totalImpuesto>\n"
                     + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
                     + "                 <codigoPorcentaje>10</codigoPorcentaje>\n"
                     + "                 <baseImponible>" + valor.getFacSubt13() + "</baseImponible>\n"
-//                    + "                 <tarifa>13</tarifa>\n"
+                    //                    + "                 <tarifa>13</tarifa>\n"
                     + "                 <valor>" + ArchivoUtils.redondearDecimales(valor.getFacIva13(), 2) + "</valor>\n"
                     + "              </totalImpuesto>\n");
             String TARIFA14 = ("             <totalImpuesto>\n"
                     + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
                     + "                 <codigoPorcentaje>3</codigoPorcentaje>\n"
                     + "                 <baseImponible>" + valor.getFacSubt14() + "</baseImponible>\n"
-//                    + "                 <tarifa>14</tarifa>\n"
+                    //                    + "                 <tarifa>14</tarifa>\n"
                     + "                 <valor>" + ArchivoUtils.redondearDecimales(valor.getFacIva14(), 2) + "</valor>\n"
                     + "              </totalImpuesto>\n");
             String TARIFA15 = ("             <totalImpuesto>\n"
                     + "             <codigo>" + valor.getFacCodIva() + "</codigo>\n"
                     + "                 <codigoPorcentaje>4</codigoPorcentaje>\n"
                     + "                 <baseImponible>" + valor.getFacSubt15() + "</baseImponible>\n"
-//                    + "                 <tarifa>15</tarifa>\n"
+                    //                    + "                 <tarifa>15</tarifa>\n"
                     + "                 <valor>" + ArchivoUtils.redondearDecimales(valor.getFacIva15(), 2) + "</valor>\n"
                     + "              </totalImpuesto>\n");
 
@@ -656,9 +659,6 @@ public class AutorizarDocumentos {
     }
 
     //</editor-fold>
-    
-    
-    
     //<editor-fold defaultstate="collapsed" desc=" ARMAR GUIA DE REMISION">  
     public String generaXMLGuiaRemision(Guiaremision valor, Tipoambiente amb, String folderDestino, String nombreArchivoXML) {
         FileOutputStream out;
