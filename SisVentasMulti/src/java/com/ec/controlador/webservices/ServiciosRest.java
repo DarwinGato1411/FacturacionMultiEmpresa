@@ -30,6 +30,7 @@ import com.ec.dao.NotaCreditoDebitoDao;
 import com.ec.dao.PdfRequest;
 import com.ec.dao.RequestAnulaDoc;
 import com.ec.dao.RetencionCompraDao;
+import com.ec.dao.response.DatosFirmaResponse;
 import com.ec.dao.response.FacturaResponse;
 import com.ec.dao.response.PdfResponse;
 import com.ec.entidad.DetalleFactura;
@@ -90,6 +91,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileInputStream;
+import java.security.KeyStore;
+import java.security.cert.X509Certificate;
 
 @Path("/autorizar")
 public class ServiciosRest {
@@ -1356,6 +1361,58 @@ public class ServiciosRest {
             facturaResponse.setEstadoSri(e.getMessage());
         }
         return facturaResponse;
+    }
+
+    @POST
+    @Path("/validar-firma/")
+    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public DatosFirmaResponse validarFirma(@RequestBody InfoAutorizaDao prod) throws Exception {
+        DatosFirmaResponse datosFirma = new DatosFirmaResponse();
+
+        try {
+            // Ruta al archivo P12 o PFX
+
+            final String secretKey = "AFSOTEC2023";
+
+            String rutaArchivo = prod.getRutaFirma();
+            String contrasena = ArchivoUtils.decrypt(prod.getPasswordFirma(), secretKey); // Contraseña del archivo
+
+            // Cargar el almacén de claves (KeyStore)
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            FileInputStream fis = new FileInputStream(rutaArchivo);
+            keyStore.load(fis, contrasena.toCharArray());
+
+            // Obtener el alias del certificado
+            String alias = keyStore.aliases().nextElement();
+
+            // Obtener el certificado X509
+            X509Certificate certificado = (X509Certificate) keyStore.getCertificate(alias);
+
+            // Mostrar información del certificado
+            System.out.println("Titular: " + certificado.getSubjectDN());
+            System.out.println("Emisor: " + certificado.getIssuerDN());
+            System.out.println("Válido desde: " + certificado.getNotBefore());
+            System.out.println("Válido hasta: " + certificado.getNotAfter());
+            datosFirma.setTitular(String.valueOf(certificado.getSubjectDN()));
+            datosFirma.setEmisor(String.valueOf(certificado.getIssuerDN()));
+            SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
+            String fechaDesde = sm.format(certificado.getNotBefore());
+//            Date fechaDesdeFor = sm.parse(fechaDesde);
+            String fechaHasta = sm.format(certificado.getNotAfter());
+//            Date fechaHataFor = sm.parse(fechaHasta);
+
+            datosFirma.setDesde(fechaDesde);
+            datosFirma.setHasta(fechaHasta);
+            // Cerrar el flujo de entrada
+            fis.close();
+
+        } catch (Exception e) {
+            datosFirma.setTitular("ERROR " + e.getMessage());
+            datosFirma.setEmisor("ERROR");
+
+        }
+        return datosFirma;
     }
 
 }
