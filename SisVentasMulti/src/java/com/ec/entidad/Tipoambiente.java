@@ -215,6 +215,9 @@ public class Tipoambiente implements Serializable {
     private String amComprobanteImprime;
     @Column(name = "am_rimpe_popular")
     private Boolean amRimpePopular;
+    
+      @Column(name = "activar_certificado")
+    private Boolean activarCertificado;
 
     public Tipoambiente() {
     }
@@ -759,6 +762,14 @@ public class Tipoambiente implements Serializable {
 
     public void setAmRimpePopular(Boolean amRimpePopular) {
         this.amRimpePopular = amRimpePopular;
+    }
+
+    public Boolean getActivarCertificado() {
+        return activarCertificado==null?Boolean.FALSE:activarCertificado;
+    }
+
+    public void setActivarCertificado(Boolean activarCertificado) {
+        this.activarCertificado = activarCertificado;
     }
 
 }

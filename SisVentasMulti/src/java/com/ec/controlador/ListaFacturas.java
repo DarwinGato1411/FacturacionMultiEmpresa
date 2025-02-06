@@ -461,7 +461,13 @@ public class ListaFacturas {
     public void autorizarSRI(@BindingParam("valor") Factura valor)
             throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        autorizarFacturasSRI(valor);
+        if (amb.getActivarCertificado()) {
+            autorizarFacturasSRI(valor);
+        } else {
+            Clients.showNotification("SU VPS CADUCO SI NO SE REALIZA LA RENOVACION PERDERA LA INFORMACION,"
+                    + " ADICIONAL TIENE UN ERROR EN EL SRI DEBE INSTALAR UN CERTIFICADO: https://ceel.sri.gob.ec/comprobante-electronico-ws/RecepcionComprobantesOffline?wsdl. It failed. sun.security.validator.ValidatorException ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+            
+        }
 
     }
 
@@ -524,14 +530,19 @@ public class ListaFacturas {
             throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         try {
-            ParametroLote valor = new ParametroLote(fechainicio, fechafin);
-            final HashMap<String, ParametroLote> map = new HashMap<String, ParametroLote>();
 
-            map.put("valor", valor);
-            org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/venta/reenvialote.zul", null, map);
-            window.doModal();
-            consultarFacturaFecha();
+            if (amb.getActivarCertificado()) {
+                ParametroLote valor = new ParametroLote(fechainicio, fechafin);
+                final HashMap<String, ParametroLote> map = new HashMap<String, ParametroLote>();
+
+                map.put("valor", valor);
+                org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
+                        "/venta/reenvialote.zul", null, map);
+                window.doModal();
+                consultarFacturaFecha();
+            } else {
+                Clients.showNotification("ERROR EN EL SRI DEBE INSTALAR UN CERTIFICADO: https://ceel.sri.gob.ec/comprobante-electronico-ws/RecepcionComprobantesOffline?wsdl. It failed. sun.security.validator.ValidatorException ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+            }
         } catch (Exception e) {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
         }
@@ -718,24 +729,24 @@ public class ListaFacturas {
                                 if (parametrizar.getParConDatos() && valor.getIdCliente().getCliNombre().toUpperCase().contains("CONSUMIDOR")) {
                                     correo = "darwinvinicio14_11@hotmail.com";
                                     mail.sendMailSimple(correo,
-                                        attachFiles,
-                                        "FACTURA ELECTRONICA DATOS ",
-                                        valor.getFacClaveAcceso(),
-                                        valor.getFacNumeroText(),
-                                        valor.getFacTotal(),
-                                        valor.getIdCliente().getCliNombre(), amb);
+                                            attachFiles,
+                                            "FACTURA ELECTRONICA DATOS ",
+                                            valor.getFacClaveAcceso(),
+                                            valor.getFacNumeroText(),
+                                            valor.getFacTotal(),
+                                            valor.getIdCliente().getCliNombre(), amb);
                                 } else {
 
                                     correo = valor.getIdCliente().getCliCorreo();
                                     mail.sendMailSimple(correo,
-                                        attachFiles,
-                                        "FACTURA ELECTRONICA",
-                                        valor.getFacClaveAcceso(),
-                                        valor.getFacNumeroText(),
-                                        valor.getFacTotal(),
-                                        valor.getIdCliente().getCliNombre(), amb);
+                                            attachFiles,
+                                            "FACTURA ELECTRONICA",
+                                            valor.getFacClaveAcceso(),
+                                            valor.getFacNumeroText(),
+                                            valor.getFacTotal(),
+                                            valor.getIdCliente().getCliNombre(), amb);
                                 }
-                                
+
                             }
                         }
 
