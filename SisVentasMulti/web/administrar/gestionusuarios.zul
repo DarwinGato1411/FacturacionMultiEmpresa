@@ -106,6 +106,8 @@
                                     <listheader label="Modificar"  align="center" width="5%"></listheader>
                                      
                                     <listheader label=""  align="center" width="5%"></listheader>
+                                    <listheader label="Cierre"  align="center" width="5%"></listheader>
+                                    <listheader label="Parqueadero"  align="center" width="5%"></listheader>
                                 </listhead>
                         
                         
@@ -184,6 +186,25 @@
                                                    tooltiptext="Editar usuario"/> 
                                             
                                         </listcell>   
+                                        <listcell  zclass = "mycss-listcell">
+                                              <checkbox class="badge badge-default   btn-secondary  textoFechaDateBox " 
+                                                          onCheck="@command('activar',valor=each)" 
+                                                          tooltiptext="Activar cierre de caja"                                                 
+                                                          checked="@bind(each.amCierreCaja)">
+                   
+                                                </checkbox>
+                                            
+                                        </listcell>   
+                                        <listcell  zclass = "mycss-listcell">
+                                              <checkbox class="badge badge-default   btn-secondary  textoFechaDateBox " 
+                                                          onCheck="@command('activar',valor=each)"  
+                                                          tooltiptext="Activar sistema parqueadero"                                                
+                                                          checked="@bind(each.amParqueadero)">
+                   
+                                                </checkbox>
+                                            
+                                        </listcell>   
+                                       
                                     
                                     </listitem>
                                 </template>   

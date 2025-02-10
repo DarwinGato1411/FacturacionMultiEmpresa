@@ -135,11 +135,12 @@ public class ServicioCierreCaja {
             em = HelperPersistencia.getEMF();
             em.getTransaction().begin();
             String SQL = "SELECT a FROM CierreCaja a ";
-            String WHERE = " WHERE a.cieFecha=:cieFecha ORDER BY  a.cieFecha DESC";
+            String WHERE = " WHERE a.cieFecha=:cieFecha and a.idUsuario=:idUsuario ORDER BY  a.cieFecha DESC";
             Query query = null;
 
             query = em.createQuery(SQL + WHERE);
             query.setParameter("cieFecha", fecha);
+            query.setParameter("idUsuario", idUsuario);
 
             listaCierreCajas = (List<CierreCaja>) query.getResultList();
 

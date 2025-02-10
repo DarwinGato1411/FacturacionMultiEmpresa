@@ -55,6 +55,14 @@ public class MenuOpciones extends SelectorComposer<Component> {
 
     @Wire("#btnCodigoretencion")
     Menuitem btnCodigoretencion;
+    @Wire("#btnFacturarPar")
+    Menuitem btnFacturarPar;
+    @Wire("#btnFacturar")
+    Menuitem btnFacturar;
+    @Wire("#btnCierreCajaUsu")
+    Menuitem btnCierreCajaUsu;
+    @Wire("#btnListarCierre")
+    Menuitem btnListarCierre;
 
     UserCredential credential = new UserCredential();
     private String acceso = "";
@@ -84,6 +92,21 @@ public class MenuOpciones extends SelectorComposer<Component> {
                 muenGestionUsu.setVisible(Boolean.FALSE);
                 muenGestionEmpresas.setVisible(Boolean.FALSE);
                 btnGestionFactura.setVisible(Boolean.FALSE);
+                if (credential.getTipoambiente().getAmParqueadero()) {
+                    btnFacturar.setVisible(Boolean.FALSE);
+                    btnFacturarPar.setVisible(Boolean.TRUE);
+                } else {
+                    btnFacturar.setVisible(Boolean.TRUE);
+                    btnFacturarPar.setVisible(Boolean.FALSE);
+                }
+
+                if (credential.getTipoambiente().getAmCierreCaja()) {
+                    btnCierreCajaUsu.setVisible(Boolean.TRUE);
+                    btnListarCierre.setVisible(Boolean.TRUE);
+                } else {
+                    btnCierreCajaUsu.setVisible(Boolean.FALSE);
+                    btnListarCierre.setVisible(Boolean.FALSE);
+                }
             }
         }
     }
@@ -96,6 +119,11 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Listen("onClick = #btnFacturar")
     public void doFacturar() {
         Executions.sendRedirect("/venta/facturar.zul");
+    }
+
+    @Listen("onClick = #btnFacturarPar")
+    public void btnFacturarPar() {
+        Executions.sendRedirect("/venta/facturarpar.zul");
     }
 
     @Listen("onClick = #btnKardex")
@@ -297,6 +325,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void btnlistaOrden() {
         Executions.sendRedirect("/venta/listaorden.zul");
     }
+
     @Listen("onClick = #btnCodigoretencion")
     public void btnCodigoretencion() {
         Executions.sendRedirect("/administrar/codigoretenciones.zul");
@@ -311,7 +340,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void btnCierreCaja() {
 //        if (credential.getUsuarioSistema().getUsuNivel() != 1) {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/cierrecaja.zul", null, null);
+                "/nuevo/cierrecaja.zul", null, null);
         window.doModal();
 //        } else {
 //            Clients.showNotification("El usuario administrador no puede cerrar una caja",
@@ -324,7 +353,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void nuevoProducto() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/producto.zul", null, null);
+                "/nuevo/producto.zul", null, null);
         window.doModal();
 
     }
@@ -333,7 +362,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void nuevoCliente() {
 
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/cliente.zul", null, null);
+                "/nuevo/cliente.zul", null, null);
         window.doModal();
 
     }

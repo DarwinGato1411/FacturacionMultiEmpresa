@@ -215,6 +215,10 @@ public class Tipoambiente implements Serializable {
     private String amComprobanteImprime;
     @Column(name = "am_rimpe_popular")
     private Boolean amRimpePopular;
+    @Column(name = "am_parqueadero")
+    private Boolean amParqueadero;
+     @Column(name = "am_cierre_caja")
+    private Boolean amCierreCaja;
 
     public Tipoambiente() {
     }
@@ -759,6 +763,22 @@ public class Tipoambiente implements Serializable {
 
     public void setAmRimpePopular(Boolean amRimpePopular) {
         this.amRimpePopular = amRimpePopular;
+    }
+
+    public Boolean getAmParqueadero() {
+        return amParqueadero == null ? Boolean.FALSE : amParqueadero;
+    }
+
+    public void setAmParqueadero(Boolean amParqueadero) {
+        this.amParqueadero = amParqueadero;
+    }
+
+    public Boolean getAmCierreCaja() {
+        return amCierreCaja==null?Boolean.FALSE:amCierreCaja;
+    }
+
+    public void setAmCierreCaja(Boolean amCierreCaja) {
+        this.amCierreCaja = amCierreCaja;
     }
 
 }

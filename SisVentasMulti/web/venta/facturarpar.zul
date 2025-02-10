@@ -12,7 +12,7 @@
 <zk   with="100%" class="container" >
 
     <!--onCreate="@command('aperturaCaja')"-->
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" onCreate="@command('aperturaCaja')"
+    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
           viewModel="@id('vm') @init('com.ec.controlador.Facturar')" width="100%" class="containerFactura">
     
         <timer delay="30000" repeats="true" onTimer="@command('refrescarPagina')" />
@@ -238,7 +238,7 @@
                                             class="input" 
                                         />
                                     </div>
-<!--                                  <div class="wrapper_input">
+                                  <div class="wrapper_input">
                                         
                                         <button 
                                             autodisable="self"   
@@ -249,7 +249,7 @@
                                             width="100%"
                                         />
 
-                                    </div>-->
+                                    </div>
                                 </div>
                                 <div class="wrapper_data">
                                     <div class="wrapper_input">
@@ -380,7 +380,7 @@
                         <div class="factura_body factura_body_content">
                     
 
-                            <div class="factura_body_item" >
+                            <div class="factura_body_item_prod_parquea" >
                             <listbox model="@load(vm.listaKardexProducto)" 
                                      nonselectableTags=""    mold="paging" pageSize="10"  >
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>
@@ -405,10 +405,10 @@
                                                  onOK="@command('buscarLikeKardexNombreProd')"                                                     
                                                  onChange="self.setValue(self.getValue().toUpperCase());" />
                                     </listheader>                         
-                                    <listheader width="5%"  label="% IVA" align="center"/>
-                                    <listheader width="10%"   label="KARDEX" align="center" /> 
-                                    <listheader width="13%"  label="PV X MAYOR" align="center" /> 
-                                    <listheader width="13%"  label="PVP" align="center" /> 
+                                    <listheader width="10%"  label="% IVA" align="center"/>
+                                    <!--<listheader width="10%"   label="KARDEX" align="center" />--> 
+                                    <!--<listheader width="13%"  label="PV X MAYOR" align="center" />--> 
+                                    <listheader width="15%"  label="PVP" align="center" /> 
                                     
                                     <listheader width="5%"  label="" align="center"/>
                                 </listhead>  
@@ -442,7 +442,7 @@
                                                         value="@bind(each.idProducto.prodIva)" 
                                                         width="96%" />
                                         </listcell>
-                                        <listcell zclass = "mycss-listcell" 
+<!--                                        <listcell zclass = "mycss-listcell" 
                                                   if="${each.verificaStock}" 
                                                   style="font-size:11px;background-color:#C7FEC1"
                                                   onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >                                                    
@@ -469,7 +469,7 @@
                                                    value="@bind(each.idProducto.prodCostoPreferencial)"
                                                    style="font-size:11px; font-weight: bold" 
                                                    width="96%" />
-                                        </listcell>
+                                        </listcell>-->
                                         <listcell zclass = "mycss-listcell" 
                                                   onDoubleClick="@command('agregarItemLista',valor=each.idProducto)" >                                                    
                                             <label onOK="@command('agregarItemLista',valor=each.idProducto)" 
@@ -496,7 +496,7 @@
                             </listbox>
                         </div>
 
-                          <div class="factura_body_item">
+                          <div class="factura_body_item_parquea">
                             <listbox id="lstFacturar"
                                      model="@load(vm.listaDetalleFacturaDAOMOdel)"
                                      mold="paging" pageSize="14"
@@ -513,11 +513,11 @@
                                                 class="btn btn btn-secondary btn-sm "
                                                 tooltiptext="Eliminar registros seleccionados"/>
                                     </listheader>
-                                    <listheader width="10%"   label="COD" align="left" />
-                                    <!--<listheader width="10%"   label="TICKET" align="left" />-->
+                                    <!--<listheader width="10%"   label="COD" align="left" />-->
+                                    <listheader width="20%"   label="TICKET" align="left" />
                                     <listheader width="10%"   label="CANT" align="left"  />
                                     <listheader width="10%"   label="% DESC" align="left"  />                                            
-                                    <listheader width="25%"  label="DESCRIPCIÓN" align="left" />
+                                    <listheader width="30%"  label="DESCRIPCIÓN" align="left" />
                                     <listheader width="15%"  label="PRE REAL" align="left" />
                                     <listheader width="15%"  label="PRECIO" align="left" />                                         
                                     <listheader width="15%"  label="TOTAL" align="left" />
@@ -530,9 +530,9 @@
                                         </listcell>
                                     
 
-                                        <listcell zclass = "mycss-listcell" >
+<!--                                        <listcell zclass = "mycss-listcell" >
                                             
-                                            <!--onDoubleClick="@command('cambiarRegistro',valor=each)"-->
+                                            onDoubleClick="@command('cambiarRegistro',valor=each)"
                                             <textbox                                                            
                                                      class="form-control form-control-sm"
                                                      value="@bind(each.codigo)" 
@@ -540,15 +540,15 @@
                                                      onOK="@command('buscarPorCodigo',valor=each)"
                                                         
                                             />
-                                        </listcell>
-<!--                                        <listcell zclass = "mycss-listcell">
-                                            <textbox    constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                                            
+                                        </listcell>-->
+                                        <listcell zclass = "mycss-listcell">
+                                            <textbox                                              
                                                         onOK="@command('calcularValoresDesCantidadTicket',valor=each)"
                                                         class="form-control form-control-sm"
                                                         onChange="@command('calcularValoresDesCantidadTicket',valor=each)"
                                                         style="font-size:12px"
                                                         value="@bind(each.fechaTiempo)"  />                                                    
-                                        </listcell>-->
+                                        </listcell>
                                          <listcell zclass = "mycss-listcell">
                                             <textbox    constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                                            
                                                         onOK="@command('calcularValoresDesCantidad',valor=each)"

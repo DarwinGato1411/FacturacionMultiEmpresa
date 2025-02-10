@@ -62,20 +62,32 @@ public class LoginController extends SelectorComposer<Component> {
                 numeroDocumentos = emitidos == null ? 0 : emitidos.getNumero().intValue();
 
                 if (cre.getUsuarioSistema().getUsuIlimitado()) {
+
                     if (cre.getUsuarioSistema().getUsuFechaPago().after(actual)) {
-                        Executions.sendRedirect("/venta/facturar.zul");
+                        if (cre.getTipoambiente().getAmParqueadero()) {
+                            Executions.sendRedirect("/venta/facturarpar.zul");
+                        } else {
+                            Executions.sendRedirect("/venta/facturar.zul");
+                        }
+
                     } else {
                         Clients.showNotification("Su plan ilimitado no ha sido renovado contactese con el administrador.",
-                                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
                     }
 
                 } else {
                     if (cre.getUsuarioSistema().getUsuTotalContratado() > numeroDocumentos) {
-                        Executions.sendRedirect("/venta/facturar.zul");
+                        
+                        if (cre.getTipoambiente().getAmParqueadero()) {
+                            Executions.sendRedirect("/venta/facturarpar.zul");
+                        } else {
+                            Executions.sendRedirect("/venta/facturar.zul");
+                        }
+                       
 
                     } else {
                         Clients.showNotification("El numero de documentos emitidos supera al numero de documentos contratado.",
-                                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
 
                     }
 
@@ -87,7 +99,7 @@ public class LoginController extends SelectorComposer<Component> {
 
         } else {
             Clients.showNotification("Usuario o Contraseña incorrecto. \n Contactese con el administrador.",
-                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
 
         }
 
@@ -96,7 +108,7 @@ public class LoginController extends SelectorComposer<Component> {
     @Listen("onClick= #linkOlvideContrasena")
     public void linkOlvideContrasena() {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/olvidemiclave.zul", null, null);
+                "/nuevo/olvidemiclave.zul", null, null);
         window.doModal();
     }
 
@@ -113,7 +125,7 @@ public class LoginController extends SelectorComposer<Component> {
     @Listen("onClick = #btnRegistra")
     public void btnRegistra() {
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/nuevo/registrousuario.zul", null, null);
+                "/nuevo/registrousuario.zul", null, null);
         window.doModal();
 
     }

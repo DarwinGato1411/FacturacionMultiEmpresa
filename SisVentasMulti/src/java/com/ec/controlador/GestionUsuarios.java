@@ -312,15 +312,22 @@ public class GestionUsuarios {
     public void setTipoPlan(String tipoPlan) {
         this.tipoPlan = tipoPlan;
     }
+
     @Command
     @NotifyChange("listaUsuarios")
     public void modificarUsarioSuper(@BindingParam("valor") Usuario usuario) {
         final HashMap<String, Usuario> map = new HashMap<String, Usuario>();
         map.put("usuario", usuario);
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
-                    "/superadmin/usuario.zul", null, map);
+                "/superadmin/usuario.zul", null, map);
         window.doModal();
         cosultarUsuarios("");
+    }
+
+    @Command
+    public void activar(@BindingParam("valor") Tipoambiente valor) {
+
+        servicioTipoAmbiente.modificar(valor);
     }
 
 }

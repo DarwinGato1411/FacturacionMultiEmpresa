@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
-<?script src="/js/icon.js"?>
-
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
@@ -48,7 +48,7 @@
                         <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                     
                         <listhead> 
-                            <listheader width="10%"  label="Fecha" />                            
+                           <listheader width="10%"  label="Fecha" />                            
                             <listheader width="10%"  label="Usuario" />                            
                             <listheader width="10%"  label="Apertura" />                            
                             <listheader width="10%"  label="Recudado FAC" />                            
@@ -58,6 +58,7 @@
                             <listheader width="10%"  label="Diferencia" align="rigth" /> 
                             <listheader width="45%"  label="Descripcion" align="rigth" /> 
                             <listheader width="5%"  label="" align="lefth" />                             
+                            <listheader width="5%"  label="" align="lefth" />                              
                         </listhead>  
                         
                     
@@ -126,7 +127,13 @@
                                            onClick="@command('reporteCierre',valor=each)"
                                            tooltiptext="Imprimir cierre"/>
                                 </listcell>                                    
-                                
+                                 <listcell  zclass = "mycss-listcell" >
+                              
+                                   <image src="/iconos/editar.png"     
+                                           class="btn-sm grow"                                         
+                                           onClick="@command('editarCierre',valor=each)"
+                                           tooltiptext="Editar cierre"/>
+                                </listcell>   
                             </listitem>
                         </template>
                     </listbox>

@@ -56,12 +56,11 @@ public class DetalleFacturaDAO {
     private String numerotel = "";
     private String codigoCantonMatriculacion = "21702";
 
-    
-    
+    private String fechaTiempo;
+
     private BigDecimal valorIce = BigDecimal.ZERO;
     private BigDecimal valorBaseIce = BigDecimal.ZERO;
-    
-    
+
     public DetalleFacturaDAO() {
     }
 
@@ -368,6 +367,13 @@ public class DetalleFacturaDAO {
     public void setValorBaseIce(BigDecimal valorBaseIce) {
         this.valorBaseIce = valorBaseIce;
     }
-    
+
+    public String getFechaTiempo() {
+        return fechaTiempo;
+    }
+
+    public void setFechaTiempo(String fechaTiempo) {
+        this.fechaTiempo = fechaTiempo;
+    }
 
 }

@@ -52,7 +52,9 @@
                 <menu label="Ventas" id="menuEmitirfact" class="menu_child">
                     <menupopup class="submenu"> 
                         <menuitem label="Emitir Facturas" id="btnFacturar" class="fa-solid fa-receipt menu_item" />
+                        <menuitem label="Emitir Factura Parqueadero" id="btnFacturarPar" class="fa-solid fa-receipt menu_item" />
                         <menuitem label="Facturas por cobrar" id="btnfactCobra" class="fa-solid fa-dollar-sign menu_item" />
+                         <menuitem label="Cierre de caja" id="btnCierreCajaUsu"  />
                     </menupopup>
                 </menu>
 <!--                <menu label="Orde de trabajo" id="menuOrden" class="menu_child">
@@ -102,6 +104,7 @@
                         <menuitem label="Compras vs Ventas" id="btnBalanceUtilidad" class="fa-solid fa-gear menu_item" />
                         <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" class="fa-solid fa-gear menu_item"/>
                         <menuitem label="Rotacion Productos" id="btnRotacionProducto" class="fa-solid fa-gear menu_item"/>
+                        <menuitem label="Lista de cierre de caja" id="btnListarCierre" /> 
                     </menupopup>
                 </menu>
                 <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" visible="false" class="menu_child" />
