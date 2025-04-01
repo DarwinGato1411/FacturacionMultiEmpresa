@@ -200,6 +200,7 @@
                                 <div class="fa-solid fa-key icon"></div>
                                 <textbox 
                                     type="password"
+                                    onChange="@command('validarFirma')"
                                     value="@bind(vm.tipoambiente.amClaveAccesoSri)" 
                                     placeholder="Clave SRI"
                                     class="input_text"
