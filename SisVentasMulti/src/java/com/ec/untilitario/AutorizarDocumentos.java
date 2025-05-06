@@ -659,6 +659,8 @@ public class AutorizarDocumentos {
     }
 
     //</editor-fold>
+    
+    
     //<editor-fold defaultstate="collapsed" desc=" ARMAR GUIA DE REMISION">  
     public String generaXMLGuiaRemision(Guiaremision valor, Tipoambiente amb, String folderDestino, String nombreArchivoXML) {
         FileOutputStream out;
