@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="puntoventa" language="groovy" pageWidth="212" pageHeight="400" columnWidth="190" leftMargin="9" rightMargin="13" topMargin="2" bottomMargin="20" isIgnorePagination="true">
 	<property name="ireport.zoom" value="2.727272727272727"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="527"/>
+	<property name="ireport.y" value="477"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -90,7 +90,8 @@ where dt.id_factura=$P{id_factura}]]>
 	</parameter>
 	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from factura fc where fc.ruc_empresa=$P{rucEmpresa} and fc.puntoemision=$P{puntoEmision} and fc.codestablecimiento=$P{codEstablecimiento} and fc.fac_numero=$P{numfactura};]]>
+		<![CDATA[select * from factura fc where fc.ruc_empresa=$P{rucEmpresa} and fc.puntoemision=$P{puntoEmision} and fc.codestablecimiento=$P{codEstablecimiento} and fc.fac_numero=$P{numfactura}
+and fc.am_codigo='2';]]>
 	</queryString>
 	<field name="id_factura" class="java.lang.Integer"/>
 	<field name="id_estado" class="java.lang.Integer"/>
