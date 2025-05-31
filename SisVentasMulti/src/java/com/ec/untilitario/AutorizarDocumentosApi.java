@@ -374,13 +374,13 @@ public class AutorizarDocumentosApi {
                         + "            <precioUnitario>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento(), 5) + "</precioUnitario>\n"
                         + (item.getTieneSubsidio() ? subsidio : "")
                         + "            <descuento>" + ArchivoUtils.redondearDecimales(item.getDetCantpordescuento(), 2) + "</descuento>\n"
-                        + "            <precioTotalSinImpuesto>" + ArchivoUtils.redondearDecimales(item.getDetSubtotaldescuento().multiply(item.getDetCantidad()), 2) + "</precioTotalSinImpuesto>\n"
+                        + "            <precioTotalSinImpuesto>" + ArchivoUtils.redondearDecimales(item.getDetSubtotal(), 2) + "</precioTotalSinImpuesto>\n"
                         + "            <impuestos>\n"
                         + "                <impuesto>\n"
                         + "                    <codigo>" + item.getDetCodIva() + "</codigo>\n"
                         + "                    <codigoPorcentaje>" + item.getDetCodPorcentaje() + "</codigoPorcentaje>\n"
                         + "                    <tarifa>" + item.getDetTarifa() + "</tarifa>\n"
-                        + "                    <baseImponible>" + ArchivoUtils.redondearDecimales((item.getDetSubtotaldescuento().add(item.getDetValorIce())).multiply(item.getDetCantidad()), 2) + "</baseImponible>\n"
+                        + "                    <baseImponible>" + ArchivoUtils.redondearDecimales((item.getDetSubtotal().add(item.getDetValorIce())), 2) + "</baseImponible>\n"
                         + "                    <valor>" + item.getDetIva().setScale(2, RoundingMode.FLOOR) + "</valor>\n"
                         + "                </impuesto>\n"
                         + (valor.getGrabaICE() ? valor.getFacValorIce().doubleValue() > 0 ? ICEIMPUESTO : "" : "")
