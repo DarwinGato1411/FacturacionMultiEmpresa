@@ -1031,7 +1031,8 @@ public class ServiciosRest {
             System.out.println("pathEnvio " + pathEnvio);
             ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
             response.setDocumento("FACTURA");
-            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
+            response.setUrlReporte("https://api.clouget.net/recursos/recursos/pdf/" + nombreArchivo);
+//            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
 //            response.setUrlReporte("https://consultoriointegradodecardiologia.com/recursos/recursos/pdf/" + nombreArchivo);
         } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
             response.setDocumento("FACTURA");
@@ -1060,7 +1061,8 @@ public class ServiciosRest {
             System.out.println("pathEnvio " + pathEnvio);
             ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "TICKET", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
             response.setDocumento("TICKET");
-            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
+            response.setUrlReporte("https://api.clouget.net/recursos/recursos/pdf/" + nombreArchivo);
+//            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/pdf/" + nombreArchivo);
         } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | NamingException | JRException e) {
             response.setDocumento("TICKET");
             response.setUrlReporte("Error al generar el pdf " + e.getMessage());
@@ -1326,7 +1328,8 @@ public class ServiciosRest {
             wb.write(archivo);
             archivo.close();
             response.setDocumento("EXCEL");
-            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/excel/" + nombreArchivo);
+            response.setUrlReporte("https://api.clouget.net/recursos/recursos/excel/" + nombreArchivo);
+//            response.setUrlReporte("http://148.113.182.154:8080/recursos/recursos/excel/" + nombreArchivo);
         } catch (IOException e) {
             System.out.println("error " + e.getMessage());
             response.setDocumento("ERROR");
