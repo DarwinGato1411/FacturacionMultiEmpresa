@@ -22,7 +22,7 @@ public class DetFacturaMapper {
         respuesta.setPrecioProductoSinSubsidio(valor.getPrecioProductoSinSubsidio());
         respuesta.setDetSubtotaldescuento(valor.getDetSubtotaldescuento().multiply(valor.getDetCantidad()));
         respuesta.setDetCantidad(valor.getDetCantidad());
-        respuesta.setDetSubtotal(valor.getDetSubtotal());
+        respuesta.setDetSubtotal(valor.getDetSubtotaldescuento());
         respuesta.setDetCantpordescuento(valor.getDetCantpordescuento());
         respuesta.setDetCodIva(valor.getDetCodIva());
         respuesta.setDetCodPorcentaje(valor.getDetCodPorcentaje());
