@@ -104,6 +104,7 @@ public class NuevoProducto {
             this.producto.setProdUnidadConversion(producto.getProdUnidadConversion() == null ? "UNIDAD" : producto.getProdUnidadConversion());
             this.producto.setProdFactorConversion(producto.getProdFactorConversion() == null ? BigDecimal.ONE : producto.getProdFactorConversion());
             prodPrecioSubtotal = this.producto.getPordCostoVentaFinal().divide(BigDecimal.valueOf(1.12), 5, RoundingMode.FLOOR);
+            this.producto.setProdActivo(Boolean.TRUE);
             accion = "update";
         } else {
             this.producto = new Producto(0, Boolean.FALSE);
@@ -130,7 +131,7 @@ public class NuevoProducto {
 
 //            this.producto.setProdIva(BigDecimal.valueOf(15));
             this.producto.setProdPorcentajeIva(15);
-
+            this.producto.setProdActivo(Boolean.TRUE);
             accion = "create";
         }
         verificarTipoProducto();
@@ -401,7 +402,7 @@ public class NuevoProducto {
                         Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
                 return;
             }
-            producto.setCodTipoambiente(amb);
+//            producto.setCodTipoambiente(amb);
             if (conIva.equals("S")) {
                 producto.setProdGrabaIva(Boolean.TRUE);
             } else {
