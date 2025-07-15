@@ -11,7 +11,6 @@ import es.mityc.firmaJava.libreria.xades.XAdESSchemas;
 import es.mityc.javasign.xml.refs.InternObjectToSign;
 import es.mityc.javasign.xml.refs.ObjectToSign;
 import java.io.File;
-import java.security.KeyStoreException;
 import org.w3c.dom.Document;
 
 /**
@@ -53,7 +52,7 @@ public class XAdESBESSignature extends GenericXMLSignature {
      *
      * @param args Argumentos del programa
      */
-    public static void firmar(String xmlPath, String nomreArchivoFirmado, String ClaveFima, Tipoambiente amb, String FOLDER_BASE_FIRMADO) throws Exception {
+    public static void firmar(String xmlPath, String nomreArchivoFirmado, String ClaveFima, Tipoambiente amb, String FOLDER_BASE_FIRMADO) {
         XAdESBESSignature signature = new XAdESBESSignature(xmlPath);
         //clave para la firma electronica
         signature.setPassSignature(ClaveFima);

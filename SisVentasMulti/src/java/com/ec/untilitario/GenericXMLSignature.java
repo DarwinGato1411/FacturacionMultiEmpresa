@@ -78,7 +78,7 @@ public abstract class GenericXMLSignature {
         this.passSignature = passSignature;
     }
 
-    protected void execute() throws  Exception {
+    protected void execute() {
 
         // Obtencion del gestor de claves
         KeyStore keyStore = getKeyStore();
@@ -92,31 +92,31 @@ public abstract class GenericXMLSignature {
         // Obtencion del certificado para firmar. Utilizaremos el primer
         // certificado del almacen.           
         X509Certificate certificate = null;
-//        try {
+        try {
             certificate = (X509Certificate) keyStore.getCertificate(alias);
             if (certificate == null) {
                 System.err.println("No existe ningún certificado para firmar.");
                 return;
             }
-//        } catch (KeyStoreException e1) {
-//            e1.printStackTrace();
-//        }
+        } catch (KeyStoreException e1) {
+            e1.printStackTrace();
+        }
 
         // Obtención de la clave privada asociada al certificado
         PrivateKey privateKey = null;
         KeyStore tmpKs = keyStore;
-//        try {
+        try {
             privateKey = (PrivateKey) tmpKs.getKey(alias, this.passSignature.toCharArray());
-//        } catch (UnrecoverableKeyException e) {
-//            System.err.println("No existe clave privada para firmar.");
-//            e.printStackTrace();
-//        } catch (KeyStoreException e) {
-//            System.err.println("No existe clave privada para firmar.");
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            System.err.println("No existe clave privada para firmar.");
-//            e.printStackTrace();
-//        }
+        } catch (UnrecoverableKeyException e) {
+            System.err.println("No existe clave privada para firmar.");
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            System.err.println("No existe clave privada para firmar.");
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            System.err.println("No existe clave privada para firmar.");
+            e.printStackTrace();
+        }
 
         // Obtención del provider encargado de las labores criptográficas
         Provider provider = keyStore.getProvider();
@@ -134,14 +134,14 @@ public abstract class GenericXMLSignature {
 
         // Firmamos el documento
         Document docSigned = null;
-//        try {
+        try {
             Object[] res = firma.signFile(certificate, dataToSign, privateKey, provider);
             docSigned = (Document) res[0];
-//        } catch (Exception ex) {
-//            System.err.println("Error realizando la firma");
-//            ex.printStackTrace();
-//            return;
-//        }
+        } catch (Exception ex) {
+            System.err.println("Error realizando la firma");
+            ex.printStackTrace();
+            return;
+        }
 
         // Guardamos la firma a un fichero en el home del usuario
         String filePath = getPathOut() + File.separator + getSignatureFileName();

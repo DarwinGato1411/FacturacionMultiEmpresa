@@ -59,7 +59,7 @@ import org.zkoss.zul.Messagebox;
  *
  * @author gato
  */
-public class ListaNC {
+public class ListaNC1 {
 
     /*RUTAS PARA LOS ARCHIVPOS XML SRI*/
     private static String PATH_BASE = "";
@@ -81,7 +81,7 @@ public class ListaNC {
     private String amRuc = "";
     UserCredential credential = new UserCredential();
 
-    public ListaNC() {
+    public ListaNC1() {
 
         Session sess = Sessions.getCurrent();
         credential = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
@@ -157,9 +157,8 @@ public class ListaNC {
 
             Map<String, Object> parametros = new HashMap<String, Object>();
 
-            //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
+            parametros.put("tipoambiente", amb.getCodTipoambiente());
             parametros.put("numfactura", numeroFactura);
-            parametros.put("codTipoAmbiente", amb.getCodTipoambiente());
 
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -280,7 +279,7 @@ public class ListaNC {
     }
 
     public static void setPATH_BASE(String PATH_BASE) {
-        ListaNC.PATH_BASE = PATH_BASE;
+        ListaNC1.PATH_BASE = PATH_BASE;
     }
 
     public Tipoambiente getAmb() {
@@ -363,9 +362,13 @@ public class ListaNC {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
-
+        try {
+            XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+            Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+            return;
+        }
         f = new File(pathArchivoFirmado);
 
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
@@ -397,12 +400,12 @@ public class ListaNC {
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
 
                             String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
-                            String smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : "";
+                            String smsInfo = autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional();
                             nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
                             if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
                                 nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
                             }
-                            valor.setDetalleSri(smsInfo != null ? smsInfo : "");
+
                             valor.setMensajesri(texto);
                             valor.setEstadosri(autorizacion.getEstado());
 
@@ -424,9 +427,7 @@ public class ListaNC {
                             fEnvio = new File(archivoEnvioCliente);
 
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "NCRE", amb);
-//                            parametros.put("numfactura", valor.getFacNumero());
-//                            parametros.put("tipoambiente", amb.getCodTipoambiente());
+                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
 
@@ -456,7 +457,7 @@ public class ListaNC {
 
                     }
                 } catch (RespuestaAutorizacionException ex) {
-                    Logger.getLogger(ListaNC.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ListaNC1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
@@ -467,8 +468,7 @@ public class ListaNC {
                 servicioNotaCredito.modificar(valor);
             }
         } else {
-            String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
-            valor.setDetalleSri(smsInfo);
+
             valor.setMensajesri(resSolicitud.getEstado());
             servicioNotaCredito.modificar(valor);
         }
@@ -547,9 +547,13 @@ public class ListaNC {
         /*amb.getAmClaveAccesoSri() es el la clave proporcionada por el SRI
         archivo es la ruta del archivo xml generado
         nomre del archivo a firmar*/
-        XAdESBESSignature.firmar(archivo, nombreArchivoXML,
-                amb.getAmClaveAccesoSri(), amb, folderFirmado);
-
+        try {
+            XAdESBESSignature.firmar(archivo, nombreArchivoXML,
+                    amb.getAmClaveAccesoSri(), amb, folderFirmado);
+        } catch (Exception e) {
+            Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+            return;
+        }
         f = new File(pathArchivoFirmado);
 
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
@@ -584,12 +588,12 @@ public class ListaNC {
                 if (!autorizacion.getEstado().equals("AUTORIZADO")) {
 
                     String texto = autorizacion.getMensajes().getMensaje().get(0).getMensaje();
-                    String smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : "";
+                    String smsInfo = autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional();
                     nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getMensaje().getBytes());
                     if (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null) {
                         nuevo.write(autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional().getBytes());
                     }
-                    valor.setDetalleSri(smsInfo);
+
                     valor.setMensajesri(texto);
                     valor.setMensajeInf(smsInfo);
                     nuevo.flush();
@@ -601,16 +605,21 @@ public class ListaNC {
 
                     /*se agrega la la autorizacion, fecha de autorizacion y se firma nuevamente*/
                     archivoEnvioCliente = aut.generaXMLNotaCreditoDebito(valor, amb, folderGenerados, nombreArchivoXML, "04");
-                    XAdESBESSignature.firmar(archivoEnvioCliente,
-                            nombreArchivoXML,
-                            amb.getAmClaveAccesoSri(),
-                            amb, foldervoAutorizado);
 
+                    try {
+                        XAdESBESSignature.firmar(archivoEnvioCliente,
+                                nombreArchivoXML,
+                                amb.getAmClaveAccesoSri(),
+                                amb, foldervoAutorizado);
+                    } catch (Exception e) {
+                        Clients.showNotification("Verifique su firma electronica y su contraseña ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                        return;
+                    }
                     fEnvio = new File(archivoEnvioCliente);
                 }
 
                 System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
-                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "NCRE", amb);
+                ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                 /*GUARDA EL PATH PDF CREADO*/
 
@@ -640,7 +649,7 @@ public class ListaNC {
             }
             consultarFacturaFecha();
         } catch (RespuestaAutorizacionException ex) {
-            Logger.getLogger(ListaNC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListaNC1.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -691,7 +700,6 @@ public class ListaNC {
             //  parametros.put("codUsuario", String.valueOf(credentialLog.getAdUsuario().getCodigoUsuario()));
             parametros.put("numfactura", valor.getFacNumero());
             parametros.put("tipoambiente", amb.getCodTipoambiente());
-
             if (con != null) {
                 System.out.println("Conexión Realizada Correctamenteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
             }
@@ -734,21 +742,4 @@ public class ListaNC {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
         }
     }
-
-    @Command
-    @NotifyChange({"lstCreditoDebitos", "fechafin", "fechainicio"})
-    public void eliminarNC(@BindingParam("valor") NotaCreditoDebito valor) throws JRException, IOException, NamingException, SQLException {
-        try {
-            if (Messagebox.show("Desea eliminar la nota de credito" + "\n Desea continuar?", "Question", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION) == Messagebox.OK) {
-                servicioNotaCredito.eliminar(valor);
-                consultarFacturaFecha();
-            } else {
-                Clients.showNotification("Solicitud cancelada",
-                        Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 1000, true);
-            }
-        } catch (Exception e) {
-            Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
-        }
-    }
-
 }
