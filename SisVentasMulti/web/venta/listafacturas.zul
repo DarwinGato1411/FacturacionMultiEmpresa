@@ -145,7 +145,7 @@
                                  nonselectableTags=""  mold="paging" pageSize="12"  >
                             <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                         
-                            <listhead> 
+                            <listhead class="encabezadolf"> 
                                 <listheader width="40px"  label="" align="rigth" />  
                                 <listheader width="8%"  
                                             sort="auto(facNumeroText)">
@@ -199,7 +199,7 @@
                             
                         
                             <template name="model">                                                            
-                                <listitem>
+                                <listitem class="tablalf">
                                     <listcell zclass = "mycss-listcell">
                                         <image  zclass = "mycss-listcell"  src="/iconos/inf.png"   
                                                 class="btn btn btn-secondary btn-sm grow"            
