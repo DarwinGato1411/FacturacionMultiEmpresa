@@ -29,6 +29,7 @@ public class DetFacturaMapper {
         respuesta.setDetTarifa(valor.getDetTarifa());
         respuesta.setDetValorIce(valor.getDetValorIce());
         respuesta.setDetIva(valor.getDetIva());
+        respuesta.setDetDescripcion2(valor.getDescripcionProducto2() == null ? "" : valor.getDescripcionProducto2());
         return respuesta;
 
     }
@@ -48,6 +49,7 @@ public class DetFacturaMapper {
         respuesta.setDetTarifa(valor.getDetTarifa());
         respuesta.setDetValorIce(valor.getDetValorIce());
         respuesta.setDetIva(valor.getDetIva());
+        respuesta.setDescripcionProducto2(valor.getDetDescripcion2() == null ? "" : valor.getDetDescripcion2());
         return respuesta;
     }
 }

@@ -16,6 +16,7 @@ public class DetFacturaDao {
     private Boolean tieneSubsidio;
     private String codigoProducto;
     private String descripcionProducto;
+     private String descripcionProducto2;
     private BigDecimal precioProductoSinSubsidio;
     private BigDecimal detSubtotaldescuento;
     private BigDecimal detCantidad;
@@ -129,6 +130,14 @@ public class DetFacturaDao {
 
     public void setDetTarifa(BigDecimal detTarifa) {
         this.detTarifa = detTarifa;
+    }
+
+    public String getDescripcionProducto2() {
+        return descripcionProducto2;
+    }
+
+    public void setDescripcionProducto2(String descripcionProducto2) {
+        this.descripcionProducto2 = descripcionProducto2;
     }
 
 }

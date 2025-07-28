@@ -16,8 +16,8 @@ public class DetNotaCreditoMapper {
     
     public static DetalleNotaDebitoCredito daoToEntity(DetalleNotaCreditoDebitoDao valor) {
         DetalleNotaDebitoCredito respuesta = new DetalleNotaDebitoCredito();
-        respuesta.setCodigoProducto(valor.getCodigoInterno());
-        respuesta.setDetDescripcion(valor.getDescripcion());
+        respuesta.setCodigoProducto(valor.getCodigoProducto());
+        respuesta.setDetDescripcion(valor.getDescripcionProducto());
         respuesta.setDetSubtotal(valor.getPrecioUnitario());
         respuesta.setDetCantpordescuento(valor.getDescuento());
         respuesta.setDetSubtotaldescuentoporcantidad(valor.getPrecioTotalSinImpuesto());

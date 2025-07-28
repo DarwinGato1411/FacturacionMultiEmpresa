@@ -54,6 +54,8 @@ public class DetalleFactura implements Serializable {
     private BigDecimal detCantidad;
     @Column(name = "det_descripcion")
     private String detDescripcion;
+      @Column(name = "det_descripcion2")
+    private String detDescripcion2;
     @Column(name = "det_subtotal")
     private BigDecimal detSubtotal;
     @Column(name = "det_total")
@@ -484,4 +486,14 @@ public class DetalleFactura implements Serializable {
     public String toString() {
         return "com.ec.entidad.DetalleFactura[ idDetalle=" + idDetalle + " ]";
     }
+
+    public String getDetDescripcion2() {
+        return detDescripcion2;
+    }
+
+    public void setDetDescripcion2(String detDescripcion2) {
+        this.detDescripcion2 = detDescripcion2;
+    }
+    
+    
 }

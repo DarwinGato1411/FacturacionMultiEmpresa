@@ -98,9 +98,9 @@ import java.security.cert.X509Certificate;
 
 @Path("/autorizar")
 public class ServiciosRest {
-
+    
     ServicioFactura servicioFactura = new ServicioFactura();
-
+    
     ServicioDetalleFactura servicioDetalleFactura = new ServicioDetalleFactura();
     ServicioRetencionCompra servicioRetencion = new ServicioRetencionCompra();
     ServicioDetalleRetencionCompra servicioDetalleRetencionCompra = new ServicioDetalleRetencionCompra();
@@ -111,7 +111,7 @@ public class ServiciosRest {
     ServicioTipoAmbiente servicioTipoAmbiente = new ServicioTipoAmbiente();
     ServicioNotaCredito servicioNotaCredito = new ServicioNotaCredito();
     ServicioDetalleNotaCredito servicioDetalleNotaCredito = new ServicioDetalleNotaCredito();
-
+    
     @POST
     @Path("/cargar-firma/")
     @Consumes({javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA})
@@ -120,13 +120,13 @@ public class ServiciosRest {
                 + "   " + firma.getOriginalFilename() + "   " + firma.getName() + "   " + firma.getSize());
         return "";
     }
-
+    
     @POST
     @Path("/factura-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getEnviarFacturas(@RequestBody FacturaDao prod) throws Exception {
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getFacNumeroText());
@@ -135,7 +135,7 @@ public class ServiciosRest {
 
         //Rellenar de 0 el numero de factura
         prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
-
+        
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
@@ -146,22 +146,22 @@ public class ServiciosRest {
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
         String archivoGenerado = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "GENERADO" + File.separator;
-
+        
         File folderNuevo = new File(folderFirmado);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         folderNuevo = new File(folderArchivos);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         folderNuevo = new File(pathArchivoNoAutorizado);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         folderNuevo = new File(archivoEnvioCliente);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
@@ -170,7 +170,7 @@ public class ServiciosRest {
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, archivoGenerado, nombreArchivo, Boolean.FALSE, new Date());
@@ -189,16 +189,17 @@ public class ServiciosRest {
         f = new File(folderFirmado + File.separator + nombreArchivo);
 //
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-
+        
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
         facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
         /*PRUEBAS  
          PRODUCCION */
         RespuestaSolicitud resSolicitud = api.validar(datos, prod.getInfoAutoriza().getAmbiente());
-
+        
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
             facturaResponse.setEstadoSri(resSolicitud.getEstado());
+            
             if (resSolicitud.getEstado().equals("RECIBIDA")) {
                 try {
                     System.out.println("RECIBIDA");
@@ -219,7 +220,7 @@ public class ServiciosRest {
                             } else {
                                 String texto = "Sin Identificar el error";
                                 String smsInfo = "Sin identificar el error";
-
+                                
                                 if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                                     texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? (autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() != null ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : "") : " ERROR SIN DEFINIR " + autorizacion.getEstado();
@@ -228,23 +229,23 @@ public class ServiciosRest {
 //                                    }
 //                                    nuevo.write(smsInfo.getBytes());
                                 }
-
+                                
                                 facturaResponse.setEstadoSri(autorizacion.getEstado());
                                 facturaResponse.setMensajeError(texto);
                                 if (smsInfo != null) {
                                     facturaResponse.setDetalleError(smsInfo);
                                 }
-
+                                
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
-
+                            facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
                             Date fechaAutoriza = null;
                             try {
                                 String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                                 fechaAutoriza = sm.parse(fechaForm);
                                 facturaResponse.setFechaAtorizacion(fechaAutoriza);
-
+                                
                             } catch (java.text.ParseException ex) {
                                 Logger.getLogger(ListaFacturas.class
                                         .getName()).log(Level.SEVERE, null, ex);
@@ -271,7 +272,7 @@ public class ServiciosRest {
                             factura.setFacFechaAutorizacion(fechaAutoriza);
                             servicioFactura.crear(factura);
                             DetalleFactura detalleFactura = new DetalleFactura();
-
+                            
                             for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
                                 detalleFactura = new DetalleFactura();
                                 detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
@@ -279,7 +280,7 @@ public class ServiciosRest {
                                 servicioDetalleFactura.crear(detalleFactura);
                             }
                             /*GENERAR EL PDF PARA ENVIAR AL CLIENTE*/
-
+                            
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
                             ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getInfoAutoriza().getRutaLogo());
 
@@ -301,9 +302,9 @@ public class ServiciosRest {
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
-
+                            
                         }
-
+                        
                     }
                 } catch (RespuestaAutorizacionException ex) {
                     Logger.getLogger(ListaFacturas.class
@@ -314,29 +315,29 @@ public class ServiciosRest {
                 String detalle = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
                 System.out.println("NO RECIBIDA " + resSolicitud.getEstado());
                 System.out.println("Mensaje " + smsInfo);
-
+                
                 facturaResponse.setMensajeError(smsInfo);
                 facturaResponse.setDetalleError(detalle);
-
+                
             }
         }
         return facturaResponse;
     }
-
+    
     @POST
     @Path("/factura-reenviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getReenvioFacturas(@RequestBody FacturaDao prod) throws Exception {
-
+        
         prod.setFacNumeroText(rellenarConCeros(prod.getFacNumero(), 9));
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getFacNumeroText());
         facturaResponse.setIdentificacionComprador(prod.getIdentificacionComprador());
         facturaResponse.setRazonSocialComprador(prod.getRazonSocialComprador());
-
+        
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
@@ -346,27 +347,27 @@ public class ServiciosRest {
         String pathArchivoFirmado = folderFirmado + nombreArchivo;
         String pathArchivoNoAutorizado = folderArchivos + File.separator + "NOAUTORIZADO" + File.separator;
         String archivoEnvioCliente = prod.getInfoAutoriza().getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
-
+        
         File folderNuevo = new File(folderFirmado);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         folderNuevo = new File(folderArchivos);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         folderNuevo = new File(pathArchivoNoAutorizado);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         folderNuevo = new File(archivoEnvioCliente);
         if (!folderNuevo.exists()) {
             folderNuevo.mkdirs();
         }
-
+        
         final String secretKey = "AFSOTEC2023";
         AutorizarDocumentosApi api = new AutorizarDocumentosApi();
         String archivo = api.generaXMLFactura(prod, prod.getInfoAutoriza().getRutaArchivo(), nombreArchivo, Boolean.FALSE, new Date());
@@ -385,10 +386,10 @@ public class ServiciosRest {
         f = new File(folderFirmado + File.separator + nombreArchivo);
 //
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-
+        
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
         facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
-
+        
         try {
             RespuestaComprobante resComprobante = api.autorizarComprobante(claveAccesoComprobante, prod.getInfoAutoriza().getAmbiente());
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
@@ -407,18 +408,18 @@ public class ServiciosRest {
                     } else {
                         String texto = "Sin Identificar el error";
                         String smsInfo = "Sin identificar el error";
-
+                        
                         if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                             texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                             smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
 //                            nuevo.write(smsInfo.getBytes());
 //                            nuevo.write(smsInfo.getBytes());
                         }
-
+                        
                         facturaResponse.setEstadoSri(autorizacion.getEstado());
                         facturaResponse.setMensajeError(texto);
                         facturaResponse.setDetalleError(smsInfo);
-
+                        
                     }
                 } else {
                     facturaResponse.setEstadoSri(autorizacion.getEstado());
@@ -427,7 +428,7 @@ public class ServiciosRest {
                         String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                         fechaAutoriza = sm.parse(fechaForm);
                         facturaResponse.setFechaAtorizacion(fechaAutoriza);
-
+                        
                     } catch (java.text.ParseException ex) {
                         Logger.getLogger(ListaFacturas.class
                                 .getName()).log(Level.SEVERE, null, ex);
@@ -435,7 +436,7 @@ public class ServiciosRest {
 //                     
 //                            archivoEnvioCliente = api.generaXMLFactura(valor, amb, foldervoAutorizado, nombreArchivoXML, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                     archivoEnvioCliente = api.generaXMLFactura(prod, archivoEnvioCliente, nombreArchivo, Boolean.TRUE, autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
-
+                    
                     fEnvio = new File(archivoEnvioCliente);
                     servicioFactura.eliminarFactura(prod.getFacNumero(), prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa());
                     /*GUARDA EL PATH PDF CREADO*/
@@ -443,11 +444,11 @@ public class ServiciosRest {
                     factura.setFacClaveAcceso(claveAccesoComprobante);
                     factura.setFacFechaAutorizacion(fechaAutoriza);
                     factura.setFacClaveAutorizacion(claveAccesoComprobante);
-
+                    
                     factura.setEstadosri(autorizacion.getEstado());
                     servicioFactura.crear(factura);
                     DetalleFactura detalleFactura = new DetalleFactura();
-
+                    
                     for (DetFacturaDao detFacturaDao : prod.getDetFacturaDao()) {
                         detalleFactura = new DetalleFactura();
                         detalleFactura = DetFacturaMapper.daoToFactura(detFacturaDao);
@@ -455,7 +456,7 @@ public class ServiciosRest {
                         servicioDetalleFactura.crear(detalleFactura);
                     }
                     /*GENERAR EL PDF PARA ENVIAR AL CLIENTE*/
-
+                    
                     System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
                     ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getInfoAutoriza().getRutaLogo());
 
@@ -475,11 +476,11 @@ public class ServiciosRest {
                                 prod.getRazonSocialComprador(), amb,
                                 prod.getNombreComercialEmpresa());
                     }
-
+                    
                     facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
-
+                    
                 }
-
+                
             }
         } catch (RespuestaAutorizacionException ex) {
             Logger.getLogger(ListaFacturas.class
@@ -497,7 +498,7 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public String encrypted(@RequestBody InfoAutorizaDao info) throws Exception {
         final String secretKey = "AFSOTEC2023";
-
+        
         String originalString = info.getPasswordFirma();
         String encryptedString = ArchivoUtils.encrypt(originalString, secretKey);
         String decryptedString = ArchivoUtils.decrypt(encryptedString, secretKey);
@@ -507,50 +508,50 @@ public class ServiciosRest {
 //        System.out.println(decryptedString);
         return encryptedString;
     }
-
+    
     @POST
     @Path("/decrypted/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public String decrypted(@RequestBody InfoAutorizaDao info) throws Exception {
         final String secretKey = "AFSOTEC2023";
-
+        
         String originalString = info.getPasswordFirma();
 //        String encryptedString = ArchivoUtils.encrypt(originalString, secretKey);
         String decryptedString = ArchivoUtils.decrypt(originalString, secretKey);
-
+        
         System.out.println(originalString);
 //        System.out.println(encryptedString);
         System.out.println(decryptedString);
         return decryptedString;
     }
-
+    
     public static String rellenarConCeros(int numero, int longitudDeseada) {
         String numeroStr = String.valueOf(numero);
-
+        
         if (numeroStr.length() >= longitudDeseada) {
             return numeroStr;
         }
-
+        
         int cerosPorRellenar = longitudDeseada - numeroStr.length();
         StringBuilder builder = new StringBuilder();
-
+        
         for (int i = 0; i < cerosPorRellenar; i++) {
             builder.append("0");
         }
-
+        
         builder.append(numeroStr);
         return builder.toString();
     }
-
+    
     @POST
     @Path("/retencion-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getEnviarRetencion(@RequestBody RetencionCompraDao prod) throws Exception {
-
+        
         prod.setSecuencialText(rellenarConCeros(prod.getSecuencial(), 9));
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getRetencionFecha());
         facturaResponse.setFacNumeroText(prod.getSecuencialText());
@@ -578,13 +579,13 @@ public class ServiciosRest {
         f = new File(folderFirmado + File.separator + nombreArchivo);
 //
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-
+        
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
         facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
         /*PRUEBAS  
          PRODUCCION */
         RespuestaSolicitud resSolicitud = api.validar(datos, prod.getInfoAutoriza().getAmbiente());
-
+        
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
             facturaResponse.setEstadoSri(resSolicitud.getEstado());
@@ -601,7 +602,7 @@ public class ServiciosRest {
                         if (autorizacion.getComprobante() != null) {
                             nuevo.write(autorizacion.getComprobante().getBytes());
                         }
-
+                        
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
 //                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
@@ -609,25 +610,25 @@ public class ServiciosRest {
                             } else {
                                 String texto = "Sin Identificar el error";
                                 String smsInfo = "Sin identificar el error";
-
+                                
                                 if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                                     texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     nuevo.write(smsInfo.getBytes());
                                     nuevo.write(smsInfo.getBytes());
                                 }
-
+                                
                                 facturaResponse.setEstadoSri(autorizacion.getEstado());
                                 facturaResponse.setMensajeError(texto);
                                 facturaResponse.setDetalleError(smsInfo);
-
+                                
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
                             try {
                                 String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
-
+                                
                             } catch (java.text.ParseException ex) {
                                 Logger.getLogger(ListaFacturas.class
                                         .getName()).log(Level.SEVERE, null, ex);
@@ -658,14 +659,14 @@ public class ServiciosRest {
                                 if (detRetencionDao.getTireCodigo() != null) {
                                     detalleRetencion.setTireCodigo(servicioTipoRetencion.findOneTireCodigo(detRetencionDao.getTireCodigo()));
                                 }
-
+                                
                                 if (detRetencionDao.getTipivaretValor() != null) {
                                     detalleRetencion.setIdTipoivaretencion(servicioTipoIvaRetencion.finTipoivaretencion(detRetencionDao.getTipivaretValor()));
                                 }
                                 detalleRetencion = DetRetencionMapper.daoToRetencion(detRetencionDao);
                                 detalleRetencion.setRcoCodigo(retencinon);
                                 servicioDetalleRetencionCompra.crear(detalleRetencion);
-
+                                
                             }
 //                            /*envia el mail*/
 //                            String[] attachFiles = new String[2];
@@ -686,7 +687,7 @@ public class ServiciosRest {
 //                            /*INCLUIMOS EL XML PARA LA RESPUESTA*/
 //                            facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
                         }
-
+                        
                     }
                 } catch (RespuestaAutorizacionException ex) {
                     Logger.getLogger(ListaFacturas.class
@@ -697,21 +698,21 @@ public class ServiciosRest {
                 String detalle = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
                 System.out.println("NO RECIBIDA " + resSolicitud.getEstado());
                 System.out.println("Mensaje " + smsInfo);
-
+                
                 facturaResponse.setMensajeError(smsInfo);
                 facturaResponse.setDetalleError(detalle);
-
+                
             }
         }
         return facturaResponse;
     }
-
+    
     @POST
     @Path("/nota-credito-debito-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getEnviarNotaCreditoDebito(@RequestBody NotaCreditoDebitoDao prod) throws Exception {
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getSecuencialText());
@@ -720,7 +721,7 @@ public class ServiciosRest {
 
         //Rellenar de 0 el numero de factura
         prod.setSecuencialText(rellenarConCeros(prod.getSecuencial(), 9));
-
+        
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
@@ -741,13 +742,13 @@ public class ServiciosRest {
         f = new File(folderFirmado + File.separator + nombreArchivo);
 //
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-
+        
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
         facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
         /*PRUEBAS  
          PRODUCCION */
         RespuestaSolicitud resSolicitud = api.validar(datos, prod.getInfoAutoriza().getAmbiente());
-
+        
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
             facturaResponse.setEstadoSri(resSolicitud.getEstado());
@@ -764,7 +765,7 @@ public class ServiciosRest {
                         if (autorizacion.getComprobante() != null) {
                             nuevo.write(autorizacion.getComprobante().getBytes());
                         }
-
+                        
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
 //                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
@@ -772,26 +773,26 @@ public class ServiciosRest {
                             } else {
                                 String texto = "Sin Identificar el error";
                                 String smsInfo = "Sin identificar el error";
-
+                                
                                 if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                                     texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     nuevo.write(smsInfo.getBytes());
                                     nuevo.write(smsInfo.getBytes());
                                 }
-
+                                
                                 facturaResponse.setEstadoSri(autorizacion.getEstado());
                                 facturaResponse.setMensajeError(texto);
                                 facturaResponse.setDetalleError(smsInfo);
-
+                                
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
-
+                            
                             try {
                                 String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
-
+                                facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
                             } catch (java.text.ParseException ex) {
                                 Logger.getLogger(ListaFacturas.class
                                         .getName()).log(Level.SEVERE, null, ex);
@@ -807,7 +808,7 @@ public class ServiciosRest {
 //                            servicioFactura.modificar(valor);
 
                             fEnvio = new File(archivoEnvioCliente);
-
+                            
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
 //                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), valor.getFacNumero(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
@@ -839,9 +840,9 @@ public class ServiciosRest {
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
-
+                            
                         }
-
+                        
                     }
                 } catch (RespuestaAutorizacionException ex) {
                     Logger.getLogger(ListaFacturas.class
@@ -852,21 +853,21 @@ public class ServiciosRest {
                 String detalle = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
                 System.out.println("NO RECIBIDA " + resSolicitud.getEstado());
                 System.out.println("Mensaje " + smsInfo);
-
+                
                 facturaResponse.setMensajeError(smsInfo);
                 facturaResponse.setDetalleError(detalle);
-
+                
             }
         }
         return facturaResponse;
     }
-
+    
     @POST
     @Path("/guia-remision-enviar/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getEnviarGuiaRemision(@RequestBody GuiaremisionDao prod) throws Exception {
-
+        
         FacturaResponse facturaResponse = new FacturaResponse();
         facturaResponse.setFacFecha(prod.getFacFecha());
         facturaResponse.setFacNumeroText(prod.getSecuencialText());
@@ -875,7 +876,7 @@ public class ServiciosRest {
 
         //Rellenar de 0 el numero de factura
         prod.setSecuencialText(rellenarConCeros(prod.getSecuencial(), 9));
-
+        
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         /*RUTA DE LOS ARCHIVOS*/
@@ -896,13 +897,13 @@ public class ServiciosRest {
         f = new File(folderFirmado + File.separator + nombreArchivo);
 //
         datos = ArchivoUtils.ConvertirBytes(pathArchivoFirmado);
-
+        
         String claveAccesoComprobante = ArchivoUtils.obtenerValorXML(f, "/*/infoTributaria/claveAcceso");
         facturaResponse.setClaveAutorizacion(claveAccesoComprobante);
         /*PRUEBAS  
          PRODUCCION */
         RespuestaSolicitud resSolicitud = api.validar(datos, prod.getInfoAutoriza().getAmbiente());
-
+        
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
             facturaResponse.setEstadoSri(resSolicitud.getEstado());
@@ -919,7 +920,7 @@ public class ServiciosRest {
                         if (autorizacion.getComprobante() != null) {
                             nuevo.write(autorizacion.getComprobante().getBytes());
                         }
-
+                        
                         if (!autorizacion.getEstado().equals("AUTORIZADO")) {
                             if (autorizacion.getEstado().equals("EN PROCESO")) {
 //                                Clients.showNotification("Autoriza con reenvio ", Clients.NOTIFICATION_TYPE_INFO, null, "middle_center", 3000, true);
@@ -927,40 +928,40 @@ public class ServiciosRest {
                             } else {
                                 String texto = "Sin Identificar el error";
                                 String smsInfo = "Sin identificar el error";
-
+                                
                                 if (!autorizacion.getMensajes().getMensaje().isEmpty()) {
                                     texto = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getMensaje() : "ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     smsInfo = autorizacion.getMensajes().getMensaje().size() > 0 ? autorizacion.getMensajes().getMensaje().get(0).getInformacionAdicional() : " ERROR SIN DEFINIR " + autorizacion.getEstado();
                                     nuevo.write(smsInfo.getBytes());
                                     nuevo.write(smsInfo.getBytes());
                                 }
-
+                                
                                 facturaResponse.setEstadoSri(autorizacion.getEstado());
                                 facturaResponse.setMensajeError(texto);
                                 facturaResponse.setDetalleError(smsInfo);
-
+                                
                             }
                         } else {
                             facturaResponse.setEstadoSri(autorizacion.getEstado());
-
+                            
                             try {
                                 String fechaForm = sm.format(autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime());
                                 facturaResponse.setFechaAtorizacion(sm.parse(fechaForm));
-
+                                
                             } catch (java.text.ParseException ex) {
                                 Logger.getLogger(ListaFacturas.class
                                         .getName()).log(Level.SEVERE, null, ex);
                             }
                             archivoEnvioCliente = api.generaXMLGuiaRemisionApi(prod, archivoEnvioCliente, nombreArchivo);
-
+                            
                             fEnvio = new File(archivoEnvioCliente);
-
+                            
                             System.out.println("PATH DEL ARCHIVO PARA ENVIAR AL CLIENTE " + archivoEnvioCliente);
 //                            ArchivoUtils.reporteGeneralPdfMail(archivoEnvioCliente.replace(".xml", ".pdf"), prod.getSecuencialText(), "FACT", amb);
 //                            ArchivoUtils.zipFile(fEnvio, archivoEnvioCliente);
                             /*GUARDA EL PATH PDF CREADO*/
                             Guiaremision guia = GuiaRemisionMapper.daoToGuiaremision(prod);
-
+                            
                             servicioGuiaRemision.crear(guia);
                             DetalleGuiaremision detalleGuia;
                             for (DetalleGuiaremisionDao detFacturaDao : prod.getDetalleGuiaRemision()) {
@@ -987,9 +988,9 @@ public class ServiciosRest {
 
                             /*INCLUIMOS EL XML PARA LA RESPUESTA*/
                             facturaResponse.setXmlAutorizado(autorizacion.getComprobante());
-
+                            
                         }
-
+                        
                     }
                 } catch (RespuestaAutorizacionException ex) {
                     Logger.getLogger(ListaFacturas.class
@@ -1000,10 +1001,10 @@ public class ServiciosRest {
                 String detalle = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
                 System.out.println("NO RECIBIDA " + resSolicitud.getEstado());
                 System.out.println("Mensaje " + smsInfo);
-
+                
                 facturaResponse.setMensajeError(smsInfo);
                 facturaResponse.setDetalleError(detalle);
-
+                
             }
         }
         return facturaResponse;
@@ -1016,18 +1017,18 @@ public class ServiciosRest {
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public PdfResponse getPdfFactura(@RequestBody PdfRequest prod) throws Exception {
         PdfResponse response = new PdfResponse();
-
+        
         try {
             String folderCliente = prod.getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
             String folderArchivos = prod.getRutaArchivo();
-
+            
             String nombreArchivo = prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".pdf";
             String pathEnvio = folderCliente + File.separator + nombreArchivo;
             String directoryName = System.getProperty("user.dir");
             String[] valores = directoryName.split("config");
             String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "pdf";
             pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
-
+            
             System.out.println("pathEnvio " + pathEnvio);
             ArchivoUtils.reporteGeneralPdfMail(pathEnvio.replace(".xml", ".pdf"), prod.getFacNumero(), "FACT", prod.getRucEmpresa(), prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), folderArchivos, prod.getRutaLogo());
             response.setDocumento("FACTURA");
@@ -1040,18 +1041,18 @@ public class ServiciosRest {
         }
         return response;
     }
-
+    
     @POST
     @Path("/pdf-ticket/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public PdfResponse getPdfTicket(@RequestBody PdfRequest prod) throws Exception {
         PdfResponse response = new PdfResponse();
-
+        
         try {
             String folderCliente = prod.getRutaArchivo() + File.separator + "ENVIARCLIENTE" + File.separator;
             String folderArchivos = prod.getRutaArchivo();
-
+            
             String nombreArchivo = "TK-" + prod.getIdentificacionComprador() + "-" + prod.getFacNumero() + ".pdf";
             String pathEnvio = folderCliente + File.separator + nombreArchivo;
             String directoryName = System.getProperty("user.dir");
@@ -1069,7 +1070,7 @@ public class ServiciosRest {
         }
         return response;
     }
-
+    
     @POST
     @Path("/excel-factura/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
@@ -1081,14 +1082,14 @@ public class ServiciosRest {
         SimpleDateFormat fhora = new SimpleDateFormat("HH:mm");
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd");
         String strDate = sm.format(date);
-
+        
         String nombreArchivo = "Facturas" + date.getTime() + ".xls";
-
+        
         String directoryName = System.getProperty("user.dir");
         String[] valores = directoryName.split("config");
         String rutaGeneraPdf = valores[0] + File.separator + "applications" + File.separator + "recursos" + File.separator + "recursos" + File.separator + "excel";
         String pathEnvio = rutaGeneraPdf + File.separator + nombreArchivo;
-
+        
         String pathSalida = pathEnvio;
         System.out.println("Direccion del reporte  " + pathSalida);
         try {
@@ -1116,41 +1117,41 @@ public class ServiciosRest {
             estiloCelda.setWrapText(true);
             estiloCelda.setAlignment((short) 2);
             estiloCelda.setFont(fuente);
-
+            
             HSSFCellStyle estiloCeldaInterna = wb.createCellStyle();
             estiloCeldaInterna.setWrapText(true);
             estiloCeldaInterna.setAlignment((short) 5);
             estiloCeldaInterna.setFont(fuente);
-
+            
             HSSFCellStyle estiloCelda1 = wb.createCellStyle();
             estiloCelda1.setWrapText(true);
             estiloCelda1.setFont(fuente);
-
+            
             HSSFRow r = null;
-
+            
             HSSFCell c = null;
             r = s.createRow(0);
-
+            
             HSSFCell chfe = r.createCell(j++);
             chfe.setCellValue(new HSSFRichTextString("Nº Factura"));
             chfe.setCellStyle(estiloCelda);
-
+            
             HSSFCell chfe1 = r.createCell(j++);
             chfe1.setCellValue(new HSSFRichTextString("CI/RUC"));
             chfe1.setCellStyle(estiloCelda);
-
+            
             HSSFCell chfe11 = r.createCell(j++);
             chfe11.setCellValue(new HSSFRichTextString("Cliente"));
             chfe11.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch1 = r.createCell(j++);
             ch1.setCellValue(new HSSFRichTextString("F Emision"));
             ch1.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch2 = r.createCell(j++);
             ch2.setCellValue(new HSSFRichTextString("Subtotal"));
             ch2.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch23 = r.createCell(j++);
             ch23.setCellValue(new HSSFRichTextString("Subtotal 0%"));
             ch23.setCellStyle(estiloCelda);
@@ -1160,14 +1161,14 @@ public class ServiciosRest {
             HSSFCell ch222 = r.createCell(j++);
             ch222.setCellValue(new HSSFRichTextString("Subtotal 15%"));
             ch222.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch3 = r.createCell(j++);
             ch3.setCellValue(new HSSFRichTextString("Iva 5%"));
             ch3.setCellStyle(estiloCelda);
             HSSFCell ch33 = r.createCell(j++);
             ch33.setCellValue(new HSSFRichTextString("Iva 15%"));
             ch33.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch4 = r.createCell(j++);
             ch4.setCellValue(new HSSFRichTextString("Total"));
             ch4.setCellStyle(estiloCelda);
@@ -1178,19 +1179,19 @@ public class ServiciosRest {
             HSSFCell ch6 = r.createCell(j++);
             ch6.setCellValue(new HSSFRichTextString("ESTADO SRI"));
             ch6.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch7 = r.createCell(j++);
             ch7.setCellValue(new HSSFRichTextString("CLAVE AUTORIZA"));
             ch7.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch8 = r.createCell(j++);
             ch8.setCellValue(new HSSFRichTextString("FECHA AUTORIZA"));
             ch8.setCellStyle(estiloCelda);
-
+            
             HSSFCell ch9 = r.createCell(j++);
             ch9.setCellValue(new HSSFRichTextString("OBSERVACIÓN"));
             ch9.setCellStyle(estiloCelda);
-
+            
             int rownum = 1;
             int i = 0;
             BigDecimal subTotal = BigDecimal.ZERO;
@@ -1202,51 +1203,51 @@ public class ServiciosRest {
             BigDecimal IVATotal5 = BigDecimal.ZERO;
             BigDecimal IVATotal15 = BigDecimal.ZERO;
             BigDecimal total = BigDecimal.ZERO;
-
+            
             for (Factura item : lstFacturas) {
                 i = 0;
                 System.out.println("PASA 4 ");
                 r = s.createRow(rownum);
-
+                
                 HSSFCell cf = r.createCell(i++);
                 cf.setCellValue(new HSSFRichTextString(item.getCodestablecimiento() + "-" + item.getPuntoemision() + "-" + item.getFacNumero().toString()));
-
+                
                 HSSFCell cf1 = r.createCell(i++);
                 cf1.setCellValue(new HSSFRichTextString(item.getIdentificacionComprador().toString()));
-
+                
                 HSSFCell cf11 = r.createCell(i++);
                 cf11.setCellValue(new HSSFRichTextString(item.getRazonSocialComprador().toString()));
-
+                
                 HSSFCell c0 = r.createCell(i++);
                 c0.setCellValue(new HSSFRichTextString(sm.format(item.getFacFecha())));
-
+                
                 HSSFCell c1 = r.createCell(i++);
                 c1.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacSubtotal(), 2)).toString()));
-
+                
                 subTotal = subTotal.add(ArchivoUtils.redondearDecimales(item.getFacSubtotal(), 2));
-
+                
                 HSSFCell c12 = r.createCell(i++);
                 c12.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacTotalBaseCero(), 2)).toString()));
                 subTotal0 = subTotal0.add(ArchivoUtils.redondearDecimales(item.getFacTotalBaseCero(), 2));
-
+                
                 HSSFCell c11 = r.createCell(i++);
                 c11.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacSubt5(), 2)).toString()));
                 subTotal5 = subTotal5.add(ArchivoUtils.redondearDecimales(item.getFacSubt5(), 2));
-
+                
                 HSSFCell c111 = r.createCell(i++);
                 c111.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacSubt15(), 2)).toString()));
                 subTotal15 = subTotal15.add(ArchivoUtils.redondearDecimales(item.getFacSubt15(), 2));
-
+                
                 HSSFCell c2 = r.createCell(i++);
                 c2.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacIva5(), 2)).toString()));
                 IVATotal5 = IVATotal5.add(ArchivoUtils.redondearDecimales(item.getFacIva5(), 2));
-
+                
                 HSSFCell c22 = r.createCell(i++);
                 c22.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacIva15(), 2)).toString()));
                 IVATotal15 = IVATotal15.add(ArchivoUtils.redondearDecimales(item.getFacIva15(), 2));
                 HSSFCell c3 = r.createCell(i++);
                 c3.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(item.getFacTotal(), 2)).toString()));
-
+                
                 total = total.add(ArchivoUtils.redondearDecimales(item.getFacTotal(), 2));
 //
 //                HSSFCell c4 = r.createCell(i++);
@@ -1254,63 +1255,63 @@ public class ServiciosRest {
 
                 HSSFCell c5 = r.createCell(i++);
                 c5.setCellValue(new HSSFRichTextString(item.getEstadosri() != null ? item.getEstadosri() : ""));
-
+                
                 HSSFCell c13 = r.createCell(i++);
                 c13.setCellValue(new HSSFRichTextString(item.getFacClaveAcceso() != null ? item.getFacClaveAcceso() : "Sin Autorizar"));
-
+                
                 HSSFCell c15 = r.createCell(i++);
                 c15.setCellValue(new HSSFRichTextString(item.getFacFechaAutorizacion() != null ? sm.format(item.getFacFechaAutorizacion()) : ""));
                 /*autemta la siguiente fila*/
-
+                
                 HSSFCell c16 = r.createCell(i++);
                 c16.setCellValue(new HSSFRichTextString(item.getFacObservacion() != null ? item.getFacObservacion() : ""));
-
+                
                 rownum += 1;
-
+                
             }
-
+            
             j = 0;
             r = s.createRow(rownum);
             HSSFCell chfeF1 = r.createCell(j++);
             chfeF1.setCellValue(new HSSFRichTextString(""));
             chfeF1.setCellStyle(estiloCelda);
-
+            
             HSSFCell chfeF2 = r.createCell(j++);
             chfeF2.setCellValue(new HSSFRichTextString(""));
             chfeF2.setCellStyle(estiloCelda);
-
+            
             HSSFCell chfeF3 = r.createCell(j++);
             chfeF3.setCellValue(new HSSFRichTextString(""));
             chfeF3.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF4 = r.createCell(j++);
             chF4.setCellValue(new HSSFRichTextString(""));
             chF4.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF5 = r.createCell(j++);
             chF5.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal, 2)).toString()));
             chF5.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF6 = r.createCell(j++);
             chF6.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal0, 2)).toString()));
             chF6.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF7 = r.createCell(j++);
             chF7.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal5, 2)).toString()));
             chF7.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF77 = r.createCell(j++);
             chF77.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(subTotal15, 2)).toString()));
             chF77.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF8 = r.createCell(j++);
             chF8.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(IVATotal5, 2)).toString()));
             chF8.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF88 = r.createCell(j++);
             chF88.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(IVATotal15, 2)).toString()));
             chF88.setCellStyle(estiloCelda);
-
+            
             HSSFCell chF9 = r.createCell(j++);
             chF9.setCellValue(new HSSFRichTextString((ArchivoUtils.redondearDecimales(total, 2)).toString()));
             chF9.setCellStyle(estiloCelda);
@@ -1321,7 +1322,7 @@ public class ServiciosRest {
             HSSFCell chF11 = r.createCell(j++);
             chF11.setCellValue(new HSSFRichTextString(""));
             chF11.setCellStyle(estiloCelda);
-
+            
             for (int k = 0; k <= lstFacturas.size(); k++) {
                 s.autoSizeColumn(k);
             }
@@ -1336,18 +1337,18 @@ public class ServiciosRest {
             response.setUrlReporte("Error al crear el reporte " + e.getMessage());
             e.printStackTrace();
         }
-
+        
         return response;
-
+        
     }
-
+    
     @POST
     @Path("/anular-factura/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public FacturaResponse getAnularFactura(@RequestBody RequestAnulaDoc prod) throws Exception {
         FacturaResponse facturaResponse = new FacturaResponse();
-
+        
         try {
             Factura recup = servicioFactura.findNumeroEmpresa(prod.getEstablecimientoEmpresa(), prod.getPuntoEmisionEmpresa(), prod.getFacNumero(), prod.getRucEmpresa());
             if (recup != null) {
@@ -1365,19 +1366,19 @@ public class ServiciosRest {
         }
         return facturaResponse;
     }
-
+    
     @POST
     @Path("/validar-firma/")
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Consumes({javax.ws.rs.core.MediaType.APPLICATION_XML, javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public DatosFirmaResponse validarFirma(@RequestBody InfoAutorizaDao prod) throws Exception {
         DatosFirmaResponse datosFirma = new DatosFirmaResponse();
-
+        
         try {
             // Ruta al archivo P12 o PFX
 
             final String secretKey = "AFSOTEC2023";
-
+            
             String rutaArchivo = prod.getRutaFirma();
             String contrasena = ArchivoUtils.decrypt(prod.getPasswordFirma(), secretKey); // Contraseña del archivo
 
@@ -1409,13 +1410,13 @@ public class ServiciosRest {
             datosFirma.setHasta(fechaHasta);
             // Cerrar el flujo de entrada
             fis.close();
-
+            
         } catch (Exception e) {
             datosFirma.setTitular("ERROR " + e.getMessage());
             datosFirma.setEmisor("ERROR");
-
+            
         }
         return datosFirma;
     }
-
+    
 }

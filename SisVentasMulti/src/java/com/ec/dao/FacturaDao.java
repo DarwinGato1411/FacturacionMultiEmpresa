@@ -66,8 +66,8 @@ public class FacturaDao {
 
     private BigDecimal facSubt5;
     private BigDecimal facSubt15;
-       private BigDecimal facIva5;
-          private BigDecimal facIva15;
+    private BigDecimal facIva5;
+    private BigDecimal facIva15;
 
     public Date getFacFecha() {
         return facFecha;

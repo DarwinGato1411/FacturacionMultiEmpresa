@@ -262,6 +262,75 @@ public class NotaCreditoDebito implements Serializable {
     @Column(name = "correo")
     private String correo;
 
+    @Column(name = "fac_subt_5")
+    private BigDecimal facSubt5;
+    @Column(name = "fac_iva_5")
+    private BigDecimal facIva5;
+    @Column(name = "fac_subt_13")
+    private BigDecimal facSubt13;
+    @Column(name = "fac_iva_13")
+    private BigDecimal facIva13;
+    @Column(name = "fac_subt_14")
+    private BigDecimal facSubt14;
+    @Column(name = "fac_iva_14")
+    private BigDecimal facIva14;
+    @Column(name = "fac_subt_15")
+    private BigDecimal facSubt15;
+    @Column(name = "fac_iva_15")
+    private BigDecimal facIva15;
+    @Column(name = "detalle_sri")
+    private String detalleSri;
+
+    @Column(name = "razon_social_empresa")
+    private String razonSocialEmpresa;
+    @Column(name = "nombre_comercial_empresa")
+    private String nombreComercialEmpresa;
+    @Column(name = "tipo_identificacion_comp")
+    private String tipoIdentificacionComprador;
+    @Column(name = "fac_subsidio")
+    private BigDecimal facSubsidio;
+    @Column(name = "graba_ice")
+    private Boolean grabaICE;
+//    @Column(name = "codigo_ice")
+//    private String codigoICE;
+
+    @Column(name = "fac_valor_ice")
+    private BigDecimal facValorIce;
+
+    @Column(name = "codigo_forma_pago")
+    private String codigoFormaPago;
+//        @Column(name = "graba_ice")
+//    private Boolean grabaICE;
+    @Column(name = "codigo_ice")
+    private String codigoICE;
+    @Column(name = "tarifa_ice")
+    private BigDecimal facTarifaIce;
+
+    @Column(name = "agente_retencion")
+    private Boolean agenteRetencion;
+    @Column(name = "regimen_popular")
+    private Boolean rimpePolpular;
+    @Column(name = "regimen_emprendedor")
+    private Boolean rimpeEmprendedor;
+    @Column(name = "regimen_general")
+    private Boolean regimenGeneral;
+    @Column(name = "direccion_comprador")
+    private String direccionComprador;
+    @Column(name = "correo_comprador")
+    private String correoComprador;
+    @Column(name = "fac_observacion")
+    private String facObservacion;
+
+    @Column(name = "telefono_comprador")
+    private String telefonoComprador;
+
+    @Column(name = "direccion_matriz")
+    private String direccionMatriz;
+    @Column(name = "tipo_emision")
+    private String tipoEmision;
+    @Column(name = "movil_comprador")
+    private String movilComprador;
+
     public NotaCreditoDebito() {
     }
 
@@ -757,6 +826,238 @@ public class NotaCreditoDebito implements Serializable {
     @Override
     public String toString() {
         return "com.ec.entidad.NotaCreditoDebito[ idNota=" + idNota + " ]";
+    }
+
+    public BigDecimal getFacSubt5() {
+        return facSubt5 == null ? BigDecimal.ZERO : facSubt5;
+    }
+
+    public void setFacSubt5(BigDecimal facSubt5) {
+        this.facSubt5 = facSubt5;
+    }
+
+    public BigDecimal getFacIva5() {
+        return facIva5 == null ? BigDecimal.ZERO : facIva5;
+    }
+
+    public void setFacIva5(BigDecimal facIva5) {
+        this.facIva5 = facIva5;
+    }
+
+    public BigDecimal getFacSubt13() {
+        return facSubt13 == null ? BigDecimal.ZERO : facSubt13;
+    }
+
+    public void setFacSubt13(BigDecimal facSubt13) {
+        this.facSubt13 = facSubt13;
+    }
+
+    public BigDecimal getFacIva13() {
+        return facIva13 == null ? BigDecimal.ZERO : facIva13;
+    }
+
+    public void setFacIva13(BigDecimal facIva13) {
+        this.facIva13 = facIva13;
+    }
+
+    public BigDecimal getFacSubt14() {
+        return facSubt14 == null ? BigDecimal.ZERO : facSubt14;
+    }
+
+    public void setFacSubt14(BigDecimal facSubt14) {
+        this.facSubt14 = facSubt14;
+    }
+
+    public BigDecimal getFacIva14() {
+        return facIva14 == null ? BigDecimal.ZERO : facIva14;
+    }
+
+    public void setFacIva14(BigDecimal facIva14) {
+        this.facIva14 = facIva14;
+    }
+
+    public BigDecimal getFacSubt15() {
+        return facSubt15 == null ? BigDecimal.ZERO : facSubt15;
+    }
+
+    public void setFacSubt15(BigDecimal facSubt15) {
+        this.facSubt15 = facSubt15;
+    }
+
+    public BigDecimal getFacIva15() {
+        return facIva15 == null ? BigDecimal.ZERO : facIva15;
+    }
+
+    public void setFacIva15(BigDecimal facIva15) {
+        this.facIva15 = facIva15;
+    }
+
+    public String getDetalleSri() {
+        return detalleSri;
+    }
+
+    public void setDetalleSri(String detalleSri) {
+        this.detalleSri = detalleSri;
+    }
+
+    public String getRazonSocialEmpresa() {
+        return razonSocialEmpresa;
+    }
+
+    public void setRazonSocialEmpresa(String razonSocialEmpresa) {
+        this.razonSocialEmpresa = razonSocialEmpresa;
+    }
+
+    public String getNombreComercialEmpresa() {
+        return nombreComercialEmpresa;
+    }
+
+    public void setNombreComercialEmpresa(String nombreComercialEmpresa) {
+        this.nombreComercialEmpresa = nombreComercialEmpresa;
+    }
+
+    public String getTipoIdentificacionComprador() {
+        return tipoIdentificacionComprador;
+    }
+
+    public void setTipoIdentificacionComprador(String tipoIdentificacionComprador) {
+        this.tipoIdentificacionComprador = tipoIdentificacionComprador;
+    }
+
+    public BigDecimal getFacSubsidio() {
+        return facSubsidio;
+    }
+
+    public void setFacSubsidio(BigDecimal facSubsidio) {
+        this.facSubsidio = facSubsidio;
+    }
+
+    public Boolean getGrabaICE() {
+        return grabaICE;
+    }
+
+    public void setGrabaICE(Boolean grabaICE) {
+        this.grabaICE = grabaICE;
+    }
+
+    public BigDecimal getFacValorIce() {
+        return facValorIce;
+    }
+
+    public void setFacValorIce(BigDecimal facValorIce) {
+        this.facValorIce = facValorIce;
+    }
+
+    public String getCodigoFormaPago() {
+        return codigoFormaPago;
+    }
+
+    public void setCodigoFormaPago(String codigoFormaPago) {
+        this.codigoFormaPago = codigoFormaPago;
+    }
+
+    public String getCodigoICE() {
+        return codigoICE;
+    }
+
+    public void setCodigoICE(String codigoICE) {
+        this.codigoICE = codigoICE;
+    }
+
+    public BigDecimal getFacTarifaIce() {
+        return facTarifaIce;
+    }
+
+    public void setFacTarifaIce(BigDecimal facTarifaIce) {
+        this.facTarifaIce = facTarifaIce;
+    }
+
+    public Boolean getAgenteRetencion() {
+        return agenteRetencion;
+    }
+
+    public void setAgenteRetencion(Boolean agenteRetencion) {
+        this.agenteRetencion = agenteRetencion;
+    }
+
+    public Boolean getRimpePolpular() {
+        return rimpePolpular;
+    }
+
+    public void setRimpePolpular(Boolean rimpePolpular) {
+        this.rimpePolpular = rimpePolpular;
+    }
+
+    public Boolean getRimpeEmprendedor() {
+        return rimpeEmprendedor;
+    }
+
+    public void setRimpeEmprendedor(Boolean rimpeEmprendedor) {
+        this.rimpeEmprendedor = rimpeEmprendedor;
+    }
+
+    public Boolean getRegimenGeneral() {
+        return regimenGeneral;
+    }
+
+    public void setRegimenGeneral(Boolean regimenGeneral) {
+        this.regimenGeneral = regimenGeneral;
+    }
+
+    public String getDireccionComprador() {
+        return direccionComprador;
+    }
+
+    public void setDireccionComprador(String direccionComprador) {
+        this.direccionComprador = direccionComprador;
+    }
+
+    public String getFacObservacion() {
+        return facObservacion;
+    }
+
+    public void setFacObservacion(String facObservacion) {
+        this.facObservacion = facObservacion;
+    }
+
+    public String getTelefonoComprador() {
+        return telefonoComprador;
+    }
+
+    public void setTelefonoComprador(String telefonoComprador) {
+        this.telefonoComprador = telefonoComprador;
+    }
+
+    public String getCorreoComprador() {
+        return correoComprador;
+    }
+
+    public void setCorreoComprador(String correoComprador) {
+        this.correoComprador = correoComprador;
+    }
+
+    public String getDireccionMatriz() {
+        return direccionMatriz;
+    }
+
+    public void setDireccionMatriz(String direccionMatriz) {
+        this.direccionMatriz = direccionMatriz;
+    }
+
+    public String getTipoEmision() {
+        return tipoEmision;
+    }
+
+    public void setTipoEmision(String tipoEmision) {
+        this.tipoEmision = tipoEmision;
+    }
+
+    public String getMovilComprador() {
+        return movilComprador;
+    }
+
+    public void setMovilComprador(String movilComprador) {
+        this.movilComprador = movilComprador;
     }
 
 }

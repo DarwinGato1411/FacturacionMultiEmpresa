@@ -297,7 +297,7 @@ public class Factura implements Serializable {
     private String telefonoComprador;
     @Column(name = "tipo_emision")
     private String tipoEmision;
-      @Column(name = "movil_comprador")
+    @Column(name = "movil_comprador")
     private String movilComprador;
 
       
