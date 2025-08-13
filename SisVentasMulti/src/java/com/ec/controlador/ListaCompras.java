@@ -101,7 +101,7 @@ public class ListaCompras {
     }
 
     private void findByNumFac() {
-        listaCabeceraCompras = servicioCompra.findByNumeroFactura(buscarNumFac);
+        listaCabeceraCompras = servicioCompra.findByNumeroFactura(buscarNumFac,amb);
     }
 
     @Command
