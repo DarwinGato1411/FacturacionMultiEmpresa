@@ -52,7 +52,11 @@
                 <menu label="Ventas" id="menuEmitirfact" class="menu_child">
                     <menupopup class="submenu"> 
                         <menuitem label="Emitir Facturas" id="btnFacturar" class="fa-solid fa-receipt menu_item" />
+                        <menuitem label="Facturas emitidas" id="btnNotaVentas" class="fa-solid fa-paper-plane menu_item"/>                             
+                        <menuitem label="Proformas emitidas" id="btnProformasEmitidas" class="fa-solid fa-newspaper menu_item" />
+                        <menuitem label="Notas credito" id="btnNotaCredito" class="fa-solid fa-clipboard menu_item" />
                         <menuitem label="Facturas por cobrar" id="btnfactCobra" class="fa-solid fa-dollar-sign menu_item" />
+                        
                     </menupopup>
                 </menu>
 <!--                <menu label="Orde de trabajo" id="menuOrden" class="menu_child">
@@ -61,15 +65,13 @@
                         <menuitem label="Lista de orden de trabajo" id="btnlistaOrden" class="fa-solid fa-dollar-sign menu_item" />
                     </menupopup>
                 </menu>-->
-                <menu label="Gestion de ventas"  id="menuVentas" class="menu_child">
+<!--                <menu label="Gestion de ventas"  id="menuVentas" class="menu_child">
                     <menupopup class="submenu">                               
-                        <menuitem label="Facturas emitidas" id="btnNotaVentas" class="fa-solid fa-paper-plane menu_item"/>                             
-                        <menuitem label="Proformas emitidas" id="btnProformasEmitidas" class="fa-solid fa-newspaper menu_item" />
-                        <menuitem label="Notas credito" id="btnNotaCredito" class="fa-solid fa-clipboard menu_item" />
+                        
                         
 
                     </menupopup>
-                </menu> 
+                </menu> -->
                 
                
                 <menu label="Gestion de compras" id="menuCompras" class="menu_child">

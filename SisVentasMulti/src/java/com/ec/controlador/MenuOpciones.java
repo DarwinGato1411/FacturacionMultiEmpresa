@@ -27,8 +27,8 @@ public class MenuOpciones extends SelectorComposer<Component> {
 
     @Wire("#menuEmitirfact")
     Menu menuEmitirfact;
-    @Wire("#menuVentas")
-    Menu menuVentas;
+//    @Wire("#menuVentas")
+//    Menu menuVentas;
     @Wire("#menuCompras")
     Menu menuCompras;
     @Wire("#menuGuias")
@@ -72,7 +72,7 @@ public class MenuOpciones extends SelectorComposer<Component> {
 
             if (credential.getUsuarioSistema().getUsuNivel() == 1) {
                 menuEmitirfact.setVisible(Boolean.FALSE);
-                menuVentas.setVisible(Boolean.FALSE);
+//                menuVentas.setVisible(Boolean.FALSE);
                 menuCompras.setVisible(Boolean.FALSE);
                 menuGuias.setVisible(Boolean.FALSE);
                 menuKardex.setVisible(Boolean.FALSE);

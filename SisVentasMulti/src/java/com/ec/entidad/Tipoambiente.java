@@ -216,7 +216,7 @@ public class Tipoambiente implements Serializable {
     @Column(name = "am_rimpe_popular")
     private Boolean amRimpePopular;
     
-      @Column(name = "activar_certificado")
+    @Column(name = "activar_certificado")
     private Boolean activarCertificado;
 
     public Tipoambiente() {

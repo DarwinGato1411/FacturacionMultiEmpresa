@@ -1203,4 +1203,27 @@ public class ServicioFactura {
 
         return facturas;
     }
+     
+     public List<Factura> findDevueltaPorReenviarSRI(Tipoambiente codTipoambiente) {
+
+        List<Factura> listaFacturas = new ArrayList<Factura>();
+        try {
+            //Connection connection = em.unwrap(Connection.class);
+            em = HelperPersistencia.getEMF();
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT a FROM Factura a WHERE  a.estadosri='DEVUELTA' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
+//            Query query = em.createQuery("SELECT a FROM Factura a WHERE  a.estadosri='DEVUELTA' AND a.mensajesri='CLAVE ACCESO REGISTRADA' AND a.facTipo='FACT' AND a.cod_tipoambiente=:codTipoambiente  ORDER BY a.facFecha DESC");
+          
+            query.setParameter("codTipoambiente", codTipoambiente);
+            query.setMaxResults(400);
+            listaFacturas = (List<Factura>) query.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error en lsa consulta factura " + e.getMessage());
+        } finally {
+            em.close();
+        }
+
+        return listaFacturas;
+    }
 }
