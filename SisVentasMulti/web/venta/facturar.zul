@@ -18,7 +18,7 @@
         <timer delay="30000" repeats="true" onTimer="@command('refrescarPagina')" />
         <tabbox  width="100%"  tabscroll="true" >
             <tabs >
-                <tab label="Emitir factura" sclass="menutabs"/>
+               <tab  label="@bind(vm.numerofactReenvio >0 ? 'Facturar - VERIFIQUE TIENE ' .concat(vm.numerofactReenvio).concat( ' FACTURAS NO AUTORIZADAS ' ): 'Facturar')" sclass="menutabs"></tab>
             </tabs>
 
             <tabpanels >
@@ -250,6 +250,16 @@
                                         />
 
                                     </div>-->
+                                    <div class="wrapper_input">
+                                        <span>Base 0%:</span>
+                                        <decimalbox  
+                                            format="###.##"   
+                                            value="@bind(vm.subTotalBaseCero)" 
+                                            readonly="true"
+                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                            class="input" 
+                                        />
+                                    </div>
                                 </div>
                                 <div class="wrapper_data">
                                     <div class="wrapper_input">
@@ -308,17 +318,18 @@
                                             class="input" 
                                         />
                                     </div>
-                                
-                                    <div class="wrapper_input">
-                                        <span>Base 0%:</span>
-                                        <decimalbox  
-                                            format="###.##"   
-                                            value="@bind(vm.subTotalBaseCero)" 
-                                            readonly="true"
-                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
-                                            class="input" 
-                                        />
-                                    </div>
+                                   <div class="wrapper_input">
+                                    <button 
+                                        autodisable="self"   
+                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
+                                        onClick="@command('Guardar',valor='SG',envia='S')"
+                                        tooltiptext="Guardar y Envia al SRI"
+                                        label="Facturar y Enviar al SRI"
+                                        width="100%"
+                                    />
+
+                                </div>
+                                    
                                 </div>
                                 <div class="wrapper_data">
                                    
@@ -357,18 +368,19 @@
                                             value="@bind(vm.cambio)" 
                                         />
                                     </div>
-                                    <div class="wrapper_input">
-                                        
-                                        <button 
-                                            autodisable="self"   
-                                            class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
-                                            onClick="@command('Guardar',valor='SG')"
-                                            tooltiptext="Guardar"
-                                            label="Facturar"
-                                            width="100%"
-                                        />
+                                     <div class="wrapper_input">
+                                
+                                    <button 
+                                        autodisable="self"   
+                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
+                                        onClick="@command('Guardar',valor='SG',envia='N')"
+                                        tooltiptext="Guardar"
+                                        label="Facturar"
+                                        width="100%"
+                                    />
 
-                                    </div>
+                                </div>
+                                
                                 
                                     
                              

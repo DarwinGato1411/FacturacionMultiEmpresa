@@ -309,6 +309,8 @@ public class Facturar extends SelectorComposer<Component> {
     private BigDecimal subTotalCotizacion14 = BigDecimal.ZERO;
     private BigDecimal subTotalCotizacion15 = BigDecimal.ZERO;
 //       private BigDecimal totalDescuento = BigDecimal.ZERO;
+    
+     private Integer numerofactReenvio = 0;
 
     @AfterCompose
     public void afterCompose(@ExecutionArgParam("valor") ParamFactura valor, @ContextParam(ContextType.VIEW) Component view) {
@@ -410,6 +412,9 @@ public class Facturar extends SelectorComposer<Component> {
                 + amb.getAmDirXml();
         partida = amb.getAmDireccionMatriz();
         
+          //VERIFICA SI TIENE ALGUNA FACTURA POR REENVIAR AL SRI
+        List<Factura> listReenvio = servicioFactura.findDevueltaPorReenviarSRI(amb);
+        numerofactReenvio = listReenvio.size();
     }
 // </editor-fold>
 
@@ -3910,6 +3915,14 @@ public class Facturar extends SelectorComposer<Component> {
     
     public void setSubTotalCotizacion15(BigDecimal subTotalCotizacion15) {
         this.subTotalCotizacion15 = subTotalCotizacion15;
+    }
+
+    public Integer getNumerofactReenvio() {
+        return numerofactReenvio;
+    }
+
+    public void setNumerofactReenvio(Integer numerofactReenvio) {
+        this.numerofactReenvio = numerofactReenvio;
     }
     
 }

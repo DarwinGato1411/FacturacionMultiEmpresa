@@ -11,13 +11,13 @@
         
     </style>
               
-   <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+   <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" onCreate="@command('aperturaCaja')"
           viewModel="@id('vm') @init('com.ec.controlador.Facturar')" width="100%" class="containerFactura">
     
         <timer delay="30000" repeats="true" onTimer="@command('refrescarPagina')" />
         <tabbox  width="100%"  tabscroll="true" >
             <tabs >
-                <tab label="Emitir factura" sclass="menutabs"/>
+               <tab  label="@bind(vm.numerofactReenvio >0 ? 'Facturar - VERIFIQUE TIENE ' .concat(vm.numerofactReenvio).concat( ' FACTURAS NO AUTORIZADAS ' ): 'Facturar')" sclass="menutabs"></tab>
             </tabs>
 
             <tabpanels >
@@ -237,7 +237,28 @@
                                             class="input" 
                                         />
                                     </div>
-                                  
+<!--                                  <div class="wrapper_input">
+                                        
+                                        <button 
+                                            autodisable="self"   
+                                            class="fa-solid fa-barcode btn_fact btn_primary"                  
+                                            onClick="@command('generarTicket')"
+                                            tooltiptext="Generar ticket"
+                                            label="Generar ticket"
+                                            width="100%"
+                                        />
+
+                                    </div>-->
+                                    <div class="wrapper_input">
+                                        <span>Base 0%:</span>
+                                        <decimalbox  
+                                            format="###.##"   
+                                            value="@bind(vm.subTotalBaseCero)" 
+                                            readonly="true"
+                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                            class="input" 
+                                        />
+                                    </div>
                                 </div>
                                 <div class="wrapper_data">
                                     <div class="wrapper_input">
@@ -296,17 +317,18 @@
                                             class="input" 
                                         />
                                     </div>
-                                
-                                    <div class="wrapper_input">
-                                        <span>Base 0%:</span>
-                                        <decimalbox  
-                                            format="###.##"   
-                                            value="@bind(vm.subTotalBaseCero)" 
-                                            readonly="true"
-                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
-                                            class="input" 
-                                        />
-                                    </div>
+                                   <div class="wrapper_input">
+                                    <button 
+                                        autodisable="self"   
+                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
+                                        onClick="@command('Guardar',valor='SG',envia='S')"
+                                        tooltiptext="Guardar y Envia al SRI"
+                                        label="Facturar y Enviar al SRI"
+                                        width="100%"
+                                    />
+
+                                </div>
+                                    
                                 </div>
                                 <div class="wrapper_data">
                                    
@@ -345,18 +367,19 @@
                                             value="@bind(vm.cambio)" 
                                         />
                                     </div>
-                                    <div class="wrapper_input">
-                                        
-                                        <button 
-                                            autodisable="self"   
-                                            class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
-                                            onClick="@command('Guardar',valor='SG')"
-                                            tooltiptext="Guardar"
-                                            label="Facturar"
-                                            width="100%"
-                                        />
+                                     <div class="wrapper_input">
+                                
+                                    <button 
+                                        autodisable="self"   
+                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
+                                        onClick="@command('Guardar',valor='SG',envia='N')"
+                                        tooltiptext="Guardar"
+                                        label="Facturar"
+                                        width="100%"
+                                    />
 
-                                    </div>
+                                </div>
+                                
                                 
                                     
                              
@@ -502,6 +525,7 @@
                                                 tooltiptext="Eliminar registros seleccionados"/>
                                     </listheader>
                                     <listheader width="10%"   label="COD" align="left" />
+                                    <!--<listheader width="10%"   label="TICKET" align="left" />-->
                                     <listheader width="10%"   label="CANT" align="left"  />
                                     <listheader width="10%"   label="% DESC" align="left"  />                                            
                                     <listheader width="25%"  label="DESCRIPCIÓN" align="left" />
@@ -528,7 +552,15 @@
                                                         
                                             />
                                         </listcell>
-                                        <listcell zclass = "mycss-listcell">
+<!--                                        <listcell zclass = "mycss-listcell">
+                                            <textbox    constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                                            
+                                                        onOK="@command('calcularValoresDesCantidadTicket',valor=each)"
+                                                        class="form-control form-control-sm"
+                                                        onChange="@command('calcularValoresDesCantidadTicket',valor=each)"
+                                                        style="font-size:12px"
+                                                        value="@bind(each.fechaTiempo)"  />                                                    
+                                        </listcell>-->
+                                         <listcell zclass = "mycss-listcell">
                                             <textbox    constraint="/^[0-9]{1,9}(?:[.][0-9]{1,3})?$/:Ingrese solo numeros"                                            
                                                         onOK="@command('calcularValoresDesCantidad',valor=each)"
                                                         class="form-control form-control-sm"
@@ -602,5 +634,5 @@
                 </tabpanel>
             </tabpanels>
         </tabbox>   
-    </hbox>   
+    </hbox>
 </window>
