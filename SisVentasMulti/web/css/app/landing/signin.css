@@ -125,8 +125,8 @@ body {
   right: 0;
   bottom: 0;
   width: 100%;
-  background: url("../../.../imagenes/defact.png");
-  /*background: url("../../.../imagenes/deckxeljob.png");*/
+  /*background: url("../../.../imagenes/defact.png");*/
+  background: url("../../.../imagenes/deckxeljob.png");
   background-size: cover;
   background-position: center;
   /*filter: brightness(20%);*/
