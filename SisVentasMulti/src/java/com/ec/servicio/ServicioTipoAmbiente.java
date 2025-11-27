@@ -288,7 +288,7 @@ public class ServicioTipoAmbiente {
         try {
             //Connection connection = em.unwrap(Connection.class);
             String SQL = "";
-            String QUERY = "SELECT a FROM Tipoambiente a WHERE  UPPER(a.idUsuario.usuNombre) like :usuNombre AND a.amCodigo=:amCodigo AND a.amEstado=:amEstado ";
+            String QUERY = "SELECT a FROM Tipoambiente a WHERE  (UPPER(a.idUsuario.usuNombre) like :usuNombre OR a.idUsuario.usuRuc LIKE :usuRuc OR UPPER(a.idUsuario.usuLogin) LIKE :usuLogin ) AND a.amCodigo=:amCodigo AND a.amEstado=:amEstado ";
             String WHERE = " ";
             String ORDER = " ORDER BY a.idUsuario.usuNombre ASC";
             em = HelperPersistencia.getEMF();
@@ -298,6 +298,8 @@ public class ServicioTipoAmbiente {
             }
             Query query = em.createQuery(QUERY + WHERE + ORDER);
             query.setParameter("usuNombre", "%" + usuario + "%");
+            query.setParameter("usuRuc", "%" + usuario + "%");
+            query.setParameter("usuLogin", "%" + usuario + "%");
             query.setParameter("amEstado", Boolean.TRUE);
             query.setParameter("amCodigo", amCodigo);
             if (!plan.equals("T")) {
