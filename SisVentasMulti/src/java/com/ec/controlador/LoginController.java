@@ -5,6 +5,7 @@
 package com.ec.controlador;
 
 import com.ec.entidad.NumeroDocumentosEmitidos;
+import com.ec.entidad.Parametrizar;
 import com.ec.seguridad.AutentificadorLogeo;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.GrupoUsuarioEnum;
@@ -47,6 +48,14 @@ public class LoginController extends SelectorComposer<Component> {
     public void doLogin() {
         Date actual = new Date();
         Date caduca = new Date();
+        
+         Parametrizar cantidadContratada = servicioParametrizar.FindALlParametrizar();
+         
+          if (cantidadContratada.getParBloqueoSistema()) {
+                Clients.showNotification("Su sistema se encuentra bloqueado por falta de pago.",
+                                    Clients.NOTIFICATION_TYPE_WARNING, null, "end_center", 5000, true);
+                return;
+            }
 
         AutentificadorLogeo servicioAuth = new AutentificadorLogeo();
         if (servicioAuth.login(account.getValue(), password.getValue())) {

@@ -1,0 +1,423 @@
+/* ========================================
+   ESTILO MODERNO PARA MENÚ ZK - PAYBILLS STYLE
+   ✅ Flecha ▼ siempre a la derecha en menús principales
+   ✅ Sin flecha en submenús que no tienen subnivel
+   ✅ Solo flecha ► en submenús que sí tienen subnivel (con clase .has-submenu)
+   ✅ Fondo blanco en submenús y selección
+   ✅ Sin padding horizontal
+   ✅ Texto 14px, hover #4266F4
+======================================== */
+
+/* --- APLICAMOS ESTILOS A LAS SECCIONES DEL FORMULARIO --- */
+
+/* SECCIÓN 1: Información del Cliente */
+.factura_header > .fact_row:first-child {
+    position: relative;
+    background-color: #fff;
+    padding: 1.5em;
+    border-radius: 10px;
+    border: 2px solid #6a7cff;
+    margin-bottom: 1.5em;
+}
+
+/* Añadimos el número "1" y título "Información del Cliente" */
+.factura_header > .fact_row:first-child::before {
+    content: "1";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 30px;
+    height: 30px;
+    background-color: #6a7cff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10;
+}
+
+.factura_header > .fact_row:first-child::after {
+    content: "Información del Cliente";
+    position: absolute;
+    top: -10px;
+    left: 30px;
+    background-color: #fff;
+    padding: 0 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    z-index: 9;
+}
+
+/* SECCIÓN 2: Catálogo de Productos */
+.factura_body_content > .factura_body_item_fl {
+    position: relative;
+    background-color: #fff;
+    padding: 1.5em;
+    border-radius: 10px;
+    border: 2px solid #6a7cff;
+    margin-bottom: 1.5em;
+}
+
+/* Añadimos el número "2" y título "Catálogo de Productos" */
+.factura_body_content > .factura_body_item_fl::before {
+    content: "2";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 30px;
+    height: 30px;
+    background-color: #6a7cff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10;
+}
+
+.factura_body_content > .factura_body_item_fl::after {
+    content: "Catálogo de Productos";
+    position: absolute;
+    top: -10px;
+    left: 30px;
+    background-color: #fff;
+    padding: 0 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    z-index: 9;
+}
+
+/* SECCIÓN 3: Productos Seleccionados */
+.factura_body_content > .factura_body_item_fr {
+    position: relative;
+    background-color: #fff;
+    padding: 1.5em;
+    border-radius: 10px;
+    border: 2px solid #6a7cff;
+    margin-bottom: 1.5em;
+}
+
+/* Añadimos el número "3" y título "Productos Seleccionados" */
+.factura_body_content > .factura_body_item_fr::before {
+    content: "3";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 30px;
+    height: 30px;
+    background-color: #6a7cff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10;
+}
+
+.factura_body_content > .factura_body_item_fr::after {
+    content: "Productos Seleccionados";
+    position: absolute;
+    top: -10px;
+    left: 30px;
+    background-color: #fff;
+    padding: 0 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    z-index: 9;
+}
+
+/* --- ESTILOS EXISTENTES DEL MENU Y SIDEBAR --- */
+
+.banner {
+    background: #ffffff !important;
+    color: #333333 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    overflow-y: auto !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.banner::-webkit-scrollbar {
+    width: 6px;
+}
+.banner::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 10px;
+}
+.banner::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+/* LOGO */
+.logo_defact {
+    display: block !important;
+    margin: 1.5rem 1rem 1rem !important;
+    width: 120px !important;
+    height: auto !important;
+}
+
+/* USUARIO */
+.usuarioData {
+    background: transparent !important;
+    padding: 0 1.5rem 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+.usuarioData .labelNuevo {
+    color: #666666 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+
+/* Botón Salir */
+.salir {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    width: auto !important;
+    padding: 8px 16px !important;
+    margin: 0.5rem auto 0 !important;
+    background: #ff6961 !important;
+    color: white !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+}
+.salir:hover { background: #ff4d4d !important; }
+.salir .icon_exit { margin: 0 !important; }
+
+/* === MENUBAR PRINCIPAL === */
+.wrapper_menu { background: transparent !important; padding: 0 !important; }
+.z-menubar-ver { 
+    border: none !important; 
+    background: transparent !important; 
+    padding: 0 1rem !important;
+}
+
+/* Menús principales — ✅ Con flecha ▼ siempre a la derecha */
+.menu_child,
+.z-menu-btn {
+    background: transparent !important;
+    color: #333333 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    padding: 1px 0 !important; /* ←←← Sin padding horizontal */
+    border-radius: 6px !important;
+    margin: 0.3rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    position: relative !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+/* Ícono menú principal */
+.menu_child::before {
+    content: "" !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    color: #666666 !important;
+    width: 20px !important;
+    text-align: center !important;
+}
+
+/* Flecha ▼ siempre a la derecha */
+.menu_child::after {
+    content: "\f054" !important; /* caret-down */
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    position: absolute !important;
+    right: 16px !important; /* ✅ Posicionada a la derecha */
+    color: #666666 !important;
+    font-size: 12px !important;
+    transition: color 0.2s ease !important;
+}
+
+/* Hover menú principal */
+.menu_child:hover,
+.z-menu-body-over .z-menu-inner-m {
+    background: #e6f2fb !important;
+    color: #4266F4 !important;
+}
+.menu_child:hover::before,
+.menu_child:hover::after {
+    color: #4266F4 !important;
+}
+
+/* Menú seleccionado (abierto) */
+.z-menu-body-seld .z-menu-inner-m,
+.z-menu-body-seld .menu_child {
+    background: #e6f2fb !important;
+    color: #4266F4 !important;
+}
+.z-menu-body-seld .menu_child::before,
+.z-menu-body-seld .menu_child::after {
+    color: #4266F4 !important;
+}
+
+/* Íconos por ID */
+#menuEmitirfact::before { content: "\f2bb" !important; }
+#menuCompras::before { content: "\f447" !important; }
+#menuRetencion::before { content: "\f0a0" !important; }
+#menuGuias::before { content: "\f0d1" !important; }
+
+/* === SUBMENÚS === */
+.submenu {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    z-index: 2000 !important;
+}
+
+/* Submenús (ítems) — ✅ Sin padding horizontal */
+.menu_item,
+.z-menuitem-btn {
+    background: transparent !important;
+    color: #666666 !important;
+    padding: 8px 0 !important; /* ←←← Sin padding horizontal */
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    position: relative !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+/* Ícono submenú */
+.menu_item::before {
+    content: "" !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    width: 20px !important;
+    text-align: center !important;
+    color: #666666 !important;
+    font-size: 14px !important;
+}
+
+/* ❌ Eliminamos la flecha por defecto en todos los submenús */
+.menu_item::after {
+    display: none !important; /* ✅ No se muestra flecha por defecto */
+}
+
+/* ✅ Solo mostramos flecha ► en los submenús que tienen subnivel (con clase .has-submenu) */
+.menu_item.has-submenu::after {
+    content: "\f054" !important; /* angle-right */
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    position: absolute !important;
+    right: 16px !important;
+    color: #666666 !important;
+    font-size: 12px !important;
+    opacity: 0.7;
+    display: block !important; /* ✅ Mostrar solo si tiene subnivel */
+}
+
+/* Hover submenú */
+.menu_item:hover,
+.z-menuitem-body-over .z-menuitem-inner-m {
+    background: #e6f2fb !important;
+    color: #4266F4 !important;
+}
+.menu_item:hover::before,
+.menu_item:hover::after {
+    color: #4266F4 !important;
+}
+
+/* Submenú seleccionado */
+.z-menuitem-body-seld .z-menuitem-inner-m,
+.z-menuitem-body-seld .menu_item {
+    background: #e6f2fb !important;
+    color: #4266F4 !important;
+}
+.z-menuitem-body-seld .menu_item::before,
+.z-menuitem-body-seld .menu_item::after {
+    color: #4266F4 !important;
+}
+
+/* === MENÚ EMPRESA === */
+#menubarEmpresa .menu_child {
+    padding: 10px 0 !important;
+    margin-top: 1rem !important;
+    border-top: 1px solid #e0e0e0 !important;
+}
+#menubarEmpresa .menu_item::before {
+    color: #666666 !important;
+}
+
+/* === ÍCONOS POR ID === */
+#btnCrearCliente::before { content: "\f007" !important; }
+#btnCrearProducto::before { content: "\f1b2" !important; }
+#btnFacturar::before { content: "\f541" !important; }
+#btnNotaVentas::before { content: "\f571" !important; }
+#btnfactCobra::before { content: "\f0d6" !important; }
+#btnNotaCredito::before { content: "\f0ae" !important; }
+#btnProformasEmitidas::before { content: "\f1ea" !important; }
+#btnAcumuladoventas::before { content: "\f080" !important; }
+#btnBalanceUtilidad::before { content: "\f24d" !important; }
+
+#btnCrearProveedor::before { content: "\f2b9" !important; }
+#btnIngresoCompras::before { content: "\f447" !important; }
+#btnListaCompras::before { content: "\f03a" !important; }
+#btnRetenciones::before { content: "\f022" !important; }
+#btnKardex::before { content: "\f56f" !important; }
+#btnKardexPorProd::before { content: "\f02d" !important; }
+#btnRotacionProducto::before { content: "\f086" !important; }
+#btnAjuste::before { content: "\f044" !important; }
+
+#btnRetencionManual::before { content: "\f022" !important; }
+#btnEmitRetencionManual::before { content: "\f572" !important; }
+#btnEmitirGuiaRemision::before { content: "\f0d1" !important; }
+#btnGuiaRemision::before { content: "\f536" !important; }
+
+#btnHisDeclaraciones::before { content: "\f017" !important; }
+#muenGestionUsu::before { content: "\f0c0" !important; }
+#muenGestionEmpresas::before { content: "\f1ad" !important; }
+#btnAdministarVenta::before { content: "\f07b" !important; }
+#btnGestionFactura::before { content: "\f570" !important; }
+#btnConfSRI::before { content: "\f013" !important; }
+
+[onclick*='modificarUsuario']::before { content: "\f044" !important; }
+#logoutMenu::before { content: "\f2f5" !important; color: #ff6961 !important; }
+
+/* Ocultar elementos nativos de ZK */
+.z-menu-inner-l, .z-menu-inner-r,
+.z-menuitem-inner-l, .z-menuitem-inner-r {
+    display: none !important;
+}
+.z-menu-inner-m, .z-menuitem-inner-m {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    width: 100% !important;
+    text-align: left !important;
+}
+.z-menubar-ver .z-menu-body,
+.z-menubar-ver .z-menuitem-body {
+    background: transparent !important;
+    border: none !important;
+}

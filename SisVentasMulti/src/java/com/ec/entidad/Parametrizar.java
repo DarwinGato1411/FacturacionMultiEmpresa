@@ -134,6 +134,8 @@ public class Parametrizar implements Serializable {
     private Boolean parIlimitadoPermanente;
     @Column(name = "par_con_datos")
     private Boolean parConDatos;
+    @Column(name = "par_bloqueo_sistema")
+    private Boolean parBloqueoSistema;
 
     @Column(name = "par_smtp")
     private String parSmtp;
@@ -489,6 +491,14 @@ public class Parametrizar implements Serializable {
 
     public void setParConDatos(Boolean parConDatos) {
         this.parConDatos = parConDatos;
+    }
+
+    public Boolean getParBloqueoSistema() {
+        return parBloqueoSistema==null?Boolean.FALSE:parBloqueoSistema;
+    }
+
+    public void setParBloqueoSistema(Boolean parBloqueoSistema) {
+        this.parBloqueoSistema = parBloqueoSistema;
     }
 
 }
