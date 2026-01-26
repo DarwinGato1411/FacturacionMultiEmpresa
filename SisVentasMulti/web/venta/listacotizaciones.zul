@@ -68,6 +68,7 @@
                                     <listheader width="3%"  label=" " align="center" />        
                                     <listheader width="3%"  label=" " align="center" />        
                                     <listheader width="3%"  label="" align="center" />        
+                                    <!--<listheader width="3%"  label="" align="center" />-->        
                                 </listhead>  
                         
                     
@@ -130,7 +131,7 @@
                                                    class=" grow"
                                          
                                                    onClick="@command('reporteCotizacion',valor=each)"
-                                                   tooltiptext="Ver factura"/>
+                                                   tooltiptext="Cotizacion Incluido IVA"/>
                                         </listcell>
                                         <listcell zclass = "mycss-listcell">    
                                             <!--<button  src="/imagenes/pdfRep.png" label="Ver" onClick="@command('reporteCotizacion',valor=each)" tooltiptext="Ver cotizacion"/>-->
@@ -138,7 +139,7 @@
                                             <image src="/iconos/tecketera.jpg"  
                                                    class=" grow"
                                                    onClick="@command('reporteCotizacionPuntoVent',valor=each)"
-                                                   tooltiptext="Imprimir comprobante"/>
+                                                   tooltiptext="Proforma punto venta"/>
                                         </listcell>
                                         <listcell zclass = "mycss-listcell">    
                                             <!--<button  src="/imagenes/pdfRep.png" label="Ver" onClick="@command('reporteCotizacion',valor=each)" tooltiptext="Ver cotizacion"/>-->
@@ -146,8 +147,16 @@
                                             <image src="/iconos/perzonalizado.png"   
                                                    class=" grow"                                         
                                                    onClick="@command('reporteCotizacionSinDet',valor=each)"
-                                                   tooltiptext="Ver factura"/>
+                                                   tooltiptext="Proforma sin detalle"/>
                                         </listcell>
+<!--                                        <listcell zclass = "mycss-listcell">    
+                                            <button  src="/imagenes/pdfRep.png" label="Ver" onClick="@command('reporteCotizacion',valor=each)" tooltiptext="Ver cotizacion"/>
+                                    
+                                            <image src="/iconos/pdfreporte.png"   
+                                                   class=" grow"                                         
+                                                   onClick="@command('reporteCotizacionDi',valor=each)"
+                                                   tooltiptext="Proforma desgloce IVA"/>
+                                        </listcell>-->
                                         <listcell zclass = "mycss-listcell">    
                                             <image src="/iconos/editar.png"   
                                                    class=" grow"

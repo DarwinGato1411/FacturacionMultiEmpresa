@@ -237,7 +237,16 @@
                                             class="input" 
                                         />
                                     </div>
-                                  
+                                  <div class="wrapper_input">
+                                        <span>Base 0%:</span>
+                                        <decimalbox  
+                                            format="###.##"   
+                                            value="@bind(vm.subTotalBaseCero)" 
+                                            readonly="true"
+                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
+                                            class="input" 
+                                        />
+                                    </div>
                                 </div>
                                 <div class="wrapper_data">
                                     <div class="wrapper_input">
@@ -296,17 +305,18 @@
                                             class="input" 
                                         />
                                     </div>
-                                
-                                    <div class="wrapper_input">
-                                        <span>Base 0%:</span>
-                                        <decimalbox  
-                                            format="###.##"   
-                                            value="@bind(vm.subTotalBaseCero)" 
-                                            readonly="true"
-                                            onChange="self.setValue(self.getValue().toUpperCase().trim());" 
-                                            class="input" 
+                                  <div class="wrapper_input">
+                                       <button 
+                                            autodisable="self"   
+                                            class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
+                                            onClick="@command('Guardar',valor='SG',envia='S')"
+                                            tooltiptext="Guardar y Envia al SRI"
+                                            label="Facturar y Enviar al SRI"
+                                            width="100%"
                                         />
+
                                     </div>
+                                    
                                 </div>
                                 <div class="wrapper_data">
                                    
@@ -359,7 +369,7 @@
                                         <button 
                                             autodisable="self"   
                                             class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
-                                            onClick="@command('Guardar',valor='SG')"
+                                            onClick="@command('Guardar',valor='SG',envia='N')"
                                             tooltiptext="Guardar"
                                             label="Facturar"
                                             width="100%"

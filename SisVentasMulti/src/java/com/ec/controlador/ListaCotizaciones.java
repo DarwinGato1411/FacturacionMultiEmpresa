@@ -146,6 +146,10 @@ public class ListaCotizaciones {
     public void reporteCotizacionSinDet(@BindingParam("valor") Factura valor) throws JRException, IOException, NamingException, SQLException {
         reporteGeneral(valor.getFacNumProforma(), "SINDET");
     }
+    @Command
+    public void reporteCotizacionDi(@BindingParam("valor") Factura valor) throws JRException, IOException, NamingException, SQLException {
+        reporteGeneral(valor.getFacNumProforma(), "DI");
+    }
 
     @Command
     @NotifyChange({"lstFacturas", "buscarCliente"})
@@ -180,6 +184,9 @@ public class ListaCotizaciones {
                 reportPath = reportFile + File.separator + "proforma.jasper";
             } else if (consindet.equals("SINDET")) {
                 reportPath = reportFile + File.separator + "proformasindet.jasper";
+
+            }else if (consindet.equals("DI")) {
+                reportPath = reportFile + File.separator + "proformadi.jasper";
 
             } else {
                 reportPath = reportFile + File.separator + "proformapuntoventa.jasper";
