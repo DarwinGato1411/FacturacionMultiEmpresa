@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
+<?link rel="stylesheet" type="text/css" href="/css/mov/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/mov/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/mov/app/ventas/modales.css"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?script src="/js/icon.js"?>
+
+<?init class="com.ec.seguridad.Autentificador"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantillamov/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/imagenes/facturados/logo2.jpg"?>  
+<zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
+
+ 
+    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.ListaFacturas')" >
+        <tabbox id="tboxPrincipal"  width="100%" >
+            <tabs >
+                <tab label="Lista de facturas emitidas" sclass="menutabs" /> 
+            </tabs>
+            <tabpanels >
+                
+                <tabpanel  width="99%" class="factura" >                    
+                 
+
+                    <div class="factura_header">
+                        <div class="fact_row">
+                            <div class="wrapper_data">
+                                <div class="wrapper_input">
+                                    <span>Estado:</span>
+                                    <combobox  
+                                        width="100%"         
+                                        class="  textoFechaDateBox"      
+                                        selectedItem="@bind(vm.estadoBusqueda)"     
+                                        readonly="true"  
+                                    >
+                                        <comboitem label="TODO" value="TODO" />
+                                        <comboitem label="PENDIENTE" value="PE" />
+                                        <comboitem label="PAGADO" value="PA" />
+                                    </combobox>
+                                    <!--<div class="fa-solid fa-chevron-down icon"></div>-->
+                                </div>
+                                <div class="wrapper_input">
+                                    <span>Inicio:</span>
+                                    <datebox 
+                                        value="@bind(vm.fechainicio)" 
+                                        compact="true" 
+                                        readonly="true" 
+                                        buttonVisible="true" 
+                                        class="input_date"
+                                        lenient="true" 
+                                        format="dd/MM/yyyy" 
+                                        constraint="no empty: Ingrese la fecha"
+                                    /> 
+                                    <div class="fa-solid fa-calendar icon" />                                 
+                                </div>
+                                <div class="wrapper_input">
+                                    <span>Fin:</span>
+                                    <datebox 
+                                        value="@bind(vm.fechafin)" 
+                                        compact="true" 
+                                        readonly="true" 
+                                        buttonVisible="true" 
+                                        class="input_date"
+                                        lenient="true" 
+                                        format="dd/MM/yyyy" 
+                                        constraint="no empty: Ingrese la fecha"
+                                    />
+                                    <div class="fa-solid fa-calendar icon" />
+                                </div>
+                            </div>
+                            <div class="wrapper_data">
+                                <button 
+                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary"
+                                    onClick="@command('buscarEstado')"  
+                                    tooltiptext="Buscar facturas por estado"
+                                >
+                                    Buscar por estado
+                                </button>
+                                <button 
+                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary"
+                                    onClick="@command('buscarFechas')"  
+                                    tooltiptext="Buscar facturas por fecha"
+                                >
+                                    Buscar por fecha
+                                </button>
+                            </div>
+                        </div>
+<!--                        <div class="fact_row">
+                            <div class="wrapper_data">
+                                <button 
+                                    class="fa-solid fa-magnifying-glass btn_fact btn_base"
+                                    label="PEN-SRI"
+                                    onClick="@command('buscarPendientesEnvSRI')" 
+                                    tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                >
+                                    Pendientes por autorizar
+                                </button>
+                                <button 
+                                    image="/iconos/sri24x24.png"
+                                    class="btn_fact btn_base"
+                                    label="AUT-LOTE"
+                                    onClick="@command('autorizarEnLote')" 
+                                    tooltiptext="Autorizar facturas en lote"
+                                >
+                                    Autorizar Facturas en Lote
+                                </button>
+                                <button 
+                                    image="/iconos/sri24x24.png"
+                                    class="btn_fact btn_base"
+                                    label="Reenviar Facturas"
+                                    onClick="@command('buscarDevueltaSRIReenvio')" 
+                                    tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                >
+                                    Reenviar Facturas
+                                </button>
+                            </div>
+                            <div class="wrapper_data">
+                                <button 
+                                    image="/iconos/sri24x24.png"
+                                    class="btn_fact btn_base"
+                                    label="REEN-LOTE"
+                                    onClick="@command('reenviarEnLote')" 
+                                    tooltiptext="Autorizar facturas en lote"
+                                >
+                                    Reenviar Lote de Factura
+                                </button>
+                                <button 
+                                    class="fa-solid fa-magnifying-glass btn_fact btn_alert"
+                                    onClick="@command('buscarDevueltaSRIPorCorregir')" 
+                                    tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                    label="Facturas Devueltas por Corregir"
+                                />
+                                <button 
+                                    class="fa-solid fa-file-excel btn_fact btn_access"
+                                    onClick="@command('exportListboxToExcel')"  
+                                    tooltiptext="Descargar"
+                                    label="Descargar Registros de Factura"
+                                />
+                            </div>
+                        </div>-->
+                    </div>
+
+                    <div class="factura_body">
+                        <listbox model="@load(vm.lstFacturas)" 
+                                 nonselectableTags=""  mold="paging" pageSize="12"  >
+                            <custom-attributes org.zkoss.zul.listbox.rod="true"/>
+                        
+                            <listhead> 
+                                <!--<listheader width="40px"  label="" align="rigth" />-->  
+                                <listheader width="24%"  
+                                            sort="auto(facNumeroText)">
+                                    <textbox value="@bind(vm.buscarNumFactura)"  
+                                             tooltiptext="# Factura"
+                                             class="form-control form-control-sm"                                         
+                                             placeholder="Numero de factura"
+                                             onOK="@command('buscarLikeNumFactura')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());" />
+                                    
+                                </listheader> 
+<!--                                <listheader width="10%"  >
+                                    <textbox value="@bind(vm.buscarCedula)"  
+                                             tooltiptext="Cedula"
+                                             class="form-control form-control-sm"                                         
+                                             placeholder="Cedula"
+                                             onOK="@command('buscarLikeCedula')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());" />
+                                    
+                                </listheader>    -->
+                                <listheader width="25%"  >
+                                    <textbox value="@bind(vm.buscarCliente)"  
+                                             class="form-control form-control-sm"
+                                             tooltiptext="Nombre del cliente"
+                                             placeholder="Nombre del cliente"
+                                             onOK="@command('buscarLikeCliente')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());" />
+                                    
+                                </listheader> 
+                                <!--<listheader width="10%"  label="Total "  />--> 
+                                <listheader width="20%"  label="Estado SRI" align="rigth" /> 
+                                <!--<listheader width="10%"  label="Fecha Aut." align="rigth" />-->        
+                                <listheader width="10%"  label="" align="rigth" />        
+                                <listheader width="10%"  label="" align="rigth" />                                 
+                                <listheader width="10%"  label="" align="rigth" />        
+                                <listheader width="10%"  label="" align="rigth" />        
+                              
+                                    
+                            </listhead>  
+                            
+                        
+                            <template name="model">                                                            
+                                <listitem>
+                                   
+                                    <listcell zclass = "mycss-listcell">
+                                        <textbox readonly="true"  style="font-size:9px;background:#EBF5FB"  
+                                                 class="form-control form-control-sm"                            
+                                                 value="@bind(each.facNumeroText)" width="100%" />
+                                    </listcell>
+                                 
+                                    <listcell zclass = "mycss-listcell">
+                                        <textbox readonly="true"  style="font-size:9px;background:#EBF5FB" 
+                                                 class="form-control form-control-sm"                             
+                                                 value="@bind(each.idCliente.cliNombre)" width="100%" />
+                                    </listcell>
+                                
+                                
+<!--                                    <listcell zclass = "mycss-listcell">
+                                        <decimalbox format="###.##" readonly="true" 
+                                                    style="font-size:12px;background:#EBF5FB"
+                                                    class="form-control form-control-sm"  
+                                                    value="@bind(each.facTotal)" width="100%"/>
+                                    </listcell>-->
+                                 
+                                    
+                                    <zk  choose="@bind(each.estadosri)" >
+                                        <zk  when="${each.estadosri == 'AUTORIZADO'}"  >
+                                            <listcell    zclass = "mycss-listcell"  class=""  >
+                                                <textbox readonly="true"  style="font-size:9px;background:transparent"    
+                                                         class="form-control form-control-sm"  
+                                                         value="@bind(each.estadosri)" tooltiptext="@bind(each.facMsmInfoSri)" width="100%"/>
+                                            </listcell>
+                                        </zk>
+                                        <zk  when="${each.estadosri == 'ANULADA'}"  >
+                                            <listcell    zclass = "mycss-listcell"  style="background:#E2C1F5" >
+                                                <textbox readonly="true"  style="font-size:9px;background:transparent"   
+                                                         class="form-control form-control-sm"  
+                                                         value="@bind(each.estadosri)" tooltiptext="@bind(each.facMsmInfoSri)" 
+                                                         width="100%"/>
+                                            </listcell>
+                                        </zk>
+                                        <zk  >
+                                            <listcell    zclass = "mycss-listcell"  style="background:#FCFE74" >
+                                                <textbox readonly="true"  style="font-size:9px;background:transparent"   
+                                                         class="form-control form-control-sm"  
+                                                         value="@bind(each.estadosri)" tooltiptext="@bind(each.facMsmInfoSri)" 
+                                                         width="100%"/>
+                                            </listcell>
+                                        </zk>
+                                    </zk>
+                                    
+<!--                                    <listcell   zclass = "mycss-listcell" >
+                                        <datebox compact="true" value="@bind(each.facFechaAutorizacion)" 
+                                                 buttonVisible="false" lenient="true" 
+                                                 tooltiptext="@bind(each.mensajesri)"
+                                                
+                                                 readonly="true"
+                                                 height=" 30px" 
+                                                 style="font-size:12px;background:#EBF5FB"
+                                                 format="medium" width="100%"  />
+                                    </listcell>-->
+                
+                                    <listcell  zclass = "mycss-listcell" >    
+                                        
+                                        <image src="/iconos/factelect.jpg"  
+                                               height=" 30px"   
+                                               class="btn btn btn-secondary btn-sm grow"                                         
+                                               onClick="@command('reporteNotaVenta',valor=each)"
+                                               tooltiptext="Imprimir factura"/>
+                                
+                                    </listcell>
+                                
+                                    <zk if="${each.estadosri!='AUTORIZADO'}"  >
+                                        <listcell  zclass = "mycss-listcell" >    
+                                        
+                                            <image src="/iconos/editar.png"   
+                                                   class="btn btn btn-secondary btn-sm grow"
+                                                   height=" 30px"  
+                                                   onClick="@command('modificarCotizacion',valor=each)"
+                                                   tooltiptext="Modificar factura"/>
+                                
+                                        </listcell>
+                                    </zk>
+                                
+                                    <zk if="${each.estadosri=='AUTORIZADO'}"  >
+                                        <listcell  zclass = "mycss-listcell" >                                         
+                                            <image src="/iconos/listo_uno.png"   
+                                                   height=" 30px"  
+                                                   class=" btn-secondary btn-sm"                                               
+                                                   tooltiptext="No se puede modificar por que se encuentra en estado autorizado"/>
+                                
+                                        </listcell>
+                                    </zk>
+                                    
+                                    
+                                    
+                                    <zk if="${each.estadosri!='AUTORIZADO'}"  > 
+                                        <listcell  zclass = "mycss-listcell" >    
+                                            <image  src="/iconos/sri24x24.png" 
+                                                    height=" 30px"  
+                                                    class="btn btn btn-secondary btn-sm grow"
+                                                    onClick="@command('autorizarSRI',valor=each)" 
+                                                    tooltiptext="Autorizar facturas"/>
+                                        </listcell>
+                                    </zk>
+                            
+                                    <zk if="${each.estadosri=='AUTORIZADO' }"  >
+                                        <listcell  zclass = "mycss-listcell" >                                         
+                                            <image src="/iconos/listo_uno.png"   
+                                                   height=" 30px"  
+                                                   class="  btn-secondary btn-sm "       
+                                                   tooltiptext="Ya se encuentra autorizado"/>
+                                
+                                        </listcell>
+                                    </zk>
+                                    <zk if="${each.estadosri!='AUTORIZADO'}"  > 
+                                        <listcell  zclass = "mycss-listcell" >    
+                                            <image  src="/iconos/reenviar.png" 
+                                                    height=" 30px"  
+                                                    class="btn btn btn-secondary btn-sm grow"
+                                                    onClick="@command('reenviarSRI',valor=each)" 
+                                                    tooltiptext="Reenviar su factura a autorizar"/>
+                                        </listcell>
+                                    </zk>
+                                    <zk if="${each.estadosri=='AUTORIZADO'}"  > 
+                                        <listcell  zclass = "mycss-listcell" >   
+                                            <image  src="/iconos/reenviar.png"
+                                                    height=" 30px"   
+                                                    class="btn btn btn-secondary btn-sm grow"
+                                                    onClick="@command('reenviarSRI',valor=each)" 
+                                                    tooltiptext="Reenviar su factura a autorizar"/>
+                                        </listcell>
+                                    </zk>
+                              
+                                </listitem>
+                            </template>
+                        </listbox>
+            
+                    </div>
+                </tabpanel>
+                
+
+            </tabpanels>
+            
+        </tabbox>
+    </hbox>
+
+
+</zk>

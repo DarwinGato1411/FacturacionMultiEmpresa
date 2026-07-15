@@ -10,6 +10,7 @@ import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.GrupoUsuarioEnum;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioParametrizar;
+import com.ec.untilitario.DeviceUtils;
 import com.ec.vista.servicios.ServicioNumeroDocumentosEmitidos;
 import java.util.Date;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -52,20 +53,17 @@ public class LoginController extends SelectorComposer<Component> {
         if (servicioAuth.login(account.getValue(), password.getValue())) {
             Session sess = Sessions.getCurrent();
             UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
-            if (cre.getUsuarioSistema().getUsuLogin().toUpperCase().contains("SUPER")) {
-                Executions.sendRedirect("/superadmin/consumo.zul");
-            }
-            if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.USUARIO.getCodigo()) {
 
+            if (cre.getNivelUsuario().intValue() == GrupoUsuarioEnum.USUARIO.getCodigo()) {
                 NumeroDocumentosEmitidos emitidos = servicioNumeroDocumentosEmitidos.findByEmpresa(cre.getTipoambiente().getCodTipoambiente());
 
                 numeroDocumentos = emitidos == null ? 0 : emitidos.getNumero().intValue();
 
                 if (cre.getUsuarioSistema().getUsuIlimitado()) {
-
                     if (cre.getUsuarioSistema().getUsuFechaPago().after(actual)) {
-                        if (cre.getTipoambiente().getAmParqueadero()) {
-                            Executions.sendRedirect("/venta/facturarpar.zul");
+                        boolean isMobile = DeviceUtils.isMobileDevice();
+                        if (isMobile) {
+                            Executions.sendRedirect("/venta/facturamov.zul");
                         } else {
                             Executions.sendRedirect("/venta/facturar.zul");
                         }
@@ -77,17 +75,16 @@ public class LoginController extends SelectorComposer<Component> {
 
                 } else {
                     if (cre.getUsuarioSistema().getUsuTotalContratado() > numeroDocumentos) {
-                        
-                        if (cre.getTipoambiente().getAmParqueadero()) {
-                            Executions.sendRedirect("/venta/facturarpar.zul");
+                        boolean isMobile = DeviceUtils.isMobileDevice();
+                        if (isMobile) {
+                            Executions.sendRedirect("/venta/facturamov.zul");
                         } else {
                             Executions.sendRedirect("/venta/facturar.zul");
                         }
-                       
 
                     } else {
                         Clients.showNotification("El numero de documentos emitidos supera al numero de documentos contratado.",
-                                Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
 
                     }
 
@@ -99,7 +96,7 @@ public class LoginController extends SelectorComposer<Component> {
 
         } else {
             Clients.showNotification("Usuario o Contraseña incorrecto. \n Contactese con el administrador.",
-                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
+                    Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 3000, true);
 
         }
 

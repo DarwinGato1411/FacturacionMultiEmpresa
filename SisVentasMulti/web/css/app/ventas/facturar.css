@@ -405,7 +405,7 @@ body {
   width: 50%;
   border-radius: 10px;
   padding: 1em;
-  background-color: #eee;
+  /*background-color: #eee;*/
 }
 
 .fact_row_custom .container_data_custom:first-child {

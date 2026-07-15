@@ -628,6 +628,13 @@ public class ListaFacturas {
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
         RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos, amb);
+
+        if (resSolicitud.getEstado().contains("ERROR SRI")) {
+            Clients.showNotification("Ocurrio un error en el SRI o esta temporalmente suspendido refresque la pantalla y reenvie ",
+                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+            return;
+        }
+
         if (resSolicitud != null && resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
@@ -718,24 +725,24 @@ public class ListaFacturas {
                                 if (parametrizar.getParConDatos() && valor.getIdCliente().getCliNombre().toUpperCase().contains("CONSUMIDOR")) {
                                     correo = "darwinvinicio14_11@hotmail.com";
                                     mail.sendMailSimple(correo,
-                                        attachFiles,
-                                        "FACTURA ELECTRONICA DATOS ",
-                                        valor.getFacClaveAcceso(),
-                                        valor.getFacNumeroText(),
-                                        valor.getFacTotal(),
-                                        valor.getIdCliente().getCliNombre(), amb);
+                                            attachFiles,
+                                            "FACTURA ELECTRONICA DATOS ",
+                                            valor.getFacClaveAcceso(),
+                                            valor.getFacNumeroText(),
+                                            valor.getFacTotal(),
+                                            valor.getIdCliente().getCliNombre(), amb);
                                 } else {
 
                                     correo = valor.getIdCliente().getCliCorreo();
                                     mail.sendMailSimple(correo,
-                                        attachFiles,
-                                        "FACTURA ELECTRONICA",
-                                        valor.getFacClaveAcceso(),
-                                        valor.getFacNumeroText(),
-                                        valor.getFacTotal(),
-                                        valor.getIdCliente().getCliNombre(), amb);
+                                            attachFiles,
+                                            "FACTURA ELECTRONICA",
+                                            valor.getFacClaveAcceso(),
+                                            valor.getFacNumeroText(),
+                                            valor.getFacTotal(),
+                                            valor.getIdCliente().getCliNombre(), amb);
                                 }
-                                
+
                             }
                         }
 
@@ -856,6 +863,27 @@ public class ListaFacturas {
         try {
 
             RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
+
+            if (resComprobante.getNumeroComprobantes().contains("ERROR SRI")) {
+                Clients.showNotification("Ocurrio un error en el SRI o esta temporalmente suspendido,  refresca la pantalla y reenvie ",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+                valor.setEstadosri(resComprobante.getNumeroComprobantes());
+                servicioFactura.modificar(valor);
+                return;
+            }
+            System.out.println("RespuestaComprobante " + resComprobante.toString());
+            if (resComprobante.getAutorizaciones().getAutorizacion() == null) {
+                Clients.showNotification("No se encontro el documento, presione el boton enviar,   refresca la pantalla y reenvie ",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+                return;
+            }
+
+            if (resComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
+                valor.setMensajesri("ERROR EN EL METODO DE AUTORIZAR NO DEVUELVE NADA REENVIO");
+                servicioFactura.modificar(valor);
+                return;
+            }
+
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 

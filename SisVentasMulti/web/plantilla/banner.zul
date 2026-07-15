@@ -104,7 +104,7 @@
                         <menuitem label="Compras vs Ventas" id="btnBalanceUtilidad" class="fa-solid fa-gear menu_item" />
                         <menuitem label="Acumulado de ventas" id="btnAcumuladoventas" class="fa-solid fa-gear menu_item"/>
                         <menuitem label="Rotacion Productos" id="btnRotacionProducto" class="fa-solid fa-gear menu_item"/>
-                        <menuitem label="Lista de cierre de caja" id="btnListarCierre" /> 
+                            <menuitem label="Lista de cierre de caja" id="btnListarCierre" /> 
                     </menupopup>
                 </menu>
                 <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" visible="false" class="menu_child" />

@@ -398,4 +398,14 @@ public class MenuOpciones extends SelectorComposer<Component> {
     public void btnGestionFactura() {
         Executions.sendRedirect("/administrar/gestionfactura.zul");
     }
+
+    @Listen("onClick = #btnNotaVentasMovil")
+    public void btnNotaVentasMovil() {
+        Executions.sendRedirect("/venta/listafacturasmovil.zul");
+    }
+
+    @Listen("onClick = #btnFacturarMov")
+    public void btnFacturarMov() {
+        Executions.sendRedirect("/venta/facturamov.zul");
+    }
 }

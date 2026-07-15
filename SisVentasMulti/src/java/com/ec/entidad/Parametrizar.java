@@ -145,6 +145,8 @@ public class Parametrizar implements Serializable {
     private String parPuerto;
     @Column(name = "par_contratado")
     private BigDecimal parContratado;
+    @Column(name = "par_envio_activado")
+    private Boolean parEnvioActivado;
 
     public Parametrizar() {
     }
@@ -489,6 +491,14 @@ public class Parametrizar implements Serializable {
 
     public void setParConDatos(Boolean parConDatos) {
         this.parConDatos = parConDatos;
+    }
+
+    public Boolean getParEnvioActivado() {
+        return parEnvioActivado;
+    }
+
+    public void setParEnvioActivado(Boolean parEnvioActivado) {
+        this.parEnvioActivado = parEnvioActivado;
     }
 
 }

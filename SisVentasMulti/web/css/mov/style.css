@@ -235,7 +235,7 @@ element.style {
 
 .z-toolbar {
   background: none;
-  background-color: #cff791;
+  background-color: #bfccff;
   height: 18px;
 }
 
@@ -450,7 +450,10 @@ element.style {
   font-weight: bold;
   font-size: 14px;
   background-color: #eceeef;
-  text-align: left;
+}
+
+.textoFechaDateBox input {
+  width: auto !important;
 }
 .fondoCabeceraList {
   height: 30px;
@@ -3275,4 +3278,3 @@ textarea {
   -webkit-box-shadow: 1px 1px 3px rgb(0 0 0 / 35%);
   box-shadow: 1px 1px 3px rgb(0 0 0 / 35%);
 }
-

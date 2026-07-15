@@ -202,14 +202,14 @@
                                     type="password"
                                     onChange="@command('validarFirma')"
                                     value="@bind(vm.tipoambiente.amClaveAccesoSri)" 
-                                    placeholder="Clave SRI"
+                                    placeholder="Clave firma"
                                     class="input_text"
-                                    tooltiptext="Clave SRI" 
+                                    tooltiptext="Clave firma" 
                                 />
                             </div>
                         </div>
                         <div class="wrapper_input_mod" style="flex:auto;">
-                            <span style="margin:0 0.5em;">Firma Electrónica </span>
+                            <span style="margin:0 0.5em;"  onDoubleClick="@command('verInformacion')">Firma Electrónica </span>
                             <div class="wrapper_input_text" style="width:86%;position:relative">
                                 <div class="fa-solid fa-unlock-keyhole icon"></div>
                                 <textbox value="@bind(vm.tipoambiente.amDirFirma)"
