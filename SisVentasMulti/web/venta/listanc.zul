@@ -1,78 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
-<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v46"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
-<?script src="/js/icon.js"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v18"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v4"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
 
 <zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer"
+          width="100%"
+          sclass="kd-page lista_facturas_page"
           viewModel="@id('vm') @init('com.ec.controlador.ListaNC')" >
-        <tabbox id="tboxPrincipal"  width="100%" >
+        <label sclass="kd-title" value="Lista de notas de credito"/>
+        <label sclass="kd-sub" value="Consulte por fecha y gestione autorización SRI."/>
+        <div sclass="kd-card">
+        <tabbox id="tboxPrincipal"  width="100%" sclass="lf-tabbox">
             <tabs >
                 <tab label="Lista de notas de credito" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
                 
-                <tabpanel  width="99%" class="factura" >                    
-                    
-                
-
-
-                    <div class="factura_header paint_all_row">
-                        <div class="fact_row fact_only_row">
-                            <div class="wrapper_data" style="max-width:300px">
-
-                                <div class="wrapper_input" >
-                                    <span style="width:unset">Inicio:</span>
-                                    <datebox 
-                                        compact="true" 
-                                        readonly="true" 
-                                        buttonVisible="true" 
-                                        class="input_date"
-                                        lenient="true" 
-                                        value="@bind(vm.fechainicio)" 
-                                        format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
-                                    />
-                                    <div class="fa-solid fa-calendar icon" />
-                                </div>
-                            </div>
-
-                            <div class="wrapper_data " style="max-width:300px">
-                                <div class="wrapper_input">
-                                    <span style="width:unset">Fin:</span>
-                                    <datebox 
-                                        compact="true" 
-                                        readonly="true" 
-                                        buttonVisible="true" 
-                                        value="@bind(vm.fechafin)" 
-                                        class="input_date"
-                                        lenient="true" 
-                                        format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
-                                    />
-                                    <div class="fa-solid fa-calendar icon" />
-                                </div>
-                            </div>
-                            <div class="wrapper_data ">
-                            
-                                <button 
-                                    onClick="@command('buscarFechas')"
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary btn_one_element"
-                                    style="height:unset;"
-                                >
-                                    Buscar por fecha
-                                </button>
-                            </div>
+                <tabpanel  width="99%" class="factura" >
+                    <div class="cat_toolbar">
+                        <label class="cat_toolbar_title" value="Búsqueda"/>
+                        <div class="cat_field">
+                            <span>Inicio</span>
+                            <datebox compact="true"
+                                     readonly="true"
+                                     buttonVisible="true"
+                                     class="input_date"
+                                     lenient="true"
+                                     value="@bind(vm.fechainicio)"
+                                     format="dd/MM/yyyy"
+                                     constraint="no empty: Ingrese la fecha"/>
                         </div>
+                        <div class="cat_field">
+                            <span>Fin</span>
+                            <datebox compact="true"
+                                     readonly="true"
+                                     buttonVisible="true"
+                                     value="@bind(vm.fechafin)"
+                                     class="input_date"
+                                     lenient="true"
+                                     format="dd/MM/yyyy"
+                                     constraint="no empty: Ingrese la fecha"/>
+                        </div>
+                        <button onClick="@command('buscarFechas')"
+                                class="fa-solid fa-magnifying-glass btn_fact btn_primary"
+                                tooltiptext="Buscar notas de credito por fecha"
+                                label="Por fecha"/>
+                        <textbox sclass="cat_search"
+                                 value="@bind(vm.buscarCedula)"
+                                 tooltiptext="Cédula"
+                                 placeholder="Cédula"
+                                 onOK="@command('buscarLikeCedula')"
+                                 onChange="self.setValue(self.getValue().toUpperCase());"/>
+                        <textbox sclass="cat_search pf_search"
+                                 value="@bind(vm.buscarCliente)"
+                                 tooltiptext="Nombre del cliente"
+                                 placeholder="Nombre del cliente"
+                                 onOK="@command('buscarLikeCliente')"
+                                 onChange="self.setValue(self.getValue().toUpperCase());"/>
+                        <button onClick="@command('buscarLikeCliente')"
+                                class="fa-solid fa-magnifying-glass btn_fact btn_primary"
+                                tooltiptext="Buscar por cliente"
+                                label="Por cliente"/>
                     </div>
-                    
-                   
 
                     <div class="factura_body">
                         <listbox model="@load(vm.lstCreditoDebitos)" 
@@ -81,24 +79,8 @@
                         
                             <listhead> 
                                 <listheader width="10%"  label="N° Fact" /> 
-                                <listheader width="10%"  >
-                                    <textbox value="@bind(vm.buscarCedula)"  
-                                             tooltiptext="Cedula"
-                                             class="form-control form-control-sm"                                         
-                                             placeholder="Cedula"
-                                             onOK="@command('buscarLikeCedula')"
-                                             onChange="self.setValue(self.getValue().toUpperCase());" />
-                                    
-                                </listheader>    
-                                <listheader width="28%"  >
-                                    <textbox value="@bind(vm.buscarCliente)"  
-                                             class="form-control form-control-sm"
-                                             tooltiptext="Nombre del cliente"
-                                             placeholder="Nombre del cliente"
-                                             onOK="@command('buscarLikeCliente')"
-                                             onChange="self.setValue(self.getValue().toUpperCase());" />
-                                    
-                                </listheader> 
+                                <listheader width="10%"  label="Cédula" />    
+                                <listheader width="28%"  label="Nombre del cliente" /> 
                                 <listheader width="8%"  label="Fecha" />                                                        
                                 <listheader width="8%"  label="Estado SRI" align="rigth" /> 
                                 <listheader width="8%"  label="Fecha Aut." align="rigth" /> 
@@ -249,7 +231,8 @@
             </tabpanels>
             
         </tabbox>
-    </hbox>
+        </div>
+    </div>
 
 
 </zk>

@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v49"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v19"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v4"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 
 
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
-<zk  contentStyle="overflow:auto" with="100%" class="container" >
+<zk  contentStyle="overflow:auto" width="100%" >
     <!--<caption label="Guia de remision" style="font-weight:bold"/>--> 
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.GuiaRemision')" >
-        <tabbox  width="100%"  tabscroll="true" >
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.GuiaRemision')"
+          width="100%" class="containerFactura kd-page facturar_page guia_remision" >
+        <label sclass="kd-title" value="Emitir guía de remisión"/>
+        <label sclass="kd-sub" value="Complete cliente, transporte y productos para emitir la guía."/>
+        <div sclass="kd-card">
+        <tabbox  width="100%"  tabscroll="true" sclass="lf-tabbox" >
             <tabs >
                 <tab label="Guia remisión" sclass="menutabs"/>
             </tabs>
             <tabpanels >
-                <tabpanel  height="100%" width="98%"  >
-                    <div class="container-fluid">
+                <tabpanel  height="100%" width="100%" class="factura guia_page" >
+                    <div class="container-fluid guia_page_inner">
              
                         <div class="factura_header">
                             <div class="fact_row">
@@ -178,23 +187,22 @@
                                         autodisable="self"
                                         onClick="@command('guardar')"
                                         tooltiptext="Guardar guia de remision"
-                                    >
-                                        Guardar
-                                    </button>
+                                        label="Guardar"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="factura_body factura_body_content">
                                 
-                            <div class="factura_body_item" >
+                            <div class="factura_body_item guia_panel_izq" >
                                 <listbox model="@load(vm.listaProducto)" 
-                                         nonselectableTags=""    mold="paging" pageSize="13"  >
+                                         nonselectableTags=""    mold="paging" pageSize="13"
+                                         width="100%" hflex="1" class="guia_listbox"  >
                                     <custom-attributes org.zkoss.zul.listbox.rod="true"/>
       
                     
-                                    <listhead> 
-                                        <listheader width="25%"  label="Codigo"     align="left"   >
+                                    <listhead class="encabezado_guia"> 
+                                        <listheader width="22%"  label="Codigo"     align="left"   >
                                                 
                                         </listheader>     
                                         <listheader width="65%" align="left"   >
@@ -212,7 +220,7 @@
                                     </listhead>  
                     
                                     <template name="model">                                                            
-                                        <listitem onOK="@command('agregarItemLista',valor=each)">
+                                        <listitem onOK="@command('agregarItemLista',valor=each)" class="tabla_guia">
                                             <listcell style="font-size:11px;background-color:#d6eefd" zclass = "mycss-listcell" 
                                                       onDoubleClick="@command('agregarItemLista',valor=each)">
                                                 <label class="form-control form-control-sm"
@@ -252,16 +260,19 @@
                                 </listbox>
                             </div>
                             
-                            <div class="factura_body_item" align="end">
+                            <div class="factura_body_item guia_panel_der">
                                 <listbox model="@load(vm.listaGuiaModel)"
                                          nonselectableTags="*" 
                                          checkmark="true"  
-                                         multiple="true" 
+                                         multiple="true"
+                                         width="100%"
+                                         hflex="1"
+                                         class="guia_listbox"
                                          onSelect="@command('seleccionarRegistros')" >
                                     <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                                               
                                         
-                                    <listhead>
+                                    <listhead class="encabezado_guia_sel">
                                         <listheader width="10%"  label="" align="left" >
                                             <button label="" src="/iconos/delete.png"   
                                                     onClick="@command('eliminarRegistros')"  
@@ -273,8 +284,8 @@
                                     </listhead>
                     
                                     <template name="model">                                                            
-                                        <listitem>
-                                            <listcell zclass = "mycss-listcell">
+                                        <listitem class="tabla_guia_sel">
+                                            <listcell >
                                                     
                                             </listcell>                                                      
                                             <listcell zclass = "mycss-listcell">
@@ -300,6 +311,7 @@
                     </div> 
                 </tabpanel>
             </tabpanels>
-        </tabbox>    
-    </hbox>
+        </tabbox>
+        </div>
+    </div>
 </zk>

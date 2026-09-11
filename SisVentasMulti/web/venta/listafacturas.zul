@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v46"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v2"?>
 <?script src="/js/icon.js"?>
 
 <?init class="com.ec.seguridad.Autentificador"?>
@@ -11,136 +14,106 @@
 <zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
 
  
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer"
+          width="100%"
+          sclass="kd-page lista_facturas_page"
           viewModel="@id('vm') @init('com.ec.controlador.ListaFacturas')" >
-        <tabbox id="tboxPrincipal"  width="100%" >
+        <label sclass="kd-title" value="Lista de facturas emitidas"/>
+        <label sclass="kd-sub" value="Consulte por estado o fecha. Autorice y reenvíe comprobantes al SRI."/>
+        <div sclass="kd-card">
+        <tabbox id="tboxPrincipal"  width="100%" sclass="lf-tabbox" >
             <tabs >
                 <tab label="Lista de facturas emitidas" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
                 
-                <tabpanel  width="99%" class="factura" >                    
-                 
-
-                    <div class="factura_header">
-                        <div class="fact_row">
-                            <div class="wrapper_data">
-                                <div class="wrapper_input">
-                                    <span>Estado:</span>
-                                    <combobox  
-                                        width="100%"         
-                                        class="  textoFechaDateBox"      
-                                        selectedItem="@bind(vm.estadoBusqueda)"     
-                                        readonly="true"  
-                                    >
-                                        <comboitem label="TODO" value="TODO" />
-                                        <comboitem label="PENDIENTE" value="PE" />
-                                        <comboitem label="PAGADO" value="PA" />
-                                    </combobox>
-                                    <!--<div class="fa-solid fa-chevron-down icon"></div>-->
-                                </div>
-                                <div class="wrapper_input">
-                                    <span>Inicio:</span>
-                                    <datebox 
-                                        value="@bind(vm.fechainicio)" 
-                                        compact="true" 
-                                        readonly="true" 
-                                        buttonVisible="true" 
-                                        class="input_date"
-                                        lenient="true" 
-                                        format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
-                                    /> 
-                                    <div class="fa-solid fa-calendar icon" />                                 
-                                </div>
-                                <div class="wrapper_input">
-                                    <span>Fin:</span>
-                                    <datebox 
-                                        value="@bind(vm.fechafin)" 
-                                        compact="true" 
-                                        readonly="true" 
-                                        buttonVisible="true" 
-                                        class="input_date"
-                                        lenient="true" 
-                                        format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
-                                    />
-                                    <div class="fa-solid fa-calendar icon" />
-                                </div>
+                <tabpanel  width="99%" class="factura lista_facturas" >                    
+                    <div class="factura_header lista_facturas_toolbar">
+                        <div class="lf_panel lf_toolbar_line">
+                            <div class="wrapper_input lf_field lf_field_estado">
+                                <span>Estado</span>
+                                <combobox width="60px"
+                                    class="textoFechaDateBox lf_combo"
+                                    selectedItem="@bind(vm.estadoBusqueda)"
+                                    readonly="true">
+                                    <comboitem label="TODO" value="TODO" />
+                                    <comboitem label="PENDIENTE" value="PE" />
+                                    <comboitem label="PAGADO" value="PA" />
+                                </combobox>
                             </div>
-                            <div class="wrapper_data">
-                                <button 
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary"
-                                    onClick="@command('buscarEstado')"  
-                                    tooltiptext="Buscar facturas por estado"
-                                >
-                                    Buscar por estado
-                                </button>
-                                <button 
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary"
-                                    onClick="@command('buscarFechas')"  
-                                    tooltiptext="Buscar facturas por fecha"
-                                >
-                                    Buscar por fecha
-                                </button>
+                            <div class="wrapper_input lf_field">
+                                <span>Inicio</span>
+                                <datebox
+                                    value="@bind(vm.fechainicio)"
+                                    compact="true"
+                                    readonly="true"
+                                    buttonVisible="true"
+                                    class="lf_date"
+                                    lenient="true"
+                                    format="dd/MM/yyyy"
+                                    constraint="no empty: Ingrese la fecha" />
                             </div>
-                        </div>
-                        <div class="fact_row">
-                            <div class="wrapper_data">
-                                <button 
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_base"
-                                    label="PEN-SRI"
-                                    onClick="@command('buscarPendientesEnvSRI')" 
-                                    tooltiptext="Buscar facturas pendientes para enviar al SRI"
-                                >
-                                    Pendientes por autorizar
-                                </button>
-                                <button 
-                                    image="/iconos/sri24x24.png"
-                                    class="btn_fact btn_base"
-                                    label="AUT-LOTE"
-                                    onClick="@command('autorizarEnLote')" 
-                                    tooltiptext="Autorizar facturas en lote"
-                                >
-                                    Autorizar Facturas en Lote
-                                </button>
-                                <button 
-                                    image="/iconos/sri24x24.png"
-                                    class="btn_fact btn_base"
-                                    label="Reenviar Facturas"
-                                    onClick="@command('buscarDevueltaSRIReenvio')" 
-                                    tooltiptext="Buscar facturas pendientes para enviar al SRI"
-                                >
-                                    Reenviar Facturas
-                                </button>
+                            <div class="wrapper_input lf_field">
+                                <span>Fin</span>
+                                <datebox
+                                    value="@bind(vm.fechafin)"
+                                    compact="true"
+                                    readonly="true"
+                                    buttonVisible="true"
+                                    class="lf_date"
+                                    lenient="true"
+                                    format="dd/MM/yyyy"
+                                    constraint="no empty: Ingrese la fecha" />
                             </div>
-                            <div class="wrapper_data">
-                                <button 
-                                    image="/iconos/sri24x24.png"
-                                    class="btn_fact btn_base"
-                                    label="REEN-LOTE"
-                                    onClick="@command('reenviarEnLote')" 
-                                    tooltiptext="Autorizar facturas en lote"
-                                >
-                                    Reenviar Lote de Factura
-                                </button>
-                                <button 
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_alert"
-                                    onClick="@command('buscarDevueltaSRIPorCorregir')" 
-                                    tooltiptext="Buscar facturas pendientes para enviar al SRI"
-                                    label="Facturas Devueltas por Corregir"
-                                />
-                                <button 
-                                    class="fa-solid fa-file-excel btn_fact btn_access"
-                                    onClick="@command('exportListboxToExcel')"  
-                                    tooltiptext="Descargar"
-                                    label="Descargar Registros de Factura"
-                                />
-                            </div>
+                            <button
+                                class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                onClick="@command('buscarEstado')"
+                                tooltiptext="Buscar facturas por estado"
+                                label="Por estado" />
+                            <button
+                                class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                onClick="@command('buscarFechas')"
+                                tooltiptext="Buscar facturas por fecha"
+                                label="Por fecha" />
+                            <span class="lf_sep" />
+                            <button
+                                class="btn_fact lf_btn lf_btn_secondary"
+                                onClick="@command('buscarPendientesEnvSRI')"
+                                tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                label="Pendientes" />
+                            <button
+                                image="/iconos/sri24x24.png"
+                                class="btn_fact lf_btn lf_btn_secondary"
+                                onClick="@command('autorizarEnLote')"
+                                tooltiptext="Autorizar facturas en lote"
+                                label="Autorizar lote" />
+                            <button
+                                class="btn_fact lf_btn lf_btn_secondary"
+                                onClick="@command('buscarDevueltaSRIPorCorregir')"
+                                tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                label="Buscar devueltas" />
+                            <button
+                                image="/iconos/sri24x24.png"
+                                class="btn_fact lf_btn lf_btn_secondary"
+                                onClick="@command('buscarDevueltaSRIReenvio')"
+                                tooltiptext="Buscar facturas pendientes para enviar al SRI"
+                                label="Reenviar" />
+                            <button
+                                image="/iconos/sri24x24.png"
+                                class="btn_fact lf_btn lf_btn_secondary"
+                                onClick="@command('reenviarEnLote')"
+                                tooltiptext="Autorizar facturas en lote"
+                                label="Reenviar lote" />
+                            <span class="lf_sep" />
+                            <button
+                                class="fa-solid fa-file-excel btn_fact lf_btn lf_btn_success"
+                                onClick="@command('exportListboxToExcel')"
+                                tooltiptext="Descargar"
+                                label="Excel" />
                         </div>
                     </div>
 
-                    <div class="factura_body">
+                    <div class="factura_body factura_body_content">
                         <listbox model="@load(vm.lstFacturas)" 
                                  nonselectableTags=""  mold="paging" pageSize="12"  >
                             <custom-attributes org.zkoss.zul.listbox.rod="true"/>
@@ -455,7 +428,8 @@
             </tabpanels>
             
         </tabbox>
-    </hbox>
+        </div>
+    </div>
 
 
 </zk>

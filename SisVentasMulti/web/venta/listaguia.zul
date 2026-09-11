@@ -1,97 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v49"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v19"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v4"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
-<zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.ListaGuia')" >
-        <tabbox id="tboxPrincipal"  width="100%" >
+<zk  contentStyle="overflow:auto" width="100%" >
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.ListaGuia')"
+          width="100%" sclass="kd-page lista_facturas_page" >
+        <label sclass="kd-title" value="Lista de guias de remision"/>
+        <label sclass="kd-sub" value="Consulte por fecha o cliente y gestione la autorización SRI."/>
+        <div sclass="kd-card">
+        <tabbox id="tboxPrincipal"  width="100%" sclass="lf-tabbox" >
             <tabs >
                 <tab label="Lista de guias de remision" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
                 
-                <tabpanel  width="99%"  >                    
-                
-
-                      <div class="factura_header paint_all_row">
-                        <div class="fact_row fact_only_row">
-                            <div class="wrapper_data" style="max-width:300px">
-
-                                <div class="wrapper_input" >
-                                    <span style="width:unset">Inicio:</span>
-                                    <datebox 
-                                        readonly="true" 
-                                        buttonVisible="true" 
-                                        class="input_date"
-                                        lenient="true" 
-                                        value="@bind(vm.fechainicio)" 
-                                        format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
-                                    />
-                                    <div class="fa-solid fa-calendar icon" />
-                                </div>
+                <tabpanel  width="99%" class="factura lista_facturas" >                    
+                    <div class="factura_header lista_facturas_toolbar">
+                        <div class="lf_panel lf_toolbar_line">
+                            <div class="wrapper_input lf_field">
+                                <span>Inicio</span>
+                                <datebox
+                                    readonly="true"
+                                    buttonVisible="true"
+                                    class="lf_date"
+                                    lenient="true"
+                                    value="@bind(vm.fechainicio)"
+                                    format="dd/MM/yyyy"
+                                    constraint="no empty: Ingrese la fecha"/>
                             </div>
-
-                            <div class="wrapper_data " style="max-width:300px">
-                                <div class="wrapper_input">
-                                    <span style="width:unset">Fin:</span>
-                                    <datebox 
-                                        readonly="true" 
-                                        buttonVisible="true" 
-                                        class="input_date"
-                                        value="@bind(vm.fechafin)"
-                                        lenient="true" 
-                                        format="dd/MM/yyyy" 
-                                        constraint="no empty: Ingrese la fecha"
-                                    />
-                                    <div class="fa-solid fa-calendar icon" />
-                                </div>
+                            <div class="wrapper_input lf_field">
+                                <span>Fin</span>
+                                <datebox
+                                    readonly="true"
+                                    buttonVisible="true"
+                                    class="lf_date"
+                                    value="@bind(vm.fechafin)"
+                                    lenient="true"
+                                    format="dd/MM/yyyy"
+                                    constraint="no empty: Ingrese la fecha"/>
                             </div>
-                            <div class="wrapper_data ">
-                            
-                                <button 
-                                    class="fa-solid fa-magnifying-glass btn_fact btn_primary btn_one_element"
-                                    style="height:unset;"
-                                    onClick="@command('buscarFechas')"
-                                >
-                                    Buscar por fecha
-                                </button>
+                            <button
+                                class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                onClick="@command('buscarFechas')"
+                                tooltiptext="Buscar guías por fecha"
+                                label="Por fecha"/>
+                            <div class="wrapper_input lf_field lf_field_buscar">
+                                <span>Cédula</span>
+                                <textbox sclass="lf_search"
+                                         value="@bind(vm.buscarCedula)"
+                                         tooltiptext="Cédula"
+                                         placeholder="Cédula"
+                                         onOK="@command('buscarLikeCedula')"
+                                         onChange="self.setValue(self.getValue().toUpperCase());"/>
                             </div>
+                            <div class="wrapper_input lf_field lf_field_buscar">
+                                <span>Cliente</span>
+                                <textbox sclass="lf_search"
+                                         value="@bind(vm.buscarCliente)"
+                                         tooltiptext="Nombre del cliente"
+                                         placeholder="Nombre del cliente"
+                                         onOK="@command('buscarLikeCliente')"
+                                         onChange="self.setValue(self.getValue().toUpperCase());"/>
+                            </div>
+                            <button
+                                class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                onClick="@command('buscarLikeCliente')"
+                                tooltiptext="Buscar por cliente"
+                                label="Por cliente"/>
                         </div>
                     </div>
 
-                    <div class="factura_body">
+                    <div class="factura_body factura_body_content">
                         <listbox model="@load(vm.lstGuiaRemision)" 
                                 nonselectableTags=""  mold="paging" pageSize="12"  >
                             <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                         
-                            <listhead> 
+                            <listhead class="encabezadolf"> 
                                 <listheader width="10%"  label="N° Fact" /> 
-                                <listheader width="10%"  >
-                                    <textbox value="@bind(vm.buscarCedula)"  
-                                            tooltiptext="Cedula"
-                                            class="form-control form-control-sm"                                         
-                                            placeholder="Cedula"
-                                            onOK="@command('buscarLikeCedula')"
-                                            onChange="self.setValue(self.getValue().toUpperCase());" />
-                                    
-                                </listheader>    
-                                <listheader width="15%"  >
-                                    <textbox value="@bind(vm.buscarCliente)"  
-                                            class="form-control form-control-sm"
-                                            tooltiptext="Nombre del cliente"
-                                            placeholder="Nombre del cliente"
-                                            onOK="@command('buscarLikeCliente')"
-                                            onChange="self.setValue(self.getValue().toUpperCase());" />
-                                    
-                                </listheader> 
+                                <listheader width="10%"  label="Cédula" />    
+                                <listheader width="15%"  label="Nombre del cliente" /> 
                                 <listheader width="8%"  label="Fecha" />                                                        
                                 <listheader width="10%"  label="Estado SRI" align="rigth" /> 
                                 <listheader width="8%"  label="Fecha Aut." align="rigth" /> 
@@ -103,7 +102,7 @@
                             
                         
                             <template name="model">                                                            
-                                <listitem>
+                                <listitem class="tablalf">
                                     <listcell  zclass = "mycss-listcell">
                                         <textbox readonly="true"  style="font-size:12px;background:#EBF5FB"                            
                                                 class="form-control form-control-sm" value="@bind(each.facNumeroText)"  />
@@ -206,7 +205,8 @@
             </tabpanels>
             
         </tabbox>
-    </hbox>
+        </div>
+    </div>
 
 
 </zk>

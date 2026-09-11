@@ -1,0 +1,232 @@
+/* Loaded last so child pages cannot restyle the bar. */
+.banner,
+.z-north,
+.z-north-body,
+.z-north-noborder {
+  background: #122536 !important;
+  background-color: #122536 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+}
+
+.banner-brand {
+  background: #122536 !important;
+}
+
+.banner-inner {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 50px !important;
+}
+
+.banner-nav {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+.banner-utils {
+  margin-left: auto !important;
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  white-space: nowrap !important;
+  height: 50px !important;
+}
+
+.banner-utils,
+.banner-utils .z-toolbar,
+.banner-utils .z-toolbarbutton,
+.banner-utils .z-a,
+.banner-utils .z-label {
+  flex-shrink: 0 !important;
+}
+
+.banner .z-menubar,
+.banner .z-menubar-hor,
+.banner .z-menubar-ver,
+.banner .z-menubar-horizontal,
+.banner .z-toolbar,
+.banner .z-menu,
+.banner .z-menuitem,
+.banner .z-menu-over,
+.banner .z-menu-hover,
+.banner .z-menu-selected,
+.banner .z-menu-seld,
+.banner .z-menu-clk,
+.banner .z-menu-body-over,
+.banner .z-menu-body-seld,
+.banner .z-menuitem-over,
+.banner .z-menuitem-seld,
+.banner .z-toolbarbutton,
+.banner .z-toolbarbutton-over,
+.banner .z-toolbarbutton-select,
+.banner .z-toolbar .z-toolbarbutton-cnt,
+.banner .z-toolbarbutton-over .z-toolbarbutton-cnt,
+.banner .z-toolbarbutton-select .z-toolbarbutton-cnt {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 none !important;
+  border-top: 0 none !important;
+  border-bottom: 0 none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.banner .z-menubar .z-menu-inner-l,
+.banner .z-menubar .z-menu-inner-r,
+.banner .z-menubar .z-menuitem-inner-l,
+.banner .z-menubar .z-menuitem-inner-r,
+.banner .z-menubar .z-menu-body-over .z-menu-inner-l,
+.banner .z-menubar .z-menu-body-seld .z-menu-inner-l,
+.banner .z-menubar .z-menuitem-over .z-menuitem-inner-l,
+.banner .z-menubar .z-menuitem-seld .z-menuitem-inner-l,
+.banner .z-menubar .z-menu-body-over .z-menu-inner-r,
+.banner .z-menubar .z-menu-body-seld .z-menu-inner-r,
+.banner .z-menubar .z-menuitem-over .z-menuitem-inner-r,
+.banner .z-menubar .z-menuitem-seld .z-menuitem-inner-r {
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: none !important;
+}
+
+.banner .z-toolbarbutton,
+.banner .z-toolbarbutton-over,
+.banner .z-toolbarbutton-select,
+.banner .z-toolbarbutton-seld {
+  padding: 0 10px !important;
+  margin: 0 !important;
+  height: 50px !important;
+}
+
+.banner .z-menu-text,
+.banner .z-menuitem-text,
+.banner .z-menu-btn,
+.banner .z-menuitem-btn,
+.banner .z-menu-inner-m .z-menu-btn,
+.banner .z-menuitem-inner-m .z-menuitem-btn,
+.banner .z-toolbarbutton-cnt,
+.banner .z-label:not(.banner-logout-text) {
+  color: #ffffff !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.banner .z-menu-inner-m,
+.banner .z-menuitem-inner-m,
+.banner .z-menu-btn,
+.banner .z-menuitem-btn,
+.banner .z-menu-body,
+.banner .z-menuitem-body,
+.banner .z-menu-body-over .z-menu-inner-m,
+.banner .z-menu-body-seld .z-menu-inner-m,
+.banner .z-menuitem-body-over .z-menuitem-inner-m,
+.banner .z-menuitem-body-seld .z-menuitem-inner-m,
+.banner .z-menu-over .z-menu-inner-m,
+.banner .z-menu-seld .z-menu-inner-m,
+.banner .z-menu-selected .z-menu-inner-m,
+.banner .z-menuitem-over .z-menuitem-inner-m,
+.banner .z-menuitem-seld .z-menuitem-inner-m {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 none !important;
+  box-shadow: none !important;
+}
+
+.banner .z-menu-selected,
+.banner .z-menu-seld,
+.banner .z-menu-body-seld,
+.banner .z-menuitem-selected,
+.banner .z-menuitem-seld,
+.banner .z-menuitem-body-seld,
+.banner .z-menu-over,
+.banner .z-menu-hover,
+.banner .z-menu-body-over,
+.banner .z-menuitem-over {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 none !important;
+  box-shadow: none !important;
+  outline: 0 none !important;
+}
+
+.banner .z-menu-selected .z-menu-text,
+.banner .z-menu-seld .z-menu-text,
+.banner .z-menu-body-seld .z-menu-text,
+.banner .z-menu-over .z-menu-text,
+.banner .z-menuitem-seld .z-menuitem-text,
+.banner .z-menuitem-over .z-menuitem-text {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.banner .z-menu table,
+.banner .z-menu td,
+.banner .z-menuitem table,
+.banner .z-menuitem td {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.banner a.logout,
+.banner .banner-logout-text {
+  color: #d32f2f !important;
+}
+
+.kd-page.cat-admin .cat-nav .z-tab,
+.kd-page.cat-admin .cat-nav .menutabs.z-tab,
+.cat-admin .cat-nav .z-tab,
+.cat-admin .cat-nav .menutabs.z-tab {
+  background: transparent !important;
+  background-image: none !important;
+  border: 2px solid transparent !important;
+  border-radius: 6px !important;
+  padding: 8px 14px !important;
+  margin: 6px 6px 6px 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  height: auto !important;
+}
+
+.kd-page.cat-admin .cat-nav .z-tab .z-tab-text,
+.kd-page.cat-admin .cat-nav .menutabs.z-tab .z-tab-text,
+.cat-admin .cat-nav .z-tab .z-tab-text {
+  color: #6b7280 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.kd-page.cat-admin .cat-nav .z-tab.z-tab-seld,
+.kd-page.cat-admin .cat-nav .z-tab.z-tab-selected,
+.kd-page.cat-admin .cat-nav .z-tab.cat-tab-on,
+.kd-page.cat-admin .cat-nav .menutabs.z-tab.z-tab-seld,
+.kd-page.cat-admin .cat-nav .menutabs.z-tab.cat-tab-on,
+.cat-admin .cat-nav .z-tab-seld,
+.cat-admin .cat-nav .z-tab.z-tab-selected {
+  background: #e8eef4 !important;
+  background-color: #e8eef4 !important;
+  background-image: none !important;
+  border: 2px solid #122536 !important;
+  color: #122536 !important;
+}
+
+.kd-page.cat-admin .cat-nav .z-tab.z-tab-seld .z-tab-text,
+.kd-page.cat-admin .cat-nav .z-tab.z-tab-selected .z-tab-text,
+.kd-page.cat-admin .cat-nav .z-tab.cat-tab-on .z-tab-text,
+.kd-page.cat-admin .cat-nav .z-tab.z-tab-seld .z-tab-text span,
+.kd-page.cat-admin .cat-nav .z-tab.cat-tab-on .z-tab-text,
+.kd-page.cat-admin .cat-nav .z-tab.cat-tab-on .z-tab-text span,
+.cat-admin .cat-nav .z-tab-seld .z-tab-text,
+.cat-admin .cat-nav .z-tab.cat-tab-on .z-tab-text {
+  color: #122536 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}

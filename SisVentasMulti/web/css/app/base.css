@@ -111,7 +111,7 @@ select {
   position: absolute;
   top: 5px;
   margin-left: 0.3em !important;
-  color: #1247b9;
+  color: #2b6b9e;
 }
 
 .col_base > .wrapper_input > .input {
@@ -135,7 +135,7 @@ select {
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  background-color: #1247b9;
+  background-color: #2b6b9e;
   border: none !important;
 }
 

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v6"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v24"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v5"?>
+<?script src="/js/cat-tabs.js"?>
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 
@@ -11,10 +16,12 @@
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
 
 
-<zk  contentStyle="overflow:auto" with="100%" >
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.AdministrarVenta')" width="100%">
-        <tabbox id="tboxPrincipal"  width="100%">
+<zk  contentStyle="overflow:auto" width="100%" >
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.AdministrarVenta')" width="100%" sclass="kd-page cat-admin">
+        <label sclass="kd-title" value="Catálogos"/>
+        <label sclass="kd-sub" value="Clientes, productos, proveedores, conductores, usuarios y configuración SRI."/>
+        <tabbox id="tboxPrincipal"  width="100%" sclass="cat-nav">
             <tabs >
                 <tab label="Clientes" sclass="menutabs" /> 
                 <tab label="Productos" sclass="menutabs" /> 
@@ -219,7 +226,7 @@
 
 
                 </tabpanel>              
-                <tabpanel height="100%" hflex="min">
+                <tabpanel height="100%" hflex="min" sclass="sri_tab">
                     <include src="/administrar/configuracion.zul"/>  
                 </tabpanel>
 
@@ -227,7 +234,5 @@
             </tabpanels>
             
         </tabbox>
-    </hbox>
-
-
+    </div>
 </zk>

@@ -1,95 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v6"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v49"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v20"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v4"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 
 
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
-<zk  contentStyle="overflow:auto" with="100%" >
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.ListaCompras')" width="100%">
-        <tabbox id="tboxPrincipal"  width="100%">
+<zk  contentStyle="overflow:auto" width="100%" >
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.ListaCompras')" width="100%"
+          sclass="kd-page lista_facturas_page">
+        <label sclass="kd-title" value="Lista de compras"/>
+        <label sclass="kd-sub" value="Consulte por fecha, número de factura o proveedor."/>
+        <div sclass="kd-card">
+        <tabbox id="tboxPrincipal"  width="100%" sclass="lf-tabbox">
             <tabs >
                 <tab label="Lista de compras" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
                 
-                <tabpanel  height="98%" width="99%" class="factura">                    
+                <tabpanel  height="98%" width="99%" class="factura lista_facturas">                    
+                    <div class="factura_header lista_facturas_toolbar">
+                        <div class="lf_panel lf_toolbar_line">
+                            <div class="wrapper_input lf_field">
+                                <span>Inicio</span>
+                                <datebox
+                                    value="@bind(vm.inicio)"
+                                    readonly="true"
+                                    onCreate="self.value = new Date()"
+                                    buttonVisible="true"
+                                    lenient="true"
+                                    format="dd/MM/yyyy"
+                                    constraint="no empty: Ingrese de inicio de la busqueda"
+                                    class="lf_date"/>
+                            </div>
+                            <div class="wrapper_input lf_field">
+                                <span>Fin</span>
+                                <datebox
+                                    value="@bind(vm.fin)"
+                                    readonly="true"
+                                    onCreate="self.value = new Date()"
+                                    buttonVisible="true"
+                                    lenient="true"
+                                    format="dd/MM/yyyy"
+                                    constraint="no empty: IBuscar por fecha fin de la busqueda"
+                                    class="lf_date"/>
+                            </div>
+                            <button
+                                class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                onClick="@command('buscarForFechas')"
+                                tooltiptext="Buscar compras por fecha"
+                                label="Por fecha"/>
+                            <button
+                                class="fa-solid fa-file-excel btn_fact lf_btn lf_btn_success"
+                                onClick="@command('exportListboxToExcel')"
+                                tooltiptext="Descargar listado de compras"
+                                label="Excel"/>
+                        </div>
+                    </div>
                    
+                    <div class="factura_body factura_body_content">
                     <listbox model="@load(vm.listaCabeceraCompras)" 
                              nonselectableTags=""  mold="paging" pageSize="12"  >
                         <custom-attributes org.zkoss.zul.listbox.rod="true"/>
-                        <auxhead>
-                            <auxheader colspan="12" >  
-                            
-                                <div class="factura_header paint_all_row">
-                                    <div class="fact_row fact_only_row">
-                                        <div class="wrapper_data" style="max-width:300px">
-
-                                            <div class="wrapper_input" >
-                                                <span style="width:unset">Inicio:</span>
-                                                    <datebox   
-                                                        value="@bind(vm.inicio)" 
-                                                        readonly="true"
-                                                        onCreate="self.value = new Date()"                                                    
-                                                        buttonVisible="true" 
-                                                        lenient="true"  
-                                                        format="dd/MM/yyyy" 
-                                                        constraint="no empty: Ingrese de inicio de la busqueda"
-                                                        class="input_date"
-                                                    />
-                                                <div class="fa-solid fa-calendar icon" />
-                                            </div>
-                                        </div>
-
-                                        <div class="wrapper_data " style="max-width:300px">
-                                            <div class="wrapper_input">
-                                                <span style="width:unset">Fin:</span>
-                                                <datebox   
-                                                    value="@bind(vm.fin)" 
-                                                    readonly="true"
-                                                    onCreate="self.value = new Date()"                                                   
-                                                    buttonVisible="true" 
-                                                    lenient="true"  
-                                                    format="dd/MM/yyyy" 
-                                                    constraint="no empty: IBuscar por fecha fin de la busqueda"
-                                                    class="input_date"
-                                                /> 
-                                                <div class="fa-solid fa-calendar icon" />
-                                            </div>
-                                        </div>
-                                        <div class="wrapper_data" style="display:flex;flex-direction:row;gap:1em;">
-                                        
-                                            <button 
-                                                class="fa-solid fa-magnifying-glass btn_fact btn_primary btn_one_element"
-                                                style="height:unset;"
-                                                onClick="@command('buscarForFechas')"
-                                            >
-                                                Buscar por fecha
-                                            </button>
-
-                                             <button 
-                                                class="fa-solid fa-file-excel btn_fact btn_access btn_one_element"
-                                                style="height:unset;width:fit-content !important;"
-                                                onClick="@command('exportListboxToExcel')"
-                                            >
-                                                Descargar Listado de Compras
-                                            </button>
-
-                                        </div>
-
-                                        
-                                    </div>
-                                </div>
-                                
-                            </auxheader>
-                        </auxhead>
-                        
-                        <listhead> 
+                        <listhead class="encabezadolf"> 
                             <listheader width="10%"  label="" >
                                 <textbox value="@bind(vm.buscarNumFac)"  
                                          tooltiptext="Nº Factura"
@@ -119,7 +101,7 @@
                         
                     
                         <template name="model">                                                            
-                            <listitem>
+                            <listitem class="tablalf">
                                 <listcell zclass = "mycss-listcell">
                                   <textbox readonly="true" style="font-size:12px ;background:#EBF5FB"
                                            class="form-control form-control-sm" 
@@ -220,6 +202,7 @@
                             </listitem>
                         </template>
                     </listbox>
+                    </div>
                 
                 </tabpanel>
                 
@@ -227,7 +210,8 @@
             </tabpanels>
             
         </tabbox>
-    </hbox>
+        </div>
+    </div>
 
 
 </zk>

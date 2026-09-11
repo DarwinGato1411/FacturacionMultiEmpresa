@@ -80,9 +80,9 @@ public class MenuOpciones extends SelectorComposer<Component> {
 
             if (credential.getUsuarioSistema().getUsuNivel() == 1) {
                 menuEmitirfact.setVisible(Boolean.FALSE);
-                menuVentas.setVisible(Boolean.FALSE);
+//                menuVentas.setVisible(Boolean.FALSE);
                 menuCompras.setVisible(Boolean.FALSE);
-                menuGuias.setVisible(Boolean.FALSE);
+//                menuGuias.setVisible(Boolean.FALSE);
                 menuKardex.setVisible(Boolean.FALSE);
                 menuReportes.setVisible(Boolean.FALSE);
                 btnAdministarVenta.setVisible(Boolean.FALSE);
@@ -94,10 +94,10 @@ public class MenuOpciones extends SelectorComposer<Component> {
                 btnGestionFactura.setVisible(Boolean.FALSE);
                 if (credential.getTipoambiente().getAmParqueadero()) {
                     btnFacturar.setVisible(Boolean.FALSE);
-                    btnFacturarPar.setVisible(Boolean.TRUE);
+//                    btnFacturarPar.setVisible(Boolean.TRUE);
                 } else {
                     btnFacturar.setVisible(Boolean.TRUE);
-                    btnFacturarPar.setVisible(Boolean.FALSE);
+//                    btnFacturarPar.setVisible(Boolean.FALSE);
                 }
 
                 if (credential.getTipoambiente().getAmCierreCaja()) {

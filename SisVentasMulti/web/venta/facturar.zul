@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v44"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v2"?>
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 
@@ -12,25 +15,28 @@
 <zk   with="100%" class="container" >
 
     <!--onCreate="@command('aperturaCaja')"-->
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" onCreate="@command('aperturaCaja')"
-          viewModel="@id('vm') @init('com.ec.controlador.Facturar')" width="100%" class="containerFactura">
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer" onCreate="@command('aperturaCaja')"
+          viewModel="@id('vm') @init('com.ec.controlador.Facturar')" width="100%" class="containerFactura kd-page facturar_page">
     
         <timer delay="30000" repeats="true" onTimer="@command('refrescarPagina')" />
-        <tabbox  width="100%"  tabscroll="true" >
+        <label sclass="kd-title" value="@bind(vm.numerofactReenvio >0 ? 'Facturar - VERIFIQUE TIENE ' .concat(vm.numerofactReenvio).concat( ' FACTURAS NO AUTORIZADAS ' ): 'Facturar')"/>
+        <label sclass="kd-sub" value="Complete los datos del cliente y agregue productos para emitir la factura."/>
+        <div sclass="kd-card">
+        <tabbox  width="100%"  tabscroll="true" sclass="lf-tabbox" >
             <tabs >
                <tab  label="@bind(vm.numerofactReenvio >0 ? 'Facturar - VERIFIQUE TIENE ' .concat(vm.numerofactReenvio).concat( ' FACTURAS NO AUTORIZADAS ' ): 'Facturar')" sclass="menutabs"></tab>
             </tabs>
 
             <tabpanels >
                 
-                <tabpanel  height="100%" width="98%" class="factura asdasdsad" >
+                <tabpanel  height="100%" width="98%" class="factura" >
                     
                     <div class="container-fluid " >
 
 
                         
                         <div class="factura_header">
-                            <div class="fact_row">
+                            <div class="fact_row fact_row_cliente">
                                 <div class="wrapper_data wrapper_data1">
                                     <div class="wrapper_input">
                                         <span>Cédula:</span>
@@ -102,7 +108,7 @@
                                 
                                 
                                 
-                                    <div class="wrapper_input">
+                                    <div class="wrapper_input wrapper_radios">
                                         <!--<span>Documento:</span>-->
 
                                         <radiogroup 
@@ -115,7 +121,7 @@
                                             <!--<radio label="Nota Entrega " value="NTE"/>-->
                                         </radiogroup>
                                     </div>
-                                    <div class="wrapper_input">
+                                    <div class="wrapper_input wrapper_radios">
                                         <!--<span>Estado:</span>-->
                                         <radiogroup 
                                             selectedItem="@bind(vm.estdoFactura)" 
@@ -136,6 +142,8 @@
                                             <comboitem label="Precio por caja" value="2" />
                                         </combobox>
                                     </div>-->
+                                </div>
+                                <div class="wrapper_data wrapper_data3">
                                     <div class="wrapper_input">
                                         <span>Forma de Pago:</span>
 
@@ -173,7 +181,7 @@
                                 
                                 </div>
                             </div>
-                            <div class="fact_row">
+                            <div class="fact_row fact_row_acciones">
                                 <div class="wrapper_data">
                                     <div class="wrapper_input">
                                         <span>Sindesc:</span>
@@ -318,7 +326,7 @@
                                             class="input" 
                                         />
                                     </div>
-                                   <div class="wrapper_input">
+                                   <div class="wrapper_input wrapper_btn_accion">
                                     <button 
                                         autodisable="self"   
                                         class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
@@ -331,11 +339,11 @@
                                 </div>
                                     
                                 </div>
-                                <div class="wrapper_data">
+                                <div class="wrapper_data wrapper_totales">
                                    
                                     <div class="wrapper_input" >
                                         <!--<span   >-->
-                                        <label  class="input_total"   style="background-color:transparent" value="Total :"> </label> 
+                                        <label  class="input_total lbl_total"   style="background-color:transparent" value="Total :"> </label> 
                                         <!--</span>-->
                                         <!--<div class="wrapper_input_text" style="width:100%">-->
                                         <!--<div class="fa-solid fa-dollar-sign icon"></div>-->
@@ -349,7 +357,7 @@
                                     </div>
                                     <div class="wrapper_input" style="">
                                         <!--<span>Cobrar:</span>-->
-                                        <label class="input_cobro" value="Cobrar:"> </label> 
+                                        <label class="input_cobro lbl_total" value="Cobrar:"> </label> 
                                         <textbox 
                                             class="input_cobro" 
                                             constraint="/^[0-9]{1,9}(?:[.][0-9]{1,2})?$/:Ingrese solo numeros" 
@@ -360,7 +368,7 @@
                                 
                                     <div class="wrapper_input">
                                         
-                                        <label  style="background-color:transparent" class="input_cambio" value="Cambio:"> </label> 
+                                        <label  style="background-color:transparent" class="input_cambio lbl_total" value="Cambio:"> </label> 
                                         <decimalbox  
                                             format="###.##"   
                                             readonly="true" 
@@ -368,7 +376,7 @@
                                             value="@bind(vm.cambio)" 
                                         />
                                     </div>
-                                     <div class="wrapper_input">
+                                     <div class="wrapper_input wrapper_btn_accion">
                                 
                                     <button 
                                         autodisable="self"   
@@ -392,23 +400,23 @@
                         <div class="factura_body factura_body_content">
                     
 
-                            <div class="factura_body_item" >
+                            <div class="factura_body_item facturacion" >
                             <listbox model="@load(vm.listaKardexProducto)" 
                                      nonselectableTags=""    mold="paging" pageSize="10"  >
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>
 
             
-                                <listhead> 
-                                    <listheader  align="left" class="tableHeader" >
+                                <listhead class="encabezado1"> 
+                                    <listheader width="100%" align="left" class="tableHeader" >
                                         <textbox value="@bind(vm.buscarCodigoProd)"  
                                                  class="form-control form-control-sm"
                                                  tooltiptext="Código"
                                                  placeholder="Código"
                                                  onOK="@command('buscarLikeKardexCodigoProd')"
-                                                 onChange="self.setValue(self.getValue().toUpperCase());" style="width:100%"/>
+                                                 onChange="self.setValue(self.getValue().toUpperCase());" />
                                     
                                     </listheader>     
-                                    <listheader width="45%" align="left"   >
+                                    <listheader width="100%" align="left"   >
                                         <textbox value="@bind(vm.buscarNombreProd)"  
                                                  id="idBusquedaProd"
                                                  class="form-control form-control-sm"
@@ -417,16 +425,15 @@
                                                  onOK="@command('buscarLikeKardexNombreProd')"                                                     
                                                  onChange="self.setValue(self.getValue().toUpperCase());" />
                                     </listheader>                         
-                                    <listheader width="5%"  label="% IVA" align="center"/>
-                                    <listheader width="10%"   label="KARDEX" align="center" /> 
-                                    <listheader width="13%"  label="PV X MAYOR" align="center" /> 
-                                    <listheader width="13%"  label="PVP" align="center" /> 
-                                    
-                                    <listheader width="5%"  label="" align="center"/>
+                                    <listheader width="100%"  label="IVA(%)" align="center"/>
+                                    <listheader width="100%"   label="KARDEX" align="center" /> 
+                                    <listheader width="100%"  label="PV X MAYOR" align="center" /> 
+                                    <listheader width="100%"  label="PVP" align="center" /> 
+                                    <listheader width="100%"  label="" align="center"/>
                                 </listhead>  
             
                                 <template name="model">                                                            
-                                    <listitem  onOK="@command('agregarItemLista',valor=each.idProducto)">
+                                    <listitem  onOK="@command('agregarItemLista',valor=each.idProducto)" class="tabla1">
                                         <listcell  style="font-size:11px;background-color:#d6eefd" zclass = "mycss-listcell" 
                                                    onDoubleClick="@command('agregarItemLista',valor=each.idProducto)">
                                             <textbox value="@bind(each.idProducto.prodCodigo)"    
@@ -450,7 +457,7 @@
                                                         readonly="true"
                                                         onOK="@command('agregarItemLista',valor=each.idProducto)" 
                                                         class="form-control form-control-sm"
-                                                        style="font-size:11px; font-weight: bold" 
+                                                        style="font-size:11px; font-weight: bold;color:red" 
                                                         value="@bind(each.idProducto.prodIva)" 
                                                         width="96%" />
                                         </listcell>
@@ -508,7 +515,7 @@
                             </listbox>
                         </div>
 
-                          <div class="factura_body_item">
+                          <div class="factura_body_item factura">
                             <listbox id="lstFacturar"
                                      model="@load(vm.listaDetalleFacturaDAOMOdel)"
                                      mold="paging" pageSize="14"
@@ -518,26 +525,25 @@
                                 <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                                         
                 
-                                <listhead >
-                                    <listheader width="5%"  label="" align="left" >
+                                <listhead class="encabezado2">
+                                    <listheader label="" align="left" >
                                         <button label="" src="/iconos/delete.png"  
                                                 onClick="@command('eliminarRegistros')"  
                                                 class="btn btn btn-secondary btn-sm "
                                                 tooltiptext="Eliminar registros seleccionados"/>
                                     </listheader>
-                                    <listheader width="10%"   label="COD" align="left" />
-                                    <!--<listheader width="10%"   label="TICKET" align="left" />-->
-                                    <listheader width="10%"   label="CANT" align="left"  />
-                                    <listheader width="10%"   label="% DESC" align="left"  />                                            
-                                    <listheader width="25%"  label="DESCRIPCIÓN" align="left" />
-                                    <listheader width="15%"  label="PRE REAL" align="left" />
-                                    <listheader width="15%"  label="PRECIO" align="left" />                                         
-                                    <listheader width="15%"  label="TOTAL" align="left" />
+                                    <listheader label="COD" align="left" />
+                                    <listheader label="CANT" align="left"  />
+                                    <listheader label="% DESC" align="left"  />                                            
+                                    <listheader label="DESCRIPCIÓN" align="left" />
+                                    <listheader label="PRE REAL" align="left" />
+                                    <listheader label="PRECIO" align="left" />                                         
+                                    <listheader label="TOTAL" align="left" />
                                                                                                                     
                                 </listhead>
             
                                 <template name="model" >                                                            
-                                    <listitem>
+                                    <listitem class="tabla2">
                                         <listcell  >                                                                                                  
                                         </listcell>
                                     
@@ -634,6 +640,7 @@
                     
                 </tabpanel>
             </tabpanels>
-        </tabbox>   
-    </hbox>
+        </tabbox>
+        </div>
+    </div>
 </zk>

@@ -29,9 +29,9 @@ element.style {
   overflow: hidden;
 }
 .banner {
-  background-color: white;
-  color: black;
-  padding: 10px 5px 5px 10px;
+  background-color: #2b6b9e;
+  color: #ffffff;
+  padding: 0;
 }
 .banner-head {
   font-size: 1.2em;
@@ -41,11 +41,7 @@ element.style {
   cursor: pointer;
   padding-right: 3px;
   padding-left: 3px;
-  font-size: 1.5em;
-  color: red;
-  text-align: center;
-  height: auto;
-  font-weight: bold;
+  color: #d32f2f;
 }
 
 .footer {
@@ -683,7 +679,7 @@ div.z-listheader-cnt {
 
 .z-menupopup-cnt .z-menu a.z-menu-cnt,
 .z-menupopup-cnt .z-menuitem a.z-menuitem-cnt {
-  color: black;
+  color: #ffffff;
   display: block;
   line-height: 17px;
   outline-color: -moz-use-text-color;
@@ -691,12 +687,12 @@ div.z-listheader-cnt {
   outline-width: 0;
   padding: 2px 21px 2px 3px;
   white-space: nowrap;
-  background: #bfdbff;
+  background: #2b6b9e;
   background-image: none;
 }
 
 .z-menupopup .z-menupopup-cnt {
-  background: #bfdbff none repeat 0 0;
+  background: #2b6b9e none repeat 0 0;
   background-image: none;
   border: 0 none;
   padding: 0;

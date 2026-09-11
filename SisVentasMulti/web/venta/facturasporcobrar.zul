@@ -1,105 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
-<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v48"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v19"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v4"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 
 
 <?init class="com.ec.seguridad.Autentificador"?>
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
 <?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
-<zk  contentStyle="overflow:auto" class="col-12 col-sm-12 col-md-12 col-lg-12" >
+<zk  contentStyle="overflow:auto" width="100%" >
     
       
    
     
-    <hbox self="@define(content)" apply="org.zkoss.bind.BindComposer" 
-          viewModel="@id('vm') @init('com.ec.controlador.vistas.FacturasPorCobrarVm')" >
-        <tabbox   width="100%" >
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer" 
+          viewModel="@id('vm') @init('com.ec.controlador.vistas.FacturasPorCobrarVm')"
+          width="100%" sclass="kd-page lista_facturas_page cobrar_page" >
+        <label sclass="kd-title" value="Facturas por cobrar"/>
+        <label sclass="kd-sub" value="Busque por cédula o nombre y consulte saldos pendientes."/>
+        <div sclass="kd-card">
+        <tabbox width="100%" sclass="lf-tabbox" >
             <tabs >
                 <tab label="Facturas por cobrar" sclass="menutabs" /> 
             </tabs>
             <tabpanels >
                 
-                <tabpanel  width="99%"  >                    
-                    <!-- <div class="row">
-                       
-                        <div class=" input-group col-12 col-sm-12 col-md-3 col-lg-3 ">
-                            <textbox value="@bind(vm.nombre)"  
-                                     tooltiptext="Buscar por cedula o nombre"
-                                     class="form-control form-control-sm"                                         
-                                     placeholder="Buscar"
-                                     height="30PX"
-                                     onOK="@command('buscar')"
-                                     onChange="self.setValue(self.getValue().toUpperCase());" />
-                        </div>
-                        <div class=" input-group col-12 col-sm-12 col-md-2 col-lg-2 borderBox ">
-                           
-                            <radiogroup 
-                                onCheck="@command('buscar')" 
-                                selectedItem="@bind(vm.groupby)"  >                   
-                               
-                                <space bar="false"  />   
-                                <radio label="Detallado" value="${false}" />    
-                                <space bar="false"  />     
-                                <radio label="Agrupar" value="${true}" />                    
+                <tabpanel  width="99%" class="factura lista_facturas" >                    
+                    <div class="factura_header lista_facturas_toolbar">
+                        <div class="lf_panel lf_toolbar_line">
+                            <div class="wrapper_input lf_field lf_field_buscar">
+                                <span>Buscar</span>
+                                <textbox sclass="lf_search"
+                                         value="@bind(vm.nombre)"
+                                         tooltiptext="Buscar por cédula o nombre"
+                                         placeholder="Cédula o nombre"
+                                         onOK="@command('buscar')"
+                                         onChange="self.setValue(self.getValue().toUpperCase());"/>
+                            </div>
+                            <radiogroup class="sri_radios"
+                                        onCheck="@command('buscar')"
+                                        selectedItem="@bind(vm.groupby)">
+                                <radio label="Detallado" value="${false}"/>
+                                <radio label="Agrupar" value="${true}"/>
                             </radiogroup>
-                                 
-                        </div>
-                       
-                    </div> -->
-
-                    
-
-                    <div class="factura_header paint_all_row">
-                        <div class="fact_row ">
-                            <div class="wrapper_data wrapper_data_only">
-                                <div class="wrapper_input">
-                                    <textbox 
-                                        class="input input_without_label" 
-                                        value="@bind(vm.nombre)"  
-                                        tooltiptext="Buscar por cedula o nombre"                                      
-                                        placeholder="Buscar"
-                                        height="30PX"
-                                        onOK="@command('buscar')"
-                                        onChange="self.setValue(self.getValue().toUpperCase());"
-                                    />
-                                    <div class="fa-solid fa-magnifying-glass icon" />
-                                </div>
-                            </div>
-                            <div class="wrapper_data">
-                                <div class="wrapper_input">
-                                    <radiogroup 
-                                        class="radio_group" 
-                                        onCheck="@command('buscar')" 
-                                        selectedItem="@bind(vm.groupby)"
-                                    >
-                                        <radio label="Detallado" value="${false}" />
-                                        <radio label="Agrupar" value="${true}" />  
-                                    </radiogroup>
-                                </div>
-                            </div>
+                            <button
+                                class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                onClick="@command('buscar')"
+                                tooltiptext="Buscar facturas por cobrar"
+                                label="Buscar"/>
                         </div>
                     </div>
 
-                    <div class="factura_body">
+                    <div class="factura_body factura_body_content">
                         <listbox model="@load(vm.listaFacturas)" 
                                 nonselectableTags=""  mold="paging" pageSize="12"  >
                             <custom-attributes org.zkoss.zul.listbox.rod="true"/>
                         
-                            <listhead> 
+                            <listhead class="encabezadolf"> 
                                 <listheader width="10%"  label="N° Fact" /> 
-                                                            
-                                <listheader width="10%"  label="Cedula" />                                                        
-                                <listheader width="60%"  label="Nombre" align="rigth" /> 
+                                <listheader width="14%">
+                                    <textbox value="@bind(vm.nombre)"
+                                             tooltiptext="Cédula"
+                                             class="form-control form-control-sm"
+                                             placeholder="Cédula"
+                                             onOK="@command('buscar')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());"/>
+                                </listheader>
+                                <listheader width="46%">
+                                    <textbox value="@bind(vm.nombre)"
+                                             tooltiptext="Nombre del cliente"
+                                             class="form-control form-control-sm"
+                                             placeholder="Nombre del cliente"
+                                             onOK="@command('buscar')"
+                                             onChange="self.setValue(self.getValue().toUpperCase());"/>
+                                </listheader>
                                 <listheader width="10%"  label="Saldo ($)" align="rigth" /> 
-                                <listheader width="10%"  label="Dias "  />                      
+                                <listheader width="10%"  label="Dias"  />                      
                             </listhead>  
                             
                         
                             <template name="model">                                                            
-                                <listitem>
+                                <listitem class="tablalf">
                                     <listcell  zclass = "mycss-listcell">
                                         <textbox readonly="true"  style="font-size:12px;background:#EBF5FB"                            
                                                 class="form-control form-control-sm" 
@@ -143,7 +128,8 @@
             </tabpanels>
             
         </tabbox>
-    </hbox>
+        </div>
+    </div>
 
 
 </zk>
