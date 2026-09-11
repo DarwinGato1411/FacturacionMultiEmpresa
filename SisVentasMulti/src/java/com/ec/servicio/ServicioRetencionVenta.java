@@ -36,6 +36,11 @@ public class ServicioRetencionVenta {
             em.getTransaction().begin();
             em.persist(retencionVenta);
             em.getTransaction().commit();
+            try {
+                new ServicioContabilidad().asentarRetencionVenta(retencionVenta);
+            } catch (Exception ex) {
+                System.out.println("Asiento retencion venta no generado " + ex.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error en insertar retencionVenta " + e.getMessage());
         } finally {

@@ -70,6 +70,11 @@ public class ServicioRetencionCompra {
                 em.persist(compra);
             }
             em.getTransaction().commit();
+            try {
+                new ServicioContabilidad().asentarRetencionCompra(retencionCompra);
+            } catch (Exception ex) {
+                System.out.println("Asiento retencion compra no generado " + ex.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error en insertar retencionCompra " + e.getMessage());
         } finally {

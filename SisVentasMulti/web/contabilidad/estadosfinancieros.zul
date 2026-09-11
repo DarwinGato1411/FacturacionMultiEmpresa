@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v7"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v50"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v6"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?script src="/js/icon.js"?>
+<?init class="com.ec.seguridad.Autentificador"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+<zk contentStyle="overflow:auto" width="100%">
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer"
+         viewModel="@id('vm') @init('com.ec.controlador.vistas.EstadosFinancierosVm')"
+         width="100%" sclass="kd-page lista_facturas_page ef-page">
+        <label sclass="kd-title" value="Estados financieros"/>
+        <label sclass="kd-sub" value="Balance de comprobación, estado de situación financiera y estado de resultados de la empresa de la sesión. Saldos al corte de las fechas indicadas."/>
+        <div sclass="kd-card" width="100%">
+        <tabbox width="100%" sclass="lf-tabbox">
+            <tabs>
+                <tab label="Estados financieros" sclass="menutabs"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel width="100%" class="factura lista_facturas">
+                    <div class="factura_header lista_facturas_toolbar">
+                        <div class="lf_panel lf_toolbar_line">
+                            <div class="wrapper_input lf_field">
+                                <span>Inicio</span>
+                                <datebox value="@bind(vm.inicio)" compact="true" buttonVisible="true"
+                                         class="lf_date" format="dd/MM/yyyy"/>
+                            </div>
+                            <div class="wrapper_input lf_field">
+                                <span>Fin</span>
+                                <datebox value="@bind(vm.fin)" compact="true" buttonVisible="true"
+                                         class="lf_date" format="dd/MM/yyyy"/>
+                            </div>
+                            <button class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                    onClick="@command('buscar')" label="Buscar"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('verComprobacion')" label="Comprobación"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('verSituacion')" label="Situación financiera"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('verResultados')" label="Estado de resultados"/>
+                        </div>
+                    </div>
+                    <div class="factura_body factura_body_content" width="100%">
+                    <label sclass="ef-msg" value="@load(vm.mensajeCuadre)"/>
+
+                    <div sclass="ef-report" width="100%" visible="@load(vm.comprobacionVisible)">
+                    <listbox model="@load(vm.comprobacion)" mold="paging" pageSize="20" width="100%">
+                        <listhead>
+                            <listheader width="16%" label="Código"/>
+                            <listheader width="36%" label="Cuenta"/>
+                            <listheader width="12%" label="Debe periodo"/>
+                            <listheader width="12%" label="Haber periodo"/>
+                            <listheader width="12%" label="Saldo deudor"/>
+                            <listheader width="12%" label="Saldo acreedor"/>
+                        </listhead>
+                        <template name="model">
+                            <listitem>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.codigo)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.nombre)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.debe)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.haber)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.saldoDeudor)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.saldoAcreedor)"/></listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                    <label sclass="ef-totales" value="@load(vm.resumenComprobacion)"/>
+                    </div>
+
+                    <div sclass="ef-report" width="100%" visible="@load(vm.situacionVisible)">
+                    <listbox model="@load(vm.situacion)" mold="paging" pageSize="24" width="100%">
+                        <listhead>
+                            <listheader width="18%" label="Código"/>
+                            <listheader width="62%" label="Cuenta"/>
+                            <listheader width="20%" label="Saldo"/>
+                        </listhead>
+                        <template name="model">
+                            <listitem sclass="@load(each.titulo ? 'ef-row-title' : (each.total ? 'ef-row-total' : ''))">
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.codigo)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.nombre)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.valor)"/></listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                    <label sclass="ef-totales" value="@load(vm.resumenSituacion)"/>
+                    </div>
+
+                    <div sclass="ef-report" width="100%" visible="@load(vm.resultadosVisible)">
+                    <listbox model="@load(vm.resultados)" mold="paging" pageSize="24" width="100%">
+                        <listhead>
+                            <listheader width="18%" label="Código"/>
+                            <listheader width="62%" label="Cuenta"/>
+                            <listheader width="20%" label="Saldo"/>
+                        </listhead>
+                        <template name="model">
+                            <listitem sclass="@load(each.titulo ? 'ef-row-title' : (each.total ? 'ef-row-total' : ''))">
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.codigo)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.nombre)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.valor)"/></listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                    <label sclass="ef-totales" value="@load(vm.resumenResultados)"/>
+                    </div>
+                    </div>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        </div>
+    </div>
+</zk>

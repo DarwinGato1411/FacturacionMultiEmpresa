@@ -78,6 +78,11 @@ public class ServicioNotaCredito {
                 em.persist(detalleNotaCreditoDebito);
             }
             em.getTransaction().commit();
+            try {
+                new ServicioContabilidad().asentarNotaCredito(notaCreditoDebito);
+            } catch (Exception ex) {
+                System.out.println("Asiento nota de credito no generado " + ex.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error en insertar notaCreditoDebito GUARDAR CON DETALLE " + e.getMessage());
         } finally {

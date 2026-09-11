@@ -62,6 +62,11 @@ public class CambioEstadoFactura {
         servicioFactura.modificar(facturar);
         if (facturar.getEstadosri().equals("ANULADA")) {
             regrarInventario(facturar);
+            try {
+                new com.ec.servicio.ServicioContabilidad().asentarAnulacionFactura(facturar);
+            } catch (Exception ex) {
+                System.out.println("Asiento anulacion no generado " + ex.getMessage());
+            }
         }
         
         Clients.showNotification("Guardado correctamente",

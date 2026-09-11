@@ -5,6 +5,7 @@
  */
 package com.ec.entidad.partida;
 
+import com.ec.entidad.Tipoambiente;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -57,6 +58,9 @@ public class CuSubCuenta implements Serializable {
     private BigDecimal subcSaldo;
     @Column(name = "subc_otro")
     private BigDecimal subcOtro;
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
     @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta")
     @ManyToOne
     private CuCuenta idCuenta;
@@ -114,6 +118,14 @@ public class CuSubCuenta implements Serializable {
 
     public void setSubcOtro(BigDecimal subcOtro) {
         this.subcOtro = subcOtro;
+    }
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
 
     public CuCuenta getIdCuenta() {

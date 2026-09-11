@@ -5,6 +5,7 @@
  */
 package com.ec.entidad.partida;
 
+import com.ec.entidad.Tipoambiente;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -14,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -57,6 +60,9 @@ public class CuClase implements Serializable {
     private BigDecimal clasSaldo;
     @Column(name = "clas_otro")
     private BigDecimal clasOtro;
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "cuClase")
     private CuGrupo cuGrupo;
 
@@ -113,6 +119,14 @@ public class CuClase implements Serializable {
 
     public void setClasOtro(BigDecimal clasOtro) {
         this.clasOtro = clasOtro;
+    }
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
 
     public CuGrupo getCuGrupo() {

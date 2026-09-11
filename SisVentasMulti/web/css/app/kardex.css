@@ -346,3 +346,61 @@
     border-radius: 4px;
     font-weight: 700;
 }
+
+.ef-page .factura_body,
+.ef-page .factura_body_content,
+.ef-page .ef-report {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    box-sizing: border-box;
+}
+
+.ef-page .ef-report .z-listbox,
+.ef-page .ef-report .z-listbox-header,
+.ef-page .ef-report .z-listbox-body,
+.ef-page .ef-report .z-paging {
+    width: 100% !important;
+}
+
+.ef-page .ef-report .z-listbox-header table,
+.ef-page .ef-report .z-listbox-body table {
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+.ef-page .ef-msg {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 12px 0 !important;
+    padding: 8px 12px !important;
+    background: #e8f6f3 !important;
+    color: #1b8c7d !important;
+    border-radius: 6px;
+    font-size: 13px !important;
+}
+
+.ef-page .ef-totales {
+    display: block !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+    padding: 10px 14px !important;
+    background: #122536 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.ef-page .ef-row-title .z-listcell,
+.ef-page .ef-row-title .mycss-listcell {
+    background: #e8eef4 !important;
+    font-weight: 700 !important;
+}
+
+.ef-page .ef-row-total .z-listcell,
+.ef-page .ef-row-total .mycss-listcell {
+    background: #f3f7fa !important;
+    font-weight: 700 !important;
+}
+

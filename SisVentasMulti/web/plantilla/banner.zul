@@ -180,7 +180,7 @@
                         <menu label="Ventas" id="menuEmitirfact">
                             <menupopup>
                                 <menuitem label="Emitir Facturas" id="btnFacturar" />
-                                <!--<menuitem label="Emitir Factura Parqueadero" id="btnFacturarPar" visible="false" />-->
+                                <!--<menuitem label="Emitir Factura Parqueadero" id="btnFacturarPar" />-->
                                            
                                 <menuitem label="Facturas emitidas" id="btnNotaVentas" />
                                 <menuitem label="Proformas emitidas" id="btnProformasEmitidas" />
@@ -208,6 +208,16 @@
                                 <menuitem label="Ajuste de Entrada/Salida" id="btnAjuste" />
                                 <menuitem label="Kardex detallado" id="btnKardex" />
                                 <menuitem label="Kardex general" id="btnKardexPorProd" />
+                            </menupopup>
+                        </menu>
+                        <menu label="Contabilidad" id="menuContabilidad">
+                            <menupopup>
+                                <menuitem label="Plan de cuentas" id="btnPlanCuentas" />
+                                <menuitem label="Parametrizar cuentas" id="btnParamCuentas" />
+                                <menuitem label="Libro diario" id="btnLibroDiario" />
+                                <menuitem label="Libro mayor" id="btnLibroMayor" />
+                                <menuitem label="Estados financieros" id="btnEstadosFinancieros" />
+                                <menuitem label="Asiento manual" id="btnAsientoManual" />
                             </menupopup>
                         </menu>
                         <menu label="Reportes" id="menuReportes">

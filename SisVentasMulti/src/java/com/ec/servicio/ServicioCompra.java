@@ -121,6 +121,11 @@ public class ServicioCompra {
                 em.persist(ingreso);
             }
             em.getTransaction().commit();
+            try {
+                new ServicioContabilidad().asentarCompra(compra);
+            } catch (Exception ex) {
+                System.out.println("Asiento compra no generado " + ex.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error en insertar factura compra " + e.getMessage());
         } finally {

@@ -5,6 +5,7 @@
  */
 package com.ec.entidad.partida;
 
+import com.ec.entidad.Tipoambiente;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -60,6 +61,9 @@ public class CuCuenta implements Serializable {
     private BigDecimal grupSaldo;
     @Column(name = "grup_otro")
     private BigDecimal grupOtro;
+    @JoinColumn(name = "cod_tipoambiente", referencedColumnName = "cod_tipoambiente")
+    @ManyToOne
+    private Tipoambiente codTipoambiente;
     @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
     @ManyToOne
     private CuGrupo idGrupo;
@@ -119,6 +123,14 @@ public class CuCuenta implements Serializable {
 
     public void setGrupOtro(BigDecimal grupOtro) {
         this.grupOtro = grupOtro;
+    }
+
+    public Tipoambiente getCodTipoambiente() {
+        return codTipoambiente;
+    }
+
+    public void setCodTipoambiente(Tipoambiente codTipoambiente) {
+        this.codTipoambiente = codTipoambiente;
     }
 
     public CuGrupo getIdGrupo() {

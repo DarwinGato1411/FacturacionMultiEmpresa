@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v6"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v50"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v24"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v6"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?script src="/js/icon.js"?>
+<?script src="/js/cat-tabs.js"?>
+<?init class="com.ec.seguridad.Autentificador"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+<zk contentStyle="overflow:auto" width="100%">
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer"
+         viewModel="@id('vm') @init('com.ec.controlador.vistas.PlanCuentasVm')"
+         width="100%" sclass="kd-page cat-admin">
+        <label sclass="kd-title" value="Plan de cuentas"/>
+        <label sclass="kd-sub" value="Catálogo NIIF de la empresa de la sesión (tipoambiente). La primera vez se copia el plan plantilla; puede ajustarlo sin afectar a otras empresas."/>
+
+        <div sclass="kd-split">
+            <div sclass="kd-col kd-card">
+                <label sclass="kd-card-title" value="1. Clases"/>
+                <div class="factura_header lista_facturas_toolbar">
+                    <div class="lf_panel lf_toolbar_line">
+                        <textbox class="form-control form-control-sm" width="90px"
+                                 placeholder="Código" value="@bind(vm.claseForm.clasNumero)"/>
+                        <textbox class="form-control form-control-sm" width="180px"
+                                 placeholder="Nombre" value="@bind(vm.claseForm.clasNombre)"/>
+                        <button class="btn_fact lf_btn lf_btn_secondary" label="Nuevo" onClick="@command('nuevaClase')"/>
+                        <button class="btn_fact lf_btn lf_btn_primary" label="Guardar" onClick="@command('guardarClase')"/>
+                        <button class="btn_fact lf_btn lf_btn_warn" label="Eliminar" onClick="@command('eliminarClase')"/>
+                    </div>
+                </div>
+                <listbox model="@load(vm.listaClases)" mold="paging" pageSize="8" nonselectableTags="*">
+                    <listhead>
+                        <listheader width="30%" label="Código"/>
+                        <listheader width="70%" label="Nombre"/>
+                    </listhead>
+                    <template name="model">
+                        <listitem onClick="@command('seleccionarClase', valor=each)">
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.clasNumero)"/>
+                            </listcell>
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.clasNombre)"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </div>
+
+            <div sclass="kd-col kd-card">
+                <label sclass="kd-card-title" value="2. Grupos"/>
+                <div class="factura_header lista_facturas_toolbar">
+                    <div class="lf_panel lf_toolbar_line">
+                        <textbox class="form-control form-control-sm" width="90px"
+                                 placeholder="Código" value="@bind(vm.grupoForm.grupNumero)"/>
+                        <textbox class="form-control form-control-sm" width="180px"
+                                 placeholder="Nombre" value="@bind(vm.grupoForm.grupNombre)"/>
+                        <button class="btn_fact lf_btn lf_btn_secondary" label="Nuevo" onClick="@command('nuevoGrupo')"/>
+                        <button class="btn_fact lf_btn lf_btn_primary" label="Guardar" onClick="@command('guardarGrupo')"/>
+                        <button class="btn_fact lf_btn lf_btn_warn" label="Eliminar" onClick="@command('eliminarGrupo')"/>
+                    </div>
+                </div>
+                <listbox model="@load(vm.listaGrupos)" mold="paging" pageSize="8" nonselectableTags="*">
+                    <listhead>
+                        <listheader width="30%" label="Código"/>
+                        <listheader width="70%" label="Nombre"/>
+                    </listhead>
+                    <template name="model">
+                        <listitem onClick="@command('seleccionarGrupo', valor=each)">
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.grupNumero)"/>
+                            </listcell>
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.grupNombre)"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </div>
+        </div>
+
+        <div sclass="kd-split" style="margin-top:12px">
+            <div sclass="kd-col kd-card">
+                <label sclass="kd-card-title" value="3. Cuentas"/>
+                <div class="factura_header lista_facturas_toolbar">
+                    <div class="lf_panel lf_toolbar_line">
+                        <textbox class="form-control form-control-sm" width="90px"
+                                 placeholder="Código" value="@bind(vm.cuentaForm.grupNumero)"/>
+                        <textbox class="form-control form-control-sm" width="180px"
+                                 placeholder="Nombre" value="@bind(vm.cuentaForm.grupNombre)"/>
+                        <button class="btn_fact lf_btn lf_btn_secondary" label="Nuevo" onClick="@command('nuevaCuenta')"/>
+                        <button class="btn_fact lf_btn lf_btn_primary" label="Guardar" onClick="@command('guardarCuenta')"/>
+                        <button class="btn_fact lf_btn lf_btn_warn" label="Eliminar" onClick="@command('eliminarCuenta')"/>
+                    </div>
+                </div>
+                <listbox model="@load(vm.listaCuentas)" mold="paging" pageSize="8" nonselectableTags="*">
+                    <listhead>
+                        <listheader width="30%" label="Código"/>
+                        <listheader width="70%" label="Nombre"/>
+                    </listhead>
+                    <template name="model">
+                        <listitem onClick="@command('seleccionarCuenta', valor=each)">
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.grupNumero)"/>
+                            </listcell>
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.grupNombre)"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </div>
+
+            <div sclass="kd-col kd-card">
+                <label sclass="kd-card-title" value="4. Subcuentas"/>
+                <div class="factura_header lista_facturas_toolbar">
+                    <div class="lf_panel lf_toolbar_line">
+                        <textbox class="form-control form-control-sm" width="90px"
+                                 placeholder="Código" value="@bind(vm.subForm.subcNumero)"/>
+                        <textbox class="form-control form-control-sm" width="180px"
+                                 placeholder="Nombre" value="@bind(vm.subForm.subcNombre)"/>
+                        <button class="btn_fact lf_btn lf_btn_secondary" label="Nuevo" onClick="@command('nuevaSubcuenta')"/>
+                        <button class="btn_fact lf_btn lf_btn_primary" label="Guardar" onClick="@command('guardarSubcuenta')"/>
+                        <button class="btn_fact lf_btn lf_btn_warn" label="Eliminar" onClick="@command('eliminarSubcuenta')"/>
+                    </div>
+                </div>
+                <listbox model="@load(vm.listaSubcuentas)" mold="paging" pageSize="8" nonselectableTags="*">
+                    <listhead>
+                        <listheader width="30%" label="Código"/>
+                        <listheader width="70%" label="Nombre"/>
+                    </listhead>
+                    <template name="model">
+                        <listitem onClick="@command('seleccionarSubcuenta', valor=each)">
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.subcNumero)"/>
+                            </listcell>
+                            <listcell zclass="mycss-listcell">
+                                <label value="@bind(each.subcNombre)"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </div>
+        </div>
+    </div>
+</zk>

@@ -37,6 +37,8 @@ public class MenuOpciones extends SelectorComposer<Component> {
     Menu menuKardex;
     @Wire("#menuReportes")
     Menu menuReportes;
+    @Wire("#menuContabilidad")
+    Menu menuContabilidad;
 
     @Wire("#btnAdministarVenta")
     Menuitem btnAdministarVenta;
@@ -85,6 +87,9 @@ public class MenuOpciones extends SelectorComposer<Component> {
 //                menuGuias.setVisible(Boolean.FALSE);
                 menuKardex.setVisible(Boolean.FALSE);
                 menuReportes.setVisible(Boolean.FALSE);
+                if (menuContabilidad != null) {
+                    menuContabilidad.setVisible(Boolean.FALSE);
+                }
                 btnAdministarVenta.setVisible(Boolean.FALSE);
                 btnHisDeclaraciones.setVisible(Boolean.FALSE);
 
@@ -329,6 +334,36 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Listen("onClick = #btnCodigoretencion")
     public void btnCodigoretencion() {
         Executions.sendRedirect("/administrar/codigoretenciones.zul");
+    }
+
+    @Listen("onClick = #btnPlanCuentas")
+    public void btnPlanCuentas() {
+        Executions.sendRedirect("/contabilidad/plancuentas.zul");
+    }
+
+    @Listen("onClick = #btnParamCuentas")
+    public void btnParamCuentas() {
+        Executions.sendRedirect("/contabilidad/parametrizarcuentas.zul");
+    }
+
+    @Listen("onClick = #btnLibroDiario")
+    public void btnLibroDiario() {
+        Executions.sendRedirect("/contabilidad/librodiario.zul");
+    }
+
+    @Listen("onClick = #btnLibroMayor")
+    public void btnLibroMayor() {
+        Executions.sendRedirect("/contabilidad/libromayor.zul");
+    }
+
+    @Listen("onClick = #btnEstadosFinancieros")
+    public void btnEstadosFinancieros() {
+        Executions.sendRedirect("/contabilidad/estadosfinancieros.zul");
+    }
+
+    @Listen("onClick = #btnAsientoManual")
+    public void btnAsientoManual() {
+        Executions.sendRedirect("/contabilidad/asientomanual.zul");
     }
 
     @Command
