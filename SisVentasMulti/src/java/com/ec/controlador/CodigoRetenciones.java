@@ -42,7 +42,7 @@ public class CodigoRetenciones {
     }
     
      @Command
-    @NotifyChange({"listaProductosModel", "buscarNombre"})
+    @NotifyChange({"listaCodigos", "tireCodigo"})
     public void nuevoTipoRetencion() {
       
         org.zkoss.zul.Window window = (org.zkoss.zul.Window) Executions.createComponents(
@@ -52,7 +52,7 @@ public class CodigoRetenciones {
     }
 
     @Command
-    @NotifyChange({"listaProductosModel", "buscarNombre"})
+    @NotifyChange({"listaCodigos", "tireCodigo"})
     public void actualizarTipoRetencion(@BindingParam("valor") TipoRetencion valor) {
       
         final HashMap<String, TipoRetencion> map = new HashMap<String, TipoRetencion>();

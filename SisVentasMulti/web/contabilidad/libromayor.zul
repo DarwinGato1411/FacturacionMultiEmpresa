@@ -27,13 +27,15 @@
                         <div class="lf_panel lf_toolbar_line">
                             <div class="wrapper_input lf_field">
                                 <span>Inicio</span>
-                                <datebox value="@bind(vm.inicio)" compact="true" buttonVisible="true"
-                                         class="lf_date" format="dd/MM/yyyy"/>
+                                <datebox value="@bind(vm.inicio)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
                             </div>
                             <div class="wrapper_input lf_field">
                                 <span>Fin</span>
-                                <datebox value="@bind(vm.fin)" compact="true" buttonVisible="true"
-                                         class="lf_date" format="dd/MM/yyyy"/>
+                                <datebox value="@bind(vm.fin)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
                             </div>
                             <div class="wrapper_input lf_field">
                                 <span>Cuenta</span>
@@ -91,7 +93,9 @@
                         <template name="model">
                             <listitem>
                                 <listcell zclass="mycss-listcell">
-                                    <label value="@bind(each.fecha)"/>
+                                    <datebox compact="true" value="@bind(each.fecha)"
+                                             height="30px" buttonVisible="false" lenient="true"
+                                             readonly="true" format="medium" width="100%"/>
                                 </listcell>
                                 <listcell zclass="mycss-listcell">
                                     <label value="@bind(each.numero)"/>

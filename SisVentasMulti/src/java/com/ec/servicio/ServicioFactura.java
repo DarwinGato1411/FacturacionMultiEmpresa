@@ -135,6 +135,11 @@ public class ServicioFactura {
                 em.flush();
             }
             em.getTransaction().commit();
+            try {
+                new ServicioContabilidad().asentarFactura(factura);
+            } catch (Exception ex) {
+                System.out.println("Asiento factura no generado " + ex.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error en insertar factura GUARDAR CON DETALLE " + e.getMessage());
         } finally {

@@ -24,10 +24,11 @@ import com.ec.servicio.ServicioDetalleRetencionCompra;
 import com.ec.servicio.ServicioParametrizar;
 import com.ec.servicio.ServicioTipoAmbiente;
 import ec.gob.sri.comprobantes.exception.RespuestaAutorizacionException;
-import ec.gob.sri.comprobantes.util.AutorizacionComprobantesWs;
 import ec.gob.sri.comprobantes.ws.RecepcionComprobantesOffline;
 import ec.gob.sri.comprobantes.ws.RecepcionComprobantesOfflineService;
 import ec.gob.sri.comprobantes.ws.RespuestaSolicitud;
+import ec.gob.sri.comprobantes.ws.aut.AutorizacionComprobantesOffline;
+import ec.gob.sri.comprobantes.ws.aut.AutorizacionComprobantesOfflineService;
 import ec.gob.sri.comprobantes.ws.aut.RespuestaComprobante;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,11 +50,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
 
 /**
  *
@@ -216,43 +220,34 @@ public class AutorizarDocumentos {
     }
 
     public RespuestaComprobante autorizarComprobante(String claveDeAcceso, Tipoambiente amb) throws RespuestaAutorizacionException {
-
+        RespuestaComprobante response = new RespuestaComprobante();
         try {
-            String domainRoot = System.getProperty("com.sun.aas.instanceRoot");
-            String keystorePath
-                    = domainRoot + File.separator + "config" + File.separator + "keystore.jks";
-            System.setProperty("javax.net.debug", "ssl,handshake");
-            System.setProperty("javax.net.ssl.keyStore", keystorePath);
-            System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
-            System.setProperty("javax.net.ssl.trustStore", keystorePath);
-            System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
-            RespuestaComprobante repuesta = new AutorizacionComprobantesWs("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl").llamadaWSAutorizacionInd(claveDeAcceso);
-            return repuesta;
-        } catch (javax.xml.ws.WebServiceException ex) {
-
-            Throwable causa = ex.getCause();
-
-            while (causa != null) {
-
-                if (causa instanceof javax.net.ssl.SSLHandshakeException) {
-
-                    RespuestaComprobante response = new RespuestaComprobante();
-                    response.setNumeroComprobantes("ERROR SRI: " + ex.getMessage());
-                    return response;
-                }
-
-                causa = causa.getCause();
+            if (amb == null || amb.getAmUrlsri() == null || amb.getAmUrlsri().trim().isEmpty()) {
+                response.setNumeroComprobantes("ERROR SRI: tipoambiente sin URL (am_urlsri)");
+                return response;
             }
-
-            throw ex;
-
+            if (claveDeAcceso == null || claveDeAcceso.trim().isEmpty()) {
+                response.setNumeroComprobantes("ERROR SRI: clave de acceso vacía");
+                return response;
+            }
+            instalarCertificado();
+            String endpoint = "https://" + amb.getAmUrlsri().trim()
+                    + "/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
+            AutorizacionComprobantesOfflineService service = new AutorizacionComprobantesOfflineService();
+            AutorizacionComprobantesOffline port = service.getAutorizacionComprobantesOfflinePort();
+            ((BindingProvider) port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint);
+            RespuestaComprobante r = port.autorizacionComprobante(claveDeAcceso.trim());
+            if (r == null) {
+                response.setNumeroComprobantes("ERROR SRI: respuesta nula del WS de autorización");
+                return response;
+            }
+            return r;
         } catch (Exception ex) {
-
-            RespuestaComprobante response = new RespuestaComprobante();
-            response.setNumeroComprobantes("ERROR SRI: " + ex.getMessage());
+            Logger.getLogger(AutorizarDocumentos.class.getName()).log(Level.WARNING,
+                    "SRI autorizacion falló clave=" + claveDeAcceso, ex);
+            response.setNumeroComprobantes("ERROR SRI: " + detalleExcepcion(ex));
             return response;
         }
-
     }
 
 //    public RespuestaComprobante autoriza(String clave) {
@@ -291,11 +286,35 @@ public class AutorizarDocumentos {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
         } catch (KeyManagementException e) {
 
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(AutorizarDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private static String detalleExcepcion(Throwable ex) {
+        StringBuilder sb = new StringBuilder();
+        Throwable t = ex;
+        int i = 0;
+        while (t != null && i < 6) {
+            if (i > 0) {
+                sb.append(" | causa: ");
+            }
+            sb.append(t.getClass().getSimpleName());
+            if (t.getMessage() != null && !t.getMessage().trim().isEmpty()) {
+                sb.append(": ").append(t.getMessage());
+            }
+            t = t.getCause();
+            i++;
+        }
+        return sb.length() == 0 ? "error desconocido" : sb.toString();
     }
 
     //<editor-fold defaultstate="collapsed" desc=" ARMAR FACTURA"> 

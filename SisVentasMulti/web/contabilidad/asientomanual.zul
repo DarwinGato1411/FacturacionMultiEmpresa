@@ -27,8 +27,9 @@
                         <div class="lf_panel lf_toolbar_line">
                             <div class="wrapper_input lf_field">
                                 <span>Fecha</span>
-                                <datebox value="@bind(vm.fecha)" compact="true" buttonVisible="true"
-                                         class="lf_date" format="dd/MM/yyyy"/>
+                                <datebox value="@bind(vm.fecha)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
                             </div>
                             <div class="wrapper_input lf_field" width="320px">
                                 <span>Glosa</span>

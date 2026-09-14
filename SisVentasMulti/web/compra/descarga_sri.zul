@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v36"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v5"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?script src="/js/icon.js"?>
+<?init class="com.ec.seguridad.Autentificador"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+<zk contentStyle="overflow:auto">
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer"
+         viewModel="@id('vm') @init('com.ec.controlador.vistas.DescargaSriVm')"
+         class="sri_page" width="100%">
+
+        <div class="sri_toolbar sri_toolbar_stack" width="100%">
+            <label class="sri_toolbar_title" value="@load(vm.titulo)"/>
+            <div class="sri_toolbar_rest">
+                <div class="sri_toolbar_date">
+                    <label value="Desde"/>
+                    <datebox value="@bind(vm.inicio)" format="dd/MM/yyyy" width="118px"
+                             buttonVisible="true" lenient="true"/>
+                </div>
+                <div class="sri_toolbar_date">
+                    <label value="Hasta"/>
+                    <datebox value="@bind(vm.fin)" format="dd/MM/yyyy" width="118px"
+                             buttonVisible="true" lenient="true"/>
+                </div>
+                <button label="Consultar" class="fa-solid fa-magnifying-glass btn_fact btn_primary"
+                        onClick="@command('buscar')"/>
+                <button label="Descargar del SRI" class="fa-solid fa-cloud-arrow-down btn_fact btn_primary"
+                        onClick="@command('descargarSri')"
+                        tooltiptext="Descarga los comprobantes del rango Desde-Hasta"/>
+                <button label="Cargar TXT" class="fa-solid fa-file-arrow-up btn_fact btn_primary"
+                        onClick="@command('cargarTxt')"/>
+                <button label="Traer XML" class="fa-solid fa-file-code btn_fact btn_primary"
+                        onClick="@command('traerXml')"
+                        tooltiptext="Consulta el XML autorizado por clave de acceso"/>
+                <button label="Excel" class="fa-solid fa-file-excel btn_fact btn_primary"
+                        onClick="@command('excelTxt')"
+                        tooltiptext="Exporta la lista con los datos del TXT"/>
+                <button label="Excel detallado" class="fa-solid fa-table btn_fact btn_primary"
+                        onClick="@command('excelXml')"
+                        tooltiptext="Exporta el detalle de ítems desde el XML"/>
+                <button label="Borrar listado" class="fa-solid fa-trash btn_fact sri_btn_danger"
+                        onClick="@command('borrarListado')"
+                        tooltiptext="Elimina los comprobantes listados de este tipo y rango"/>
+            </div>
+        </div>
+
+        <div class="sri_card sri_hint_bar">
+            <label value="@load(vm.mensajeEstado)"/>
+            <label class="sri_hint" value="@load(vm.ayudaTipo)"/>
+        </div>
+
+        <div class="sri_card">
+            <listbox model="@load(vm.lista)" mold="paging" pageSize="20" width="100%">
+                <listhead>
+                    <listheader label="Emisión" width="130px"/>
+                    <listheader label="Serie" width="130px"/>
+                    <listheader label="RUC emisor" width="120px"/>
+                    <listheader label="Razón social"/>
+                    <listheader label="@load(vm.etiquetaTotal)" width="90px"/>
+                    <listheader label="Clave de acceso" width="280px"/>
+                    <listheader label="Clasificación" width="120px"/>
+                    <listheader label="XML" width="55px"/>
+                    <listheader label="" width="150px"/>
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell>
+                            <datebox compact="true" value="@bind(each.scrFechaEmision)"
+                                     height=" 30px"
+                                     buttonVisible="false" lenient="true" readonly="true"
+                                     format="medium" width="100%"/>
+                        </listcell>
+                        <listcell label="@load(each.scrSerie)"/>
+                        <listcell label="@load(each.scrRucEmisor)"/>
+                        <listcell label="@load(each.scrRazonSocial)"/>
+                        <listcell label="@load(each.scrTotal)"/>
+                        <listcell label="@load(each.scrClaveAcceso)"/>
+                        <listcell label="@load(each.scrEstadoClasificacion)"/>
+                        <listcell label="@load(each.xmlEstadoTexto)"/>
+                        <listcell>
+                            <hlayout spacing="4px" sclass="sri_row_actions">
+                                <button label="XML" sclass="sri_mini"
+                                        tooltiptext="Ver XML autorizado"
+                                        onClick="@command('verXml', valor=each)"/>
+                                <button label="RIDE" sclass="sri_mini"
+                                        tooltiptext="Ver PDF representación impresa"
+                                        onClick="@command('verRide', valor=each)"/>
+                            </hlayout>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </div>
+    </div>
+</zk>

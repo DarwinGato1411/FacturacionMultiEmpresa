@@ -27,13 +27,15 @@
                         <div class="lf_panel lf_toolbar_line">
                             <div class="wrapper_input lf_field">
                                 <span>Inicio</span>
-                                <datebox value="@bind(vm.inicio)" compact="true" buttonVisible="true"
-                                         class="lf_date" format="dd/MM/yyyy"/>
+                                <datebox value="@bind(vm.inicio)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
                             </div>
                             <div class="wrapper_input lf_field">
                                 <span>Fin</span>
-                                <datebox value="@bind(vm.fin)" compact="true" buttonVisible="true"
-                                         class="lf_date" format="dd/MM/yyyy"/>
+                                <datebox value="@bind(vm.fin)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
                             </div>
                             <button class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
                                     onClick="@command('buscar')" label="Buscar"/>

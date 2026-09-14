@@ -1,29 +1,94 @@
 .sri_page {
     width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
-    padding: 16px 10% 28px !important;
+    padding: 8px 8px 20px !important;
     margin: 0 !important;
     background: #eef2f6;
+    overflow-x: hidden !important;
+}
+
+.sri_hint,
+.sri_login_title {
+    display: block !important;
+    color: #5a6a7a !important;
+    font-size: 12px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.sri_login_title {
+    color: #122536 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+.sri_hint_bar {
+    margin-bottom: 12px;
+}
+
+.cat-admin .sri_page,
+.sri_tab .sri_page {
+    padding: 0 0 12px !important;
+    background: transparent !important;
 }
 
 .sri_tab,
 .sri_tab .z-tabpanel-content {
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
+
+.sri_page .sri_grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px 14px;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 12px 0 !important;
     box-sizing: border-box !important;
 }
 
-.sri_page .z-hlayout {
+.sri_page .sri_toolbar.z-hlayout,
+.sri_page .sri_toolbar,
+.sri_page .sri_toolbar_line.z-hlayout {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    table-layout: auto !important;
     width: 100% !important;
-    display: table !important;
-    table-layout: fixed !important;
-    border-spacing: 20px 0 !important;
-    margin: 0 0 14px 0 !important;
+    margin: 0 0 12px 0 !important;
 }
 
-.sri_page .z-hlayout-inner {
-    display: table-cell !important;
-    vertical-align: top !important;
-    padding: 0 4px !important;
+.sri_page .sri_toolbar .z-hlayout-inner,
+.sri_toolbar_line > .z-hlayout-inner {
+    display: flex !important;
+    align-items: center !important;
+    width: auto !important;
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+}
+
+.sri_page .sri_toolbar > .z-hlayout-inner:last-child,
+.sri_toolbar_line > .z-hlayout-inner:last-child {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    justify-content: flex-end !important;
+}
+
+.sri_toolbar .sri_toolbar_title,
+.sri_toolbar .sri_toolbar_title.z-label {
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+}
+
+.sri_toolbar .btn_fact,
+.sri_toolbar .z-button {
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
 }
 
 .sri_toolbar.z-hlayout,
@@ -61,18 +126,98 @@
     opacity: 0.95;
 }
 
+.sri_page .sri_toolbar_line.z-hlayout,
+.sri_page .sri_toolbar.sri_toolbar_line {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.sri_toolbar_line > .z-hlayout-inner {
+    display: flex !important;
+    align-items: center !important;
+    width: auto !important;
+    flex: 0 0 auto !important;
+}
+
+.sri_toolbar_line > .z-hlayout-inner:last-child {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    justify-content: flex-end !important;
+}
+
+.sri_toolbar_line .sri_toolbar_title,
+.sri_toolbar_line .sri_toolbar_title.z-label {
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+}
+
+.sri_toolbar_rest {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100%;
+    min-width: 0;
+}
+
+.sri_toolbar_stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+}
+
+.sri_toolbar_stack .sri_toolbar_title,
+.sri_toolbar_stack .sri_toolbar_title.z-label {
+    white-space: nowrap !important;
+}
+
+.sri_toolbar_date {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex: 0 0 auto !important;
+}
+
+.sri_toolbar_date > .z-label {
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+.sri_toolbar_line .btn_fact,
+.sri_toolbar_line .z-button {
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 0 12px !important;
+}
+
 .sri_card {
     background: #ffffff;
     border: 1px solid #e2e8ee;
     border-radius: 8px;
-    padding: 14px 16px 8px;
+    padding: 14px 16px 12px;
     box-shadow: 0 1px 3px rgba(18, 37, 54, 0.06);
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden;
+    overflow-y: visible;
 }
 
 .sri_field {
-    width: 100%;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
     box-sizing: border-box;
-    padding: 0 6px 8px 6px;
+    padding: 0 !important;
+    overflow: hidden;
 }
 
 .sri_label,
@@ -115,18 +260,48 @@
 .sri_page table.z-combobox,
 .sri_page table.z-textbox {
     width: 100% !important;
+    max-width: 100% !important;
     border: 0 none !important;
     background: transparent !important;
+    table-layout: fixed !important;
+}
+
+.sri_page .z-combobox {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.sri_page .z-combobox-input {
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 .sri_file.z-hlayout,
 .sri_page .sri_file {
     width: 100% !important;
+    max-width: 100% !important;
     margin: 0 !important;
-    border-spacing: 4px 0 !important;
+    display: flex !important;
+    table-layout: auto !important;
+    border-spacing: 0 !important;
+    align-items: center !important;
+    gap: 6px;
+}
+
+.sri_file .z-hlayout-inner {
+    display: block !important;
+    padding: 0 !important;
+}
+
+.sri_file .z-hlayout-inner:first-child {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
 }
 
 .sri_file .z-hlayout-inner:last-child {
+    flex: 0 0 32px !important;
     width: 32px !important;
 }
 
@@ -146,29 +321,68 @@
     border-radius: 4px !important;
 }
 
-.sri_radios {
-    display: block;
+.sri_radios,
+.sri_radios.z-radiogroup,
+.sri_page .sri_radios table,
+.sri_page span.z-radiogroup.sri_radios {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 4px 10px;
     padding-top: 4px;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    table-layout: auto !important;
+    border-spacing: 0 !important;
 }
 
 .sri_radios .z-radio,
+.sri_radios .z-radio-cnt,
 .sri_radios label {
     font-size: 12px !important;
     color: #333333;
-    margin-right: 12px !important;
+    margin-right: 0 !important;
+    white-space: normal !important;
+    word-break: break-word;
 }
 
 .sri_checks {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 16px;
     margin-top: 6px;
-    padding-top: 8px;
+    padding-top: 10px;
     border-top: 1px solid #e6edf2;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.sri_page .z-checkbox {
+.sri_page .z-checkbox,
+.sri_page .z-checkbox-cnt,
+.sri_page .sri_checks .z-checkbox,
+.sri_page .sri_checks .z-checkbox-cnt {
     font-size: 12px !important;
     color: #333333 !important;
     white-space: normal !important;
-    margin: 0 0 6px 0 !important;
+    word-break: break-word !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    display: inline-block;
+    vertical-align: top;
+}
+
+@media (max-width: 1400px) {
+    .sri_page .sri_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .sri_page .sri_grid,
+    .sri_checks {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 .prod_page,
@@ -446,7 +660,8 @@
     border: 1px solid #dee2e6 !important;
     border-radius: 4px !important;
     box-shadow: none !important;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
 }
 
 .kd-page.cat-admin .cat-nav .z-tabs,
@@ -637,5 +852,40 @@
     .gu_actions .btn_fact {
         flex: 1 1 auto;
     }
+}
+
+.sri_row_actions {
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+}
+
+.sri_page .sri_mini.z-button,
+.sri_page button.sri_mini {
+    height: 26px !important;
+    min-height: 26px !important;
+    padding: 0 8px !important;
+    background: #2b6b9e !important;
+    color: #ffffff !important;
+    border: 0 none !important;
+    border-radius: 4px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+}
+
+.sri_page .sri_mini.z-button:hover {
+    background: #245a86 !important;
+}
+
+.sri_toolbar .sri_btn_danger.z-button,
+.sri_page .sri_btn_danger.z-button,
+.sri_toolbar_rest .sri_btn_danger.z-button {
+    background: #b42318 !important;
+    color: #ffffff !important;
+}
+
+.sri_toolbar .sri_btn_danger.z-button:hover,
+.sri_page .sri_btn_danger.z-button:hover {
+    background: #912018 !important;
 }
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div apply="org.zkoss.bind.BindComposer"
+     viewModel="@id('cfg') @init('com.ec.controlador.Configuracion')"
+     class="sri_page" width="100%">
+    <hlayout class="sri_toolbar sri_toolbar_line" width="100%" valign="middle">
+        <label class="sri_toolbar_title" value="SRI en línea"/>
+        <div class="sri_toolbar_rest">
+            <button class="fa-solid fa-floppy-disk btn_fact btn_primary"
+                    onClick="@command('guardar')"
+                    label="Guardar"/>
+        </div>
+    </hlayout>
+    <div class="sri_card sri_login_card">
+        <label class="sri_login_title" value="Usuario y clave del portal"/>
+        <label class="sri_hint" value="No uses la clave de la firma electrónica. Se guarda en el tipoambiente de la empresa logueada."/>
+        <div class="sri_grid">
+            <div class="sri_field">
+                <label class="sri_label" value="Usuario SRI en línea"/>
+                <textbox width="100%" value="@bind(cfg.tipoambiente.amUsuariosri)"
+                         placeholder="RUC o usuario del portal"
+                         class="form-control form-control-sm"/>
+            </div>
+            <div class="sri_field">
+                <label class="sri_label" value="Clave SRI en línea"/>
+                <textbox width="100%" type="password" value="@bind(cfg.tipoambiente.amClaveSriLinea)"
+                         placeholder="Clave del portal"
+                         class="form-control form-control-sm"/>
+            </div>
+            <div class="sri_field"/>
+            <div class="sri_field"/>
+        </div>
+    </div>
+</div>

@@ -305,14 +305,36 @@ public class ServicioContabilidad {
             return;
         }
         String origen = "NTV".equals(factura.getFacTipo()) ? "NTV" : "FACT";
-        if (existe(origen, factura.getIdFactura(), ambiente)) {
-            return;
-        }
+        eliminarAsiento(origen, factura.getIdFactura(), ambiente);
         BigDecimal total = nvl(factura.getFacTotal());
-        BigDecimal iva = nvl(factura.getFacIva());
-        BigDecimal venta = total.subtract(iva);
-        if (venta.compareTo(BigDecimal.ZERO) < 0) {
-            venta = nvl(factura.getFacSubtotal());
+        BigDecimal base5 = nvl(factura.getFacSubt5());
+        BigDecimal base15 = nvl(factura.getFacSubt15());
+        BigDecimal base0 = nvl(factura.getFacTotalBaseCero());
+        BigDecimal gravada = nvl(factura.getFacTotalBaseGravaba());
+        if (base15.compareTo(BigDecimal.ZERO) == 0) {
+            BigDecimal restoGravada = gravada.subtract(base5);
+            if (restoGravada.compareTo(BigDecimal.ZERO) > 0) {
+                base15 = restoGravada;
+            }
+        }
+        base15 = base15.add(nvl(factura.getFacSubt13())).add(nvl(factura.getFacSubt14()));
+        BigDecimal iva = nvl(factura.getFacIva())
+                .add(nvl(factura.getFacIva5()))
+                .add(nvl(factura.getFacIva13()))
+                .add(nvl(factura.getFacIva14()))
+                .add(nvl(factura.getFacIva15()));
+        if (base5.add(base15).add(base0).compareTo(BigDecimal.ZERO) == 0) {
+            BigDecimal venta = total.subtract(iva);
+            if (venta.compareTo(BigDecimal.ZERO) < 0) {
+                venta = nvl(factura.getFacSubtotal());
+            }
+            if (nvl(factura.getFacIva5()).compareTo(BigDecimal.ZERO) > 0) {
+                base5 = venta;
+            } else if (base0.compareTo(BigDecimal.ZERO) == 0 && iva.compareTo(BigDecimal.ZERO) == 0) {
+                base0 = venta;
+            } else {
+                base15 = venta;
+            }
         }
         String cobro = esContado(factura.getIdFormaPago()) ? "CAJA" : "CXC";
         String glosa;
@@ -321,10 +343,14 @@ public class ServicioContabilidad {
         } else {
             glosa = "Factura " + (factura.getFacNumeroText() != null ? factura.getFacNumeroText() : factura.getFacNumero());
         }
+        List<CuAsientoDetalle> lineas = new ArrayList<CuAsientoDetalle>();
+        agregarLinea(lineas, ambiente, cobro, total, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS", BigDecimal.ZERO, base15, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS_5", BigDecimal.ZERO, base5, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS_0", BigDecimal.ZERO, base0, glosa);
+        agregarLinea(lineas, ambiente, "IVA_VENTAS", BigDecimal.ZERO, iva, glosa);
         grabarAsiento(ambiente, origen, factura.getIdFactura(), factura.getFacFecha(), glosa,
-                linea(ambiente, cobro, total, BigDecimal.ZERO, glosa),
-                linea(ambiente, "VENTAS", BigDecimal.ZERO, venta, glosa),
-                linea(ambiente, "IVA_VENTAS", BigDecimal.ZERO, iva, glosa));
+                lineas.toArray(new CuAsientoDetalle[lineas.size()]));
     }
 
     public void asentarNotaCredito(NotaCreditoDebito nota) {
@@ -335,24 +361,43 @@ public class ServicioContabilidad {
         if (ambiente == null) {
             return;
         }
-        if (existe("NCRE", nota.getIdNota(), ambiente)) {
-            return;
-        }
+        eliminarAsiento("NCRE", nota.getIdNota(), ambiente);
         BigDecimal total = nvl(nota.getFacTotal());
-        BigDecimal iva = nvl(nota.getFacIva());
-        BigDecimal venta = total.subtract(iva);
-        if (venta.compareTo(BigDecimal.ZERO) < 0) {
-            venta = nvl(nota.getFacSubtotal());
+        BigDecimal base5 = nvl(nota.getFacSubt5());
+        BigDecimal base15 = nvl(nota.getFacSubt15());
+        BigDecimal base0 = nvl(nota.getFacTotalBaseCero());
+        BigDecimal gravada = nvl(nota.getFacTotalBaseGravaba());
+        if (base15.compareTo(BigDecimal.ZERO) == 0) {
+            BigDecimal restoGravada = gravada.subtract(base5);
+            if (restoGravada.compareTo(BigDecimal.ZERO) > 0) {
+                base15 = restoGravada;
+            }
+        }
+        BigDecimal iva = nvl(nota.getFacIva()).add(nvl(nota.getFacIva5())).add(nvl(nota.getFacIva15()));
+        if (base5.add(base15).add(base0).compareTo(BigDecimal.ZERO) == 0) {
+            BigDecimal venta = total.subtract(iva);
+            if (venta.compareTo(BigDecimal.ZERO) < 0) {
+                venta = nvl(nota.getFacSubtotal());
+            }
+            if (nvl(nota.getFacIva5()).compareTo(BigDecimal.ZERO) > 0) {
+                base5 = venta;
+            } else {
+                base15 = venta;
+            }
         }
         String cobro = "CXC";
         if (nota.getIdFactura() != null && esContado(nota.getIdFactura().getIdFormaPago())) {
             cobro = "CAJA";
         }
         String glosa = "Nota de credito " + (nota.getFacNumeroText() != null ? nota.getFacNumeroText() : nota.getFacNumero());
+        List<CuAsientoDetalle> lineas = new ArrayList<CuAsientoDetalle>();
+        agregarLinea(lineas, ambiente, "VENTAS", base15, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS_5", base5, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS_0", base0, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "IVA_VENTAS", iva, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, cobro, BigDecimal.ZERO, total, glosa);
         grabarAsiento(ambiente, "NCRE", nota.getIdNota(), nota.getFacFecha(), glosa,
-                linea(ambiente, "VENTAS", venta, BigDecimal.ZERO, glosa),
-                linea(ambiente, "IVA_VENTAS", iva, BigDecimal.ZERO, glosa),
-                linea(ambiente, cobro, BigDecimal.ZERO, total, glosa));
+                lineas.toArray(new CuAsientoDetalle[lineas.size()]));
     }
 
     public void asentarAnulacionFactura(Factura factura) {
@@ -374,18 +419,44 @@ public class ServicioContabilidad {
             return;
         }
         BigDecimal total = nvl(factura.getFacTotal());
-        BigDecimal iva = nvl(factura.getFacIva());
-        BigDecimal venta = total.subtract(iva);
-        if (venta.compareTo(BigDecimal.ZERO) < 0) {
-            venta = nvl(factura.getFacSubtotal());
+        BigDecimal base5 = nvl(factura.getFacSubt5());
+        BigDecimal base15 = nvl(factura.getFacSubt15());
+        BigDecimal base0 = nvl(factura.getFacTotalBaseCero());
+        BigDecimal gravada = nvl(factura.getFacTotalBaseGravaba());
+        if (base15.compareTo(BigDecimal.ZERO) == 0) {
+            BigDecimal restoGravada = gravada.subtract(base5);
+            if (restoGravada.compareTo(BigDecimal.ZERO) > 0) {
+                base15 = restoGravada;
+            }
+        }
+        base15 = base15.add(nvl(factura.getFacSubt13())).add(nvl(factura.getFacSubt14()));
+        BigDecimal iva = nvl(factura.getFacIva())
+                .add(nvl(factura.getFacIva5()))
+                .add(nvl(factura.getFacIva13()))
+                .add(nvl(factura.getFacIva14()))
+                .add(nvl(factura.getFacIva15()));
+        if (base5.add(base15).add(base0).compareTo(BigDecimal.ZERO) == 0) {
+            BigDecimal venta = total.subtract(iva);
+            if (venta.compareTo(BigDecimal.ZERO) < 0) {
+                venta = nvl(factura.getFacSubtotal());
+            }
+            if (nvl(factura.getFacIva5()).compareTo(BigDecimal.ZERO) > 0) {
+                base5 = venta;
+            } else {
+                base15 = venta;
+            }
         }
         String cobro = esContado(factura.getIdFormaPago()) ? "CAJA" : "CXC";
         String glosa = ("NTV".equals(origenOrig) ? "Anulacion nota de venta " : "Anulacion factura ")
                 + (factura.getFacNumeroText() != null ? factura.getFacNumeroText() : factura.getIdFactura());
+        List<CuAsientoDetalle> lineas = new ArrayList<CuAsientoDetalle>();
+        agregarLinea(lineas, ambiente, "VENTAS", base15, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS_5", base5, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "VENTAS_0", base0, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, "IVA_VENTAS", iva, BigDecimal.ZERO, glosa);
+        agregarLinea(lineas, ambiente, cobro, BigDecimal.ZERO, total, glosa);
         grabarAsiento(ambiente, "ANUL", factura.getIdFactura(), new Date(), glosa,
-                linea(ambiente, "VENTAS", venta, BigDecimal.ZERO, glosa),
-                linea(ambiente, "IVA_VENTAS", iva, BigDecimal.ZERO, glosa),
-                linea(ambiente, cobro, BigDecimal.ZERO, total, glosa));
+                lineas.toArray(new CuAsientoDetalle[lineas.size()]));
     }
 
     public void guardarAsientoManual(Tipoambiente ambiente, Date fecha, String glosa, List<CuAsientoDetalle> lineas) {
@@ -642,6 +713,72 @@ public class ServicioContabilidad {
         }
     }
 
+    private void agregarLinea(List<CuAsientoDetalle> lineas, Tipoambiente ambiente, String codigoParametro,
+            BigDecimal debe, BigDecimal haber, String glosa) {
+        if (nvl(debe).compareTo(BigDecimal.ZERO) == 0 && nvl(haber).compareTo(BigDecimal.ZERO) == 0) {
+            return;
+        }
+        CuAsientoDetalle d = linea(ambiente, codigoParametro, debe, haber, glosa);
+        if (d != null) {
+            lineas.add(d);
+        }
+    }
+
+    private void eliminarAsiento(String origen, Integer idDocumento, Tipoambiente ambiente) {
+        if (ambiente == null || origen == null || idDocumento == null) {
+            return;
+        }
+        EntityManager local = null;
+        try {
+            local = HelperPersistencia.getEMF();
+            local.getTransaction().begin();
+            local.createNativeQuery(
+                    "DELETE FROM public.cu_asiento_detalle d USING public.cu_asiento a "
+                    + "WHERE d.id_asiento = a.id_asiento AND a.asi_origen = ?1 "
+                    + "AND a.asi_id_documento = ?2 AND a.cod_tipoambiente = ?3")
+                    .setParameter(1, origen)
+                    .setParameter(2, idDocumento)
+                    .setParameter(3, ambiente.getCodTipoambiente())
+                    .executeUpdate();
+            local.createNativeQuery(
+                    "DELETE FROM public.cu_asiento a "
+                    + "WHERE a.asi_origen = ?1 AND a.asi_id_documento = ?2 AND a.cod_tipoambiente = ?3")
+                    .setParameter(1, origen)
+                    .setParameter(2, idDocumento)
+                    .setParameter(3, ambiente.getCodTipoambiente())
+                    .executeUpdate();
+            local.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error eliminar asiento " + e.getMessage());
+            if (local != null && local.getTransaction().isActive()) {
+                local.getTransaction().rollback();
+            }
+        } finally {
+            if (local != null) {
+                local.close();
+            }
+        }
+    }
+
+    private void asegurarParametroPlantilla(EntityManager local, String codigo, String nombre, String numeroCuenta) {
+        Query q = local.createQuery("SELECT p FROM CuParametro p WHERE p.parCodigo = :c AND p.codTipoambiente IS NULL");
+        q.setParameter("c", codigo);
+        if (!q.getResultList().isEmpty()) {
+            return;
+        }
+        CuParametro p = new CuParametro();
+        p.setParCodigo(codigo);
+        p.setParNombre(nombre);
+        Query sc = local.createQuery("SELECT c FROM CuSubCuenta c WHERE c.subcNumero = :n AND c.codTipoambiente IS NULL");
+        sc.setParameter("n", numeroCuenta);
+        List cuentas = sc.getResultList();
+        if (!cuentas.isEmpty()) {
+            p.setIdSubCuenta((CuSubCuenta) cuentas.get(0));
+        }
+        local.persist(p);
+        local.flush();
+    }
+
     private CuAsientoDetalle linea(Tipoambiente ambiente, String codigoParametro, BigDecimal debe, BigDecimal haber, String glosa) {
         CuSubCuenta cuenta = cuentaDe(codigoParametro, ambiente);
         if (cuenta == null) {
@@ -684,6 +821,8 @@ public class ServicioContabilidad {
 
     private void clonarPlantillaSiFalta(EntityManager local, Tipoambiente ambiente) {
         new ServicioPlanCuentas().clonarPlantilla(local, ambiente);
+        asegurarParametroPlantilla(local, "VENTAS_5", "Ventas gravadas tarifa 5%", "4.01.01.002");
+        asegurarParametroPlantilla(local, "VENTAS_0", "Ventas tarifa 0%", "4.01.01.003");
         Query plantilla = local.createNamedQuery("CuParametro.findPlantilla");
         List list = plantilla.getResultList();
         Query existentes = local.createQuery("SELECT p.parCodigo FROM CuParametro p WHERE p.codTipoambiente = :ambiente");

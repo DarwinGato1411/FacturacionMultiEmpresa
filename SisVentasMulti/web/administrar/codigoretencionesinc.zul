@@ -1,0 +1,61 @@
+<?init class="com.ec.seguridad.Autentificador"?>
+<div apply="org.zkoss.bind.BindComposer"
+     viewModel="@id('vmRet') @init('com.ec.controlador.CodigoRetenciones')" width="100%">
+
+    <div class="container_headers" style="margin-bottom:1em">
+        <div class="fa-solid fa-plus-circle fa-2x icon"
+             onClick="@command('nuevoTipoRetencion')"
+             tooltiptext="Nuevo codigo de retencion">
+            <span>Nuevo código</span>
+        </div>
+    </div>
+
+    <div class="cont_body">
+        <div class="cont_body_item">
+            <listbox model="@load(vmRet.listaCodigos)"
+                     nonselectableTags="*" mold="paging" pageSize="15">
+                <custom-attributes org.zkoss.zul.listbox.rod="true"/>
+                <listhead>
+                    <listheader width="12%" align="right" sort="auto(tireCodigo)">
+                        <textbox value="@bind(vmRet.tireCodigo)"
+                                 tooltiptext="Buscar por codigo"
+                                 class="form-control form-control-sm"
+                                 placeholder="Código"
+                                 onOK="@command('buscarPorCodigo')"/>
+                    </listheader>
+                    <listheader width="70%" label="Descripción"/>
+                    <listheader width="13%" label="Porcentaje"/>
+                    <listheader width="5%" label="" align="center"/>
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell zclass="mycss-listcell">
+                            <textbox readonly="true"
+                                     style="font-size:12px;background:#EBF5FB"
+                                     class="form-control form-control-sm"
+                                     value="@bind(each.tireCodigo)"/>
+                        </listcell>
+                        <listcell zclass="mycss-listcell">
+                            <textbox readonly="true"
+                                     style="font-size:12px;background:#EBF5FB"
+                                     class="form-control form-control-sm"
+                                     value="@bind(each.tireNombre)"/>
+                        </listcell>
+                        <listcell zclass="mycss-listcell">
+                            <textbox readonly="true"
+                                     style="font-size:12px;background:#EBF5FB"
+                                     class="form-control form-control-sm"
+                                     value="@bind(each.tirePorcentajeRetencion)"/>
+                        </listcell>
+                        <listcell zclass="mycss-listcell">
+                            <image src="/iconos/editar.png"
+                                   class="grow"
+                                   onClick="@command('actualizarTipoRetencion',valor=each)"
+                                   tooltiptext="Editar"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </div>
+    </div>
+</div>

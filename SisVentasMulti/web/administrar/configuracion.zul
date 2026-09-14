@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v15"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v29"?>
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 <?init class="com.ec.seguridad.Autentificador"?>
@@ -8,18 +8,35 @@
          viewModel="@id('vm') @init('com.ec.controlador.Configuracion')"
          class="sri_page" width="100%">
 
-        <hlayout class="sri_toolbar" width="100%" valign="middle">
+        <hlayout class="sri_toolbar sri_toolbar_line" width="100%" valign="middle">
             <label class="sri_toolbar_title" value="Configuración SRI"/>
-            <div hflex="1"/>
-            <button class="fa-solid fa-floppy-disk btn_fact btn_primary"
-                    onClick="@command('guardar')"
-                    tooltiptext="Guardar informacion"
-                    label="Guardar"/>
+            <div class="sri_toolbar_rest">
+                <button class="fa-solid fa-floppy-disk btn_fact btn_primary"
+                        onClick="@command('guardar')"
+                        tooltiptext="Guardar informacion"
+                        label="Guardar"/>
+            </div>
         </hlayout>
 
         <div class="sri_card">
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
+                    <label class="sri_label" value="Usuario SRI en línea"/>
+                    <textbox width="100%" value="@bind(vm.tipoambiente.amUsuariosri)"
+                             placeholder="RUC o usuario del portal"
+                             class="form-control form-control-sm"
+                             tooltiptext="Usuario de SRI en línea"/>
+                </div>
+                <div class="sri_field">
+                    <label class="sri_label" value="Clave SRI en línea"/>
+                    <textbox width="100%" type="password" value="@bind(vm.tipoambiente.amClaveSriLinea)"
+                             placeholder="Clave del portal"
+                             class="form-control form-control-sm"
+                             tooltiptext="Clave de SRI en línea (no es la firma)"/>
+                </div>
+                <div class="sri_field"/>
+                <div class="sri_field"/>
+                <div class="sri_field">
                     <label class="sri_label" value="Ambiente"/>
                     <radiogroup class="sri_radios"
                                 onCheck="@command('ambienteCodigo')"
@@ -28,7 +45,7 @@
                         <radio label="PRODUCCION" value="2"/>
                     </radiogroup>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Contabilidad"/>
                     <radiogroup class="sri_radios"
                                 selectedItem="@bind(vm.llevaContabilidad)">
@@ -36,7 +53,7 @@
                         <radio label="SI" value="SI"/>
                     </radiogroup>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Ruta base"/>
                     <combobox width="100%" model="@load(vm.listaDicos)" readonly="false"
                               class="textoFechaDateBox"
@@ -47,7 +64,7 @@
                         </template>
                     </combobox>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="RUC"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amRuc)"
                              placeholder="RUC..."
@@ -55,24 +72,24 @@
                              class="form-control form-control-sm"
                              tooltiptext="RUC"/>
                 </div>
-            </hlayout>
+            </div>
 
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
                     <label class="sri_label" value="Razón social"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amRazonSocial)"
                              placeholder="Razon Social"
                              class="form-control form-control-sm"
                              tooltiptext="Razon Social"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Nombre comercial"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amNombreComercial)"
                              placeholder="Nombre Comercial"
                              class="form-control form-control-sm"
                              tooltiptext="Nombre Comercial"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Teléfono"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amTelefono)"
                              placeholder="062918661"
@@ -80,17 +97,17 @@
                              class="form-control form-control-sm"
                              tooltiptext="Contacto de la empresa"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Nro. contribuyente"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amNroContribuyente)"
                              placeholder="Numero contribuyente"
                              class="form-control form-control-sm"
                              tooltiptext="Número de contribuyente"/>
                 </div>
-            </hlayout>
+            </div>
 
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
                     <label class="sri_label" value="Firma digital"/>
                     <hlayout width="100%" valign="middle" class="sri_file" spacing="4px">
                         <textbox width="100%"
@@ -104,7 +121,7 @@
                                 tooltiptext="Subir archivos"/>
                     </hlayout>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Clave de la firma"/>
                     <textbox width="100%" type="password"
                              value="@bind(vm.tipoambiente.amClaveAccesoSri)"
@@ -113,7 +130,7 @@
                              class="form-control form-control-sm"
                              tooltiptext="Clave de la firma electronica"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Logotipo"/>
                     <hlayout width="100%" valign="middle" class="sri_file" spacing="4px">
                         <textbox width="100%"
@@ -126,7 +143,7 @@
                                 tooltiptext="Subir logotipo de la empresa"/>
                     </hlayout>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Establecimiento"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amEstab)"
                              placeholder="001"
@@ -134,10 +151,10 @@
                              class="form-control form-control-sm"
                              tooltiptext="Establecimiento asignado por el SRI (001)"/>
                 </div>
-            </hlayout>
+            </div>
 
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
                     <label class="sri_label" value="Punto de emisión"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amPtoemi)"
                              placeholder="001"
@@ -145,21 +162,21 @@
                              class="form-control form-control-sm"
                              tooltiptext="Punto de emision"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Dirección matriz"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amDireccionMatriz)"
                              placeholder="Direccion Matriz"
                              class="form-control form-control-sm"
                              tooltiptext="Direccion matriz"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Dirección establecimiento"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amDireccionSucursal)"
                              placeholder="Direccion establecimiento sucursal"
                              class="form-control form-control-sm"
                              tooltiptext="Direccion establecimiento"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Impresión"/>
                     <radiogroup class="sri_radios"
                                 selectedItem="@bind(vm.tipoambiente.amComprobanteImprime)">
@@ -167,41 +184,41 @@
                         <radio label="Punto Venta" value="puntoventa.jasper"/>
                     </radiogroup>
                 </div>
-            </hlayout>
+            </div>
 
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
                     <label class="sri_label" value="Protocolo"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amProtocol)"
                              placeholder="smtp"
                              class="form-control form-control-sm"
                              tooltiptext="Protocolo: smtp"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Puerto"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amPort)"
                              placeholder="587"
                              class="form-control form-control-sm"
                              tooltiptext="Puerto: 587"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Host"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amHost)"
                              placeholder="smtp.gmail.com"
                              class="form-control form-control-sm"
                              tooltiptext="Host: smtp.gmail.com"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Usuario"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amUsuarioSmpt)"
                              placeholder="correo@gmail.com"
                              class="form-control form-control-sm"
                              tooltiptext="Usuario SMTP"/>
                 </div>
-            </hlayout>
+            </div>
 
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
                     <label class="sri_label" value="Password"/>
                     <textbox width="100%" type="password"
                              value="@bind(vm.tipoambiente.amPassword)"
@@ -209,7 +226,7 @@
                              class="form-control form-control-sm"
                              tooltiptext="Password SMTP"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Graba ICE"/>
                     <radiogroup class="sri_radios"
                                 selectedItem="@bind(vm.grabaICE)">
@@ -217,75 +234,66 @@
                         <radio label="NO" value="N"/>
                     </radiogroup>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Porcentaje ICE"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amValorIce)"
                              placeholder="15%"
                              class="form-control form-control-sm"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Código ICE"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amCodigoIce)"
                              placeholder="36589"
                              class="form-control form-control-sm"/>
                 </div>
-            </hlayout>
+            </div>
 
-            <hlayout width="100%" spacing="20px" valign="top">
-                <div hflex="1" class="sri_field">
+            <div class="sri_grid">
+                <div class="sri_field">
                     <label class="sri_label" value="Sec. factura"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amSecFactura)"
                              placeholder="123"
                              class="form-control form-control-sm"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Sec. retención"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amSecRetencion)"
                              placeholder="123"
                              class="form-control form-control-sm"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Sec. nota crédito"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amSecNotaCredito)"
                              placeholder="123"
                              class="form-control form-control-sm"/>
                 </div>
-                <div hflex="1" class="sri_field">
+                <div class="sri_field">
                     <label class="sri_label" value="Sec. guías"/>
                     <textbox width="100%" value="@bind(vm.tipoambiente.amSecGuia)"
                              placeholder="123"
                              class="form-control form-control-sm"/>
                 </div>
-            </hlayout>
+            </div>
 
             <div class="sri_checks">
-                <hlayout width="100%" spacing="8px" valign="top">
-                    <vlayout hflex="1" spacing="4px">
-                        <checkbox id="chkRM"
-                                  label="CONTRIBUYENTE REGIMEN GENERAL"
-                                  checked="@bind(vm.tipoambiente.amGeneral)"/>
-                        <checkbox id="chkAR"
-                                  label="AGENTE DE RETENCION"
-                                  checked="@bind(vm.tipoambiente.amAgeRet)"/>
-                    </vlayout>
-                    <vlayout hflex="1" spacing="4px">
-                        <checkbox id="chkRG"
-                                  label="CONTRIBUYENTE REGIMEN RIMPE"
-                                  checked="@bind(vm.tipoambiente.amRimpe)"/>
-                        <checkbox id="chkCE"
-                                  label="CONTRIBUYENTE ESPECIAL"
-                                  checked="@bind(vm.tipoambiente.amContrEsp)"/>
-                    </vlayout>
-                    <vlayout hflex="1" spacing="4px">
-                        <checkbox id="chkRGP"
-                                  label="CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE"
-                                  checked="@bind(vm.tipoambiente.amRimpePopular)"/>
-                        <checkbox id="chkEX"
-                                  label="EXPORTADORES"
-                                  checked="@bind(vm.tipoambiente.amExp)"/>
-                    </vlayout>
-                    <div hflex="1"/>
-                </hlayout>
+                <checkbox id="chkRM"
+                          label="CONTRIBUYENTE REGIMEN GENERAL"
+                          checked="@bind(vm.tipoambiente.amGeneral)"/>
+                <checkbox id="chkRG"
+                          label="CONTRIBUYENTE REGIMEN RIMPE"
+                          checked="@bind(vm.tipoambiente.amRimpe)"/>
+                <checkbox id="chkRGP"
+                          label="CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE"
+                          checked="@bind(vm.tipoambiente.amRimpePopular)"/>
+                <checkbox id="chkAR"
+                          label="AGENTE DE RETENCION"
+                          checked="@bind(vm.tipoambiente.amAgeRet)"/>
+                <checkbox id="chkCE"
+                          label="CONTRIBUYENTE ESPECIAL"
+                          checked="@bind(vm.tipoambiente.amContrEsp)"/>
+                <checkbox id="chkEX"
+                          label="EXPORTADORES"
+                          checked="@bind(vm.tipoambiente.amExp)"/>
             </div>
         </div>
     </div>

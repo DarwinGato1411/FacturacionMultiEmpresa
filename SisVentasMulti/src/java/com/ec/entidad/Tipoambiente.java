@@ -72,6 +72,9 @@ public class Tipoambiente implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "am_usuariosri")
     private String amUsuariosri;
+    @Size(max = 255)
+    @Column(name = "am_clave_sri_linea")
+    private String amClaveSriLinea;
     @Size(max = 2147483647)
     @Column(name = "am_urlsri")
     private String amUrlsri;
@@ -273,6 +276,14 @@ public class Tipoambiente implements Serializable {
 
     public void setAmUsuariosri(String amUsuariosri) {
         this.amUsuariosri = amUsuariosri;
+    }
+
+    public String getAmClaveSriLinea() {
+        return amClaveSriLinea;
+    }
+
+    public void setAmClaveSriLinea(String amClaveSriLinea) {
+        this.amClaveSriLinea = amClaveSriLinea;
     }
 
     public String getAmUrlsri() {

@@ -8,6 +8,7 @@ package com.ec.controlador;
 import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
+import com.ec.servicio.ServicioSriEstructura;
 import com.ec.servicio.ServicioTipoAmbiente;
 import com.ec.untilitario.ArchivoUtils;
 import com.ec.vista.servicios.ServicioSriCatastro;
@@ -71,6 +72,7 @@ public class Configuracion extends SelectorComposer<Component> {
     @AfterCompose
     public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
         Selectors.wireComponents(view, this, false);
+        new ServicioSriEstructura().asegurarTablas();
         amRuc = credential.getUsuarioSistema().getUsuRuc();
         tipoambiente = servicioTipoAmbiente.findALlTipoambientePorUsuario(credential.getUsuarioSistema());
         if (tipoambiente != null) {

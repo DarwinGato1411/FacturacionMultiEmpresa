@@ -176,7 +176,8 @@
                 <div viewModel="@id('vm')" id="gridMenu"
                      apply="com.ec.controlador.MenuOpciones"
                      class="banner-menubar">
-                    <menubar id="menubar" orient="horizontal" autodrop="true" scrollable="false">
+                    <menubar id="menubar" orient="horizontal" autodrop="true" scrollable="true">
+                        
                         <menu label="Ventas" id="menuEmitirfact">
                             <menupopup>
                                 <menuitem label="Emitir Facturas" id="btnFacturar" />
@@ -228,12 +229,22 @@
                                 <menuitem label="Lista de cierre de caja" id="btnListarCierre" />
                             </menupopup>
                         </menu>
+                        <menu label="Descarga automática" id="menuDescargaSri">
+                            <menupopup>
+                                <menuitem label="Usuario y clave SRI en línea" id="btnSriAccesoLinea"/>
+                                <menuitem label="Facturas" id="btnSriDescFacturas"/>
+                                <menuitem label="Liquidaciones de compra" id="btnSriDescLiquidacion"/>
+                                <menuitem label="Notas de crédito" id="btnSriDescNotaCredito"/>
+                                <menuitem label="Notas de débito" id="btnSriDescNotaDebito"/>
+                                <menuitem label="Guías de remisión" id="btnSriDescGuia"/>
+                                <menuitem label="Comprobantes de retención" id="btnSriDescRetencion"/>
+                            </menupopup>
+                        </menu>
                         <menuitem label="Catalogos" id="btnAdministarVenta" />
                         <menuitem label="Historial declaraciones" id="btnHisDeclaraciones" visible="false" />
                         <menuitem label="Gestion de usuarios" id="muenGestionUsu" />
                         <menuitem label="Gestion de empresas" id="muenGestionEmpresas" />
                         <menuitem label="Gestion facturas" id="btnGestionFactura" />
-                        <menuitem label="Codigos de retencion" id="btnCodigoretencion" />
                         <menuitem label="Orden" id="btnOrden" visible="false" />
                         <menuitem label="Lista orden" id="btnlistaOrden" visible="false" />
                         <menuitem label="Salir" id="logoutMenu" visible="false" />

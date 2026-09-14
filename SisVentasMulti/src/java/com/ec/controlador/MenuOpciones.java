@@ -39,6 +39,8 @@ public class MenuOpciones extends SelectorComposer<Component> {
     Menu menuReportes;
     @Wire("#menuContabilidad")
     Menu menuContabilidad;
+    @Wire("#menuDescargaSri")
+    Menu menuDescargaSri;
 
     @Wire("#btnAdministarVenta")
     Menuitem btnAdministarVenta;
@@ -55,8 +57,6 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Wire("#btnlistaOrden")
     Menuitem btnlistaOrden;
 
-    @Wire("#btnCodigoretencion")
-    Menuitem btnCodigoretencion;
     @Wire("#btnFacturarPar")
     Menuitem btnFacturarPar;
     @Wire("#btnFacturar")
@@ -89,6 +89,9 @@ public class MenuOpciones extends SelectorComposer<Component> {
                 menuReportes.setVisible(Boolean.FALSE);
                 if (menuContabilidad != null) {
                     menuContabilidad.setVisible(Boolean.FALSE);
+                }
+                if (menuDescargaSri != null) {
+                    menuDescargaSri.setVisible(Boolean.FALSE);
                 }
                 btnAdministarVenta.setVisible(Boolean.FALSE);
                 btnHisDeclaraciones.setVisible(Boolean.FALSE);
@@ -184,6 +187,41 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Listen("onClick = #btnProformasEmitidas")
     public void doListaProformas() {
         Executions.sendRedirect("/venta/listacotizaciones.zul");
+    }
+
+    @Listen("onClick = #btnSriAccesoLinea")
+    public void btnSriAccesoLinea() {
+        Executions.sendRedirect("/compra/acceso_sri_linea.zul");
+    }
+
+    @Listen("onClick = #btnSriDescFacturas")
+    public void btnSriDescFacturas() {
+        Executions.sendRedirect("/compra/descarga_sri.zul?tipo=01");
+    }
+
+    @Listen("onClick = #btnSriDescLiquidacion")
+    public void btnSriDescLiquidacion() {
+        Executions.sendRedirect("/compra/descarga_sri.zul?tipo=03");
+    }
+
+    @Listen("onClick = #btnSriDescNotaCredito")
+    public void btnSriDescNotaCredito() {
+        Executions.sendRedirect("/compra/descarga_sri.zul?tipo=04");
+    }
+
+    @Listen("onClick = #btnSriDescNotaDebito")
+    public void btnSriDescNotaDebito() {
+        Executions.sendRedirect("/compra/descarga_sri.zul?tipo=05");
+    }
+
+    @Listen("onClick = #btnSriDescGuia")
+    public void btnSriDescGuia() {
+        Executions.sendRedirect("/compra/descarga_sri.zul?tipo=06");
+    }
+
+    @Listen("onClick = #btnSriDescRetencion")
+    public void btnSriDescRetencion() {
+        Executions.sendRedirect("/compra/descarga_sri.zul?tipo=07");
     }
 
     @Listen("onClick = #btnIngresoCompras")
@@ -329,11 +367,6 @@ public class MenuOpciones extends SelectorComposer<Component> {
     @Listen("onClick = #btnlistaOrden")
     public void btnlistaOrden() {
         Executions.sendRedirect("/venta/listaorden.zul");
-    }
-
-    @Listen("onClick = #btnCodigoretencion")
-    public void btnCodigoretencion() {
-        Executions.sendRedirect("/administrar/codigoretenciones.zul");
     }
 
     @Listen("onClick = #btnPlanCuentas")
