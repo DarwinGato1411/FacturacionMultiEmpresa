@@ -417,8 +417,10 @@ div.z-menubar-hor .z-menuitem-body-seld .z-menuitem-inner-m .z-menuitem-btn {
 .banner .banner-logout .z-label,
 .banner .labelLogout,
 .banner a.logout,
-.banner a.logout .z-label {
-  color: #d32f2f !important;
+.banner a.logout .z-label,
+.banner .banner-logout-btn,
+.banner .banner-logout-btn.z-button {
+  color: #ff4d4d !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px;
@@ -433,7 +435,7 @@ div.z-menubar-hor .z-menuitem-body-seld .z-menuitem-inner-m .z-menuitem-btn {
 
 .banner .banner-head,
 .banner .labelNuevo,
-.banner .z-label:not(.banner-logout-text),
+.banner .z-label:not(.banner-logout-text):not(.z-button),
 .banner .z-toolbarbutton,
 .banner .z-toolbarbutton-content,
 .banner .z-menuitem-text,
@@ -450,7 +452,7 @@ div.z-menubar-hor .z-menuitem-body-seld .z-menuitem-inner-m .z-menuitem-btn {
 }
 
 .z-north {
-  z-index: 40 !important;
+  z-index: 1200 !important;
 }
 
 .footer {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v29"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/sri.css?v30"?>
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 <?init class="com.ec.seguridad.Autentificador"?>
@@ -294,6 +294,44 @@
                 <checkbox id="chkEX"
                           label="EXPORTADORES"
                           checked="@bind(vm.tipoambiente.amExp)"/>
+            </div>
+        </div>
+
+        <div class="sri_card sri_deuna_card">
+            <label class="sri_login_title" value="Cobro Deuna"/>
+            <label class="sri_hint" value="Datos de Payválida / Deuna Ecuador. El botón Generar QR Deuna en Facturar usa el total de la venta."/>
+            <div class="sri_grid">
+                <div class="sri_field">
+                    <label class="sri_label" value="Comercio (merchant)"/>
+                    <textbox width="100%" value="@bind(vm.tipoambiente.amDeunaMerchant)"
+                             placeholder="Código de comercio Payválida"
+                             class="form-control form-control-sm"/>
+                </div>
+                <div class="sri_field">
+                    <label class="sri_label" value="Hash secreto"/>
+                    <textbox width="100%" type="password" value="@bind(vm.tipoambiente.amDeunaHash)"
+                             placeholder="fixedhash de Payválida"
+                             class="form-control form-control-sm"/>
+                </div>
+                <div class="sri_field">
+                    <label class="sri_label" value="Caja / POS"/>
+                    <textbox width="100%" value="@bind(vm.tipoambiente.amDeunaCaja)"
+                             placeholder="Caja 01"
+                             class="form-control form-control-sm"/>
+                </div>
+                <div class="sri_field">
+                    <label class="sri_label" value="Ambiente Deuna"/>
+                    <radiogroup class="sri_radios" selectedItem="@bind(vm.tipoambiente.amDeunaAmbiente)">
+                        <radio label="PRUEBAS" value="PRUEBAS"/>
+                        <radio label="PRODUCCION" value="PRODUCCION"/>
+                    </radiogroup>
+                </div>
+                <div class="sri_field">
+                    <label class="sri_label" value="Email notificación QR"/>
+                    <textbox width="100%" value="@bind(vm.tipoambiente.amDeunaEmail)"
+                             placeholder="correo@empresa.com"
+                             class="form-control form-control-sm"/>
+                </div>
             </div>
         </div>
     </div>

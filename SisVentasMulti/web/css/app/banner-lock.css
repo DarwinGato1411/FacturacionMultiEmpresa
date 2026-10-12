@@ -24,6 +24,8 @@
   flex: 1 1 auto !important;
   min-width: 0 !important;
   overflow: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .banner-utils {
@@ -34,6 +36,9 @@
   justify-content: flex-end !important;
   white-space: nowrap !important;
   height: 50px !important;
+  position: relative !important;
+  z-index: 80 !important;
+  pointer-events: auto !important;
 }
 
 .banner-utils,
@@ -112,7 +117,7 @@
 .banner .z-menu-inner-m .z-menu-btn,
 .banner .z-menuitem-inner-m .z-menuitem-btn,
 .banner .z-toolbarbutton-cnt,
-.banner .z-label:not(.banner-logout-text) {
+.banner .z-label:not(.banner-logout-text):not(.z-button) {
   color: #ffffff !important;
   background: transparent !important;
   background-image: none !important;
@@ -177,8 +182,48 @@
 }
 
 .banner a.logout,
-.banner .banner-logout-text {
-  color: #d32f2f !important;
+.banner .banner-logout,
+.banner .banner-logout-text,
+.banner .banner-logout-btn,
+.banner .banner-logout-btn.z-button,
+.banner .banner-logout-btn .z-button,
+.banner .banner-logout-btn .z-label,
+.banner .banner-logout-btn td {
+  color: #ff4d4d !important;
+  position: relative;
+  z-index: 6;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.banner a.logout *,
+.banner .banner-logout-btn,
+.banner .banner-logout-btn * {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.banner .banner-logout-btn.z-button,
+.banner button.banner-logout-btn {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 none !important;
+  box-shadow: none !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  color: #ff4d4d !important;
+}
+
+.banner .banner-logout-btn.z-button:hover,
+.banner button.banner-logout-btn:hover {
+  color: #ff7a7a !important;
+  background: transparent !important;
 }
 
 .kd-page.cat-admin .cat-nav .z-tab,
@@ -229,4 +274,44 @@
   color: #122536 !important;
   font-size: 14px !important;
   font-weight: 800 !important;
+}
+
+/* Producto / Cliente: only the open dialog, never a leftover full-screen mask. */
+.defact-quick-modal.z-window-modal,
+.defact-quick-modal.z-window-highlighted,
+.defact-quick-modal.z-window-overlapped,
+.defact-quick-modal {
+  z-index: 1900 !important;
+  background: #ffffff !important;
+}
+
+.defact-quick-modal .z-window-modal-cnt,
+.defact-quick-modal .z-window-highlighted-cnt,
+.defact-quick-modal.z-window-modal-cnt,
+.z-window-modal.defact-quick-modal .z-window-modal-cm,
+.defact-quick-modal .container_modal {
+  background: #ffffff !important;
+}
+
+.defact-quick-modal .container_modal {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow: auto !important;
+}
+
+.banner,
+.z-north,
+.z-north-body,
+.z-north-noborder {
+  position: relative !important;
+  z-index: 1200 !important;
+  pointer-events: auto !important;
+}
+
+.z-center,
+.z-center-body {
+  position: relative !important;
+  z-index: 1 !important;
 }

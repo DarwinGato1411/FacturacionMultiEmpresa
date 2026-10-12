@@ -394,6 +394,21 @@ public class MenuOpciones extends SelectorComposer<Component> {
         Executions.sendRedirect("/contabilidad/estadosfinancieros.zul");
     }
 
+    @Listen("onClick = #btnComparativoContable")
+    public void btnComparativoContable() {
+        Executions.sendRedirect("/contabilidad/comparativo.zul");
+    }
+
+    @Listen("onClick = #btnFlujoEfectivo")
+    public void btnFlujoEfectivo() {
+        Executions.sendRedirect("/contabilidad/flujoefectivo.zul");
+    }
+
+    @Listen("onClick = #btnCierreEjercicio")
+    public void btnCierreEjercicio() {
+        Executions.sendRedirect("/contabilidad/cierreejercicio.zul");
+    }
+
     @Listen("onClick = #btnAsientoManual")
     public void btnAsientoManual() {
         Executions.sendRedirect("/contabilidad/asientomanual.zul");

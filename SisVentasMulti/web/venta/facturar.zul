@@ -2,7 +2,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>  
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v5"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v44"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v45"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v2"?>
@@ -326,18 +326,6 @@
                                             class="input" 
                                         />
                                     </div>
-                                   <div class="wrapper_input wrapper_btn_accion">
-                                    <button 
-                                        autodisable="self"   
-                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
-                                        onClick="@command('Guardar',valor='SG',envia='S')"
-                                        tooltiptext="Guardar y Envia al SRI"
-                                        label="Facturar y Enviar al SRI"
-                                        width="100%"
-                                    />
-
-                                </div>
-                                    
                                 </div>
                                 <div class="wrapper_data wrapper_totales">
                                    
@@ -376,22 +364,32 @@
                                             value="@bind(vm.cambio)" 
                                         />
                                     </div>
-                                     <div class="wrapper_input wrapper_btn_accion">
-                                
-                                    <button 
-                                        autodisable="self"   
-                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"                  
+                                </div>
+                                <div class="fact_acciones_btns">
+                                    <button
+                                        autodisable="self"
+                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"
+                                        onClick="@command('Guardar',valor='SG',envia='S')"
+                                        tooltiptext="Guardar y Envia al SRI"
+                                        label="Facturar y Enviar al SRI"
+                                        width="100%"
+                                    />
+                                    <button
+                                        autodisable="self"
+                                        class="fa-solid fa-floppy-disk btn_fact btn_primary"
                                         onClick="@command('Guardar',valor='SG',envia='N')"
                                         tooltiptext="Guardar"
                                         label="Facturar"
                                         width="100%"
                                     />
-
-                                </div>
-                                
-                                
-                                    
-                             
+                                    <button
+                                        autodisable="self"
+                                        class="fa-solid fa-qrcode btn_fact btn_primary"
+                                        onClick="@command('generarQrDeuna')"
+                                        tooltiptext="Generar QR Deuna con el total"
+                                        label="Generar QR Deuna"
+                                        width="100%"
+                                    />
                                 </div>
                             
                             </div>

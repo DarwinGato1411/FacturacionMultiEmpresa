@@ -218,6 +218,9 @@
                                 <menuitem label="Libro diario" id="btnLibroDiario" />
                                 <menuitem label="Libro mayor" id="btnLibroMayor" />
                                 <menuitem label="Estados financieros" id="btnEstadosFinancieros" />
+                                <menuitem label="Comparativo" id="btnComparativoContable" />
+                                <menuitem label="Flujo de efectivo" id="btnFlujoEfectivo" />
+                                <menuitem label="Cierre de ejercicio" id="btnCierreEjercicio" />
                                 <menuitem label="Asiento manual" id="btnAsientoManual" />
                             </menupopup>
                         </menu>
@@ -263,10 +266,11 @@
                 </div>
                 <label value="Usuario: " if="${not sessionScope.userCredential.anonymous}" sclass="banner-user" />
                 <label value="${sessionScope.usuario.nombreUsuario}" sclass="banner-user" if="${not sessionScope.userCredential.anonymous}" />
-                <a sclass="logout banner-logout" id="logout" >
-                    <label  value="Salir" if="${not sessionScope.userCredential.anonymous}" sclass="banner-logout-text"/>
-                    <image src="/iconos/logout-24.png"  />
-                </a>
+                <button id="logout"
+                        label="Salir"
+                        image="/iconos/logout-24.png"
+                        sclass="banner-logout-btn"
+                        tooltiptext="Cerrar sesión"/>
             </div>
         </div>
     </div>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  id="windowCliente"  position="center"  closable="true"  
+<window  id="windowCliente"  position="center"  closable="true"
+         width="960px" sclass="defact-quick-modal"
+         contentStyle="overflow:auto;background:#ffffff"
          apply="org.zkoss.bind.BindComposer"
          viewModel="@id('vm') @init('com.ec.controlador.NuevoCliente')">
     

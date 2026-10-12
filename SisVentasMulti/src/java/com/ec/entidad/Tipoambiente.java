@@ -222,6 +222,16 @@ public class Tipoambiente implements Serializable {
     private Boolean amParqueadero;
      @Column(name = "am_cierre_caja")
     private Boolean amCierreCaja;
+    @Column(name = "am_deuna_merchant")
+    private String amDeunaMerchant;
+    @Column(name = "am_deuna_hash")
+    private String amDeunaHash;
+    @Column(name = "am_deuna_caja")
+    private String amDeunaCaja;
+    @Column(name = "am_deuna_ambiente")
+    private String amDeunaAmbiente;
+    @Column(name = "am_deuna_email")
+    private String amDeunaEmail;
 
     public Tipoambiente() {
     }
@@ -790,6 +800,46 @@ public class Tipoambiente implements Serializable {
 
     public void setAmCierreCaja(Boolean amCierreCaja) {
         this.amCierreCaja = amCierreCaja;
+    }
+
+    public String getAmDeunaMerchant() {
+        return amDeunaMerchant;
+    }
+
+    public void setAmDeunaMerchant(String amDeunaMerchant) {
+        this.amDeunaMerchant = amDeunaMerchant;
+    }
+
+    public String getAmDeunaHash() {
+        return amDeunaHash;
+    }
+
+    public void setAmDeunaHash(String amDeunaHash) {
+        this.amDeunaHash = amDeunaHash;
+    }
+
+    public String getAmDeunaCaja() {
+        return amDeunaCaja;
+    }
+
+    public void setAmDeunaCaja(String amDeunaCaja) {
+        this.amDeunaCaja = amDeunaCaja;
+    }
+
+    public String getAmDeunaAmbiente() {
+        return amDeunaAmbiente == null || amDeunaAmbiente.trim().isEmpty() ? "PRUEBAS" : amDeunaAmbiente;
+    }
+
+    public void setAmDeunaAmbiente(String amDeunaAmbiente) {
+        this.amDeunaAmbiente = amDeunaAmbiente;
+    }
+
+    public String getAmDeunaEmail() {
+        return amDeunaEmail;
+    }
+
+    public void setAmDeunaEmail(String amDeunaEmail) {
+        this.amDeunaEmail = amDeunaEmail;
     }
 
 }

@@ -10,14 +10,20 @@ import com.ec.entidad.RetencionVenta;
 import com.ec.entidad.Tipoambiente;
 import com.ec.entidad.partida.CuAsiento;
 import com.ec.entidad.partida.CuAsientoDetalle;
+import com.ec.entidad.partida.CuEjercicio;
 import com.ec.entidad.partida.CuParametro;
 import com.ec.entidad.partida.CuSubCuenta;
+import com.ec.untilitario.ModeloComparativo;
+import com.ec.untilitario.ModeloFlujoLinea;
 import com.ec.untilitario.ModeloLibroMayor;
 import com.ec.untilitario.ModeloLibroMayorMov;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -219,6 +225,293 @@ public class ServicioContabilidad {
             }
         }
         return resultado;
+    }
+
+    public boolean periodoCerrado(Tipoambiente ambiente, Date fecha) {
+        if (ambiente == null || fecha == null) {
+            return false;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        return ejercicioCerrado(ambiente, cal.get(Calendar.YEAR));
+    }
+
+    public boolean ejercicioCerrado(Tipoambiente ambiente, int anio) {
+        CuEjercicio eje = findEjercicio(ambiente, anio);
+        return eje != null && eje.isCerrado();
+    }
+
+    public CuEjercicio findEjercicio(Tipoambiente ambiente, int anio) {
+        if (ambiente == null) {
+            return null;
+        }
+        EntityManager local = null;
+        try {
+            local = HelperPersistencia.getEMF();
+            local.getTransaction().begin();
+            Query q = local.createNamedQuery("CuEjercicio.findByAmbienteAnio");
+            q.setParameter("ambiente", ambiente);
+            q.setParameter("anio", anio);
+            List list = q.getResultList();
+            local.getTransaction().commit();
+            if (list.isEmpty()) {
+                return null;
+            }
+            return (CuEjercicio) list.get(0);
+        } catch (Exception e) {
+            System.out.println("Error leer ejercicio " + e.getMessage());
+            if (local != null && local.getTransaction().isActive()) {
+                local.getTransaction().rollback();
+            }
+            return null;
+        } finally {
+            if (local != null) {
+                local.close();
+            }
+        }
+    }
+
+    public List<ModeloLibroMayor> previewCierre(Tipoambiente ambiente, int anio) {
+        return findMayor(inicioAnio(anio), finAnio(anio), ambiente, "");
+    }
+
+    public String cerrarEjercicio(Tipoambiente ambiente, int anio) {
+        if (ambiente == null) {
+            throw new RuntimeException("No hay empresa activa.");
+        }
+        if (ejercicioCerrado(ambiente, anio)) {
+            throw new RuntimeException("El ejercicio " + anio + " ya está cerrado.");
+        }
+        Date fin = finAnio(anio);
+        List<ModeloLibroMayor> mayor = findMayor(inicioAnio(anio), fin, ambiente, "");
+        List<CuAsientoDetalle> lineas = new ArrayList<CuAsientoDetalle>();
+        BigDecimal ingresos = BigDecimal.ZERO;
+        BigDecimal costosGastos = BigDecimal.ZERO;
+        String glosa = "Cierre de ejercicio " + anio;
+        for (int i = 0; i < mayor.size(); i++) {
+            ModeloLibroMayor m = mayor.get(i);
+            String codigo = m.getCodigo() != null ? m.getCodigo() : "";
+            if (codigo.length() == 0) {
+                continue;
+            }
+            char clase = codigo.charAt(0);
+            BigDecimal saldo = nvl(m.getSaldoFinal());
+            if (saldo.compareTo(BigDecimal.ZERO) == 0) {
+                continue;
+            }
+            CuSubCuenta cuenta = buscarSubcuenta(codigo, ambiente);
+            if (cuenta == null) {
+                continue;
+            }
+            if (clase == '4') {
+                ingresos = ingresos.add(saldo);
+                lineas.add(detalleDirecto(cuenta, saldo, BigDecimal.ZERO, glosa));
+            } else if (clase == '5' || clase == '6') {
+                costosGastos = costosGastos.add(saldo);
+                lineas.add(detalleDirecto(cuenta, BigDecimal.ZERO, saldo, glosa));
+            }
+        }
+        BigDecimal utilidad = ingresos.subtract(costosGastos);
+        String paramPat = utilidad.compareTo(BigDecimal.ZERO) >= 0 ? "RESULTADOS" : "PERDIDAS_ACUM";
+        BigDecimal abs = utilidad.abs();
+        if (utilidad.compareTo(BigDecimal.ZERO) != 0 && cuentaDe(paramPat, ambiente) == null) {
+            throw new RuntimeException("Falta parametrizar " + paramPat
+                    + " (Parametrizar cuentas). Ejecute también setup/fase5_cierre_reportes.sql.");
+        }
+        if (utilidad.compareTo(BigDecimal.ZERO) > 0) {
+            agregarLinea(lineas, ambiente, paramPat, BigDecimal.ZERO, abs, glosa);
+        } else if (utilidad.compareTo(BigDecimal.ZERO) < 0) {
+            agregarLinea(lineas, ambiente, paramPat, abs, BigDecimal.ZERO, glosa);
+        }
+        if (lineas.isEmpty()) {
+            throw new RuntimeException("No hay ingresos ni gastos para cerrar en " + anio + ".");
+        }
+        Integer idAsiento = grabarAsiento(ambiente, "CIERRE", anio, fin, glosa,
+                lineas.toArray(new CuAsientoDetalle[lineas.size()]));
+        EntityManager local = null;
+        try {
+            local = HelperPersistencia.getEMF();
+            local.getTransaction().begin();
+            Query q = local.createNamedQuery("CuEjercicio.findByAmbienteAnio");
+            q.setParameter("ambiente", ambiente);
+            q.setParameter("anio", anio);
+            List list = q.getResultList();
+            CuEjercicio eje;
+            if (list.isEmpty()) {
+                eje = new CuEjercicio();
+                eje.setCodTipoambiente(ambiente);
+                eje.setEjeAnio(anio);
+                local.persist(eje);
+            } else {
+                eje = (CuEjercicio) list.get(0);
+            }
+            eje.setEjeEstado("CERRADO");
+            eje.setEjeFechaCierre(new Date());
+            eje.setIdAsiento(idAsiento);
+            local.merge(eje);
+            local.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (local != null && local.getTransaction().isActive()) {
+                local.getTransaction().rollback();
+            }
+            throw e;
+        } catch (Exception e) {
+            if (local != null && local.getTransaction().isActive()) {
+                local.getTransaction().rollback();
+            }
+            throw new RuntimeException("El asiento de cierre se creó, pero no se bloqueó el año. Ejecute setup/fase5_cierre_reportes.sql. " + e.getMessage());
+        } finally {
+            if (local != null) {
+                local.close();
+            }
+        }
+        return "Ejercicio " + anio + " cerrado. Resultado " + utilidad + ". Ya no se pueden registrar asientos en ese año.";
+    }
+
+    public void reabrirEjercicio(Tipoambiente ambiente, int anio) {
+        if (ambiente == null) {
+            throw new RuntimeException("No hay empresa activa.");
+        }
+        if (!ejercicioCerrado(ambiente, anio)) {
+            throw new RuntimeException("El ejercicio " + anio + " no está cerrado.");
+        }
+        eliminarAsiento("CIERRE", anio, ambiente);
+        EntityManager local = null;
+        try {
+            local = HelperPersistencia.getEMF();
+            local.getTransaction().begin();
+            Query q = local.createNamedQuery("CuEjercicio.findByAmbienteAnio");
+            q.setParameter("ambiente", ambiente);
+            q.setParameter("anio", anio);
+            List list = q.getResultList();
+            if (!list.isEmpty()) {
+                CuEjercicio eje = (CuEjercicio) list.get(0);
+                eje.setEjeEstado("ABIERTO");
+                eje.setEjeFechaCierre(null);
+                eje.setIdAsiento(null);
+                local.merge(eje);
+            }
+            local.getTransaction().commit();
+        } catch (Exception e) {
+            if (local != null && local.getTransaction().isActive()) {
+                local.getTransaction().rollback();
+            }
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if (local != null) {
+                local.close();
+            }
+        }
+    }
+
+    public List<ModeloFlujoLinea> findFlujoEfectivo(Date inicio, Date fin, Tipoambiente ambiente) {
+        List<ModeloFlujoLinea> out = new ArrayList<ModeloFlujoLinea>();
+        CuSubCuenta caja = cuentaDe("CAJA", ambiente);
+        if (caja == null || caja.getSubcNumero() == null) {
+            return out;
+        }
+        List<ModeloLibroMayor> mayor = findMayor(inicio, fin, ambiente, caja.getSubcNumero());
+        BigDecimal saldo = BigDecimal.ZERO;
+        for (int i = 0; i < mayor.size(); i++) {
+            List<ModeloLibroMayorMov> movs = mayor.get(i).getMovimientos();
+            if (movs == null) {
+                continue;
+            }
+            for (int j = 0; j < movs.size(); j++) {
+                ModeloLibroMayorMov mv = movs.get(j);
+                if (mv.getFecha() == null && mv.getNumero() == null) {
+                    saldo = nvl(mv.getSaldo());
+                    ModeloFlujoLinea aper = new ModeloFlujoLinea();
+                    aper.setGlosa("Saldo inicial de caja");
+                    aper.setClasificacion("Saldo inicial");
+                    aper.setSaldo(saldo);
+                    out.add(aper);
+                    continue;
+                }
+                ModeloFlujoLinea f = new ModeloFlujoLinea();
+                f.setFecha(mv.getFecha());
+                f.setOrigen(mv.getOrigen());
+                f.setGlosa(mv.getGlosa());
+                f.setIngreso(nvl(mv.getDebe()));
+                f.setEgreso(nvl(mv.getHaber()));
+                saldo = saldo.add(nvl(mv.getDebe())).subtract(nvl(mv.getHaber()));
+                f.setSaldo(saldo);
+                f.setClasificacion(clasificarFlujo(mv.getOrigen()));
+                out.add(f);
+            }
+        }
+        return out;
+    }
+
+    public List<ModeloComparativo> findComparativo(Date iniA, Date finA, Date iniB, Date finB, Tipoambiente ambiente) {
+        List<ModeloLibroMayor> a = findMayor(iniA, finA, ambiente, "");
+        List<ModeloLibroMayor> b = findMayor(iniB, finB, ambiente, "");
+        Map<String, ModeloComparativo> mapa = new LinkedHashMap<String, ModeloComparativo>();
+        for (int i = 0; i < a.size(); i++) {
+            ModeloLibroMayor m = a.get(i);
+            ModeloComparativo c = new ModeloComparativo();
+            c.setCodigo(m.getCodigo());
+            c.setNombre(m.getNombre());
+            c.setSaldoA(nvl(m.getSaldoFinal()));
+            mapa.put(m.getCodigo(), c);
+        }
+        for (int i = 0; i < b.size(); i++) {
+            ModeloLibroMayor m = b.get(i);
+            ModeloComparativo c = mapa.get(m.getCodigo());
+            if (c == null) {
+                c = new ModeloComparativo();
+                c.setCodigo(m.getCodigo());
+                c.setNombre(m.getNombre());
+                mapa.put(m.getCodigo(), c);
+            }
+            c.setSaldoB(nvl(m.getSaldoFinal()));
+        }
+        List<ModeloComparativo> out = new ArrayList<ModeloComparativo>();
+        for (ModeloComparativo c : mapa.values()) {
+            c.setDiferencia(nvl(c.getSaldoB()).subtract(nvl(c.getSaldoA())));
+            out.add(c);
+        }
+        return out;
+    }
+
+    private CuAsientoDetalle detalleDirecto(CuSubCuenta cuenta, BigDecimal debe, BigDecimal haber, String glosa) {
+        CuAsientoDetalle d = new CuAsientoDetalle();
+        d.setIdSubCuenta(cuenta);
+        d.setDetDebe(nvl(debe));
+        d.setDetHaber(nvl(haber));
+        d.setDetGlosa(glosa);
+        return d;
+    }
+
+    private String clasificarFlujo(String origen) {
+        if (origen == null) {
+            return "Otro";
+        }
+        if ("FACT".equals(origen) || "NTV".equals(origen) || "NCRE".equals(origen)
+                || "ANUL".equals(origen) || "RVEN".equals(origen)) {
+            return "Operación (ventas / cobros)";
+        }
+        if ("COMP".equals(origen) || "RCOM".equals(origen)) {
+            return "Operación (compras / pagos)";
+        }
+        if ("CIERRE".equals(origen)) {
+            return "Cierre";
+        }
+        return "Otro / asiento manual";
+    }
+
+    private Date inicioAnio(int anio) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(anio, Calendar.JANUARY, 1);
+        return cal.getTime();
+    }
+
+    private Date finAnio(int anio) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(anio, Calendar.DECEMBER, 31);
+        return cal.getTime();
     }
 
     private void aplicarLadosSaldo(ModeloLibroMayor m) {
@@ -668,7 +961,10 @@ public class ServicioContabilidad {
         return hay;
     }
 
-    private void grabarAsiento(Tipoambiente ambiente, String origen, Integer idDoc, Date fecha, String glosa, CuAsientoDetalle... lineas) {
+    private Integer grabarAsiento(Tipoambiente ambiente, String origen, Integer idDoc, Date fecha, String glosa, CuAsientoDetalle... lineas) {
+        if (!"CIERRE".equals(origen) && periodoCerrado(ambiente, fecha)) {
+            throw new RuntimeException("El ejercicio de esa fecha está cerrado. No se pueden registrar asientos.");
+        }
         EntityManager local = null;
         try {
             local = HelperPersistencia.getEMF();
@@ -700,12 +996,19 @@ public class ServicioContabilidad {
                 local.persist(d);
             }
             local.getTransaction().commit();
+            return asiento.getIdAsiento();
+        } catch (RuntimeException e) {
+            if (local != null && local.getTransaction().isActive()) {
+                local.getTransaction().rollback();
+            }
+            throw e;
         } catch (Exception e) {
             System.out.println("Error grabar asiento " + e.getMessage());
             e.printStackTrace();
             if (local != null && local.getTransaction().isActive()) {
                 local.getTransaction().rollback();
             }
+            return null;
         } finally {
             if (local != null) {
                 local.close();
@@ -727,6 +1030,33 @@ public class ServicioContabilidad {
     private void eliminarAsiento(String origen, Integer idDocumento, Tipoambiente ambiente) {
         if (ambiente == null || origen == null || idDocumento == null) {
             return;
+        }
+        if (!"CIERRE".equals(origen)) {
+            EntityManager chk = null;
+            try {
+                chk = HelperPersistencia.getEMF();
+                chk.getTransaction().begin();
+                Query query = chk.createNamedQuery("CuAsiento.findByOrigenDocumento");
+                query.setParameter("ambiente", ambiente);
+                query.setParameter("origen", origen);
+                query.setParameter("idDocumento", idDocumento);
+                List list = query.getResultList();
+                chk.getTransaction().commit();
+                if (!list.isEmpty()) {
+                    CuAsiento a = (CuAsiento) list.get(0);
+                    if (periodoCerrado(ambiente, a.getAsiFecha())) {
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                if (chk != null && chk.getTransaction().isActive()) {
+                    chk.getTransaction().rollback();
+                }
+            } finally {
+                if (chk != null) {
+                    chk.close();
+                }
+            }
         }
         EntityManager local = null;
         try {
@@ -823,6 +1153,8 @@ public class ServicioContabilidad {
         new ServicioPlanCuentas().clonarPlantilla(local, ambiente);
         asegurarParametroPlantilla(local, "VENTAS_5", "Ventas gravadas tarifa 5%", "4.01.01.002");
         asegurarParametroPlantilla(local, "VENTAS_0", "Ventas tarifa 0%", "4.01.01.003");
+        asegurarParametroPlantilla(local, "RESULTADOS", "Resultados acumulados (utilidad del ejercicio)", "3.03.01.001");
+        asegurarParametroPlantilla(local, "PERDIDAS_ACUM", "Perdidas acumuladas", "3.03.01.002");
         Query plantilla = local.createNamedQuery("CuParametro.findPlantilla");
         List list = plantilla.getResultList();
         Query existentes = local.createQuery("SELECT p.parCodigo FROM CuParametro p WHERE p.codTipoambiente = :ambiente");

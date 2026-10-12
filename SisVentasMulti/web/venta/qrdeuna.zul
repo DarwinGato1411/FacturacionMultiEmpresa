@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window title="QR Deuna" border="normal" width="340px" closable="true" position="center"
+        apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('com.ec.controlador.vistas.QrDeunaVm')">
+    <vlayout spacing="6px" width="100%">
+        <label value="@load(vm.empresa)"
+               style="font-weight:bold;font-size:14px;color:#122536;text-align:center;display:block;width:100%"/>
+        <hlayout spacing="4px" style="text-align:center;display:block;width:100%">
+            <label value="RUC" style="font-size:12px;color:#122536"/>
+            <label value="@load(vm.ruc)" style="font-size:12px;color:#122536"/>
+        </hlayout>
+        <label value="Cobro Deuna"
+               style="font-size:12px;color:#122536;text-align:center;display:block;width:100%"/>
+        <hlayout spacing="4px">
+            <label value="$" style="font-weight:bold;font-size:20px;color:#122536"/>
+            <label value="@load(vm.montoTexto)" style="font-weight:bold;font-size:20px;color:#122536"/>
+        </hlayout>
+        <image content="@load(vm.qrImagen)" width="220px" height="220px"/>
+        <hlayout spacing="4px">
+            <label value="Orden" style="font-size:12px;color:#122536"/>
+            <label value="@load(vm.orden)" style="font-size:12px;color:#122536"/>
+        </hlayout>
+        <hlayout spacing="4px" visible="@load(vm.caja ne '')">
+            <label value="Caja" style="font-size:12px;color:#122536"/>
+            <label value="@load(vm.caja)" style="font-size:12px;color:#122536"/>
+        </hlayout>
+        <label value="Escanee con la app Deuna"
+               style="font-size:12px;color:#122536;text-align:center;display:block;width:100%"/>
+        <label value="@load(vm.aviso)" visible="@load(vm.aviso ne '')"
+               style="font-size:11px;color:#5a6a7a;display:block;width:100%"/>
+        <button label="Imprimir ticket 80 mm"
+                onClick="@command('imprimirTicket')"
+                width="100%"
+                style="background:#122536;color:#ffffff"/>
+    </vlayout>
+</window>

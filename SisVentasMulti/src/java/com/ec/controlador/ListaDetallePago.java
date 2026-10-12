@@ -6,9 +6,13 @@ package com.ec.controlador;
 
 import com.ec.entidad.DetallePago;
 import com.ec.entidad.Factura;
+import com.ec.entidad.Tipoambiente;
+import com.ec.seguridad.EnumSesion;
+import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioDetallePago;
 import com.ec.servicio.ServicioFactura;
 import com.ec.untilitario.ArchivoUtils;
+import com.ec.untilitario.CobroDeunaUi;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -24,6 +28,8 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
@@ -79,6 +85,19 @@ public class ListaDetallePago {
         } else {
             generar = Boolean.TRUE;
         }
+    }
+
+    @Command
+    public void generarQrDeuna() {
+        Session sess = Sessions.getCurrent();
+        UserCredential cre = (UserCredential) sess.getAttribute(EnumSesion.userCredential.getNombre());
+        Tipoambiente amb = cre != null ? cre.getTipoambiente() : null;
+        if (factura != null && factura.getCod_tipoambiente() != null) {
+            amb = factura.getCod_tipoambiente();
+        }
+        BigDecimal monto = saldo != null && saldo.compareTo(BigDecimal.ZERO) > 0 ? saldo : totalFactura;
+        String ref = factura != null && factura.getFacNumero() != null ? "F" + factura.getFacNumero() : null;
+        CobroDeunaUi.abrir(amb, monto, ref);
     }
 
     @Command

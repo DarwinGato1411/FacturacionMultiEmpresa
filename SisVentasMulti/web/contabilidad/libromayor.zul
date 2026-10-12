@@ -4,7 +4,8 @@
 <?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v6"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v50"?>
 <?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
-<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v6"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css?v7"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v8"?>
 <?script src="https://kit.fontawesome.com/484b16c999.js"?>
 <?script src="/js/icon.js"?>
 <?init class="com.ec.seguridad.Autentificador"?>
@@ -15,7 +16,7 @@
          viewModel="@id('vm') @init('com.ec.controlador.vistas.LibroMayorVm')"
          width="100%" sclass="kd-page lista_facturas_page">
         <label sclass="kd-title" value="Libro mayor"/>
-        <label sclass="kd-sub" value="Movimientos y saldo de cada subcuenta NIIF de la empresa de la sesión. Clic en una cuenta para ver el detalle. Activo/costo/gasto: saldo deudor. Pasivo/patrimonio/ingreso: saldo acreedor."/>
+        <label sclass="kd-sub" value="Movimientos y saldo de cada subcuenta. Excel incluye una hoja de mayor auxiliar (por cuenta; la glosa identifica el documento). PDF/imprimir abre un archivo para guardar como PDF."/>
         <div sclass="kd-card">
         <tabbox width="100%" sclass="lf-tabbox">
             <tabs>
@@ -44,6 +45,10 @@
                             </div>
                             <button class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
                                     onClick="@command('buscar')" label="Buscar"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('exportarExcel')" label="Excel (mayor + auxiliar)"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('exportarPdf')" label="PDF / imprimir"/>
                         </div>
                     </div>
                     <div class="factura_body factura_body_content">

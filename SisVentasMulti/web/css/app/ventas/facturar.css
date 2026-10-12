@@ -1351,7 +1351,7 @@ div.z-listbox-body .z-listcell {
 }
 
 .fact_row_acciones > .wrapper_data > .wrapper_input:not(.wrapper_btn_accion),
-.fact_row_acciones > .wrapper_totales > .wrapper_input:not(:last-child) {
+.fact_row_acciones > .wrapper_totales > .wrapper_input {
     display: grid !important;
     grid-template-columns: 92px minmax(0, 1fr);
     align-items: center !important;
@@ -1406,17 +1406,33 @@ div.z-listbox-body .z-listcell {
     min-width: 0 !important;
 }
 
-.wrapper_totales > .wrapper_input:last-child {
-    display: flex !important;
-    grid-template-columns: none;
-    width: 100% !important;
+.fact_acciones_btns {
+    grid-column: 1 / -1;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 4px;
+    align-items: stretch;
 }
 
-.wrapper_totales > .wrapper_input:last-child .z-button,
-.wrapper_totales > .wrapper_input:last-child .btn_fact {
-    flex: 1 1 auto !important;
+.fact_acciones_btns .z-button,
+.fact_acciones_btns .btn_fact {
     width: 100% !important;
-    min-width: 100% !important;
+    min-width: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 0 8px !important;
+    line-height: 38px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .wrapper_totales .lbl_total,
@@ -1439,8 +1455,7 @@ div.z-listbox-body .z-listcell {
     text-align: right !important;
 }
 
-.fact_row_acciones > .wrapper_data > .wrapper_input.wrapper_btn_accion,
-.fact_row_acciones > .wrapper_totales > .wrapper_input:last-child {
+.fact_row_acciones > .wrapper_data > .wrapper_input.wrapper_btn_accion {
     margin-top: auto !important;
     min-height: 40px;
     align-items: stretch !important;
@@ -2422,11 +2437,15 @@ div.z-listbox-body .z-listcell {
 .banner .logout,
 .banner .logout .z-label,
 .banner .banner-logout,
-.banner .banner-logout-text {
-    color: #d32f2f !important;
+.banner .banner-logout-text,
+.banner .banner-logout-btn,
+.banner .banner-logout-btn.z-button {
+    color: #ff4d4d !important;
     font-size: 13px !important;
     font-weight: 700 !important;
     text-decoration: underline !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
 }
 .banner .z-toolbar .z-toolbarbutton-cnt,
 .banner .z-toolbarbutton-over .z-toolbarbutton-cnt,

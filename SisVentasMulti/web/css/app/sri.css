@@ -889,3 +889,11 @@
     background: #912018 !important;
 }
 
+.sri_deuna_card {
+    margin-top: 12px !important;
+}
+
+.sri_deuna_card .sri_hint {
+    margin-bottom: 10px !important;
+}
+

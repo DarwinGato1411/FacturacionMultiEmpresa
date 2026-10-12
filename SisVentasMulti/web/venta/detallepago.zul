@@ -37,6 +37,10 @@
             <label value="Saldo:" style="font-weight: bold;padding: 5px;font-size:1.5em"   />
             <decimalbox format="###.####"  value="@bind(vm.saldo)" 
                         style="font-weight: bold;padding: 5px; color:red;width:120px; font-size:1.5em;margin-top: 4px;"   />
+            <button label="Generar QR Deuna"
+                    class="btn btn-primary btn-sm"
+                    onClick="@command('generarQrDeuna')"
+                    tooltiptext="QR Deuna con el saldo o total"/>
         </div>
     </div>
     <listbox model="@load(vm.lstPagos)" 

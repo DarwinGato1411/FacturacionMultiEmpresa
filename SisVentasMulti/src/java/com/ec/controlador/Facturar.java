@@ -48,14 +48,13 @@ import com.ec.servicio.ServicioTipoKardex;
 import com.ec.servicio.ServicioTransportista;
 import com.ec.servicio.ServicioUsuario;
 import com.ec.untilitario.ArchivoUtils;
+import com.ec.untilitario.CobroDeunaUi;
 import com.ec.untilitario.AutorizarDocumentos;
 import com.ec.untilitario.MailerClass;
 import com.ec.untilitario.ParamFactura;
 import com.ec.untilitario.TotalKardex;
-import com.ec.untilitario.UtilitarioAutorizarSRI;
 import com.ec.untilitario.Verificaciones;
 import com.ec.untilitario.XAdESBESSignature;
-import ec.gob.sri.comprobantes.exception.RespuestaAutorizacionException;
 import ec.gob.sri.comprobantes.ws.RespuestaSolicitud;
 import ec.gob.sri.comprobantes.ws.aut.Autorizacion;
 import ec.gob.sri.comprobantes.ws.aut.RespuestaComprobante;
@@ -82,7 +81,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -2651,7 +2649,24 @@ public class Facturar extends SelectorComposer<Component> {
                     factura.setFacClaveAutorizacion(claveAcceso);
                     
                     if (accion.equals("create")) {
-                        
+                        if (tipoVenta.equals("FACT")) {
+                            numeroFactura();
+                            factura.setFacNumero(numeroFactura);
+                            factura.setFacNumeroText(numeroFacturaText);
+                            Factura duplicada = servicioFactura.findTipoambienteNumFactura(amb, numeroFactura);
+                            int guardia = 0;
+                            while (duplicada != null && guardia < 40) {
+                                numeroFactura = numeroFactura + 1;
+                                numeroFacturaTexto();
+                                factura.setFacNumero(numeroFactura);
+                                factura.setFacNumeroText(numeroFacturaText);
+                                duplicada = servicioFactura.findTipoambienteNumFactura(amb, numeroFactura);
+                                guardia++;
+                            }
+                            String claveAccesoNueva = ArchivoUtils.generaClave(factura.getFacFecha(), "01", amb.getAmRuc(), amb.getAmCodigo(), amb.getAmEstab() + amb.getAmPtoemi(), factura.getFacNumeroText(), "12345678", "1");
+                            factura.setFacClaveAcceso(claveAccesoNueva);
+                            factura.setFacClaveAutorizacion(claveAccesoNueva);
+                        }
                         servicioFactura.guardarFactura(detalleFactura, factura);
                         if (estdoFactura.equals("PA")) {
                             DetallePago detallePago = new DetallePago();
@@ -2787,6 +2802,11 @@ public class Facturar extends SelectorComposer<Component> {
         } catch (JRException e) {
             System.out.println("ERROR FACTURA " + e.getMessage());
             Messagebox.show("Ocurrio un error guardar la factura ", "Atención", Messagebox.OK, Messagebox.ERROR);
+        } catch (Exception e) {
+            System.out.println("ERROR FACTURA " + e.getMessage());
+            e.printStackTrace();
+            Messagebox.show("Ocurrio un error al guardar o enviar al SRI: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()),
+                    "Atención", Messagebox.OK, Messagebox.ERROR);
         }
         
     }
@@ -3301,6 +3321,15 @@ public class Facturar extends SelectorComposer<Component> {
         } catch (Exception e) {
             Messagebox.show("Error " + e.toString(), "Atención", Messagebox.OK, Messagebox.INFORMATION);
         }
+    }
+
+    @Command
+    public void generarQrDeuna() {
+        String referencia = "DU" + System.currentTimeMillis();
+        if (factura != null && factura.getFacNumero() != null) {
+            referencia = "F" + factura.getFacNumero();
+        }
+        CobroDeunaUi.abrir(amb, valorTotalCotizacion, referencia);
     }
     
     public BigDecimal getSaldoFacturas() {
@@ -3929,6 +3958,9 @@ public class Facturar extends SelectorComposer<Component> {
         this.numerofactReenvio = numerofactReenvio;
     }
     private void autorizarFacturasSRI(Factura valor) throws JRException, IOException, NamingException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        if (AutorizarDocumentos.yaAutorizada(valor)) {
+            return;
+        }
 
         SimpleDateFormat sm = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         SimpleDateFormat smAut = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
@@ -4017,27 +4049,26 @@ public class Facturar extends SelectorComposer<Component> {
         /*GUARDAMOS LA CLAVE DE ACCESO ANTES DE ENVIAR A AUTORIZAR*/
         valor.setFacClaveAcceso(claveAccesoComprobante);
         AutorizarDocumentos autorizarDocumentos = new AutorizarDocumentos();
-        RespuestaSolicitud resSolicitud = autorizarDocumentos.validar(datos, amb);
-        
-          
-          if (resSolicitud.getEstado().contains("ERROR SRI")) {
-            Clients.showNotification("Servicio del SRI caido , verifique su factura en el listado de documentos y autorice",
+        RespuestaSolicitud resSolicitud = autorizarDocumentos.validarConReintento(datos, amb);
+        String estadoSri = resSolicitud == null ? null : resSolicitud.getEstado();
+        if (estadoSri == null || estadoSri.contains("ERROR SRI")) {
+            Clients.showNotification("Servicio del SRI caído o sin respuesta. La factura quedó guardada; autorícela desde el listado.",
                     Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
             return;
         }
-            
+
         if (resSolicitud.getComprobantes() != null) {
             // Autorizacion autorizacion = null;
 
-            if (resSolicitud.getEstado().equals("RECIBIDA")) {
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(Tipoambiente.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+            if ("RECIBIDA".equals(estadoSri)) {
                 try {
 
-                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
+                    RespuestaComprobante resComprobante = autorizarDocumentos.autorizarConReintento(claveAccesoComprobante, amb);
+                    if (!AutorizarDocumentos.tieneAutorizaciones(resComprobante)) {
+                        Clients.showNotification("El SRI no devolvió autorización. La factura no se duplicó; reenvíe desde el listado.",
+                                Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+                        return;
+                    }
                     for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                         FileOutputStream nuevo = null;
 
@@ -4128,21 +4159,25 @@ public class Facturar extends SelectorComposer<Component> {
                         }
 
                     }
-                } catch (RespuestaAutorizacionException ex) {
-                    Clients.showNotification("RespuestaAutorizacionException> Error del servicio del SRI ", Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 3000, true);
-                    Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Clients.showNotification("Error del servicio del SRI: " + (ex.getMessage() != null ? ex.getMessage() : ""),
+                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 4000, true);
+                    Logger.getLogger(Facturar.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                String smsInfo = resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
-                ArchivoUtils.FileCopy(pathArchivoFirmado, pathArchivoNoAutorizado);
-                valor.setEstadosri(resSolicitud.getEstado());
-                valor.setMensajesri(resSolicitud.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje());
-                valor.setFacMsmInfoSri(smsInfo);
+                String[] msg = AutorizarDocumentos.mensajesRecepcion(resSolicitud);
+                try {
+                    ArchivoUtils.FileCopy(pathArchivoFirmado, pathArchivoNoAutorizado);
+                } catch (Exception e) {
+                    Logger.getLogger(Facturar.class.getName()).log(Level.WARNING, "FileCopy no autorizado", e);
+                }
+                valor.setEstadosri(resSolicitud != null ? resSolicitud.getEstado() : "DEVUELTA");
+                valor.setMensajesri(msg[0]);
+                valor.setFacMsmInfoSri(msg[1]);
                 servicioFactura.modificar(valor);
             }
         } else {
-
-            valor.setMensajesri(resSolicitud.getEstado());
+            valor.setMensajesri(resSolicitud != null && resSolicitud.getEstado() != null ? resSolicitud.getEstado() : "SIN RESPUESTA SRI");
             servicioFactura.modificar(valor);
         }
     }
@@ -4239,7 +4274,12 @@ public class Facturar extends SelectorComposer<Component> {
         }
         try {
 
-            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarComprobante(claveAccesoComprobante, amb);
+            RespuestaComprobante resComprobante = autorizarDocumentos.autorizarConReintento(claveAccesoComprobante, amb);
+            if (!AutorizarDocumentos.tieneAutorizaciones(resComprobante)) {
+                Clients.showNotification("El SRI no devolvió autorización. Reenvíe desde el listado.",
+                        Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+                return;
+            }
             for (Autorizacion autorizacion : resComprobante.getAutorizaciones().getAutorizacion()) {
                 FileOutputStream nuevo = null;
 
@@ -4308,8 +4348,10 @@ public class Facturar extends SelectorComposer<Component> {
                 }
 
             }
-        } catch (RespuestaAutorizacionException ex) {
-            Logger.getLogger(ListaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(Facturar.class.getName()).log(Level.SEVERE, "reenviarFactura SRI", ex);
+            Clients.showNotification("Error al consultar autorización SRI: " + (ex.getMessage() != null ? ex.getMessage() : ""),
+                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 4000, true);
         }
 
     }

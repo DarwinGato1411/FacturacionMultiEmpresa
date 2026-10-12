@@ -86,7 +86,7 @@
                     <div class="wrapper_input_text">
                         <div class="fa-solid fa-city icon"></div>
                         <textbox 
-                            maxlength="10"  
+                            maxlength="100"  
                             value="@bind(vm.usuarioSistema.usuPassword)"
                             class="input_text" 
                         />

@@ -240,7 +240,8 @@ body {
 
 @media only screen and (min-width: 632px) {
   .container_modal {
-    width: 1200px;
+    width: 100%;
+    max-width: 1100px;
   }
 
   .container_modal > .header {

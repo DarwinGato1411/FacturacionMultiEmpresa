@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/boostrap/bootstrap.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/kardex.css?v7"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/facturar.css?v50"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/theme.css?v41"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/ventas/modales.css?v7"?>
+<?link rel="stylesheet" type="text/css" href="/css/app/banner-lock.css?v8"?>
+<?script src="https://kit.fontawesome.com/484b16c999.js"?>
+<?script src="/js/icon.js"?>
+<?init class="com.ec.seguridad.Autentificador"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/plantilla/plantilla.zul"?>
+<?link rel="icon" type="image/x-icon" href="/iconos/deckxel.ico"?>
+<zk contentStyle="overflow:auto" width="100%">
+    <div self="@define(content)" apply="org.zkoss.bind.BindComposer"
+         viewModel="@id('vm') @init('com.ec.controlador.vistas.ComparativoContableVm')"
+         width="100%" sclass="kd-page lista_facturas_page">
+        <label sclass="kd-title" value="Comparativo de saldos"/>
+        <label sclass="kd-sub" value="Compare saldos finales entre dos periodos (mes vs mes o año vs año). Periodo A a la izquierda, periodo B a la derecha, diferencia B menos A."/>
+        <div sclass="kd-card">
+        <tabbox width="100%" sclass="lf-tabbox">
+            <tabs>
+                <tab label="Comparativo" sclass="menutabs"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel width="99%" class="factura lista_facturas">
+                    <div class="factura_header lista_facturas_toolbar">
+                        <div class="lf_panel lf_toolbar_line">
+                            <div class="wrapper_input lf_field">
+                                <span>A inicio</span>
+                                <datebox value="@bind(vm.inicioA)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
+                            </div>
+                            <div class="wrapper_input lf_field">
+                                <span>A fin</span>
+                                <datebox value="@bind(vm.finA)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
+                            </div>
+                            <div class="wrapper_input lf_field">
+                                <span>B inicio</span>
+                                <datebox value="@bind(vm.inicioB)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
+                            </div>
+                            <div class="wrapper_input lf_field">
+                                <span>B fin</span>
+                                <datebox value="@bind(vm.finB)" compact="true" readonly="true"
+                                         buttonVisible="true" class="lf_date" lenient="true"
+                                         format="dd/MM/yyyy"/>
+                            </div>
+                            <button class="fa-solid fa-magnifying-glass btn_fact lf_btn lf_btn_primary"
+                                    onClick="@command('buscar')" label="Buscar"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('exportarExcel')" label="Excel"/>
+                            <button class="btn_fact lf_btn lf_btn_secondary"
+                                    onClick="@command('exportarPdf')" label="PDF / imprimir"/>
+                        </div>
+                    </div>
+                    <div class="factura_body factura_body_content">
+                    <listbox model="@load(vm.lista)" mold="paging" pageSize="20">
+                        <listhead>
+                            <listheader width="14%" label="Código"/>
+                            <listheader width="34%" label="Cuenta"/>
+                            <listheader width="18%" label="Periodo A"/>
+                            <listheader width="18%" label="Periodo B"/>
+                            <listheader width="16%" label="Diferencia B-A"/>
+                        </listhead>
+                        <template name="model">
+                            <listitem>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.codigo)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.nombre)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.saldoA)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.saldoB)"/></listcell>
+                                <listcell zclass="mycss-listcell"><label value="@bind(each.diferencia)"/></listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                    </div>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        </div>
+    </div>
+</zk>

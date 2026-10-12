@@ -166,57 +166,35 @@ public class AutorizarDocumentos {
     }
 
     public RespuestaSolicitud validar(byte[] datos, Tipoambiente amb) {
+        RespuestaSolicitud response = new RespuestaSolicitud();
         try {
-
-            String domainRoot = System.getProperty("com.sun.aas.instanceRoot");
-            String keystorePath
-                    = domainRoot + File.separator + "config" + File.separator + "keystore.jks";
-            System.setProperty("javax.net.debug", "ssl,handshake");
-            System.setProperty("javax.net.ssl.keyStore", keystorePath);
-            System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
-            System.setProperty("javax.net.ssl.trustStore", keystorePath);
-            System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
-            System.out.println("KEYSTORE: " + keystorePath);
-//            SSLContextSetup.setupSSLContext("/home/payara41_old/glassfish/domains/domain1/config/keystore.jks", "tu_password_keystore");
-            URL url = new URL("https://" + amb.getAmUrlsri() + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl");
-            QName qname = new QName("http://ec.gob.sri.ws.recepcion", "RecepcionComprobantesOfflineService");
-            RecepcionComprobantesOfflineService service = new RecepcionComprobantesOfflineService(url, qname);
-            RecepcionComprobantesOffline portRec = service.getRecepcionComprobantesOfflinePort();
-            return portRec.validarComprobante(datos);
-
-        } catch (javax.xml.ws.WebServiceException ex) {
-
-            Throwable causa = ex.getCause();
-
-            while (causa != null) {
-
-                if (causa instanceof javax.net.ssl.SSLHandshakeException) {
-
-//                    throw new Exception(
-//                            "No es posible conectarse al SRI. "
-//                            + "El servicio puede estar fuera de línea o presentar problemas con su certificado SSL."
-//                    );
-                    RespuestaSolicitud response = new RespuestaSolicitud();
-                    response.setEstado("ERROR SRI: " + ex.getMessage());
-//                    Clients.showNotification("Ocurrio un error en el SRI o esta temporalmente suspendido ",
-//                            Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
-                    return response;
-                }
-
-                causa = causa.getCause();
+            if (amb == null || amb.getAmUrlsri() == null || amb.getAmUrlsri().trim().isEmpty()) {
+                response.setEstado("ERROR SRI: tipoambiente sin URL (am_urlsri)");
+                return response;
             }
-
-            throw ex;
-
+            if (datos == null || datos.length == 0) {
+                response.setEstado("ERROR SRI: XML firmado vacío");
+                return response;
+            }
+            instalarCertificado();
+            String endpoint = "https://" + amb.getAmUrlsri().trim()
+                    + "/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
+            RecepcionComprobantesOfflineService service = new RecepcionComprobantesOfflineService();
+            RecepcionComprobantesOffline portRec = service.getRecepcionComprobantesOfflinePort();
+            ((BindingProvider) portRec).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint);
+            ((BindingProvider) portRec).getRequestContext().put("com.sun.xml.internal.ws.connect.timeout", 25000);
+            ((BindingProvider) portRec).getRequestContext().put("com.sun.xml.internal.ws.request.timeout", 60000);
+            RespuestaSolicitud r = portRec.validarComprobante(datos);
+            if (r == null) {
+                response.setEstado("ERROR SRI: respuesta nula del WS de recepción");
+                return response;
+            }
+            return r;
         } catch (Exception ex) {
-
-            RespuestaSolicitud response = new RespuestaSolicitud();
-            response.setEstado("ERROR SRI: " + ex.getMessage());
-//            Clients.showNotification("Ocurrio un error en el SRI o esta temporalmente suspendido ",
-//                    Clients.NOTIFICATION_TYPE_ERROR, null, "middle_center", 5000, true);
+            Logger.getLogger(AutorizarDocumentos.class.getName()).log(Level.WARNING, "SRI recepcion falló", ex);
+            response.setEstado("ERROR SRI: " + detalleExcepcion(ex));
             return response;
         }
-
     }
 
     public RespuestaComprobante autorizarComprobante(String claveDeAcceso, Tipoambiente amb) throws RespuestaAutorizacionException {
@@ -236,6 +214,8 @@ public class AutorizarDocumentos {
             AutorizacionComprobantesOfflineService service = new AutorizacionComprobantesOfflineService();
             AutorizacionComprobantesOffline port = service.getAutorizacionComprobantesOfflinePort();
             ((BindingProvider) port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint);
+            ((BindingProvider) port).getRequestContext().put("com.sun.xml.internal.ws.connect.timeout", 25000);
+            ((BindingProvider) port).getRequestContext().put("com.sun.xml.internal.ws.request.timeout", 60000);
             RespuestaComprobante r = port.autorizacionComprobante(claveDeAcceso.trim());
             if (r == null) {
                 response.setNumeroComprobantes("ERROR SRI: respuesta nula del WS de autorización");
@@ -247,6 +227,83 @@ public class AutorizarDocumentos {
                     "SRI autorizacion falló clave=" + claveDeAcceso, ex);
             response.setNumeroComprobantes("ERROR SRI: " + detalleExcepcion(ex));
             return response;
+        }
+    }
+
+    public RespuestaSolicitud validarConReintento(byte[] datos, Tipoambiente amb) {
+        RespuestaSolicitud last = null;
+        for (int i = 1; i <= 3; i++) {
+            last = validar(datos, amb);
+            if (last != null && last.getEstado() != null && !last.getEstado().contains("ERROR SRI")) {
+                return last;
+            }
+            esperarSri(1500L * i);
+        }
+        return last;
+    }
+
+    public RespuestaComprobante autorizarConReintento(String claveDeAcceso, Tipoambiente amb) {
+        RespuestaComprobante last = null;
+        for (int i = 1; i <= 4; i++) {
+            try {
+                last = autorizarComprobante(claveDeAcceso, amb);
+            } catch (Exception e) {
+                last = new RespuestaComprobante();
+                last.setNumeroComprobantes("ERROR SRI: " + detalleExcepcion(e));
+            }
+            if (tieneAutorizaciones(last)) {
+                String est = last.getAutorizaciones().getAutorizacion().get(0).getEstado();
+                if ("AUTORIZADO".equals(est) || (est != null && est.contains("NO AUTORIZADO"))) {
+                    return last;
+                }
+            }
+            esperarSri(2500L * i);
+        }
+        return last;
+    }
+
+    public static boolean tieneAutorizaciones(RespuestaComprobante r) {
+        return r != null && r.getAutorizaciones() != null
+                && r.getAutorizaciones().getAutorizacion() != null
+                && !r.getAutorizaciones().getAutorizacion().isEmpty();
+    }
+
+    public static boolean yaAutorizada(Factura valor) {
+        return valor != null && valor.getEstadosri() != null
+                && "AUTORIZADO".equalsIgnoreCase(valor.getEstadosri().trim());
+    }
+
+    /** [0]=mensaje, [1]=info adicional. Nunca lanza NPE. */
+    public static String[] mensajesRecepcion(RespuestaSolicitud r) {
+        String estado = r != null && r.getEstado() != null ? r.getEstado() : "SIN RESPUESTA SRI";
+        String info = "";
+        try {
+            if (r != null && r.getComprobantes() != null
+                    && r.getComprobantes().getComprobante() != null
+                    && !r.getComprobantes().getComprobante().isEmpty()
+                    && r.getComprobantes().getComprobante().get(0).getMensajes() != null
+                    && r.getComprobantes().getComprobante().get(0).getMensajes().getMensaje() != null
+                    && !r.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().isEmpty()) {
+                String m = r.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getMensaje();
+                String i = r.getComprobantes().getComprobante().get(0).getMensajes().getMensaje().get(0).getInformacionAdicional();
+                if (m != null && !m.trim().isEmpty()) {
+                    estado = m;
+                }
+                if (i != null) {
+                    info = i;
+                }
+            }
+        } catch (Exception e) {
+            Logger.getLogger(AutorizarDocumentos.class.getName()).log(Level.FINE, "mensajesRecepcion", e);
+        }
+        return new String[]{estado, info};
+    }
+
+    private static void esperarSri(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 

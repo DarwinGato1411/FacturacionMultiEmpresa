@@ -4,6 +4,7 @@ import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioContabilidad;
+import com.ec.untilitario.ExportContabilidad;
 import com.ec.untilitario.ModeloEstadoLinea;
 import com.ec.untilitario.ModeloLibroMayor;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 
 public class EstadosFinancierosVm {
 
@@ -154,6 +156,43 @@ public class EstadosFinancierosVm {
     @NotifyChange({"vista", "comprobacionVisible", "situacionVisible", "resultadosVisible"})
     public void verResultados() {
         vista = "RES";
+    }
+
+    @Command
+    public void exportarExcel() {
+        try {
+            if ("SIT".equals(vista)) {
+                ExportContabilidad.excelEstados("Situacion financiera", inicio, fin, situacion);
+            } else if ("RES".equals(vista)) {
+                ExportContabilidad.excelEstados("Estado de resultados", inicio, fin, resultados);
+            } else {
+                ExportContabilidad.excelComprobacion("Balance de comprobacion", inicio, fin, comprobacion,
+                        totalDebe, totalHaber, totalDeudor, totalAcreedor);
+            }
+        } catch (Exception e) {
+            Clients.showNotification(e.getMessage(), Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 4000, true);
+        }
+    }
+
+    @Command
+    public void exportarPdf() {
+        try {
+            String titulo;
+            String tabla;
+            if ("SIT".equals(vista)) {
+                titulo = "Situacion financiera";
+                tabla = ExportContabilidad.tablaEstado(situacion);
+            } else if ("RES".equals(vista)) {
+                titulo = "Estado de resultados";
+                tabla = ExportContabilidad.tablaEstado(resultados);
+            } else {
+                titulo = "Balance de comprobacion";
+                tabla = ExportContabilidad.tablaComprobacion(comprobacion);
+            }
+            ExportContabilidad.html("estado_financiero.html", titulo, tabla);
+        } catch (Exception e) {
+            Clients.showNotification(e.getMessage(), Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 4000, true);
+        }
     }
 
     public boolean isComprobacionVisible() {

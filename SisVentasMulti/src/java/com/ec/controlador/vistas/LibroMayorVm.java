@@ -4,6 +4,7 @@ import com.ec.entidad.Tipoambiente;
 import com.ec.seguridad.EnumSesion;
 import com.ec.seguridad.UserCredential;
 import com.ec.servicio.ServicioContabilidad;
+import com.ec.untilitario.ExportContabilidad;
 import com.ec.untilitario.ModeloLibroMayor;
 import com.ec.untilitario.ModeloLibroMayorMov;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 
 public class LibroMayorVm {
 
@@ -56,6 +58,26 @@ public class LibroMayorVm {
         }
         cuentaDetalle = valor.getCodigo() + " — " + valor.getNombre();
         detalle = valor.getMovimientos();
+    }
+
+    @Command
+    public void exportarExcel() {
+        try {
+            ExportContabilidad.excelMayor(inicio, fin, lista);
+        } catch (Exception e) {
+            Clients.showNotification(e.getMessage(), Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 4000, true);
+        }
+    }
+
+    @Command
+    public void exportarPdf() {
+        try {
+            ExportContabilidad.html("mayor_auxiliar.html",
+                    "Mayor auxiliar por cuenta (la glosa identifica el documento)",
+                    ExportContabilidad.tablaMayor(lista));
+        } catch (Exception e) {
+            Clients.showNotification(e.getMessage(), Clients.NOTIFICATION_TYPE_ERROR, null, "end_center", 4000, true);
+        }
     }
 
     public Date getInicio() {

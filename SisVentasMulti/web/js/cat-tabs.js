@@ -132,6 +132,9 @@
                 var n = e.target;
                 while (n && n !== document.body) {
                     var c = String(n.className || "");
+                    if (c.indexOf("banner") >= 0 || c.indexOf("banner-logout") >= 0) {
+                        return;
+                    }
                     if (c.indexOf("z-tab") >= 0 || c.indexOf("menutabs") >= 0) {
                         setTimeout(window.markCatTabs, 30);
                         setTimeout(window.markCatTabs, 160);
